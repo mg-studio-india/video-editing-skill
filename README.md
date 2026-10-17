@@ -16,24 +16,36 @@
 The system enforces a strict project isolation and execution contract:
 
 ```text
-videos/<project-id>/
-├── raw/                              # [STRICT INPUT BOUNDARY]
-│   ├── C0001.MP4                     # Raw creator talking-head footage
-│   ├── screen-demo.mov               # Screen captures / product demos
-│   └── mic-audio.wav                 # Primary audio recording
+~/VideoEditing/ (Workspace Root)
+├── references/                       # [STYLE & BENCHMARK INSPIRATION HUB]
+│   ├── benchmark-reel.mp4            # Inspiration video to learn pacing & cuts from
+│   ├── brand-style-guide.pdf         # Brand guidelines, colors & typography rules
+│   └── layout-reference.png          # Target lower-third or graphic layout screenshot
 │
-├── hyperframes/                      # [CLI-FIRST COMPOSITION ENGINE]
-│   ├── index.html                    # Root composition contract
-│   ├── input-video.mp4               # Conformed flat cut
-│   ├── compositions/                 # Modular catalog blocks & dynamic captions
-│   │   ├── captions.html             # Typographic caption rail
-│   │   └── stat-callout.html         # Lower-third metric pill
-│   ├── sfx/                          # Peak-normalized (-3 dBFS) sound effects
-│   └── broll/                        # Conformed AI & stock cutaways
+├── sound-palette/                    # [OFFLINE TACTILE SOUND PALETTE]
+│   ├── audio/                        # 19 pre-trimmed, -3 dBFS peak-normalized SFX
+│   └── sound-palette.json            # Acoustic hierarchy and cue mappings
 │
-└── processed/                        # [VERSION-CONTROLLED DELIVERABLES]
-    ├── <project-id>-v1.mp4           # Master render (EBU R128 mastered, BT.709 tagged)
-    └── <project-id>-v2.mp4           # Clean output (transient reports purged post-review)
+└── videos/                           # [VIDEO PRODUCTION PROJECTS]
+    ├── _shared/                      # Reusable assets across projects (logos, fonts, SFX)
+    └── <project-id>/                 # Project-specific workspace
+        ├── raw/                      # [STRICT INPUT BOUNDARY] User footage & mic audio
+        │   ├── C0001.MP4             # Raw creator talking-head footage
+        │   ├── screen-demo.mov       # Screen captures / product demos
+        │   └── mic-audio.wav         # Primary audio recording
+        │
+        ├── hyperframes/              # [CLI-FIRST COMPOSITION ENGINE]
+        │   ├── index.html            # Root composition contract
+        │   ├── input-video.mp4       # Conformed flat cut
+        │   ├── compositions/         # Modular catalog blocks & dynamic captions
+        │   │   ├── captions.html     # Typographic caption rail
+        │   │   └── stat-callout.html # Lower-third metric pill
+        │   ├── sfx/                  # Peak-normalized (-3 dBFS) sound effects
+        │   └── broll/                # Conformed AI & stock cutaways
+        │
+        └── processed/                # [VERSION-CONTROLLED DELIVERABLES]
+            ├── <project-id>-v1.mp4   # Master render (EBU R128 mastered, BT.709 tagged)
+            └── <project-id>-v2.mp4   # Clean output (transient reports purged post-review)
 ```
 
 - **Strict Raw Ingestion (`/raw`)**: All skills and tools strictly ingest assets located within `videos/<project-id>/raw/`. External mentions are treated as advisory context only.
@@ -41,6 +53,31 @@ videos/<project-id>/
 - **Offline Curated Sound Palette**: 19 pre-trimmed, peak-normalized (-3 dBFS) tactile SFX in `sound-palette/` (clicks, swooshes, pops, camera shutters, paper slides, riser swells) resolved offline without requiring cloud accounts.
 - **Dynamic Style-Aware Cut Padding**: Dynamic tempo/WPM-based margins (35–50ms for aggressive hooks; 65–85ms for investigative teardowns; 100–130ms for conversational pacing) with 8–15ms audio micro-fades.
 - **Automated Verification & Post-Review Purge**: Structural (`VERIFY.md`), acoustic (`audio.json`), and visual (`REVIEW.md`, `review-sheet.png`) quality gates run on the binary MP4. Once review succeeds, `clean-temp.py --clean-reports` automatically purges intermediate dumps, leaving only the clean deliverable.
+
+---
+
+## 📂 The `references/` Folder (Inspiration & Benchmark Hub)
+
+The `references/` folder at your workspace root serves as the **creative and technical benchmark library** for the agent. Before editing your footage, the agent inspects this folder to analyze pacing, visual aesthetics, color grading, and motion graphics from high-performing benchmark content.
+
+### What users should add to `references/`:
+
+1. **Benchmark / Inspiration Videos (`.mp4`, `.mov`)**:
+   - High-retention Instagram Reels, YouTube Shorts, or long-form videos whose editing style, pacing, and retention rhythm you want to emulate (e.g. `references/finance-explainer-benchmark.mp4`).
+   - The `video-watch` skill inspects these files via `python3 "$ENG/scripts/watch.py" ref "references/<video>.mp4"`, extracting:
+     - **Median Shot Duration** (e.g. 1.4s fast-paced vs 3.2s conversational).
+     - **Pacing & Cut Frequency** (J-cut/L-cut transitions, camera resets).
+     - **Acoustic Loudness Profile** (integrated LUFS and background bed ducking depth).
+     - **Visual Fingerprint** (`watch/fingerprint.json` and contact sheets).
+2. **Brand Guidelines & Color Kits (`.pdf`, `.png`, `style.json`)**:
+   - Brand books, official color codes (primary, secondary, background, text), and contrast themes.
+   - The `video-style` skill reads these assets to extract verified color tokens and typography stacks.
+3. **Typography & Font Specimens (`.ttf`, `.otf`, `.woff2`)**:
+   - Custom fonts for brand titles, lower thirds, and captions.
+4. **Layout Screenshots & Graphics References (`.png`, `.jpg`)**:
+   - Screenshots of lower-third banners, stat counters, split-screen layouts, or paper textures you want the agent to match using HyperFrames catalog blocks.
+5. **Topic & Narrative Benchmarks (`.md`, `.txt`)**:
+   - Script teardowns, competitor hook formulas, or research notes used by `video-researcher` during Gate 0.
 
 ---
 
