@@ -1,0 +1,115 @@
+{
+  "name": "business-reels",
+  "source": "business-reels-style skill (composite production synthesis of six business-creator accounts; see skills/business-reels-style/references/research-audit.md)",
+  "status": "production defaults; NOT measured from the reference accounts. Upgrade fields to 'observed' only after frame inspection.",
+  "evidence": {
+    "accent red for one key word": "PUBLIC CROSS-POST FRAME (one Raj Shamani-associated frame); #D9413A is a design token, not a sampled colour",
+    "black headline band, white uppercase": "PUBLIC CROSS-POST FRAME (same frame)",
+    "white text on cinematic footage": "PUBLIC CROSS-POST FRAME (one Bypreneurs-associated image)",
+    "everything else": "PRODUCTION DEFAULT",
+    "emphasis as a red block, card titles in text colour": "PRODUCTION DEFAULT (red text measured 2.4-2.7:1 on mid-tone footage in HyperFrames check; the guide allows background emphasis)"
+  },
+  "canvas": [
+    1080,
+    1920
+  ],
+  "colors": {
+    "text": "#F5F1EA",
+    "accent": "#D9413A",
+    "accent2": "#B9B5AE",
+    "money": "#D9413A",
+    "dark": "#171717",
+    "surface": "#252525",
+    "muted": "#B9B5AE",
+    "line": "#4A4845",
+    "band": "#000000",
+    "paper": "#F5F1EA",
+    "paper_ink": "#171717"
+  },
+  "fonts": {
+    "display": {
+      "family": "Inter",
+      "files": {
+        "100 900": "@engine/assets/fonts/inter/Inter-Variable.ttf"
+      }
+    },
+    "fallback": {
+      "family": "Noto Sans Devanagari",
+      "files": {
+        "100 900": "@engine/assets/fonts/noto-devanagari/NotoSansDevanagari-Variable.ttf"
+      }
+    },
+    "scripts": [
+      "latin",
+      "devanagari"
+    ]
+  },
+  "text_stroke": 0.03,
+  "captions": {
+    "engine": "builtin",
+    "mode": "block",
+    "case": "keep",
+    "weight": 700,
+    "max_emphasis": 1,
+    "color": "#F5F1EA",
+    "emphasis_color": "#F5F1EA",
+    "active_color": "#F5F1EA",
+    "stroke": 3,
+    "shadow": "0 4px 16px rgba(0,0,0,.6)",
+    "portrait": {
+      "size": 0.06,
+      "y": 0.7,
+      "max_words": 5,
+      "max_chars": 28,
+      "low_y": 0.86
+    },
+    "landscape": {
+      "size": 0.034,
+      "y": 0.88,
+      "max_words": 6,
+      "max_chars": 36
+    },
+    "emphasis_bg": "#D9413A"
+  },
+  "cards": {
+    "bg": "rgba(37,37,37,.92)",
+    "text": "#F5F1EA",
+    "radius": 10,
+    "border": "#4A4845",
+    "title_color": "#F5F1EA"
+  },
+  "motion": {
+    "in": 0.24,
+    "out": 0.2,
+    "keyword": 0.14,
+    "callout": 0.3,
+    "punch": 0.3,
+    "chart": 0.6,
+    "ease_in": "power3.out",
+    "ease_out": "power2.in",
+    "rules": "hard cuts first; phrase-synchronised reveals; rare whip/zoom/glitch; no bounce on captions; no perpetual motion"
+  },
+  "camera": {
+    "punch": [
+      1.06,
+      1.12
+    ],
+    "origin_portrait": "50% 30%"
+  },
+  "safe_zone_px": {
+    "top": 180,
+    "bottom": 300,
+    "side": 90
+  },
+  "sound": {
+    "default": "voice first; silence on most reveals",
+    "allowed": [
+      "an accent only on a reveal that needs it"
+    ],
+    "never": [
+      "emotional scoring that implies unsupported certainty",
+      "SFX masking consonants"
+    ]
+  },
+  "audio_preset": "shorts"
+}

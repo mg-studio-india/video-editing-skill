@@ -1,0 +1,262 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "name": "Creator & Business Video Sound Palette",
+  "version": "1.0.0",
+  "description": "Production-grade acoustic palette for high-retention vertical reels, investigative breakdowns, and creator videos.",
+  "base_path": "./audio",
+  "audio_standards": {
+    "dialogue_target_lufs": -14.0,
+    "true_peak_max_db": -1.0,
+    "sfx_peak_normalization_dbfs": -3.0,
+    "music_ducking_under_speech_db": -18.0,
+    "music_ducking_during_hooks_db": -16.0
+  },
+  "dynamic_cut_padding_rules": {
+    "principle": "Cut padding is dynamic and governed by delivery tempo (WPM), speaker breathing, and narrative energy rather than static fixed offsets.",
+    "profiles": {
+      "aggressive_hook": {
+        "description": "Rapid hook opening (0-3s), staccato claims, fast-paced tease",
+        "wpm_range": "180+",
+        "lead_in_ms": 40,
+        "trailing_tail_ms": 70,
+        "crossfade_ms": 8
+      },
+      "investigative_teardown": {
+        "description": "Data breakdown, document reveals, forensic analysis (Nitin Joshi style)",
+        "wpm_range": "140-180",
+        "lead_in_ms": 70,
+        "trailing_tail_ms": 110,
+        "crossfade_ms": 12
+      },
+      "conversational_authority": {
+        "description": "Founder interview, podcast, nuanced explanation",
+        "wpm_range": "120-150",
+        "lead_in_ms": 110,
+        "trailing_tail_ms": 160,
+        "crossfade_ms": 15
+      },
+      "dramatic_pause": {
+        "description": "Post-revelation silence before verdict or punchline",
+        "wpm_range": "Any",
+        "lead_in_ms": 90,
+        "trailing_tail_ms": 280,
+        "crossfade_ms": 20
+      }
+    }
+  },
+  "palette": [
+    {
+      "id": "click_soft",
+      "file": "click-soft.mp3",
+      "name": "Soft Tactile Click",
+      "category": "ui_micro",
+      "volume": 0.22,
+      "frequency_focus": "3.5 kHz - 7.0 kHz",
+      "triggers": ["on-screen toggle", "card swipe", "bullet item check", "subtle UI hover"],
+      "rule": "Use on micro UI movements. Never place on normal caption words."
+    },
+    {
+      "id": "click_hard",
+      "file": "click-hard.mp3",
+      "name": "Snappy Mechanical Click",
+      "category": "ui_micro",
+      "volume": 0.28,
+      "frequency_focus": "2.8 kHz - 6.5 kHz",
+      "triggers": ["mouse cursor click", "toggle button active", "external link open"],
+      "rule": "Only trigger when a cursor physically clicks on an interactive target."
+    },
+    {
+      "id": "pop_card",
+      "file": "pop.mp3",
+      "name": "Damped Kinetic Pop",
+      "category": "kinetic_pop",
+      "volume": 0.32,
+      "frequency_focus": "600 Hz - 2.4 kHz",
+      "triggers": ["card entrance", "badge pill appearance", "stat card landing", "sticker pop"],
+      "rule": "Max 1 pop per spoken beat. Do not fire on every item in a list simultaneously."
+    },
+    {
+      "id": "impact_sub_drop",
+      "file": "impact-sub-drop.mp3",
+      "name": "Sub-Bass Impact Drop",
+      "category": "impact",
+      "volume": 0.24,
+      "frequency_focus": "40 Hz - 120 Hz (Sub-bass)",
+      "triggers": ["thesis revelation", "shocking discrepancy", "brand callout", "verdict drop"],
+      "rule": "Sits below vocal frequency band so it never muddies speech. Limit to 1-2 per 45s reel."
+    },
+    {
+      "id": "impact_heavy",
+      "file": "impact-heavy.mp3",
+      "name": "Heavy Punch Thud",
+      "category": "impact",
+      "volume": 0.26,
+      "frequency_focus": "80 Hz - 350 Hz",
+      "triggers": ["final takeaway", "punitive financial metric", "bottom-line stat"],
+      "rule": "Use when an argument lands with finality. Ensure dialogue volume does not dip."
+    },
+    {
+      "id": "whoosh_fast",
+      "file": "whoosh-fast.mp3",
+      "name": "Fast Directional Whip",
+      "category": "transition",
+      "volume": 0.18,
+      "frequency_focus": "800 Hz - 4.5 kHz",
+      "triggers": ["snap reframe", "lateral scene wipe", "split-screen collapse"],
+      "rule": "Only on swift visual displacement. Never on static jump cuts or caption reveals."
+    },
+    {
+      "id": "whoosh_cinematic",
+      "file": "whoosh-cinematic.mp3",
+      "name": "Cinematic Atmospheric Sweep",
+      "category": "transition",
+      "volume": 0.15,
+      "frequency_focus": "200 Hz - 5.0 kHz",
+      "triggers": ["major narrative act transition", "pivot from problem to expose"],
+      "rule": "Let tail ring out naturally. Keep music lowered during the sweep."
+    },
+    {
+      "id": "riser_tension",
+      "file": "riser-tension.mp3",
+      "name": "Harmonic Tension Riser",
+      "category": "riser",
+      "volume": 0.14,
+      "frequency_focus": "300 Hz - 8.0 kHz rising",
+      "triggers": ["building up to the big evidence reveal", "investigative crescendo"],
+      "rule": "Must resolve cleanly into silence or an impact hit on the exact beat."
+    },
+    {
+      "id": "ping_metric",
+      "file": "ping-metric.mp3",
+      "name": "Glass Metric Ping",
+      "category": "indicator",
+      "volume": 0.18,
+      "frequency_focus": "2.2 kHz - 5.5 kHz",
+      "triggers": ["monetary stat reveal (₹/$/%)", "follower count milestone", "data milestone"],
+      "rule": "Clean high-register indicator. Keeps clarity without competing with vocal mid-range."
+    },
+    {
+      "id": "chime_reveal",
+      "file": "chime-reveal.mp3",
+      "name": "Warm Insight Chime",
+      "category": "indicator",
+      "volume": 0.16,
+      "frequency_focus": "1.2 kHz - 4.8 kHz",
+      "triggers": ["strategic lesson", "key takeaway", "solution introduction"],
+      "rule": "Warm and melodic. Avoid jarring high-frequency ring."
+    },
+    {
+      "id": "paper_slide",
+      "file": "paper-slide.mp3",
+      "name": "Acoustic Paper Slide",
+      "category": "foley",
+      "volume": 0.24,
+      "frequency_focus": "1.5 kHz - 3.8 kHz",
+      "triggers": ["document entrance", "report sliding into frame", "contract reveal"],
+      "rule": "Organic textured sound for genuine credibility. Must match the visual motion speed."
+    },
+    {
+      "id": "paper_thud",
+      "file": "paper-thud.mp3",
+      "name": "Desk Document Thud",
+      "category": "foley",
+      "volume": 0.28,
+      "frequency_focus": "90 Hz - 500 Hz",
+      "triggers": ["evidence landing on desk", "official filing slammed down"],
+      "rule": "Pairs with paper slide for realistic physical presence."
+    },
+    {
+      "id": "camera_shutter",
+      "file": "camera-shutter.mp3",
+      "name": "Camera Shutter Transient",
+      "category": "foley",
+      "volume": 0.20,
+      "frequency_focus": "2.5 kHz - 6.0 kHz",
+      "triggers": ["screenshot snapshot", "social media post freeze", "evidence photo"],
+      "rule": "Only on photographic freezes or proof capture moments."
+    },
+    {
+      "id": "error_buzzer",
+      "file": "error-buzzer.mp3",
+      "name": "Debunk Digital Buzzer",
+      "category": "indicator",
+      "volume": 0.22,
+      "frequency_focus": "400 Hz - 1.2 kHz",
+      "triggers": ["false claim flagged", "debunked number", "failed test result (SPF 15 vs 50)"],
+      "rule": "Muted and clean; avoid abrasive cartoon sound."
+    },
+    {
+      "id": "glitch_digital",
+      "file": "glitch-digital.mp3",
+      "name": "Digital Micro-Glitch",
+      "category": "texture",
+      "volume": 0.16,
+      "frequency_focus": "1.8 kHz - 9.0 kHz",
+      "triggers": ["revealing inconsistency in claims", "switching from PR clip to raw reality"],
+      "rule": "Use sparingly (<0.3s duration). Never mask spoken vowels."
+    },
+    {
+      "id": "typing_tactile",
+      "file": "typing-tactile.mp3",
+      "name": "Tactile Keystrokes Flutter",
+      "category": "foley",
+      "volume": 0.18,
+      "frequency_focus": "2.0 kHz - 5.0 kHz",
+      "triggers": ["search bar typing", "code editor activity", "database query entry"],
+      "rule": "Must match length of simulated typing exactly."
+    },
+    {
+      "id": "key_tap",
+      "file": "key-tap.mp3",
+      "name": "Single Key Tap / Return",
+      "category": "foley",
+      "volume": 0.22,
+      "frequency_focus": "1.8 kHz - 4.5 kHz",
+      "triggers": ["Enter key hit", "single prompt submission"],
+      "rule": "Punctuate search queries or terminal command execution."
+    },
+    {
+      "id": "notification_chime",
+      "file": "notification-chime.mp3",
+      "name": "Modern Notification Bell",
+      "category": "ui_micro",
+      "volume": 0.18,
+      "frequency_focus": "2.0 kHz - 6.0 kHz",
+      "triggers": ["incoming message bubble", "DM pop-up", "app notification alert"],
+      "rule": "Professional OS style; never loud or jarring."
+    },
+    {
+      "id": "shimmer_accent",
+      "file": "shimmer-accent.mp3",
+      "name": "Subtle Shimmer Harmonic",
+      "category": "indicator",
+      "volume": 0.14,
+      "frequency_focus": "4.0 kHz - 12.0 kHz",
+      "triggers": ["premium highlight", "valuable asset reveal", "golden rule"],
+      "rule": "High-frequency air sparkle. Sits far above speech frequencies."
+    }
+  ],
+  "style_presets": {
+    "business_investigative": {
+      "name": "Business / Expose Teardown",
+      "description": "Nitin Joshi, Markets with Jayant style. Voice is paramount; silence is the baseline. Sounds act as forensic evidence stamps.",
+      "allowed_sfx": ["impact_sub_drop", "paper_slide", "paper_thud", "camera_shutter", "click_soft", "ping_metric", "error_buzzer"],
+      "forbidden_sfx": ["whoosh_fast", "glitch_digital", "pop_card"],
+      "music_style": "minimal dark investigative drone, muted pulsing synth, 60-70 BPM, ducked -19 dB"
+    },
+    "high_retention_creator": {
+      "name": "High-CTR Modern Creator",
+      "description": "Fast-paced YouTube Shorts / TikTok reels. Snappy, physical, tactile.",
+      "allowed_sfx": ["pop_card", "click_soft", "whoosh_fast", "ping_metric", "impact_heavy", "typing_tactile"],
+      "forbidden_sfx": [],
+      "music_style": "upbeat lo-fi / phonk / bass bounce, ducked -16 dB"
+    },
+    "minimalist_editorial": {
+      "name": "Minimalist Documentary / Case Study",
+      "description": "High aesthetic, cinematic, calm authority.",
+      "allowed_sfx": ["click_soft", "chime_reveal", "paper_slide", "shimmer_accent"],
+      "forbidden_sfx": ["error_buzzer", "glitch_digital", "impact_heavy"],
+      "music_style": "warm ambient piano / soft strings, ducked -18 dB"
+    }
+  }
+}

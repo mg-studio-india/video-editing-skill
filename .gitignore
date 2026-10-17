@@ -1,0 +1,62 @@
+# Operating System files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Secrets & Environment variables
+.env
+.env.*
+*.pem
+*.key
+*.cert
+*.crt
+
+# Python & Virtual Environments
+.venv/
+venv/
+env/
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+*.egg-info/
+dist/
+build/
+
+# Node & Package Managers
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# Neural Model Weights (downloaded by install.sh)
+*.bin
+*.onnx
+*.rnnn
+models/
+
+# Video Editing Renders & Temporary Workspaces
+videos/
+processed/
+output/
+temp/
+tmp/
+*.log
+
+# Editor & IDE configs
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Agent Local Settings & Backups
+.claude/settings.local.json
+.claude/skills-backup-*/
+.agents/skills-backup-*/
+.claude/skills-legacy-backup-*/
+.agents/skills-legacy-backup-*/

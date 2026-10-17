@@ -1,0 +1,20 @@
+{
+  "name": "kit-look",
+  "status": "the forked kit's channel look (16:9 talking head, glass cards); its full rules are in format/references/kit-library.md",
+  "canvas": [1920, 1080],
+  "colors": {"text": "#FFFFFF", "accent": "#0AF0F0", "accent2": "#CD00EE", "money": "#FFB904",
+             "dark": "#05060C", "paper": "#F4ECD8", "paper_ink": "#1D1A16"},
+  "fonts": {"display": {"family": "DM Sans", "files": {
+      "400": "@engine/assets/fonts/DMSans-400.woff2", "500": "@engine/assets/fonts/DMSans-500.woff2",
+      "700": "@engine/assets/fonts/DMSans-700.woff2"}}, "scripts": ["latin"]},
+  "text_stroke": 0,
+  "captions": {"engine": "builtin", "mode": "block", "case": "keep", "weight": 700,
+               "portrait": {"size": 0.07, "y": 0.66, "max_words": 3, "max_chars": 18},
+               "landscape": {"size": 0.034, "y": 0.88, "max_words": 4, "max_chars": 28}},
+  "cards": {"bg": "rgba(255,255,255,.18)", "text": "#FFFFFF", "radius": 26, "border": "rgba(255,255,255,.58)"},
+  "motion": {"in": 0.40, "out": 0.35, "ease_in": "power2.out", "ease_out": "power2.in"},
+  "camera": {"punch": [1.18, 1.25], "creep": [1.10, 1.12], "origin_landscape": "52% 0%"},
+  "sound": {"default": "silence", "allowed": ["pop on a logo", "click on a cursor", "typing on typing", "cha-ching at 0.07 on money"],
+            "never": ["whoosh under text"]},
+  "audio_preset": "youtube"
+}
