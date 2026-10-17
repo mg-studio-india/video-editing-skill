@@ -10,8 +10,8 @@ Make the folder you will open in Claude Code, and run the installer from inside 
 
 ```bash
 mkdir -p ~/VideoEditing && cd ~/VideoEditing
-unzip ~/Downloads/video-editor-skills-complete.zip -d ~/Downloads
-bash ~/Downloads/video-editor-skills/install.sh
+unzip ~/Downloads/video-editing-skill-complete.zip -d ~/Downloads
+bash ~/Downloads/video-editing-skill/install.sh
 ```
 
 Run it from your project folder, not from inside the package (it refuses if you do). If Homebrew is missing, it stops
@@ -77,7 +77,7 @@ The skills are plain Agent Skills folders and find their engine through `VIDEO_E
 that can run shell commands, edit files and view images can use them.
 
 1. Find the folder your agent loads skills from (its documentation), then install there, linking Claude Code too if you
-   use more than one: `bash ~/Downloads/video-editor-skills/install.sh --link <that folder>` (the skills stay in
+   use more than one: `bash ~/Downloads/video-editing-skill/install.sh --link <that folder>` (the skills stay in
    `~/.agents/skills`; Claude Code's `~/.claude/skills` is linked automatically).
    With links, a rule saved through one agent applies to all of them.
 2. In the terminal you start that agent from, run `source agent-env.sh` first. Claude Code does not need this; its

@@ -3,7 +3,7 @@
 # that can run shell commands (Claude Code by default; others via --skills-dir / --link and agent-env.sh).
 #
 #   cd ~/VideoEditing                                   # the folder you will open in Claude Code
-#   bash /path/to/video-editor-skills/install.sh        # run it from there
+#   bash /path/to/video-editing-skill/install.sh        # run it from there
 #
 # What it does (each step is skipped when already done; safe to run again):
 #   1. system tools      Homebrew: node (22+), ffmpeg, whisper-cpp, sox

@@ -32,7 +32,7 @@ W="videos/<project>"
 
 ## Strict Anti-Hardcoding & Zero-Hallucination Grounding Contract
 
-Every skill in the `video-editor-skills` ecosystem adheres to this universal contract:
+Every skill in the `video-editing-skill` ecosystem adheres to this universal contract:
 1. **Zero Placeholder URLs & Data:** Never generate or commit placeholder links (`example.com`, fake YouTube/Instagram links, dummy citations). Any URL present in project files (`research.json`, `plan.md`, `style.json`) must be a live, verified URL fetched during the active session. If an item has not been researched yet, it must remain `null` or `[]`.
 2. **Measured & Derived Visual Tokens:** Colors, font weights, and layout dimensions must never be arbitrary hardcoded guesses. Brand colors must be dynamically extracted from real logo vector files (`extract_colors_from_svg`) or measured footage frames (`palette.py`).
 3. **No Fabricated Benchmarks or Performance Claims:** Reference view counts, creator handles, and viral retention stats must be real observed numbers from platform searches. Never invent metrics or estimates.

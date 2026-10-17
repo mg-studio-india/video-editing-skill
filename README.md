@@ -87,7 +87,7 @@ From the folder you will open in Claude Code, Antigravity, or Cursor (your works
 
 ```bash
 mkdir -p ~/VideoEditing && cd ~/VideoEditing
-bash /path/to/video-editor-skills/install.sh
+bash /path/to/video-editing-skill/install.sh
 ```
 
 ### What it does:
@@ -108,7 +108,7 @@ The skills follow the standard Agent Skills format (each directory contains a `S
 
 ```bash
 # Link skills to another agent's skills directory:
-bash /path/to/video-editor-skills/install.sh --link <other-agent-skills-dir>
+bash /path/to/video-editing-skill/install.sh --link <other-agent-skills-dir>
 
 # Start any terminal agent with project environment:
 source agent-env.sh
@@ -144,4 +144,4 @@ Every skill operates under a strict anti-hallucination and zero-guesswork standa
 
 The engine and scripts are licensed under the **MIT License**.  
 Bundled open-source typography (DM Sans, Poppins, Inter, Noto Sans Devanagari) is distributed under the **SIL Open Font License**.  
-Full license texts reside in [`LICENSES/`](file:///Users/mahesh/lmc/video-editor-skills/LICENSES).
+Full license texts reside in [`LICENSES/`](file:///Users/mahesh/lmc/video-editing-skill/LICENSES).
