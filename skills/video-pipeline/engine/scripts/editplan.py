@@ -66,10 +66,25 @@ def _merge(intervals: list[tuple[float, float, set]]) -> list[tuple[float, float
     return out
 
 
+def dynamic_edit_opts(words: list[dict]) -> dict:
+    """Derive cut padding, pause thresholds, and caption grouping dynamically from transcript speech velocity."""
+    if not words:
+        return {}
+    dur = max(w["end"] for w in words) - min(w["start"] for w in words)
+    wpm = (len(words) / dur * 60.0) if dur > 0 else 140.0
+    if wpm >= 175:       # Fast-paced hook / high-tempo reel
+        return {"pad": 0.045, "keep_pause": 0.18, "max_pause": 0.52, "caption_words": 5}
+    elif wpm >= 135:     # Moderate conversational speech
+        return {"pad": 0.065, "keep_pause": 0.25, "max_pause": 0.68, "caption_words": 4}
+    else:                # Deliberate / thoughtful speech
+        return {"pad": 0.090, "keep_pause": 0.30, "max_pause": 0.80, "caption_words": 3}
+
+
 def build_keep_ranges(words: list[dict], segments: list[dict], t0: float, t1: float,
                       opts: dict | None = None) -> tuple[list[dict], list[dict]]:
     """Return (keep, removed). keep=[{'in','out'}]; removed=[{'start','end','reasons','text'}]."""
-    o = {**DEFAULT_OPTS, **(opts or {})}
+    dyn = dynamic_edit_opts(words)
+    o = {**DEFAULT_OPTS, **dyn, **(opts or {})}
     if not words:
         return [{"in": round(t0, 3), "out": round(t1, 3)}], []
 
@@ -187,7 +202,8 @@ def build_captions(words: list[dict], tmap, words_per_caption: int = 3) -> list[
 
 def make_edit_plan(meta: dict, keep: list[dict], words: list[dict], opts: dict | None = None,
                    style_targets: dict | None = None) -> dict:
-    o = {**DEFAULT_OPTS, **(opts or {})}
+    dyn = dynamic_edit_opts(words)
+    o = {**DEFAULT_OPTS, **dyn, **(opts or {})}
     tmap = timeline_map(keep)
     clips, tl = [], 0.0
     for i, k in enumerate(keep):

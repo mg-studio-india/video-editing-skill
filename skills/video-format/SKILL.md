@@ -22,25 +22,27 @@ The layout must match the video format selected by the user at Gate 0.5:
 
 | Layout Format | Composition Architecture | Safe Zones & Placement |
 |---|---|---|
-| **Clean Authority Talking-Head** | Full-bleed creator footage (`1080x1920`), subtle cinematic grade, clean lower-third name/topic tags (`y: 0.70`). | Headroom kept completely clean (zero text or boxes above the forehead). Captions at `0.66`. |
-| **Stacked Split-Screen** | Top 44% creator talking-head / bottom 56% demo, product try-on, or b-roll. 2–3px glowing or charcoal divider seam. | Top pane center face at 22% frame height. Bottom pane houses product specs or live demo. |
-| **Framed Branded Container** | Creator footage inside rounded card container (`radius: 24px`, subtle border & drop shadow) floating over a dark textured or animated branded backdrop. | Symmetrical padding (40px margins). Side progress rail or lower card drawer. |
-| **Picture-in-Picture (PiP)** | Full-frame b-roll/screen capture with 32% width rounded squircle presenter facecam in top-left or bottom-right corner. | Inset window dodges active UI elements in the background recording. |
-| **Step-by-Step Breakdown** | Full-bleed footage with animated chapter cards entering in lower third (`y: 0.58 – 0.72`), accompanied by an animated progress counter. | Captions drop to `0.86` while cards are active. No cards on forehead. |
+| **Clean Authority Talking-Head** | Full-bleed creator footage (resolution probed dynamically from raw video), subtle cinematic grade, dynamic lower-third tags. | Headroom kept clean of clutter. Captions positioned dynamically below the speaker's detected chin line. |
+| **Stacked Split-Screen** | Split seam dynamically calculated to frame speaker head/torso comfortably while giving demo/b-roll optimal area. 2–3px clean divider seam. | Speaker pane centered on detected face. Demo pane houses product walkthrough or try-on visuals. |
+| **Framed Branded Container** | Creator footage inside rounded container floating over textured or animated branded backdrop. | Proportional margins (~4–6% of canvas width). Side progress rail or adaptive lower card drawer. |
+| **Picture-in-Picture (PiP)** | Full-frame b-roll/screen recording with presenter facecam squircle in corner. | Inset window dynamically placed to dodge active UI regions in the background recording. |
+| **Step-by-Step Breakdown** | Full-bleed footage with animated chapter cards entering in clear visual zones, accompanied by an animated progress counter. | Captions dynamically shift to clear active graphic cards. No cards on speaker's forehead. |
 
 ---
 
-## 2. Headroom & Spatial Guardrails (Anti-Clutter Floor)
+## 2. Dynamic Headroom & Spatial Guardrails
 
 1. **Strict Clean Headroom Rule:**
-   - **Never** place headline bars, floating checklist pills, or topic badges directly over the creator's forehead, hair, or ceiling space (`y: 0.08 – 0.35` in vertical portrait).
+   - **Never** place headline bars, floating checklist pills, or topic badges directly over the creator's forehead, hair, or ceiling space.
    - Plastering checklist cards in the top air (as seen in awkward amateur videos) creates visual claustrophobia.
 2. **Dedicated Graphic Zones:**
-   - On-screen cards, list items, specs, and badges must be placed in the lower-third zone (`y: 0.58 – 0.75`), in side panels, or in full cutaways.
-3. **Platform Safe Margins:**
-   - Top 180px: clear of critical text (platform header bar & search icon).
-   - Bottom 320px: reserved for captions (`0.66`) and platform interaction drawers (captions drop to `0.86` during active lower panels).
-   - Sides 80px: safe margin from right-hand engagement buttons (like, comment, share).
+   - On-screen cards, list items, specs, and badges are placed dynamically in the lower visual region, side rails, or dedicated full cutaways.
+3. **Proportional Platform Safe Margins (Resolution-Agnostic):**
+   - Safe margins scale proportionally with probed canvas dimensions (`W` x `H`):
+     - **Top Margin (~9.4% of H):** Clears platform search, sound bar, and camera cutout.
+     - **Bottom Margin (~16.5% of H):** Reserved for platform interaction bar, description drawer, and captions.
+     - **Side Margin (~7.5% of W):** Safe distance from right-hand engagement buttons (like, comment, bookmark, share).
+   - This ensures safe zones remain mathematically exact whether editing 4K (`2160x3840`), Full HD (`1080x1920`), horizontal, or square videos.
 
 ---
 

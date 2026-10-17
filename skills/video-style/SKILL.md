@@ -62,13 +62,10 @@ A production-grade `style.json` governs five interdependent visual pillars:
   "captions": {
     "mode": "phrase",
     "case": "as_spoken",
-    "max_words": 5,
-    "max_chars": 28,
-    "y": 0.68,
-    "low_y": 0.86,
     "inactive_color": "rgba(255, 255, 255, 0.70)",
     "active_color": "#ffd700",
     "emphasis_bg": "rgba(255, 215, 0, 0.18)"
+    // Note: y, size, max_words, and max_chars are calculated dynamically from raw video frames and transcript when omitted.
   },
   "motion_physics": {
     "entrance_ease": "power3.out",

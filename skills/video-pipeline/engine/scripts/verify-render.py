@@ -24,7 +24,7 @@ import argparse, difflib, json, os, re, shutil, subprocess, sys, tempfile, time
 ap = argparse.ArgumentParser()
 ap.add_argument("--render", required=True)
 ap.add_argument("--index", help="composition for data-duration and the beat moments (default: public/index.html next to the render)")
-ap.add_argument("--res", default="3840x2160")
+ap.add_argument("--res", default=None, help="expected resolution WxH (default: dynamic from composition or video)")
 ap.add_argument("--min-mbps", type=float, default=40.0, help="video bitrate floor at 3840x2160, scaled by pixel count")
 ap.add_argument("--words", help="word-level transcript of the RENDER's audio")
 ap.add_argument("--kept", help="word-level transcript of the flat cut (transcript.json)")
@@ -59,8 +59,24 @@ if v is None:
 n, d = [int(x) for x in v.get("r_frame_rate", "30/1").split("/")]
 fps = n / d if d else 30.0
 W, Hh = int(v.get("width", 0)), int(v.get("height", 0))
-ew, eh = [int(x) for x in args.res.lower().split("x")]
-check("Resolution", (W, Hh) == (ew, eh), "%dx%d" % (W, Hh), args.res)
+
+expected_res = args.res
+if not expected_res and os.path.exists(index):
+    try:
+        html = open(index).read()
+        root = re.search(r'<div[^>]*data-composition-id="[^"]+"[^>]*>', html)
+        if root:
+            mw = re.search(r'data-width="(\d+)"', root.group(0))
+            mh = re.search(r'data-height="(\d+)"', root.group(0))
+            if mw and mh:
+                expected_res = f"{mw.group(1)}x{mh.group(1)}"
+    except Exception:
+        pass
+if not expected_res:
+    expected_res = f"{W}x{Hh}"
+
+ew, eh = [int(x) for x in expected_res.lower().split("x")]
+check("Resolution", (W, Hh) == (ew, eh), "%dx%d" % (W, Hh), expected_res)
 
 tags = [v.get(k, "unknown") for k in ("color_primaries", "color_transfer", "color_space")]
 check("Colour tags", all(t == "bt709" for t in tags), "primaries %s, transfer %s, space %s" % tuple(tags),

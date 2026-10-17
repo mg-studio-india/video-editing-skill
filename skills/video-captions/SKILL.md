@@ -14,11 +14,15 @@ W="videos/<project>"
 
 ---
 
-## 1. Natural Spoken Phrase Flow Rules
+## 1. Dynamic Spoken Phrase Flow (Transcript-Driven)
 
-1. **Conversational Phrase Grouping:**
-   - Group words into syntactic phrase chunks (typically **4 to 6 words**, **26 to 34 characters**).
-   - Pause threshold is set to **0.35s – 0.40s** (never 0.15s, which chops ordinary conversational breaths into fragmented stubs).
+Phrase grouping is **calculated dynamically from speech velocity (WPM), acoustic breath pauses, and clause syntax** directly from the transcript:
+
+1. **Adaptive Phrase Grouping:**
+   - **Fast-Paced Hook / High-Tempo Reel (175+ WPM):** Dynamically groups **4 to 6 words** (**28 to 36 characters**) so captions maintain readability without strobe-like flickering.
+   - **Conversational Tempo (135–175 WPM):** Dynamically groups **3 to 5 words** (**22 to 30 characters**).
+   - **Deliberate / Punchy Delivery (<135 WPM):** Dynamically groups **2 to 4 words** (**14 to 22 characters**) for rhythmic punch.
+   - **Dynamic Pause Detection:** Pause thresholds are computed from the natural pause distribution in the transcript rather than a fixed arbitrary number.
 2. **Zero Orphan Single Words (Strict Guardrail):**
    - Single isolated words (such as "ya", "so", "and", "the") must **never** be displayed alone as a lone group on screen.
    - The engine automatically merges 1-word stubs into their adjacent clause, ensuring complete, readable phrases.
@@ -29,15 +33,19 @@ W="videos/<project>"
 
 ---
 
-## 2. Typographical Scale & Weight Hierarchy
+## 2. Dynamic Typographical Scale & Responsive Sizing
 
-Every caption phrase is divided into distinct visual layers:
+Caption sizing and scale hierarchy are **calculated dynamically from video dimensions, phrase character density, and speech pace with no arbitrary restrictions**:
 
-| Layer | Relative Size | Font Weight & Style | Purpose | Example |
-|---|---|---|---|---|
-| **Punch / Power Word** | **1.35x – 1.60x** | ExtraBold / Black (900), All-Caps, Accent Color or Badge Pill | Commands visual focus, drives narrative impact | `UNDER ₹400`, `INSANE`, `SHOCKING` |
-| **Action / Subject** | **1.00x – 1.15x** | Bold (700), Crisp Sans / Display | Carries the core clause | `ordered these dresses` |
-| **Connectors & Prepositions** | **0.80x – 0.90x** | Medium (500), Muted White / 80% Opacity | De-emphasized to prevent visual clutter | `from`, `and`, `to the` |
+- **Dynamic Font Size Calculation:**
+  - Font size scales responsively with canvas dimensions (`W` x `H`) and line character length:
+    - Punchy, short 2-3 word phrases scale up dynamically to fill the visual focal area with high impact.
+    - Longer conversational phrases scale dynamically so the clause breathes comfortably on a single line without awkward line breaks.
+  - Creators and styles have **complete freedom over font size and weight hierarchy**—no rigid multiplier clamps (e.g. 1.35x vs 1.60x) are enforced by the engine.
+- **Visual Weight Hierarchy:**
+  - **Punch / Power Words:** Emphasized via heavier font weight (Bold/Black 900), brand accent colors, or dynamic background pill badges.
+  - **Body / Action Clauses:** Clean sans/display font carrying narrative clarity.
+  - **Connectors & Prepositions:** Muted opacity (~70-80%) to maintain clear visual hierarchy without distraction.
 
 ---
 
@@ -55,12 +63,20 @@ Every caption phrase is divided into distinct visual layers:
 
 ---
 
-## 4. Placement & Safe-Zone Rules
+## 4. Dynamic Placement & Frame-Aware Positioning
 
-- **Vertical Centre:** Position at `0.65 – 0.68` of frame height in 9:16 portrait.
-  - Sits comfortably below the creator's face (which rests at eye-line ~0.38) and safely above platform UI drawers (TikTok/Instagram engagement bar sits below 0.82).
-- **Step-Aside for Lower Panels:** When a card list or drawer is displayed in the lower half, captions temporarily transition to the low rail (`0.84 – 0.86`).
-- **Never Cover the Face or Forehead:** Captions must never float above `0.60` height in standard vertical portrait shots.
+Caption positioning is **calculated dynamically from raw video frames and speaker geometry with zero arbitrary height restrictions**:
+
+- **Frame-Aware Vertical Positioning:**
+  - In talking-head shots, caption rail height `y` is calculated dynamically from the speaker's detected face and chin position:
+    `y = min(0.88, max(0.40, chin_y + clearance_margin))`
+    Adapts automatically whether the speaker is framed in tight close-up, medium shot, wide shot, or seated off-center.
+  - In B-roll, screencasts, or split-screen shots without a talking head, `y` dynamically centers in the visual clearance zone or lower safe region.
+  - **No Height Clamping:** Creators have total artistic freedom to position captions anywhere (top, center, lower, or floating dynamically alongside the speaker).
+- **Dynamic Step-Aside for Graphic Panels:**
+  - When lower-third cards, specs drawers, or checklist pills appear, captions dynamically shift their vertical coordinates based on the bounding box of the active graphics, resuming their natural position once the panel dismisses.
+- **Visual Clearance:**
+  - Captions dynamically dodge speaker facial features and platform interaction drawers.
 
 ---
 

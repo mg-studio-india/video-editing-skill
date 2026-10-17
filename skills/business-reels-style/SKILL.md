@@ -74,9 +74,7 @@ motion strengthen emphasis but never make ordinary claims look like facts or hid
 - **Type (defaults):** bold sans (Inter 700-800 or installed equivalent) for display; Inter 500-700 for captions; a
   tested Devanagari font (Noto Sans Devanagari) for Hindi, checked in the actual render; lining numerals, units and
   qualifiers kept; at most two families.
-- **Geometry (1080x1920 starting values):** headline 1-4 concise lines; side margin 80-100 px; top 180 px and bottom
-  300 px free of critical copy until the platform UI is checked; at most two information zones per frame; never cover
-  eyes, mouth, product identifiers, chart labels or the key passage of a document; check legibility at phone size.
+- **Geometry (Dynamic Frame & Face Scaling):** headline 1-4 concise lines; safe margins scale proportionally to probed canvas dimensions (sides ~7.5%, top ~9.5%, bottom ~16.5%); card placement and caption positioning adapt dynamically around the speaker's detected face and chin; at most two information zones per frame; never cover eyes, mouth, product identifiers, chart labels or the key passage of a document; check legibility at phone size.
 - **Shot hierarchy:** person-led (speaker focal, text supports) · evidence-led (document, chart or product focal;
   speaker as voice or a readable picture-in-picture) · concept-led (diagram or number, quiet background) ·
   contrast-led (two comparable states, aligned text, factual comparison). No B-roll just to hide a jump cut.

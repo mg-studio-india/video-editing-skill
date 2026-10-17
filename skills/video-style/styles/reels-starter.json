@@ -31,24 +31,12 @@
   },
   "captions": {
     "engine": "builtin",
-    "mode": "pop",
-    "case": "upper",
+    "mode": "phrase",
+    "case": "as_spoken",
     "weight": 800,
     "stroke": 4,
     "pill_color": "",
-    "emphasis": "accent",
-    "portrait": {
-      "size": 0.074,
-      "y": 0.66,
-      "max_words": 3,
-      "max_chars": 18
-    },
-    "landscape": {
-      "size": 0.036,
-      "y": 0.88,
-      "max_words": 4,
-      "max_chars": 28
-    }
+    "emphasis": "accent"
   },
   "cards": {
     "bg": "rgba(12,12,16,.80)",

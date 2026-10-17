@@ -11,39 +11,38 @@ crop for other aspects without losing the face.
 ENG="${VIDEO_ENGINE:-$HOME/.agents/skills/video-pipeline/engine}"; S="$ENG/scripts"; W="videos/<project>"
 ```
 
-## 1. Framing per shot
+## 1. Dynamic Framing per Shot
 
 Shot changes: `ffmpeg -v error -i "$W/hyperframes/input-video.mp4" -vf "select='gt(scene,0.12)',metadata=print:file=-" -f null -`.
-For each framing (watch sheets or `watch.py focus`) record in `project.json` → `geometry.framings`: face x and y range,
-fixed objects (mic, lamp), card safe zone, camera origin. Known 16:9 framings:
-- Sitting left: cards right of x 1000; origin `38% 0%`.
-- Centred at a desk with a mic (mic head ~x 500-800, y 330-500): cards left of x 660; top-left clears the mic (an 840 px
-  card at left 62 reached x 902 and covered the face); origin `52% 0%`.
-- Tight, mic bottom-right: face x 750-1150. Cards top-right (left 1220, 640 px wide) or top-left (left 62, top 80, under
-  ~720 px, above y 220); nothing bottom-left.
+For each framing (watch sheets or `watch.py focus`), record in `project.json` → `geometry.framings`: face bounding box `[x, y, w, h]`, fixed objects (mic, lamp, desk), card safe zones, and camera transform origins. **All geometry values are calculated dynamically from raw video frames:**
 
-A card never covers the face: copy that does not fit becomes a lower line, not a smaller card. If the frame already says
-it (a number held to the lens), do not add an overlay.
+1. **Dynamic Camera Transform Origin:**
+   - Derived directly from the speaker's detected face centroid per shot:
+     `origin_x = round((cx / W) * 100, 1)%`
+     `origin_y = round((cy / H) * 100, 1)%` (typically on eye-line ~30–38% down the head)
+   - Eliminates head-cropping during zoom-ins without hardcoded percentage guessing.
 
-## 2. Camera
+2. **Dynamic Card & Graphic Safe Zones:**
+   - Measured dynamically from the speaker's detected face/torso bounding box and scene props with adaptive clearance padding (`pad_x = 0.05 * W`, `pad_y = 0.05 * H`):
+     - **Speaker Offset Left (`cx < 0.45 * W`):** Graphics safe zone dynamically opens to the right (`x > cx + w/2 + pad_x`).
+     - **Speaker Offset Right (`cx > 0.55 * W`):** Graphics safe zone dynamically opens to the left (`x < cx - w/2 - pad_x`).
+     - **Speaker Centered (`0.45 * W <= cx <= 0.55 * W`):** Graphics safe zones sit dynamically in the lower third (below speaker chin: `y > cy + h/2 + pad_y`) or side rails.
+   - **Strict Visual Clearance Rule:** A graphic card or callout never covers the speaker's face or hands. Content that exceeds available clearance automatically flows to multiple lines rather than encroaching on the speaker.
 
-Top-anchored origin, always (`52% 0%` centred, `38% 0%` sitting left; vertical: on the face, e.g. `50% 30%`): a
-centre-anchored zoom crops the head. Ops go in the plan's `"camera"` with phrase anchors.
+## 2. Dynamic Camera Dynamics & Motion
 
-| Move | Numbers |
+Camera transform operations go in the plan's `"camera"` array, anchored to phrase timestamps:
+
+| Move | Dynamic Formulation |
 |---|---|
-| Punch-in on emphasis | 118-125%, 0.30-0.35 s, `power2.out` (style `camera.punch` overrides; business reels 106-112%) |
-| Slow creep across a thought | 110-112% over 5-10 s, `power1.inOut`; release on the next cut |
-| Zoom-out reveal | 110 → 100% over 0.5 s as a card enters |
-| Every shot change | back to 100%; never carry a zoom across a cut |
-| Budget | 3-5 moves per 40 s hook; long-form ~7 per 90 s |
-| Limits | 1080p source 112% max; 4K 150% freely, 200% for a deliberate crash-in |
+| **Punch-in on emphasis** | `106% – 118%` scale, `0.28s – 0.35s`, `power2.out` (styled by `camera.punch` or video pace) |
+| **Slow creep across a thought** | `104% – 110%` over thought duration, `power1.inOut`; resets on the next cut |
+| **Zoom-out reveal** | `110% → 100%` over `0.45s` as a lower-third card enters |
+| **Every shot change** | Resets cleanly to `100%`; never carry a zoom across a cut boundary |
+| **Dynamic Resolution Scaling** | 1080p source: max `112%` punch to avoid pixelation; 4K source: `125% – 150%` freely |
 
-- Two moves in a row on one subject read as a glitch: one move, one symmetric ease.
-- At 112% with a 52% origin a left-anchored element drags ~105 px left: compensate.
-- Jump cuts stay naked unless the energy changes (pivot, joke, section start): fast punch (104 → 100% over 0.12 s),
-  zoom-through, or micro whip; one or two per 40 s hook, at most one per 10 s long-form, never mid-word. On long
-  camera-only stretches alternate 100% / 109% between jump cuts.
+- **Dynamic Drift Compensation:** When zooming with an off-center origin `(ox, oy)`, elements drag by `drift = (scale - 1.0) * (ox - element_pos)`. Compensate dynamically in layout coordinates so overlays stay anchored.
+- Jump cuts remain clean unless narrative energy pivots: fast punch (`104% → 100%` over 0.12s) or dynamic angle snap. On long camera-only stretches, alternate subtle zoom levels between jump cuts.
 
 ## 3. Resets on the exact jump frame
 

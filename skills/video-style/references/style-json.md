@@ -32,7 +32,7 @@ Sizes are fractions of the canvas WIDTH, positions fractions of the HEIGHT, so o
 | `captions.max_emphasis` | none | builtin | at most this many emphasised words per group (business reels: 1) |
 | `captions.pill_color` | `""` | builtin | a coloured block behind the active word instead of a colour change |
 | `captions.stroke` | `0` | builtin | outline in px |
-| `captions.portrait` / `.landscape` | | builtin, stage | `size`, `y`, `max_words`, `max_chars`, `low_y` (where captions go while a panel is up) per orientation |
+| `captions.portrait` / `.landscape` | | builtin, stage | Optional overrides: `size`, `y`, `max_words`, `max_chars`, `low_y`. When omitted, all are calculated dynamically from raw video frames and transcript. |
 | `captions.set` | `{}` | catalog | component constants to override, e.g. `{"COLOR_INACTIVE": "#5E5E5E"}` |
 | `cards.bg`, `text`, `radius`, `border`, `title_color` | dark glass, accent title | cards | card list look |
 | `motion.in`, `out`, `ease_in`, `ease_out` | 0.35, 0.25, power3.out, power2.in | hero, cards, banner, motion-graphics | entrance and exit timing |

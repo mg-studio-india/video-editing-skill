@@ -47,28 +47,29 @@ Raw footage straight from smartphones or cameras often has flat contrast or gree
 
 ---
 
-## 4. Captions (Natural Flowing Cadence)
+## 4. Captions (Dynamic Flow & Responsive Sizing)
 
 | Parameter | Standard | Rule |
 |---|---|---|
-| **Phrase Flow** | Natural syntactic phrases (4 to 6 words, 26 to 34 characters) | Phrased as spoken, not choppy stubs |
-| **Zero Orphan Words** | **Strictly prohibited** | Single words (like "ya", "so") are merged into adjacent clauses |
-| **Flow Mode** | `phrase` / `flow` (default) or `karaoke` | Phrase fades and settles; active word highlights smoothly |
-| **Placement** | Vertical center at `0.65 – 0.68` of frame height | Below face (eye-line at 0.38), above platform interaction bar |
-| **Step-Aside** | Drops to `0.84 – 0.86` during active lower-third panels | Never collides with graphics |
-| **Case** | As spoken or upper based on format | Conversational and natural |
+| **Phrase Flow** | Dynamically calculated from transcript pace (2–6 words based on speech WPM & natural breath pauses) | Phrased as spoken, adapting to speech speed |
+| **Typography Size** | Calculated dynamically from video resolution (`W` x `H`), speech tempo, and phrase length | Scales up for short punch words, scales comfortably for longer clauses |
+| **Zero Orphan Words** | **Strictly prohibited** | Single words (like "ya", "so") are automatically merged into adjacent clauses |
+| **Flow Mode** | `phrase` / `flow` (default), `karaoke`, or `pop` | Phrase settles smoothly; active word highlights in brand accent |
+| **Placement** | Calculated dynamically from raw frames (comfortably below detected chin line & shoulders) | Zero arbitrary height clamping; creators have full placement freedom |
+| **Step-Aside** | Dynamically adjusts vertical coordinates to clear active lower graphics | Resumes natural placement once graphic dismisses |
+| **Case** | As spoken or upper based on style | Natural human cadence |
 
 ---
 
-## 5. Layout, Overlays & Headroom Rules
+## 5. Layout, Overlays & Spatial Guardrails
 
 | Element | Placement | Guardrails |
 |---|---|---|
-| **Headroom Space** | Top `0.0 – 0.35` | **Strict Clean Headroom Rule:** Never place floating checklist pills or sticky headline bands over the speaker's forehead/hairline. |
-| **Lower Third Cards** | `y: 0.58 – 0.75` | Sits comfortably in lower third; staggered entrances (`0.08s delay`). |
-| **Split-Screen Seams** | Center divider (44% top / 56% bottom) | 2–3px glowing or charcoal seam. |
-| **Paper Drawers** | Slides in from side/bottom (`y: 0.60 – 0.75`) | Max 12 words, dismisses smoothly. |
-| **Platform Safe Zones** | Top 180px, bottom 320px, sides 80px | Keep free of critical copy to prevent platform UI overlap. |
+| **Headroom Space** | Upper visual area above speaker | **Strict Clean Headroom Rule:** Never place floating checklist pills or sticky headline bands over the speaker's forehead or hair. |
+| **Lower Third Cards** | Clear visual zones outside speaker bounding box | Dynamically calculated safe regions; staggered entrances (`0.08s delay`). |
+| **Split-Screen Seams** | Dynamically calculated divider seam | Split ratio derived dynamically from speaker bounding box vs demo content. |
+| **Paper Drawers** | Lower or side visual clearance zones | Clean entry, max 12 words, dismisses smoothly. |
+| **Platform Safe Zones** | Proportional to canvas dimensions (top ~9.4%, bottom ~16.5%, sides ~7.5%) | Mathematically exact across 1080p, 4K, horizontal, or square formats. |
 
 ---
 

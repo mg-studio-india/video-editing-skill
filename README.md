@@ -51,7 +51,7 @@ The system enforces a strict project isolation and execution contract:
 - **Strict Raw Ingestion (`/raw`)**: All skills and tools strictly ingest assets located within `videos/<project-id>/raw/`. External mentions are treated as advisory context only.
 - **CLI-First Composition (`/hyperframes`)**: Fully decoupled from desktop GUI applications. Compositions are authored, validated, previewed, and rendered 100% via CLI (`npx hyperframes check`, `npx hyperframes preview`, `render.py`).
 - **Offline Curated Sound Palette**: 19 pre-trimmed, peak-normalized (-3 dBFS) tactile SFX in `sound-palette/` (clicks, swooshes, pops, camera shutters, paper slides, riser swells) resolved offline without requiring cloud accounts.
-- **Dynamic Style-Aware Cut Padding**: Dynamic tempo/WPM-based margins (35–50ms for aggressive hooks; 65–85ms for investigative teardowns; 100–130ms for conversational pacing) with 8–15ms audio micro-fades.
+- **Dynamic Frame & Transcript Calculations**: All layout dimensions, canvas resolutions, speaker safe zones, camera transform origins, and caption typography (positioning and sizing) are calculated dynamically from raw video frames and the audio transcript—with zero artificial clamps or hardcoded restrictions.
 - **Automated Verification & Post-Review Purge**: Structural (`VERIFY.md`), acoustic (`audio.json`), and visual (`REVIEW.md`, `review-sheet.png`) quality gates run on the binary MP4. Once review succeeds, `clean-temp.py --clean-reports` automatically purges intermediate dumps, leaving only the clean deliverable.
 
 ---

@@ -70,22 +70,32 @@ def stage_fonts(style: dict, style_dir: str, out: str) -> dict:
 
 
 def build(spec: dict, style: dict, out: str, cuts: list[float]) -> str:
-    W, H = spec.get("canvas", [1080, 1920])
+    canvas = spec.get("canvas")
+    if not canvas and spec.get("video"):
+        vpath = os.path.join(out, spec["video"]) if not os.path.isabs(spec["video"]) else spec["video"]
+        if os.path.exists(vpath):
+            pv = CAP.probe_video(vpath)
+            if pv.get("width") and pv.get("height"):
+                canvas = [pv["width"], pv["height"]]
+    W, H = canvas or [1080, 1920]
     D = float(spec["duration"])
     cid = spec.get("id", "root")
-    ctx_base = {"W": W, "H": H, "style": style, "camera_sel": "#cam"}
+    ctx_base = {"W": W, "H": H, "style": style, "camera_sel": "#cam",
+                "face_box": spec.get("face_box"), "chin_y": spec.get("chin_y")}
     front, behind, root, css, js = [], [], [], [], []
     track = 10
     beats = list(spec.get("beats", []))
     cap = spec.get("captions")
     if cap:
         words = CAP.load_words(os.path.join(out, cap.get("source", "transcript.json")) if not os.path.isabs(cap.get("source", "")) else cap["source"])
-        groups = CAP.group(words, cuts, int(cap.get("max_words", 3)), int(cap.get("max_chars", 18)),
+        mw = int(cap["max_words"]) if cap.get("max_words") is not None else None
+        mc = int(cap["max_chars"]) if cap.get("max_chars") is not None else None
+        groups = CAP.group(words, cuts, max_words=mw, max_chars=mc,
                            emphasis=cap.get("emphasis", []), keep_punct=bool(cap.get("keep_punct", False)))
         groups = [g for g in groups if g["start"] < D - 0.2]
         for g in groups:
             g["end"] = min(g["end"], D - 0.05)
-        # step aside: while a panel (drawer, cards) is up, its caption groups drop to the low rail
+        # step aside: while a panel (drawer, cards) is up, its caption groups dynamically clear the panel
         panels = [(float(b["in"]), float(b["out"])) for b in beats if b["type"] in ("drawer", "cards") and b.get("in") is not None]
         low = float(cap.get("low_y", 0.86 if H > W else 0.92))
         for g in groups:

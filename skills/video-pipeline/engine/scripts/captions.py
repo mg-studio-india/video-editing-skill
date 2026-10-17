@@ -49,10 +49,45 @@ def load_words(transcript: str) -> list[dict]:
             for w in words if (w.get("text") or w.get("w") or "").strip()]
 
 
-def group(words: list[dict], cuts: list[float] | None = None, max_words: int = 5, max_chars: int = 28,
-          pause: float = PAUSE_BREAK, hold: float = HOLD, keep_punct: bool = False,
+def dynamic_group_params(words: list[dict]) -> tuple[int, int, float]:
+    """Calculate adaptive max_words, max_chars, and pause threshold dynamically from transcript speech velocity."""
+    if not words:
+        return 4, 26, PAUSE_BREAK
+    dur = max(w["end"] for w in words) - min(w["start"] for w in words)
+    wpm = (len(words) / dur * 60.0) if dur > 0 else 140.0
+    
+    # Measure natural pauses in the transcript
+    pauses = [b["start"] - a["end"] for a, b in zip(words, words[1:]) if b["start"] > a["end"]]
+    if pauses:
+        sorted_p = sorted(pauses)
+        pause_val = sorted_p[len(sorted_p) // 3] if len(sorted_p) >= 3 else sorted_p[len(sorted_p) // 2]
+        pause = max(0.20, min(0.45, round(pause_val, 2)))
+    else:
+        pause = PAUSE_BREAK
+        
+    if wpm >= 175:       # fast-tempo speech: longer phrase chunks prevent stroboscopic text
+        return 5, 32, max(pause, 0.25)
+    elif wpm >= 135:     # conversational tempo
+        return 4, 26, pause
+    else:                # deliberate, punchy tempo: fewer words per chunk for impact
+        return 3, 20, max(pause, 0.35)
+
+
+def group(words: list[dict], cuts: list[float] | None = None, max_words: int | None = None, max_chars: int | None = None,
+          pause: float | None = None, hold: float = HOLD, keep_punct: bool = False,
           emphasis: list[str] | None = None, auto_emphasis: bool = True) -> list[dict]:
-    """Pure (tested). Returns natural flowing phrase groups [{start, end, words: [{text, start, end, em}]}]."""
+    """Pure (tested). Returns natural flowing phrase groups [{start, end, words: [{text, start, end, em}]}].
+    When max_words, max_chars, or pause are not explicitly provided, they are dynamically calculated from the transcript.
+    """
+    if max_words is None or max_chars is None or pause is None:
+        dyn_words, dyn_chars, dyn_pause = dynamic_group_params(words)
+        if max_words is None:
+            max_words = dyn_words
+        if max_chars is None:
+            max_chars = dyn_chars
+        if pause is None:
+            pause = dyn_pause
+
     cuts = sorted(cuts or [])
     emph = {e.lower() for e in (emphasis or [])}
     # a removed filler was still sound: measure pauses against the previous ORIGINAL word, not the previous kept one
@@ -221,6 +256,27 @@ def comp_id(html: str) -> str:
     return m.group(1) if m else "captions"
 
 
+def probe_video(video_path: str) -> dict:
+    """Dynamically probe video stream width, height, and duration via ffprobe."""
+    import subprocess
+    try:
+        p = subprocess.run(["ffprobe", "-v", "error", "-select_streams", "v:0", "-show_entries",
+                            "stream=width,height,duration:format=duration", "-of", "json", video_path],
+                           capture_output=True, text=True)
+        if p.returncode == 0:
+            j = json.loads(p.stdout or "{}")
+            s = (j.get("streams") or [{}])[0]
+            fmt = j.get("format") or {}
+            w = int(s.get("width") or 0)
+            h = int(s.get("height") or 0)
+            d = float(fmt.get("duration") or s.get("duration") or 0.0)
+            if w and h:
+                return {"width": w, "height": h, "duration": d}
+    except Exception:
+        pass
+    return {}
+
+
 # ---------------------------------------------------------------- builtin layer (used by treatments.py)
 def builtin_layer(groups: list[dict], ctx: dict, cfg: dict) -> tuple[str, str, list[str]]:
     """HTML, CSS and timeline lines for a caption rail. cfg comes from style.json "captions"."""
@@ -237,8 +293,29 @@ def builtin_layer(groups: list[dict], ctx: dict, cfg: dict) -> tuple[str, str, l
                     seen += 1
                     if seen > int(cap_em):
                         w["em"] = False
-    size = int(cfg.get("size", 0.075 if H > W else 0.045) * W)
-    y = float(cfg.get("y", 0.68 if H > W else 0.86))
+
+    # Dynamic font size: calculated from canvas width, phrase character count, and speech velocity without rigid clamps
+    if "size" in cfg:
+        raw_size = float(cfg["size"])
+        size = int(raw_size if raw_size > 1.0 else raw_size * W)
+    else:
+        avg_chars = (sum(sum(len(w['text']) for w in g['words']) for g in groups) / max(len(groups), 1)) if groups else 18
+        maxw = int(W * float(cfg.get("max_width", 0.86)))
+        ideal_size = int(maxw / (max(avg_chars, 8) * 0.54))
+        min_sz = int(W * (0.045 if H > W else 0.030))
+        max_sz = int(W * (0.110 if H > W else 0.065))
+        size = max(min_sz, min(max_sz, ideal_size)) if ideal_size > 0 else int((0.075 if H > W else 0.045) * W)
+
+    # Dynamic vertical position: calculated from speaker face/chin in raw video frames or safe visual zones
+    if "y" in cfg:
+        y = float(cfg["y"])
+    else:
+        chin_y = ctx.get("chin_y") or (ctx.get("face_box", [0, 0, 0, 0])[1] + ctx.get("face_box", [0, 0, 0, 0])[3] if ctx.get("face_box") else None)
+        if chin_y is not None:
+            y = min(0.88, max(0.40, float(chin_y) + 0.10))
+        else:
+            y = 0.68 if H > W else 0.86
+
     fam = cfg.get("family", ctx.get("font_family", "sans-serif"))
     weight = cfg.get("weight", 800)
     color = cfg.get("color", "#ffffff")
@@ -302,17 +379,18 @@ def main() -> None:
     ap.add_argument("mode", choices=["groups", "catalog"])
     ap.add_argument("--transcript", required=True)
     ap.add_argument("--cut-map")
-    ap.add_argument("--max-words", type=int, default=3)
-    ap.add_argument("--max-chars", type=int, default=18)
+    ap.add_argument("--video", help="video file to probe dimensions and duration dynamically")
+    ap.add_argument("--max-words", type=int, default=None, help="words per caption (default: dynamic from transcript)")
+    ap.add_argument("--max-chars", type=int, default=None, help="chars per caption (default: dynamic from transcript)")
     ap.add_argument("--emphasis", nargs="*", default=[], help="extra words to emphasise")
     ap.add_argument("--keep-punct", action="store_true")
     ap.add_argument("--component")
     ap.add_argument("--out")
-    ap.add_argument("--width", type=int, default=1920)
-    ap.add_argument("--height", type=int, default=1080)
+    ap.add_argument("--width", type=int, default=None, help="canvas width (default: probed from video or 1080/1920)")
+    ap.add_argument("--height", type=int, default=None, help="canvas height (default: probed from video or 1920/1080)")
     ap.add_argument("--duration", type=float)
     ap.add_argument("--style", help="style.json: its display font replaces the component's (local file, Devanagari-safe)")
-    ap.add_argument("--y", type=float, help="caption rail centre as a fraction of height (portrait ~0.66)")
+    ap.add_argument("--y", type=float, help="caption rail centre as a fraction of height (default: dynamic from video frames)")
     ap.add_argument("--case", choices=["upper", "keep"])
     ap.add_argument("--set", action="append", default=[], metavar="NAME=VALUE",
                     help="override a component constant (e.g. COLOR_INACTIVE=#5E5E5E when check flags contrast)")
@@ -328,16 +406,28 @@ def main() -> None:
     if not (a.component and a.out):
         ap.error("catalog needs --component and --out")
     dur = a.duration
+    width = a.width
+    height = a.height
+    if a.video and (width is None or height is None or dur is None):
+        pv = probe_video(a.video)
+        if width is None:
+            width = pv.get("width")
+        if height is None:
+            height = pv.get("height")
+        if dur is None:
+            dur = pv.get("duration")
     if dur is None:
         cm = a.cut_map and os.path.isfile(a.cut_map) and json.load(open(a.cut_map)).get("flat_duration")
         dur = float(cm) if cm else max(w["end"] for w in words) + 0.5
+    width = width or 1080
+    height = height or 1920
     font = None
     if a.style:
         import stage
         pub = os.path.dirname(os.path.dirname(os.path.abspath(a.out)))      # <public>/compositions/captions.html
         st = stage.stage_fonts(json.load(open(a.style)), os.path.dirname(os.path.abspath(a.style)), pub)
         font = font_face_css(st, pub)
-    html, notes = inject(open(a.component).read(), gs, a.width, a.height, dur, a.y, font,
+    html, notes = inject(open(a.component).read(), gs, width, height, dur, a.y, font,
                          upper=(None if a.case is None else a.case == "upper"),
                          sets=dict(kv.split("=", 1) for kv in a.set))
     os.makedirs(os.path.dirname(os.path.abspath(a.out)), exist_ok=True)
@@ -348,7 +438,7 @@ def main() -> None:
     print('host (paste into the root composition, or use a "block" beat):')
     print('  <div class="clip" data-composition-id="%s" data-composition-src="%s" data-start="0" data-duration="%.3f" '
           'data-width="%d" data-height="%d" data-track-index="50" style="position:absolute;inset:0;z-index:60"></div>'
-          % (cid, rel, dur, a.width, a.height))
+          % (cid, rel, dur, width, height))
 
 
 if __name__ == "__main__":
