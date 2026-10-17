@@ -11,7 +11,7 @@
 #   3. Python            ./.venv with numpy, pillow, opencv, auto-editor, google-genai
 #   4. skills & palette  ~/.agents/skills/<18 skills>, sound-palette with 19 pre-trimmed audio assets
 #                        linked into ~/.claude/skills when Claude Code is present; ./LICENSES, ./videos, ./references
-#   5. HyperFrames       CLI pinned in ./package.json, its Chrome, its skills (core, media-use, embedded-captions),
+#   5. HyperFrames       CLI pinned in ./package.json, its Chrome, all skills (core and workflow skills),
 #                        a local GSAP copy for offline renders
 #   6. keys              HeyGen sign-in (sound library), GEMINI_API_KEY, OPENROUTER_API_KEY -> ./.env (private)
 #   7. agents            ./agent-env.sh (source it, then start any agent), an AGENTS.md block, and for Claude Code
@@ -305,10 +305,31 @@ else
   npx --no-install hyperframes browser ensure && ok "HyperFrames Chrome ready" \
     || warn "HyperFrames could not fetch its Chrome; run 'npx hyperframes browser ensure' later (renders and snapshots need it)"
 fi
-for s in hyperframes-core media-use embedded-captions; do
-  if npx --no-install hyperframes skills update "$s" >/dev/null 2>&1; then ok "HyperFrames skill: $s (+ its dependencies)"
-  else warn "could not install the HyperFrames skill $s; run 'npx hyperframes skills update $s' later"; fi
-done
+HF_SKILLS=(
+  hyperframes
+  hyperframes-animation
+  hyperframes-audio
+  hyperframes-cli
+  hyperframes-core
+  hyperframes-creative
+  hyperframes-keyframes
+  hyperframes-registry
+  hyperframes-studio
+  media-use
+  embedded-captions
+  faceless-explainer
+  motion-graphics
+  product-launch-video
+  talking-head-recut
+)
+if npx --no-install hyperframes skills >/dev/null 2>&1; then
+  ok "HyperFrames skills: installed full skill suite (${#HF_SKILLS[@]} skills)"
+else
+  for s in "${HF_SKILLS[@]}"; do
+    if npx --no-install hyperframes skills update "$s" >/dev/null 2>&1; then ok "HyperFrames skill: $s"
+    else warn "could not install the HyperFrames skill $s; run 'npx hyperframes skills update $s' later"; fi
+  done
+fi
 ask "Turn off HyperFrames' anonymous usage telemetry? (y/n)" "n"
 case "$REPLY" in y|Y|yes) npx --no-install hyperframes telemetry disable >/dev/null 2>&1 && ok "telemetry disabled" ;; *) ok "telemetry left at HyperFrames' default" ;; esac
 

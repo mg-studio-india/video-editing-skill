@@ -25,7 +25,7 @@ and points you to https://brew.sh: install that, open a new terminal, and run it
 | 2. Whisper model | `ggml-large-v3.bin` (~3 GB) in `~/.cache/whisper.cpp`, shared by all projects |
 | 3. Python | `./.venv` with numpy, Pillow, OpenCV 4, auto-editor, google-genai |
 | 4. Skills and folders | the 18 skills (`video-*` and `business-reels-style`) in `~/.agents/skills/`, shared by every project and agent, linked into `~/.claude/skills/` when Claude Code is installed and into any `--link` folders; `./videos/`, `./videos/_shared/`, `./references/`, `./LICENSES/` |
-| 5. HyperFrames | the CLI pinned in `./package.json`, its Chrome, its skills (`hyperframes-core`, `media-use`, `embedded-captions` and their dependencies), a local GSAP copy for offline renders |
+| 5. HyperFrames | the CLI pinned in `./package.json`, its Chrome, all skills (full suite of 21 core and workflow skills: `hyperframes`, `hyperframes-core`, `hyperframes-animation`, `hyperframes-audio`, `hyperframes-cli`, `hyperframes-creative`, `hyperframes-keyframes`, `hyperframes-registry`, `hyperframes-studio`, `media-use`, `embedded-captions`, `faceless-explainer`, `figma`, `general-video`, `motion-graphics`, `music-to-video`, `pr-to-video`, `product-launch-video`, `remotion-to-hyperframes`, `slideshow`, `talking-head-recut`), a local GSAP copy for offline renders |
 | 6. Accounts and keys | HeyGen sign-in, `GEMINI_API_KEY`, `OPENROUTER_API_KEY`, your main spoken language, all in `./.env` |
 | 7. Agent wiring | `./agent-env.sh` (source it before starting any agent), a marked block in `./AGENTS.md`, and for Claude Code `./.claude/settings.local.json` (every session gets the `.venv`, HyperFrames, keys and paths) |
 | 8. Checks | transcription, HeyGen, Gemini model names, and the 128 engine tests |

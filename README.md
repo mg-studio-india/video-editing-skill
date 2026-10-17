@@ -95,7 +95,7 @@ bash /path/to/video-editing-skill/install.sh
 2. **Models & Neural Weights**: Downloads Whisper model (`ggml-large-v3.bin`), RNNoise neural voice denoiser (`sh.rnnn`), and OpenCV YuNet ONNX face detection model.
 3. **Python Environment**: Configures `./.venv` with `numpy`, `pillow`, `opencv-python-headless`, `auto-editor`, and `google-genai`.
 4. **Skills & Sound Palette**: Installs 18 specialized skills into `~/.agents/skills/` and links the 19 pre-trimmed audio effects into `./sound-palette/` and `videos/_shared/sfx/`.
-5. **HyperFrames Engine**: Pins CLI version in `package.json`, installs headless browser, and copies offline GSAP runtime.
+5. **HyperFrames Engine**: Pins CLI version in `package.json`, installs headless browser, installs all 21 HyperFrames core and workflow skills, and copies offline GSAP runtime.
 6. **Keys & Environment**: Creates private `.env` and exports `VIDEO_SOUND_PALETTE`, `RNNOISE_MODEL`, and `YUNET_MODEL`.
 7. **Agent Wiring**: Writes `agent-env.sh` and an `AGENTS.md` block for seamless agent startup.
 8. **Automated Verification**: Executes test suites (136 unit & integration tests) and diagnostic checks.
