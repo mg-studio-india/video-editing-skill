@@ -127,6 +127,14 @@ if [ "$CLAUDE_LINK" = auto ]; then
   fi
 fi
 
+# Antigravity / Gemini agent skills discovery
+if [ -d "$HOME/.gemini/config/skills" ] && [ "$SKILLS_DIR" != "$HOME/.gemini/config/skills" ]; then
+  ABS_LINKS+=("$HOME/.gemini/config/skills")
+fi
+if [ -d "$HOME/.gemini/antigravity-cli/skills" ] && [ "$SKILLS_DIR" != "$HOME/.gemini/antigravity-cli/skills" ]; then
+  ABS_LINKS+=("$HOME/.gemini/antigravity-cli/skills")
+fi
+
 ENG="$SKILLS_DIR/video-pipeline/engine"
 
 tilde() { case "$1" in "$HOME"/*) printf '~/%s' "${1#"$HOME"/}" ;; *) printf '%s' "$1" ;; esac; }

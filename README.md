@@ -71,12 +71,12 @@ The pipeline executes sequentially through 6 unified verification checkpoints, e
 
 | Gate | Phase | Tools & Responsibility | Checkpoint & Deliverables |
 |---|---|---|---|
-| **Gate 1** | **Creative Spec & Context Audit** | `spec-resolver.py audit`, `memo.py` | Extracts prompt dimensions across 6 creative areas. If any dimension is missing, presents master catalog options (max 10 choices) with Option 1 strictly reserved for `(Recommended) Choose automatically based on video context & brand memory`. Proactively verifies quality flags (`--denoise neural` for indoor/outdoor, `--reframe yunet` for 9:16 vertical delivery, `--resolution uhd` for 4K). Emits `$W/resolved-spec.json`. |
-| **Gate 2** | **Ingest, Speech & Blueprint Match** | `whisper.cpp`, `verify-words.py`, `match.py` | Audio isolation, speech-to-text with misspelling audit, and Roman Hinglish enforcement (strictly zero Devanagari script). **Strict Asset Caching**: transcripts and audio cleanup are cached and never regenerated unnecessarily. Emits `$W/reference-match/ROADMAP.md` matching against 50 style blueprints. |
+| **Gate 1** | **Creative Spec & Context Audit** | `spec-resolver.py audit`, `memo.py` | Extracts prompt dimensions across 6 creative areas. If any dimension is missing, presents master catalog options (max 10 choices) with Option 1 strictly reserved for `(Recommended) Choose automatically based on video context & brand memory`. Proactively verifies quality flags (`--denoise neural` for indoor/outdoor, `--reframe yunet` for 9:16 vertical delivery, `--resolution uhd` for 4K). Audits typography catalog and caption engines. Emits `$W/resolved-spec.json`. |
+| **Gate 2** | **Mandatory Video Watch & Speech Ingest** | `watch.py mine`, `whisper.cpp`, `verify-words.py`, `match.py` | **MANDATORY**: Runs `watch.py mine` as Step 1 to inspect pacing, speech velocity (WPM), silence distribution, and visual contact sheets. Dialogue isolation, speech-to-text with misspelling audit, and Roman Hinglish enforcement (strictly zero Devanagari script). **Strict Asset Caching**: transcripts and audio cleanup are cached and never regenerated unnecessarily. Emits `$W/reference-match/ROADMAP.md` matching against 50 style blueprints. |
 | **Gate 3** | **Narrative Architecture & Storyboard** | `video-plan-storyboard`, `storyboard.py` | Hook design (0-3s), retention rhythm, scene breakdown, and multi-layout choreography (when A-roll shifts to split, pip, cutout, or layered canvas). Emits `$W/storyboard.plan.json`. |
-| **Gate 4** | **Precision Cut & Tone Grade** | `apply-cut.py`, `grade.py preview` | Frame-accurate cut with acoustic breath safety padding; 3-way formula color grading preview sheet comparing 10 cinema presets and custom shadow/mid/high balance. |
-| **Gate 5** | **Kinetic Captions & Motion Graphics** | `captions.py`, `compose.py`, HyperFrames CLI | Authors kinetic captions using `weight-shift` (Black 900 active word) or `caption-highlight` (fluorescent sweep) with scale-pop punch words (or `layered-head` behind speaker for large background numbers). Installs HyperFrames catalog blocks and wires layout. |
-| **Gate 6** | **Master Render & Quality Gate** | `render.py`, `review.py`, `clean-temp.py` | Final composite UHD 4K render (2160x3840 / 3840x2160 @ 45M bitrate), BT.709 color tags, EBU R128 loudness mastering (-14 LUFS, -1.0 dBTP), structural verification (`VERIFY.md`, `REVIEW.md`), and automated temp file purge. Output in `processed/<project>-v<N>.mp4`. |
+| **Gate 4** | **Precision Cut & Dead-Air Elimination** | `dead-air.py`, `apply-cut.py`, `grade.py preview` | **Waveform Silence Elimination**: Scans real audio waveform RMS energy (`dead-air.py` / ffmpeg `silencedetect`) to catch dead air hidden by Whisper ASR stretching. Generates `PAPER-CUT.md` with explicit tables of dropped pauses (>0.40s compressed to 0.25-0.30s breath margins). 3-way color grading preview sheet comparing 10 cinema presets. |
+| **Gate 5** | **Kinetic Captions & Typography Review** | `captions.py`, `compose.py`, HyperFrames CLI | Authors kinetic captions using `weight-shift` (Black 900 active word) or `caption-highlight` (fluorescent sweep) with scale-pop punch words. Selected from 5 approved typefaces (`DM Sans`, `Inter`, `Poppins`, `Google Sans`, `Roboto`). **Zero-Shadow Rule**: Strictly zero text-shadow, zero box-shadow, and zero blur. **Mandatory visual preview** presented to user for approval before rendering. |
+| **Gate 6** | **Master Render & Quality Gate** | `render.py`, `review.py`, `clean-temp.py` | Composite UHD 4K render in **Standard Dynamic Range (SDR with `--sdr` default)** with lossless BT.709 color tags (prevents HDR washouts and 30GB cache spikes), EBU R128 loudness mastering (-14 LUFS, -1.0 dBTP), structural verification (`VERIFY.md`, `REVIEW.md`), and automated temp file purge. Output in `processed/<project>-v<N>.mp4`. |
 
 ---
 
@@ -99,6 +99,69 @@ No generic washed-out video filters. The engine applies formulaic 3-way tone adj
 8. `vibrant-pop`: High-saturation punchy primaries for viral lifestyle and product shorts.
 9. `nordic-cold`: Desaturated steel-blue undertones for serious investigative journalism.
 10. `studio-clean`: Natural, color-accurate neutral grade calibrated for broadcast compliance.
+
+---
+
+## 🔤 Razor-Sharp Typography & Kinetic Caption Contract
+
+Amateur video edits frequently suffer from blurry text, excessive drop shadows, and random font mismatches. The pipeline enforces a broadcast-grade typography standard:
+
+### 1. The Approved 5-Typeface Catalog
+All on-screen titles, lower-thirds, and kinetic captions are strictly selected from five verified typography families:
+- **`DM Sans`**: Clean geometric sans with friendly rounded curves; outstanding for tech, creator, and lifestyle content.
+- **`Inter`**: Highly articulate grotesque sans engineered for screen legibility; ideal for finance, data, and documentary authority.
+- **`Poppins`**: Wide geometric display sans; high visual impact, authoritative, and viral-tested for high-CTR reels.
+- **`Google Sans` / `Open Sans`**: Human-centered neutral typography; ideal for product demos and educational walkthroughs.
+- **`Roboto`**: Balanced industrial grotesque; neutral, crystal-clear legibility across all screen densities.
+
+### 2. Systematic Weight & Sizing Hierarchy
+- **Regular (400) / Medium (500)**: Secondary words, conversational connectors, inactive spoken text.
+- **SemiBold (600) / Bold (700)**: Card headers, section tags, active spoken words.
+- **ExtraBold (800) / Black (900)**: Emphatic punch words, key financial figures, statistics, and critical assertions.
+
+### 3. The Zero-Shadow & Zero-Blur Rule
+> [!IMPORTANT]
+> **No Muddy Halos**: Captions and badge pills strictly render with **`text-shadow: none`**, **`box-shadow: none`**, and **zero artificial blur**.
+> Contrast is achieved purely through high-contrast solid vectors:
+> - **Inactive Words**: Clean 85% opacity white text (`rgba(255, 255, 255, 0.85)`).
+> - **Active Spoken Word**: Dynamic high-contrast brand accents (`#FFD700` Gold, `#00E5FF` Cyan, `#00E676` Emerald, `#FF9100` Amber).
+> - **Punch Words**: Solid, opaque rounded badge pills with bold Black 900 typography in solid `#000000` text, slightly tilted (-1.5° to -2°) for visual dynamism.
+
+### 4. Mandatory Gate 5 Pre-Render Review
+Before any final video render, the pipeline presents a rendered snapshot comparing typography styles directly over the creator's footage, allowing creators to inspect and approve font pairings, weights, and badge pill colors before encoding.
+
+---
+
+## ✂️ Waveform Dead-Air Elimination & The ASR Stretching Trap
+
+A major reason automated video editing pipelines leave awkward silences and dead air in raw footage is the **ASR Stretching Trap**:
+
+```text
+REAL AUDIO WAVEFORM:  [ "tumhare" ] ─── 1.60s DEAD SILENCE ─── [ "pas" ]
+                                     ▲
+WHISPER ASR TIMESTAMPS: [ tumhare: 2.66s ──────────────────── 6.00s ] [ pas: 6.00s ]
+                                     ▲ (Gap calculation: 6.00 - 6.00 = 0.0s! Dead air hidden!)
+```
+
+### How the Pipeline Solves This:
+1. **Audio Waveform RMS Energy Detection**: Instead of trusting Whisper word boundaries, the pipeline runs `dead-air.py` and ffmpeg `silencedetect=noise=-28dB:d=0.28` directly on the audio track.
+2. **Precision Silence Compression**: Every dead-air pause > 0.40s is identified and compressed down to a crisp, natural 0.25s - 0.30s conversational breath margin. Leading silence (>0.12s) and trailing hesitation (>0.15s) are cleanly clipped.
+3. **Interactive `PAPER-CUT.md`**: Before making permanent cuts, Gate 4 generates a complete cut ledger detailing original duration, proposed cut duration, exact timestamps of every dropped pause, and kept speech segments for creator approval.
+
+---
+
+## 📺 Universal Standard Dynamic Range (SDR) & Color Integrity
+
+Modern smartphones (e.g., iPhone 14/15/16 Pro) capture video in 10-bit Dolby Vision / HLG HDR. While HDR looks vibrant on phone screens, processing HDR in browser-based composition engines introduces critical points of failure:
+
+| Challenge | HDR Processing | Pipeline SDR Default (`--sdr`) |
+|---|---|---|
+| **Intermediate Cache Size** | Chrome decodes 10-bit HDR into 16-bit uncompressed buffers, consuming **~30 GB of disk** for a 60-second video. | Converted to crisp Rec.709 SDR at ingest, keeping intermediate frame cache at **~2 GB**. |
+| **Color Fidelity & Gamma Shifts** | QuickTime, Instagram, and web players frequently apply inconsistent tone-mapping curves, causing washed-out skin tones or blown-out highlights. | Rendered with lossless BT.709 color tags (`bt709`), ensuring 100% color accuracy across all platforms. |
+| **Cross-Platform Compatibility** | Inconsistent rendering between macOS, Linux, Windows, and mobile devices. | Universally compatible across iOS, Android, macOS, Windows, and all social platforms without color grading distortion. |
+
+> [!NOTE]
+> All renders execute with `--sdr` by default. When an end-to-end HDR workflow is explicitly requested, `--hdr` can be passed to preserve native wide gamut color spaces.
 
 ---
 
@@ -248,6 +311,10 @@ All audio effects work completely offline without requiring cloud API credits. W
 
 ## 🛡️ Anti-Hallucination & Quality Contract
 
+- **Universal SDR Delivery**: Videos strictly render in **Standard Dynamic Range with lossless BT.709 color tags (`--sdr` enabled by default)**, preventing QuickTime gamma washouts, extreme tone mapping variations across platforms, and 30 GB intermediate cache spikes.
+- **Razor-Sharp Zero-Shadow Typography**: Captions and punch badge pills render with strictly zero `text-shadow`, zero `box-shadow`, and zero blur. Contrast is established through crisp, calibrated solid vectors.
+- **Audio Waveform Dead-Air Elimination**: All silence detection operates on real audio waveform RMS energy (`dead-air.py`), catching dead air hidden by Whisper ASR word stretching. Every pause > 0.40s is compressed to a natural 0.25-0.30s conversational pace.
+- **Approved 5-Typeface Catalog**: Restricted to verified, high-CTR typefaces (`DM Sans`, `Inter`, `Poppins`, `Google Sans`, `Roboto`) across 400-900 weight hierarchy with mandatory Gate 5 visual preview before rendering.
 - **Strict Hinglish Roman Transliteration**: Captions never mix Devanagari script into Latin captions (`yeh ek startup hai`, not `यह ek startup hai`).
 - **Real Visual Grounding**: Colors and dimensions are measured from real SVG vector logos or video frames. No arbitrary hex guesses (`#FFFFFF`).
 - **No Placeholder URLs**: Never generates fake citations (`example.com`). All references must be live URLs fetched during the session.
