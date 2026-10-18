@@ -110,7 +110,7 @@ def fit(fontspec, word, ink, width, upper=False, W=1080, H=1920, tracking=0.0):
 
 
 def tiers(spec):
-    t = (spec.get("captions") or {}).get("type") or {}
+    t = (spec.get("captions") or spec.get("captions_spec") or {}).get("type") or {}   # caption-spec or blueprint
     return [(name, tier) for name, tier in t.items() if isinstance(tier, dict)]
 
 

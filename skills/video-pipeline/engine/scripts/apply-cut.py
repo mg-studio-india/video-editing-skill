@@ -28,8 +28,7 @@ ap.add_argument("--out", required=True)
 ap.add_argument("--fps", type=int, default=30)
 ap.add_argument("--crf", type=int, default=16)
 ap.add_argument("--preset", default="fast")
-ap.add_argument("--grade", choices=["commercial-clean", "cinematic-warm", "modern-tech", "moody-film", "vibrant-pop", "neutral-correct"],
-                help="Color grading profile to apply to flat cut")
+ap.add_argument("--grade", help="Color grading preset or formula to apply to flat cut (e.g. studio-clean-balanced, kodak-portra-warm)")
 args = ap.parse_args()
 
 def probe(path, *entries):

@@ -27,6 +27,7 @@ PY="$PROJECT/.venv/bin/python3"; W="videos/<project>"
 | `scripts/match.py` | rank blueprints for a video / image / concept; `--pick` writes `ROADMAP.md` |
 | `scripts/caption_probe.py`, `scripts/fit_font.py` | VERIFY: measure rendered text; expected ink for any word at a px size |
 | `scripts/build_index.py`, `scripts/check_blueprints.py` | rebuild the index after editing a blueprint; schema + anonymity check |
+| `scripts/measure_blueprint.py` | the `measured` block for a new blueprint (from a video + its `watch.py ref` output) |
 
 ## Gate R: on every project start (after transcription, before format selection)
 

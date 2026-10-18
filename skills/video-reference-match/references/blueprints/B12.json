@@ -1,0 +1,552 @@
+{
+ "id": "B12",
+ "schema": "blueprint/1",
+ "format": {
+  "type": "mixed",
+  "aspect": "9:16",
+  "language": "English",
+  "duration_class": "mid (60-180s)",
+  "people_on_screen": "1"
+ },
+ "topic_class": "marketing",
+ "signature": {
+  "one_line": "One evolving black dot-grid diagram above a rounded face card, single-word captions, italic-serif title word, full-face cuts for opinions.",
+  "unique_devices": [
+   "A single diagram (year timeline -> branching category tree -> second accent 'hero' nodes) that evolves for the whole video and pans/scrolls with motion blur",
+   "Captions strictly one word at a time (hard swap, no gaps, no colour), between panel and face card at 66.4 % H",
+   "Speaker 'steps out' of the diagram to a full-face CU/MCU for every opinion line (~30 % of runtime), with crop size changing between full-face shots",
+   "accent keyword CTA bar ('Comment \"KEYWORD\" / To Get The Doc') over a grid of document thumbnails"
+  ],
+  "why_it_works": "The viewer builds one mental model that grows with the argument; the face never leaves the screen and dense 207-wpm speech carries the pace while the panel animates."
+ },
+ "hook": {
+  "type": "open loop / new-category promise",
+  "first_word_s": 0.02,
+  "first_cut_s": 3.042,
+  "first_frame": "split: light-grey grid panel with a two-line title (one italic serif phrase) and a 3x3 grid of example content thumbnails popping in with second accent view-count badges; the speaker in a rounded card at the bottom, one-word caption between"
+ },
+ "structure": [
+  {
+   "beat": "hook",
+   "from_pct": 0,
+   "to_pct": 5,
+   "what": "promise of a new category over a wall of examples with numbers, then full-face cut naming it in italic serif"
+  },
+  {
+   "beat": "setup",
+   "from_pct": 5,
+   "to_pct": 35,
+   "what": "history: timeline scroll with two then three branches, example profile grids; full-face beats for asides"
+  },
+  {
+   "beat": "claim",
+   "from_pct": 35,
+   "to_pct": 52,
+   "what": "new section title; the tree splits into three new branches as the speaker says it"
+  },
+  {
+   "beat": "list",
+   "from_pct": 52,
+   "to_pct": 74,
+   "what": "define each branch: pan to one node per category, full-face shots for the opinion on each"
+  },
+  {
+   "beat": "example",
+   "from_pct": 74,
+   "to_pct": 86,
+   "what": "carousel of concrete formats under the winning node; full-face authority line"
+  },
+  {
+   "beat": "payoff",
+   "from_pct": 86,
+   "to_pct": 92,
+   "what": "recap on the full tree with three second accent hero nodes"
+  },
+  {
+   "beat": "cta",
+   "from_pct": 92,
+   "to_pct": 100,
+   "what": "accent keyword banner over document thumbnails (lead magnet)"
+  }
+ ],
+ "pacing": {
+  "pace": "moderate",
+  "median_shot_s": 4.2,
+  "cuts_per_min": 9,
+  "wpm": 210,
+  "pauses_per_min": 0.0,
+  "visual_change_every_s": 2.5,
+  "notes": "few cuts (9.2/min) but the panel animates continuously (scrolls, pans, pop-ins), so something changes every ~48-72 frames; 79 % of cuts read as soft (layout swaps); speech covers ~100 % of runtime"
+ },
+ "elements": {
+  "captions": [
+   {
+    "what": "single white bold word",
+    "when": "every shot",
+    "how": "Inter 700, 58 px centred at y 66.4 % on splits, 68 px at y 63 % on full-face; hard 1-frame swap per word, no gap, no emphasis",
+    "catalog": [
+     27,
+     29
+    ]
+   }
+  ],
+  "background_text": [
+   {
+    "what": "two-line section title with one italic serif word",
+    "when": "every split shot, changes per section",
+    "how": "Inter 700 52 px -0.02em white, top centre y 7 % / 9.8 %; key word in thin italic serif at the same cap height",
+    "catalog": [
+     33
+    ]
+   },
+   {
+    "what": "concept name in italic serif",
+    "when": "full-face shot right after the hook and when a concept is named",
+    "how": "Playfair/Garamond italic ~75 px, x ~18-54 %, centre y 63.5 %",
+    "catalog": [
+     33,
+     31
+    ]
+   }
+  ],
+  "motion_graphics": [
+   {
+    "what": "evolving timeline / branching tree",
+    "when": "5-92 %",
+    "how": "horizontal timeline with accent node dots scrolls to new years with directional motion blur (~10-14 frames, power2.inOut); branches grow from nodes; camera pans node to node",
+    "catalog": [
+     92,
+     124,
+     142
+    ]
+   },
+   {
+    "what": "pop-in example cards with view badges",
+    "when": "hook and each branch",
+    "how": "rounded thumbnails scale 0.9 -> 1 with slight overshoot (back.out ~1.4) over ~8 frames, second accent badges pop after",
+    "catalog": [
+     17
+    ]
+   }
+  ],
+  "cards_lists": [
+   {
+    "what": "category nodes as pill labels",
+    "when": "history and define beats",
+    "how": "small black pills with thin white outline on the tree; winners turn second accent in the recap",
+    "catalog": [
+     126,
+     111
+    ]
+   },
+   {
+    "what": "carousel of formats",
+    "when": "examples beat",
+    "how": "cards slide horizontally under the winning node",
+    "catalog": [
+     80
+    ]
+   }
+  ],
+  "silhouettes_cutouts": [],
+  "broll_inserts": [
+   {
+    "what": "example content thumbnails / profile grids",
+    "when": "throughout the panel",
+    "how": "inside the graphic panel, never full-screen",
+    "catalog": [
+     13
+    ]
+   }
+  ],
+  "layout": [
+   {
+    "what": "split: graphic panel over rounded face card",
+    "when": "~70 % of runtime",
+    "how": "panel y 0-70 % on black dot grid; face card x 6-94 %, y ~73-100 %, radius ~4 % W",
+    "catalog": [
+     3
+    ]
+   },
+   {
+    "what": "full-face shots",
+    "when": "~30 % of runtime, 38-180 frames each",
+    "how": "CU low angle alternating with MCU; used for opinions and transitions",
+    "catalog": [
+     46
+    ]
+   }
+  ],
+  "camera": [
+   {
+    "what": "static studio camera, crop changes between full-face shots",
+    "when": "full-face shots",
+    "how": "CU (low angle) vs MCU as punch-in substitute about every 10-15 % of runtime",
+    "catalog": [
+     46
+    ]
+   }
+  ],
+  "transitions": [
+   {
+    "what": "layout swaps and animated panel moves",
+    "when": "~79 % of cuts",
+    "how": "swap between split and full-face on sentence boundaries (L-trail), no flashy transitions",
+    "catalog": [
+     173
+    ]
+   }
+  ],
+  "end_card": [
+   {
+    "what": "accent keyword CTA banner",
+    "when": "last ~8 %",
+    "how": "'Comment \"KEYWORD\"' (italic serif keyword) + accent bar 'To Get The Doc' at y 8-14.5 % over document thumbnails; no separate logo card",
+    "catalog": [
+     148
+    ]
+   }
+  ]
+ },
+ "captions_spec": {
+  "script": "latin (as spoken)",
+  "case": {
+   "caption": "as spoken (lowercase mid-sentence, capital at sentence start), punctuation kept (trailing commas / full stops stay on the word)"
+  },
+  "grouping": {
+   "words_per_caption": "1 (a number counts as one word)",
+   "max_lines": 1,
+   "sync": "word by word on the spoken word",
+   "break": "each word replaces the previous one; it holds until the next word starts (no empty gaps while speaking)"
+  },
+  "layout": {
+   "split_layout": "graphic panel top (y 0-70 %), rounded face card bottom (x 6-94 %, y ~73-100 %, radius ~4 % W); the word is centred horizontally with its centre at y 66.4 % (in the gap above the face card)",
+   "full_face": "word centred horizontally, centre y 63.0 % (over the chest)",
+   "align": "centre"
+  },
+  "type": {
+   "caption_split": {
+    "font_class": "neo-grotesque sans, bold",
+    "closest_match": {
+     "local": "Inter 700",
+     "google": "Inter Bold"
+    },
+    "confidence": "medium-high",
+    "letterform_evidence": "double-storey a, round e with horizontal bar, t with slanted cut, tight apertures; same proportions as Inter (height and width agree within 3 %)",
+    "color": "#FFFFFF (measured #F8F8F8)",
+    "stroke": "none",
+    "shadow": "soft dark shadow, estimated 0 2px 6px rgba(0,0,0,.5) (barely visible on black)",
+    "box": "none",
+    "tracking": "0em",
+    "ink_height_pct_of_H": 2.19,
+    "k": 0.73,
+    "font_size_px_at_1920": 58,
+    "calibration": [
+     {
+      "word": "education",
+      "ink_pct_of_H": 2.19,
+      "width_pct_of_W": 24.6,
+      "ink": "#F8F8F8:60"
+     }
+    ],
+    "verified_px": 58,
+    "fit": [
+     {
+      "font": "Inter 700",
+      "word": "education",
+      "tracking_em": 0.0,
+      "px_for_height": 56.8,
+      "px_for_width": 58.4,
+      "verified_px": 58,
+      "at_verified_px": {
+       "ink_pct_of_H": 2.24,
+       "width_pct_of_W": 24.6
+      },
+      "within_tolerance": true
+     }
+    ]
+   },
+   "caption_full": {
+    "font_class": "neo-grotesque sans, bold (same face, larger on full-face shots)",
+    "closest_match": {
+     "local": "Inter 700",
+     "google": "Inter Bold"
+    },
+    "confidence": "medium-high",
+    "color": "#FFFFFF",
+    "stroke": "none",
+    "shadow": "soft dark shadow, estimated 0 2px 6px rgba(0,0,0,.5) (barely visible on black)",
+    "box": "none",
+    "tracking": "0em",
+    "ink_height_pct_of_H": 2.58,
+    "k": 0.73,
+    "font_size_px_at_1920": 68,
+    "calibration": [
+     {
+      "word": "video",
+      "ink_pct_of_H": 2.58,
+      "width_pct_of_W": 15.7,
+      "ink": "#F8F8F8:60"
+     }
+    ],
+    "verified_px": 68,
+    "fit": [
+     {
+      "font": "Inter 700",
+      "word": "video",
+      "tracking_em": 0.0,
+      "px_for_height": 66.9,
+      "px_for_width": 68.1,
+      "verified_px": 68,
+      "at_verified_px": {
+       "ink_pct_of_H": 2.66,
+       "width_pct_of_W": 15.7
+      },
+      "within_tolerance": true
+     }
+    ]
+   },
+   "title": {
+    "font_class": "neo-grotesque sans, bold, Title Case, two centred lines",
+    "closest_match": {
+     "local": "Inter 700",
+     "google": "Inter Bold"
+    },
+    "confidence": "medium",
+    "color": "#FFFFFF on the black grid panel; near-black #0A090A on the light-grey #E0DFDF hook panel",
+    "stroke": "none",
+    "shadow": "none",
+    "box": "none",
+    "tracking": "-0.02em",
+    "ink_height_pct_of_H": 1.95,
+    "k": 0.73,
+    "font_size_px_at_1920": 51,
+    "calibration": [],
+    "calibration_note": "a 5-word Title Case line measured ink 1.95 % H and ~53 % W; compute expected ink for the user's title with fit_font.py",
+    "position": "top, centred; line 1 centre y 7.0 %, line 2 centre y 9.8 % (line pitch 2.8 % H), width 50-62 % W",
+    "emphasis": "one or two words per title swapped into a thin italic serif at the same cap height (the adjective / verb that carries the promise)",
+    "verified_px": 52
+   },
+   "serif": {
+    "font_class": "italic serif, regular/light weight, old-style (Garamond-like)",
+    "closest_match": {
+     "local": "Playfair Display 400 (italic)",
+     "google": "EB Garamond Italic / Instrument Serif Italic"
+    },
+    "confidence": "low-medium",
+    "letterform_evidence": "calligraphic italic with thin hairlines, teardrop terminals on a and c, long descender on p, lighter than Playfair",
+    "color": "#FFFFFF",
+    "stroke": "none",
+    "shadow": "none",
+    "box": "none",
+    "tracking": "0em",
+    "ink_height_pct_of_H": 3.91,
+    "k": 0.99,
+    "font_size_px_at_1920": 76,
+    "calibration": [],
+    "calibration_note": "a 1-word concept name measured ink 3.91 % H, 35 % W; compute expected ink for the user's word with fit_font.py",
+    "use": "the name of the concept on a full-face shot (x ~18-54 %, centre y 63.5 %, left of centre) and the italic word inside titles",
+    "solver_note": "fit_font measures Playfair roman outlines; italic Playfair is narrower - treat verified_px as approximate and check width",
+    "verified_px": 75
+   }
+  },
+  "animation": {
+   "fps": 24,
+   "entry": "hard cut: the new word replaces the old one in a single frame, no fade/scale/slide",
+   "timing": "on the spoken word (visible within +1 frame of the word start)",
+   "exit": "hard cut, replaced by the next word; the last word of a sentence holds until the next word starts",
+   "highlight": "none",
+   "idle": "none"
+  },
+  "notes": "Positions, sizes, colours and frame timings measured on video frames; font names are closest matches (unverified); shadow estimated."
+ },
+ "other_text_spec": [
+  {
+   "type": "section title",
+   "when": "every split shot (~70 % of runtime); changes per section",
+   "text": "two-line Title Case header 'Headline here / Second line here', Inter-Bold-like white (near-black on the light hook panel), one italic serif word, top centre y 7-10 %"
+  },
+  {
+   "type": "timeline + category tree",
+   "when": "5-52 % and recap at the end",
+   "text": "big white bold years / step labels (ink 3.59 % H, centre y 55.7 %) on a horizontal timeline with red #AD1217 node dots; category labels in small black pill boxes with a thin white outline; black panel with a faint dot grid; final 'hero' nodes turn green"
+  },
+  {
+   "type": "example cards",
+   "when": "throughout",
+   "text": "rounded content thumbnails / profile grids with green #117210 view-count badges ('1.2M') and small white caption chips; pop in with a slight overshoot"
+  },
+  {
+   "type": "CTA banner",
+   "when": "last ~8 % (92-100 %)",
+   "text": "'Comment' white bold + '“KEYWORD”' italic serif (line ink 3.36 % H, x 20-81 %, centre y 8 %), then 'To Get The Doc' white bold on a solid red #B8070B bar (text ink 2.89 % H, x 24-75 %, bar x 20-80 %, y ~10.5-14.5 %) over a grid of document-page thumbnails"
+  }
+ ],
+ "style": {
+  "palette_roles": {
+   "text": "#FFFFFF",
+   "accent": "#B8070B",
+   "accent_2": "#117210",
+   "surface": "#050505",
+   "card_bg": "#E0DFDF"
+  },
+  "fonts": {
+   "caption_split": {
+    "closest_local": "Inter 700",
+    "verified_px": 58,
+    "tracking": "0em"
+   },
+   "caption_full": {
+    "closest_local": "Inter 700",
+    "verified_px": 68,
+    "tracking": "0em"
+   },
+   "title": {
+    "closest_local": "Inter 700",
+    "verified_px": 52,
+    "tracking": "-0.02em"
+   },
+   "serif_accent": {
+    "closest_local": "Playfair Display 400 italic (prefer Instrument Serif Italic / EB Garamond Italic)",
+    "verified_px": 75,
+    "tracking": "0em"
+   }
+  },
+  "look_intent": "dark low-key studio, high-contrast, muted, warm practical-lamp bokeh with cool desaturated shadows; black grid graphics with red accent"
+ },
+ "sound": {
+  "music": "voice only (no bed detected); dense delivery, ~100 % speech coverage",
+  "sfx": [
+   "optional soft whoosh on timeline scrolls (motion-blur moves)",
+   "optional light pop on example-card pop-ins",
+   "none on cuts (only 3 hard cuts measured)"
+  ],
+  "loudness_lufs": -14.3
+ },
+ "measured": {
+  "grade": {
+   "black_point": 3.0,
+   "midtone": 13.9,
+   "white_point": 221.8,
+   "contrast_range": 218.8,
+   "luma_std": 51.8,
+   "saturation": 0.146,
+   "colorfulness": 24.8,
+   "warmth_r_minus_b": 33.0,
+   "tint_g": -5.5,
+   "vignette_centre_over_edge": 2.17,
+   "label": "high-contrast, muted, warm"
+  },
+  "layout": {
+   "letterbox_share": 0.12,
+   "split_divider_share": 0.12
+  },
+  "sound": {
+   "has_audio": true,
+   "speech_coverage": 1.0,
+   "beat_periodicity": 0.06,
+   "beat_bpm_est": null,
+   "gap_level_rel_speech_db": null,
+   "music": "voice only (no bed detected)",
+   "cut_hit_share": 0.3,
+   "method": "heuristic (onset-envelope beat periodicity + level in speech gaps); not a classifier"
+  }
+ },
+ "catalog_styles": [
+  {
+   "id": 3,
+   "name": "Stacked Split-Screen",
+   "role": "graphic panel over rounded face card for ~70 %"
+  },
+  {
+   "id": 92,
+   "name": "Timeline Animation",
+   "role": "scrolling year timeline"
+  },
+  {
+   "id": 124,
+   "name": "Decision-Tree Explainer",
+   "role": "branching category tree"
+  },
+  {
+   "id": 27,
+   "name": "Word-by-Word Pop Captions",
+   "role": "one-word captions (plain, no pop)"
+  },
+  {
+   "id": 33,
+   "name": "Oversized Editorial Headlines",
+   "role": "two-line title with italic serif accent word"
+  },
+  {
+   "id": 144,
+   "name": "One-Concept Explainer",
+   "role": "overall format: one model explained"
+  },
+  {
+   "id": 46,
+   "name": "Talking-Head",
+   "role": "full-face opinion shots"
+  },
+  {
+   "id": 148,
+   "name": "Hook → Problem → Solution → Call to Action (HPSC)",
+   "role": "keyword lead-magnet close"
+  }
+ ],
+ "use_when": [
+  "an explainer of a framework, category map, evolution or taxonomy",
+  "one speaker in a dark studio with lots of dense speech",
+  "the idea can be one diagram that grows through the video",
+  "the CTA is a downloadable doc / comment keyword",
+  "the user wants the face on screen the whole time"
+ ],
+ "avoid_when": [
+  "Hinglish or slow speech where one-word captions read too fast",
+  "no time to build an animated diagram",
+  "bright, casual or outdoor footage (look depends on a dark studio)"
+ ],
+ "match": {
+  "tags": [
+   "talking-head",
+   "split-screen",
+   "face-card",
+   "diagram",
+   "timeline",
+   "tree",
+   "one-word-captions",
+   "italic-serif-title",
+   "dark-studio",
+   "explainer",
+   "comment-keyword-cta",
+   "lead-magnet",
+   "vertical"
+  ],
+  "keywords": [
+   "framework",
+   "categories",
+   "evolution",
+   "trends",
+   "strategy",
+   "content",
+   "formats",
+   "timeline",
+   "history",
+   "explainer",
+   "types",
+   "model",
+   "creators",
+   "doc",
+   "future"
+  ],
+  "needs": {
+   "speaker_footage": true,
+   "screen_recordings": false,
+   "broll": true,
+   "brand_assets": false
+  }
+ },
+ "quality_score": 4,
+ "brand_prompt": "Use /video-pipeline with /video-captions on videos/<project>. Apply style blueprint B12 (video-reference-match/references/blueprints/B12.json) to this brand.\n\nBRAND TOKENS (use the brand's colour/font for each role; keep the contrast relationship: {{TEXT}} on {{SURFACE}} >= 7:1, {{ACCENT}} dots/bar >= 3:1 on {{SURFACE}}, white text on the {{ACCENT}} bar >= 4.5:1)\n- {{TEXT}} captions, titles, years - default #FFFFFF\n- {{ACCENT}} timeline dots, CTA bar - default red #B8070B (dots #AD1217)\n- {{ACCENT_2}} view badges, final 'hero' nodes - default green #117210\n- {{SURFACE}} graphic panel - default near-black #050505 with a faint dot grid\n- {{CARD_BG}} light hook panel - default light grey #E0DFDF (text near-black #0A090A)\n- {{FONT_DISPLAY}} accent word in titles / concept names - default italic old-style serif (Instrument Serif Italic or EB Garamond Italic; local stand-in Playfair Display 400 italic)\n- {{FONT_BODY}} captions, titles, labels - default Inter 700 (Bold)\n- {{HANDLE}} - @handle (optional, small under the CTA)\n- {{LOGO}} - not required; optional small mark on the CTA panel\n\nCanvas 1080x1920, 24 fps.\n\nLAYOUT\n1. Split for ~70 % of runtime: graphic panel y 0-70 % on {{SURFACE}}; speaker in a rounded face card x 6-94 %, y ~73-100 %, radius ~4 % W. Full-face CU/MCU for every opinion or aside (~30 %, 38-180 frames each), alternating crop sizes.\n2. One diagram for the whole video: a horizontal timeline with {{ACCENT}} node dots and big {{TEXT}} bold labels (ink 3.59 % H, centre y 55.7 %) that scrolls with directional motion blur (~10-14 frames, power2.inOut); branches grow into a category tree of small black pills with thin white outlines; pan node to node as each is discussed; recap with the winners in {{ACCENT_2}}.\n3. Example cards (rounded thumbnails, {{ACCENT_2}} count badges like '1.2M') pop in with back.out(1.4) over ~8 frames.\n\nCAPTIONS\n4. Latin script, as spoken, punctuation kept; exactly ONE word on screen at a time; hard 1-frame swap on each spoken word, no fade, no gap, no colour emphasis.\n5. {{FONT_BODY}}, {{TEXT}}, tracking 0, no stroke/box, soft shadow 0 2px 6px rgba(0,0,0,.5). Splits: 58 px, centred, centre y 66.4 % (gap above the face card). Full-face: 68 px, centre y 63 %.\n\nOTHER TEXT\n6. Section title on every split: two centred Title Case lines 'Headline here / Second line here', {{FONT_BODY}} 52 px, -0.02em, {{TEXT}} (near-black on {{CARD_BG}}), line centres y 7.0 % and 9.8 %, width 50-62 % W; one or two key words swapped to {{FONT_DISPLAY}} at the same cap height. Title changes per section.\n7. Concept name on the full-face shot after the hook: {{FONT_DISPLAY}} ~75 px (verify width), x ~18-54 %, centre y 63.5 %.\n8. Hook frame 1: {{CARD_BG}} panel with the title and a 3x3 grid of example thumbnails popping in, count badges by frame ~36; first cut to full-face at ~3 % of runtime.\n9. CTA (last ~8 %): 'Comment' {{FONT_BODY}} + '\"KEYWORD\"' {{FONT_DISPLAY}} (ink 3.36 % H, x 20-81 %, centre y 8 %), then 'To Get The Doc' {{TEXT}} bold (ink 2.89 % H) on a solid {{ACCENT}} bar x 20-80 %, y 10.5-14.5 %, over a grid of document-page thumbnails.\n\nGRADE: Grade from the user's footage (video-style / grade.py); target look: dark low-key studio, high-contrast, muted, warm lamp bokeh, cool desaturated shadows.\nSOUND: voice only at about -14 LUFS (keep true peak <= -1 dBTP); optional soft whoosh on timeline scrolls.\n\nVERIFY before rendering (px values were render-verified with Inter; if the brand font differs, adjust px until the numbers match):\na) Render test frames over {{SURFACE}}: \"education\" ({{FONT_BODY}} 58 px), \"video\" ({{FONT_BODY}} 68 px), a two-line test title \"Headline here\" (52 px) and \"KEY WORD\" in {{FONT_DISPLAY}} at 75 px.\nb) Measure: python video-reference-match/scripts/caption_probe.py <test render or snapshot> --out <dir> --at <t> --box 0.3,0.645,0.7,0.685 --ink \"{{TEXT}}:60\" (split caption); --box 0.3,0.605,0.7,0.65 (full-face caption); --box 0.15,0.055,0.85,0.083 (title line 1); --box 0.15,0.6,0.6,0.655 --ink \"{{TEXT}}:70\" (serif word).\nc) Required: \"education\" ink 2.19 % +-0.5 of H and 24.6 % +-2 of W; \"video\" 2.58 % +-0.5 and 15.7 % +-2. For the title and serif word compute expected ink with python video-reference-match/scripts/fit_font.py --font \"<font>\" --word \"<word>\" at the px above (serif target cap-to-descender ink ~3.9 % H for a 1-word name).",
+ "caption_family": "word-by-word-plain"
+}

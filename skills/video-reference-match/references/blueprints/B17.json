@@ -1,0 +1,303 @@
+{
+ "id": "B17",
+ "schema": "blueprint/1",
+ "format": {
+  "type": "podcast-clip",
+  "aspect": "16:9",
+  "language": "English",
+  "duration_class": "micro (<15s)",
+  "people_on_screen": "2+"
+ },
+ "topic_class": "lifestyle",
+ "signature": {
+  "one_line": "Micro question-to-answer clip: whip to guest, light lowercase captions beside the speaker.",
+  "unique_devices": [
+   "Complete question -> answer arc in under 15 s: host question in the first ~20 %, a ~10-frame motion-blur whip to the guest, answer immediately",
+   "All-lowercase light-weight white captions with no box, placed mid-frame LEFT of centre (line centre x ~39 % W) in the negative space beside the speaker",
+   "Single soft ~110 % punch-in on the answer's second sentence as the only other edit (3 shots total)",
+   "Dark low-key library set with warm practicals; skin is the brightest element"
+  ],
+  "why_it_works": "A universal question is answered within seconds and the quotable line lands at the end, so the clip resolves before attention can drop."
+ },
+ "hook": {
+  "type": "open loop (universal question)",
+  "first_word_s": 0.01,
+  "first_cut_s": 2.867,
+  "first_frame": "Static landscape medium shot of the host at a microphone in a dark library-like set with warm practical lights; lowercase white caption in the empty space beside him at mid-height"
+ },
+ "structure": [
+  {
+   "beat": "hook",
+   "from_pct": 0,
+   "to_pct": 21,
+   "what": "host asks a universal question"
+  },
+  {
+   "beat": "setup",
+   "from_pct": 21,
+   "to_pct": 25,
+   "what": "motion-blur whip from the host to the guest"
+  },
+  {
+   "beat": "claim",
+   "from_pct": 25,
+   "to_pct": 53,
+   "what": "guest gives the one-line answer"
+  },
+  {
+   "beat": "payoff",
+   "from_pct": 53,
+   "to_pct": 100,
+   "what": "soft punch-in; the answer is restated and sharpened into a quotable line"
+  }
+ ],
+ "pacing": {
+  "pace": "moderate, minimal editing (3 shots)",
+  "median_shot_s": 4.5,
+  "cuts_per_min": 9,
+  "wpm": 190,
+  "pauses_per_min": 0.0,
+  "visual_change_every_s": 1.2
+ },
+ "elements": {
+  "captions": [
+   {
+    "what": "light lowercase phrase captions beside the speaker",
+    "when": "0-100 %",
+    "how": "1-4 words (median ~3), one line, no box; line centre x ~39 % W (~44 % on the guest's first shot), centre y 50.5 %, max width 41 % W; Inter 300 81 px on 1920x1080; hard cut ~1 frame after the first word; captions run straight through the whip and stay put through the punch-in",
+    "catalog": [
+     26,
+     29
+    ]
+   }
+  ],
+  "background_text": [],
+  "motion_graphics": [],
+  "cards_lists": [],
+  "silhouettes_cutouts": [],
+  "broll_inserts": [],
+  "layout": [
+   {
+    "what": "landscape podcast singles",
+    "when": "throughout",
+    "how": "16:9 MS of host (~21 % of runtime) and guest (~79 %); for 9:16 reframe to the speaker and centre the caption",
+    "catalog": [
+     58
+    ]
+   }
+  ],
+  "camera": [
+   {
+    "what": "soft ~110 % punch-in",
+    "when": "~53 %",
+    "how": "one gentle reframe on the answer's second sentence",
+    "catalog": [
+     31
+    ]
+   }
+  ],
+  "transitions": [
+   {
+    "what": "motion-blur whip from questioner to answerer",
+    "when": "~21 %",
+    "how": "~10-frame horizontal whip",
+    "catalog": [
+     101
+    ]
+   }
+  ],
+  "end_card": []
+ },
+ "captions_spec": {
+  "script": "latin (as spoken; correct mis-transcribed words on screen)",
+  "case": {
+   "caption": "all lowercase, including sentence starts and 'I'"
+  },
+  "punctuation": "apostrophes kept; no commas, full stops or question marks",
+  "emoji": "none",
+  "grouping": {
+   "words_per_caption": "1-4 (median ~3)",
+   "max_lines": 1,
+   "sync": "phrase-level; single long-held words on slow speech",
+   "break": "every 1-4 words, hard cut"
+  },
+  "layout": {
+   "align": "centre of the line at x ~39 % W (in the empty space left of the speaker); ~44 % W on a more centred shot",
+   "center_y_pct": 50.5,
+   "line_top_pct": 47.0,
+   "max_line_width_pct_of_W": 41,
+   "margins": "line spans ~18.5-59.6 % W at most"
+  },
+  "canvas_note": "16:9 landscape. Sizes are given on a 1920x1080 canvas. Mapping onto 1080x1920: (a) recommended - reframed vertical: keep the same px (short-side rule, 81 px on the 1080-wide canvas), centre the line horizontally (x 50 %) at ~50 % height; (b) literal - the 16:9 frame as a full-width band (1080x608, y 656-1264): px x0.5625 (~46 px), x centre 39 %, y centre 50.2 % of 1920.",
+  "type": {
+   "caption": {
+    "font_class": "light geometric-grotesque sans (Avenir-Next-like: round o, straight-cut t, open spacing), weight ~300-400",
+    "closest_match": {
+     "local": "Inter 300",
+     "google": "Mulish Light / Nunito Sans Light",
+     "confidence": "low"
+    },
+    "ink_height_pct_of_H": 6.96,
+    "k": 0.99,
+    "font_size_px_at_1920x1080": 76,
+    "font_size_px_at_1920": 76,
+    "calibration": [],
+    "calibration_note": "measured on the 16:9 frame (words withheld): a 4-word lowercase line with an apostrophe and descender at 6.96 % H / 37.9 % W; a 2-word lowercase line at 5.57 % H / 15.8 % W",
+    "probe": {
+     "4-word line": "--box 0.18,0.44,0.6,0.58 --ink #FFFFFF:70 (2-px row threshold)"
+    },
+    "color": "#FFFFFF",
+    "stroke": "none",
+    "shadow": "none visible (at most a very faint soft shadow)",
+    "box": "none",
+    "tracking": "0em",
+    "verified_px": 81,
+    "font_size_note": "px on a 1920x1080 canvas; on 1080x1920 use the same px (short-side rule) - see canvas_note"
+   }
+  },
+  "animation": {
+   "fps": 30,
+   "entry": "hard cut, whole phrase in one frame, ~1 frame after the first word",
+   "exit": "hard cut on the next phrase; captions continue straight through the motion-blur whip",
+   "highlight": "none",
+   "idle": "none (captions stay put through the ~110 % punch-in)"
+  }
+ },
+ "other_text_spec": [],
+ "style": {
+  "palette_roles": {
+   "text": "#FFFFFF",
+   "accent": "#FFFFFF",
+   "accent_2": null,
+   "surface": null,
+   "card_bg": null
+  },
+  "fonts": {
+   "caption": {
+    "closest_local": "Inter 300 (Mulish Light / Nunito Sans Light closer)",
+    "verified_px": 81,
+    "tracking": "0em"
+   }
+  },
+  "look_intent": "dark low-key studio, warm practicals (books, brick, warm curtain), deep blacks, muted natural saturation, low contrast; skin the brightest element"
+ },
+ "sound": {
+  "music": "voice only (no bed detected); continuous speech",
+  "sfx": [
+   "optional whoosh on the single whip (inferred, not measured; no hard cuts measured)"
+  ],
+  "loudness_lufs": -14.2
+ },
+ "measured": {
+  "grade": {
+   "black_point": 1.1,
+   "midtone": 34.5,
+   "white_point": 156.2,
+   "contrast_range": 155.1,
+   "luma_std": 35.3,
+   "saturation": 0.376,
+   "colorfulness": 23.1,
+   "warmth_r_minus_b": 33.6,
+   "tint_g": -1.2,
+   "vignette_centre_over_edge": 1.54,
+   "label": "low-contrast, natural-saturation, warm"
+  },
+  "layout": {
+   "letterbox_share": 0.21,
+   "split_divider_share": 0.0
+  },
+  "sound": {
+   "has_audio": true,
+   "speech_coverage": 1.0,
+   "beat_periodicity": 0.13,
+   "beat_bpm_est": null,
+   "gap_level_rel_speech_db": null,
+   "music": "voice only (no bed detected)",
+   "cut_hit_share": null,
+   "method": "heuristic (onset-envelope beat periodicity + level in speech gaps); not a classifier"
+  }
+ },
+ "catalog_styles": [
+  {
+   "id": 58,
+   "name": "Podcast Clip",
+   "role": "two-person studio footage"
+  },
+  {
+   "id": 123,
+   "name": "Question-and-Answer Cards",
+   "role": "question -> immediate answer structure"
+  },
+  {
+   "id": 101,
+   "name": "Whip-Pan Transitions",
+   "role": "questioner -> answerer whip"
+  },
+  {
+   "id": 29,
+   "name": "Minimal Subtitle Style",
+   "role": "light lowercase captions, no box"
+  },
+  {
+   "id": 31,
+   "name": "Emphasis-Word Zoom",
+   "role": "single soft punch-in on the payoff"
+  },
+  {
+   "id": 135,
+   "name": "Quote-by-Quote Presentation",
+   "role": "ends on a quotable line"
+  }
+ ],
+ "use_when": [
+  "A podcast or interview with a crisp question and a short, quotable answer",
+  "Very short (<15 s) clips for teasers or quote posts",
+  "Dark, moody studio footage where minimal, light captions keep a premium feel",
+  "Landscape source that will run as 16:9 or be reframed with minimal editing"
+ ],
+ "avoid_when": [
+  "The answer needs more than ~10 s or supporting proof",
+  "Bright or busy backgrounds behind the caption space (light-weight white text has no box)"
+ ],
+ "match": {
+  "tags": [
+   "podcast-clip",
+   "micro",
+   "question-answer",
+   "whip-transition",
+   "lowercase-captions",
+   "light-weight-type",
+   "offset-captions",
+   "minimal-edit",
+   "punch-in",
+   "low-key-grade",
+   "landscape",
+   "quote"
+  ],
+  "keywords": [
+   "advice",
+   "question",
+   "answer",
+   "quote",
+   "friendship",
+   "mentor",
+   "wisdom",
+   "life",
+   "podcast",
+   "lesson",
+   "relationships",
+   "honest",
+   "short",
+   "teaser"
+  ],
+  "needs": {
+   "speaker_footage": true,
+   "screen_recordings": false,
+   "broll": false,
+   "brand_assets": false
+  }
+ },
+ "quality_score": 2,
+ "brand_prompt": "Use /video-pipeline with /video-captions on videos/<project>. Apply style blueprint B17 (video-reference-match/references/blueprints/B17.json) to this brand.\nNative canvas 1920x1080, 30 fps (for 1080x1920: reframe to the speaker, keep the same px, centre the caption at x 50 %, ~50 % H).\n\nBRAND TOKENS (use the brand's colour/font for each role; keep the contrast relationship: light-weight {{TEXT}} needs >= 7:1 on the dark area beside the speaker because it has no box)\n- {{TEXT}}: default #FFFFFF\n- {{ACCENT}}: none (no emphasis colour)\n- {{ACCENT_2}}: none\n- {{SURFACE}}: none (footage)\n- {{CARD_BG}}: none\n- {{FONT_DISPLAY}}: none\n- {{FONT_BODY}}: default Inter 300 (Mulish Light / Nunito Sans Light closer)\n- {{HANDLE}}: not on screen\n- {{LOGO}}: none (optional branded microphones in shot)\n\nCAPTIONS\n1. Latin, as spoken, ALL lowercase (including sentence starts and 'i'); apostrophes kept; no other punctuation; no emoji.\n2. 1-4 words per phrase (median ~3), one line; hold single words on slow speech.\n3. {{FONT_BODY}} at 81 px on 1920x1080, {{TEXT}}, tracking 0, no stroke, no box, at most a very faint soft shadow.\n4. 16:9: line centre x ~39 % W (in the empty space beside the speaker; ~44 % on a centred framing), centre y 50.5 %, line top 47 %, max width 41 % W. 9:16 reframe: centred x 50 %, ~50 % H, same px.\n5. Hard cut in ~1 frame after the first word, hard cut out on the next phrase; captions continue through the whip and do not move with the punch-in.\n\nEDIT DEVICES\n6. Host asks the question in the first ~20 % of runtime; ~10-frame motion-blur whip to the guest; the answer follows immediately.\n7. One soft ~110 % punch-in on the answer's second sentence; 3 shots total; end on the quotable line. No titles, lower-thirds, b-roll or end card.\n\nGRADE: Grade from the user's footage (video-style / grade.py); target look: dark low-key, warm practicals, deep blacks, muted saturation, skin as the brightest element.\nSOUND: voice only, -14 LUFS, true peak <= -1 dBTP (do not let peaks clip).\n\nVERIFY\na) Render \"KEY WORD\" in lowercase-style light weight at 81 px on 1920x1080 at the caption position and measure:\n   python video-reference-match/scripts/caption_probe.py <test_render> --out <dir> --at <t> --box 0.18,0.44,0.6,0.58 --ink \"{{TEXT}}:70\"   (default ink #FFFFFF)\n   Expected ink for any phrase from video-reference-match/scripts/fit_font.py --font \"{{FONT_BODY}}\" --word \"<phrase>\" --canvas 1920x1080; a 4-word lowercase line with descenders should be ~7 % H and ~38 % W, a 2-word line ~5.6 % H.\nb) Line centre ~39 % W, ~50.5 % H on 16:9.",
+ "caption_family": "phrase-plain"
+}

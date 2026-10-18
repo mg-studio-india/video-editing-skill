@@ -36,23 +36,33 @@ A production-grade `style.json` governs five interdependent visual pillars:
     "border_subtle": "rgba(255, 215, 0, 0.35)"
   },
   "typography": {
+    "font_family_catalog": ["DM Sans", "Inter", "Poppins", "Google Sans", "Roboto"],
     "primary_punch": {
       "family": "Poppins",
       "weight": 900,
       "style": "normal",
       "letter_spacing": "-0.02em",
-      "stroke": "3px rgba(0,0,0,0.92)"
+      "color": "#ffd700",
+      "pill_background": "#ffd700",
+      "pill_text_color": "#000000",
+      "shadow": "none"
     },
-    "accent_display": {
-      "family": "Syne",
-      "weight": 800,
-      "style": "normal",
-      "letter_spacing": "0.01em"
+    "card_header": {
+      "family": "Inter",
+      "weight": 700,
+      "color": "#ffffff",
+      "letter_spacing": "-0.01em"
     },
     "body_support": {
-      "family": "Poppins",
-      "weight": 700,
-      "line_height": 1.15
+      "family": "DM Sans",
+      "weight": 500,
+      "color": "#f8fafc",
+      "line_height": 1.25
+    },
+    "caption_inactive": {
+      "family": "Inter",
+      "weight": 400,
+      "color": "rgba(255, 255, 255, 0.70)"
     }
   },
   "color_grading": {
@@ -124,9 +134,10 @@ python3 "$ENG/scripts/grade.py" preview --input "$W/raw/<clip>.mp4" --out "$W/gr
 
 Before assembling the video or generating components, present `style.json` and the color preview to the user:
 1. **Color Grade Preview:** Display `$W/grade-preview.jpg` comparing the raw footage against the proposed preset.
-2. **Typography & Font Choice:** Display font, body font, sizing hierarchy, stroke, and drop shadow.
-3. **Color Palette & Contrast:** Background, text, accent, and card glass surfaces.
-4. **Motion Dynamics & Physics:** Easing curves, tilt angles, scale overshoot, and entrance springs.
-5. **Captions Flow:** Natural phrase mode (`phrase` or `karaoke`), font pairing, and highlight color.
+2. **Typography & Font Choice:** Explicitly present font family (from `DM Sans`, `Inter`, `Poppins`, `Google Sans`, `Roboto`), weight hierarchy (400 -> 700 -> 900), and verify zero text-shadow and zero blur.
+3. **Font-Coloring Hierarchy:** Inactive text color, active highlight accent, punch word badge pill background and text colors.
+4. **Color Palette & Contrast:** Background, text, accent, and card glass surfaces.
+5. **Motion Dynamics & Physics:** Easing curves, tilt angles, scale overshoot, and entrance springs.
+6. **Captions Flow:** Natural phrase mode (`weight-shift` or `caption-highlight`), font pairing, and highlight color.
 
-> Save the verified settings into `$W/style.json` and ensure all downstream components reference these exact tokens.
+> Save the verified settings into `$W/style.json` and ensure all downstream components reference these exact tokens. Review with user again at Gate 5 before rendering.

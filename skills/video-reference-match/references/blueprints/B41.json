@@ -1,0 +1,354 @@
+{
+ "id": "B41",
+ "schema": "blueprint/1",
+ "format": {
+  "type": "ugc-ad",
+  "aspect": "9:16",
+  "language": "none",
+  "duration_class": "short (15-60s)",
+  "people_on_screen": "1"
+ },
+ "topic_class": "recruitment / hiring",
+ "signature": {
+  "one_line": "Song-driven hiring reel told through props (screen, paper signs), logo bug, 3D zoom-blur logo sting.",
+  "unique_devices": [
+   "All messaging diegetic: the headline is on a laptop screen lifted to camera, roles on printed paper signs, the contact on a sheet pushed into the lens; zero typed overlays",
+   "Physical reveal hook: a chair facing away spins round and the laptop is lifted to camera on the song's first hit, then a push-in onto the screen",
+   "Closing logo sting on white: extruded logo pieces streak in with a radial zoom-blur and rotate into place over ~53 frames, then hold (~28 % of runtime)",
+   "Small white logo-mark bug top-right on every footage shot"
+  ],
+  "why_it_works": "Props feel authentic and office-native; the chair-spin reveal is a tiny mystery synced to the music; the sting brands the ending without any copy."
+ },
+ "hook": {
+  "type": "curiosity gap (physical reveal)",
+  "first_word_s": 0.0,
+  "first_cut_s": 3.1,
+  "first_frame": "Office chair facing away in front of a colourful branded wall, wide and static; small white logo mark top-right"
+ },
+ "structure": [
+  {
+   "beat": "hook",
+   "from_pct": 0,
+   "to_pct": 15,
+   "what": "Chair spins round, employee lifts the laptop to camera showing the hiring headline"
+  },
+  {
+   "beat": "claim",
+   "from_pct": 15,
+   "to_pct": 28,
+   "what": "Push-in on the laptop screen, employee smiles"
+  },
+  {
+   "beat": "example",
+   "from_pct": 28,
+   "to_pct": 38,
+   "what": "Second employee behind monitors holds up a paper sign listing 3 roles"
+  },
+  {
+   "beat": "cta",
+   "from_pct": 38,
+   "to_pct": 72,
+   "what": "Staff at a glass door with a sign of 2 more roles; a printed 'send your CV to' sheet slid into close view"
+  },
+  {
+   "beat": "payoff",
+   "from_pct": 72,
+   "to_pct": 100,
+   "what": "3D logo zoom-blur reveal on white, then hold"
+  }
+ ],
+ "pacing": {
+  "pace": "moderate",
+  "median_shot_s": 3.1,
+  "cuts_per_min": 12,
+  "wpm": null,
+  "pauses_per_min": null,
+  "visual_change_every_s": 3.1
+ },
+ "elements": {
+  "captions": [],
+  "background_text": [
+   {
+    "what": "Logo-mark bug",
+    "when": "0-72 % (all footage shots)",
+    "how": "White logo mark (no text), top-right, x 79.3-90.4 % (~11 % W), y 5.9-11.3 %; static from frame 0, cut with the footage",
+    "catalog": []
+   }
+  ],
+  "motion_graphics": [
+   {
+    "what": "3D logo zoom-blur sting",
+    "when": "72-100 %",
+    "how": "Hard cut to white; extruded logo pieces streak in with a radial zoom-blur and rotate into place over ~53 frames (ease-out, power3.out), fully settled ~75 frames after the cut, then near-static hold to the end; logo centred x 19-80 %, y 41-60 % (centre ~52 % H)",
+    "catalog": [
+     41,
+     103
+    ]
+   }
+  ],
+  "cards_lists": [
+   {
+    "what": "Printed paper signs (diegetic list)",
+    "when": "28-72 %",
+    "how": "2-3 role lines per A4 sheet, held up or taped to glass, one sign per shot (~60-210 frames); the contact sheet is pushed close to the lens for ~60 frames",
+    "catalog": [
+     111
+    ]
+   }
+  ],
+  "silhouettes_cutouts": [],
+  "broll_inserts": [
+   {
+    "what": "Laptop screen insert",
+    "when": "15-28 %",
+    "how": "Headline slide on the screen (dark geometric sans on accent, key word bold italic) filling ~62 % of W at ~47 % H",
+    "catalog": [
+     19
+    ]
+   }
+  ],
+  "layout": [
+   {
+    "what": "Full-frame office footage",
+    "when": "0-72 %",
+    "how": "Wide seated subject ~15 %, laptop insert ~12 %, handheld sign shots ~45 %",
+    "catalog": []
+   }
+  ],
+  "camera": [
+   {
+    "what": "Static wide for the chair-spin reveal",
+    "when": "0-15 %",
+    "how": "Locked, subject centred in front of the brand wall",
+    "catalog": [
+     151
+    ]
+   },
+   {
+    "what": "Push-in to the laptop screen",
+    "when": "~15 %",
+    "how": "Soft push over ~10 frames (detected as a soft transition), lands on the screen",
+    "catalog": []
+   },
+   {
+    "what": "Handheld follow",
+    "when": "28-72 %",
+    "how": "Phone handheld on signs and the door, walk/follow",
+    "catalog": [
+     47
+    ]
+   }
+  ],
+  "transitions": [
+   {
+    "what": "Hard cuts between locations",
+    "when": "~28 %, ~38 %, ~72 %",
+    "how": "3 hard cuts timed to the song phrases (not on detected onsets: cut_hit_share 0.0)",
+    "catalog": [
+     175
+    ]
+   }
+  ],
+  "end_card": [
+   {
+    "what": "Logo sting on white",
+    "when": "last ~28 %",
+    "how": "White background, full logo artwork (mark + wordmark + small spaced caps line) in the brand colour; zoom-blur streak-in then hold",
+    "catalog": [
+     41
+    ]
+   }
+  ]
+ },
+ "captions_spec": null,
+ "other_text_spec": [
+  {
+   "type": "diegetic messages (not overlays)",
+   "when": "0-72 % of runtime",
+   "text": "laptop screen headline (dark geometric sans on a blue screen, key word bold italic) filling ~62 % of W at ~47 % H in the screen shot; printed A4 role sheets and a 'send your CV to' + contact sheet held to camera. Reproduce on real props, not as overlays."
+  },
+  {
+   "type": "logo bug",
+   "when": "0-72 % of runtime (all footage shots)",
+   "graphic": "white logo mark, no text",
+   "color": "#FFFFFF",
+   "layout": {
+    "x_pct": [
+     79.3,
+     90.4
+    ],
+    "y_pct": [
+     5.9,
+     11.3
+    ],
+    "width_pct_of_W": 11.1,
+    "anchor": "top-right, ~9.6 % from the right edge, ~6 % from the top"
+   },
+   "animation": "static, on from frame 0, cut with the footage"
+  },
+  {
+   "type": "logo sting (wordmark end card)",
+   "when": "72-100 % of runtime",
+   "bg": "#FFFFFF",
+   "wordmark": {
+    "color": "navy #264378",
+    "layout": {
+     "x_pct": [
+      19,
+      80
+     ],
+     "y_pct": [
+      41,
+      60
+     ],
+     "center_y_pct": 52
+    },
+    "note": "use the client's own logo file, not typed text"
+   },
+   "animation": {
+    "fps": 30,
+    "entry": "hard cut to white; extruded 3D logo pieces streak in with a radial zoom-blur and rotate into place from frame ~2 to ~53 after the cut, ease-out, settled by ~frame 75",
+    "idle": "near-static hold for the remaining ~80 frames",
+    "exit": "video ends"
+   }
+  }
+ ],
+ "style": {
+  "palette_roles": {
+   "text": "#FFFFFF",
+   "accent": "#264378",
+   "accent_2": null,
+   "surface": "#FFFFFF",
+   "card_bg": null
+  },
+  "fonts": {
+   "prop_screen_headline": {
+    "closest_local": "Poppins 600 (key word Poppins 800, italic/slanted)",
+    "verified_px": null,
+    "tracking": "0em"
+   }
+  },
+  "look_intent": "high-contrast, muted, cool: office fluorescent with a cool white/blue cast, saturated brand-wall colours, clean white end card"
+ },
+ "sound": {
+  "music": "trending pop song with vocals at full level, no voiceover (speech_coverage 0.12 is the sung hook); beat periodicity 0.61, ~122 bpm estimate; steady (loudness range 1.7 LU)",
+  "sfx": [
+   "none; hard cuts follow song phrases, not detected onsets (cut_hit_share 0.0)",
+   "optional: whoosh/impact under the logo zoom-blur reveal"
+  ],
+  "loudness_lufs": -14.1
+ },
+ "measured": {
+  "grade": {
+   "black_point": 8.8,
+   "midtone": 125.1,
+   "white_point": 253.0,
+   "contrast_range": 244.2,
+   "luma_std": 84.5,
+   "saturation": 0.158,
+   "colorfulness": 31.8,
+   "warmth_r_minus_b": -2.0,
+   "tint_g": -5.7,
+   "vignette_centre_over_edge": 1.05,
+   "label": "high-contrast, muted, cool"
+  },
+  "layout": {
+   "letterbox_share": 0.0,
+   "split_divider_share": 0.0
+  },
+  "sound": {
+   "has_audio": true,
+   "speech_coverage": 0.12,
+   "beat_periodicity": 0.61,
+   "beat_bpm_est": 122,
+   "gap_level_rel_speech_db": 3.9,
+   "music": "music-only",
+   "cut_hit_share": 0.0,
+   "method": "heuristic (onset-envelope beat periodicity + level in speech gaps); not a classifier"
+  }
+ },
+ "catalog_styles": [
+  {
+   "id": 210,
+   "name": "Recruitment Video",
+   "role": "use case: hiring announcement"
+  },
+  {
+   "id": 151,
+   "name": "Mystery / Reveal",
+   "role": "chair-spin + laptop-lift hook"
+  },
+  {
+   "id": 191,
+   "name": "Music-Led Montage with Minimal Dialogue",
+   "role": "song carries the piece; no voice"
+  },
+  {
+   "id": 111,
+   "name": "Card-List",
+   "role": "roles on printed paper signs"
+  },
+  {
+   "id": 103,
+   "name": "Zoom-Through Transitions",
+   "role": "radial zoom-blur logo reveal"
+  },
+  {
+   "id": 41,
+   "name": "Three-Dimensional Typography",
+   "role": "extruded 3D logo sting"
+  }
+ ],
+ "use_when": [
+  "the user can shoot a few staged office moments with props (screen, printed signs)",
+  "the message is a hiring call or announcement with a short list and a contact",
+  "the brand has a logo file suitable for a 3D/zoom-blur sting",
+  "no one wants to speak on camera; a song carries it"
+ ],
+ "avoid_when": [
+  "viewers must read longer details (paper signs are small on a phone)",
+  "the platform needs captions or a spoken explanation",
+  "a long static end card would hurt retention (shorten the sting to ~15 % of runtime)"
+ ],
+ "match": {
+  "tags": [
+   "diegetic-text",
+   "prop-signs",
+   "reveal-hook",
+   "office",
+   "hiring",
+   "logo-sting",
+   "zoom-blur",
+   "logo-bug",
+   "music-only",
+   "no-captions",
+   "staged"
+  ],
+  "keywords": [
+   "hiring",
+   "recruitment",
+   "jobs",
+   "office",
+   "team",
+   "careers",
+   "openings",
+   "roles",
+   "signs",
+   "laptop",
+   "reveal",
+   "logo",
+   "company",
+   "workplace",
+   "vacancies"
+  ],
+  "needs": {
+   "speaker_footage": false,
+   "screen_recordings": false,
+   "broll": true,
+   "brand_assets": true
+  }
+ },
+ "quality_score": 2,
+ "brand_prompt": "Use /video-pipeline with /video-captions on videos/<project>. Apply style blueprint B41 (video-reference-match/references/blueprints/B41.json) to this brand.\nThis blueprint has NO captions and NO typed text overlays: the message lives on props in the footage (screen headline, printed signs). Only a logo bug and a logo sting are added. Canvas 1080x1920, 30 fps.\n\nBRAND TOKENS (use the brand's colour for each role; keep the contrast relationship: {{TEXT}} bug must stay >= 3:1 on the top-right of every shot; {{ACCENT}} logo >= 4.5:1 on {{SURFACE}})\n- {{TEXT}}: logo-mark bug colour, default #FFFFFF\n- {{ACCENT}}: end-card logo colour, default #264378\n- {{ACCENT_2}}: unused, default none\n- {{SURFACE}}: end-card background, default #FFFFFF\n- {{CARD_BG}}: unused, default none\n- {{FONT_DISPLAY}}: prop-screen headline (made as a slide on the laptop, not overlaid), default Poppins 600 with the key word Poppins 800 slanted\n- {{FONT_BODY}}: printed signs, any bold sans, default Poppins 700\n- {{HANDLE}}: contact on the printed sheet (email / \"@handle\")\n- {{LOGO}}: logo mark for the bug + full logo file for the sting\n\nCAPTIONS\n1. None. Do not caption song lyrics; add no typed overlays.\n\nOTHER TEXT\n2. Logo bug on every footage shot: {{LOGO}} mark in {{TEXT}}, top-right, x 79.3-90.4 % (~11 % W), y 5.9-11.3 %; static from frame 0 until the end card.\n3. End card (last ~28 % of runtime): hard cut to {{SURFACE}}; full {{LOGO}} in {{ACCENT}} centred at x 19-80 %, y 41-60 % (centre ~52 % H). Reveal: logo pieces streak and rotate in with a radial zoom-blur over ~53 frames (power3.out), fully settled ~75 frames after the cut, then hold still to the end.\n\nEDIT\n4. Hook (~15 %): static wide, chair facing away in front of a branded wall spins round; the subject lifts a laptop to camera showing the headline on the music's first hit.\n5. ~15 %: soft push-in onto the laptop screen (headline fills ~62 % W at ~47 % H, key word bold italic).\n6. 28-72 %: handheld shots of staff holding/taping printed signs (2-3 role lines each, one sign per shot, ~60-210 frames per shot); finish with the contact sheet ({{HANDLE}}) pushed close to the lens for ~60 frames. 3 hard cuts timed to song phrases.\n\nSOUND: one trending song with vocals at full level, no voiceover; optional whoosh under the zoom-blur reveal. Master to about -14 LUFS, true peak <= -1 dBTP.\nGRADE: Grade from the user's footage (video-style / grade.py); target look: high-contrast, muted, cool office light with saturated brand-wall colour and a clean white end card.\n\nVERIFY before rendering: snapshot one footage frame and one settled end-card frame. Measure the bug with\n  video-reference-match/scripts/caption_probe.py <render-file> --out <dir> --at <t_footage> --box 0.75,0.03,0.95,0.14 --ink \"#FFFFFF:40\"\n(box x 79.3-90.4 %, y 5.9-11.3 % within +-1 %), and the end-card logo with --box 0.1,0.3,0.9,0.7 --ink \"<{{ACCENT}}>:60\" (centre ~52 % H, spanning x 19-80 %). No other overlaid text may appear.",
+ "caption_family": "title-only"
+}

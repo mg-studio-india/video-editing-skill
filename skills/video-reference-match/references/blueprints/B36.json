@@ -1,0 +1,508 @@
+{
+ "id": "B36",
+ "schema": "blueprint/1",
+ "format": {
+  "type": "explainer-graphics",
+  "aspect": "9:16",
+  "language": "English",
+  "duration_class": "short (15-60s)",
+  "people_on_screen": "1"
+ },
+ "topic_class": "tech/AI tools",
+ "signature": {
+  "one_line": "Zero-cut cream-canvas UI explainer; three-state grey-to-black karaoke line; result-first progress hook.",
+  "unique_devices": [
+   "Three-state karaoke line on cream: upcoming words light grey, spoken words mid grey, current word near-black, one line of 3-5 words, no box or stroke",
+   "Zero hard cuts: the presenter slides out and back while full-screen UI mock-ups on the same cream canvas carry ~70 % of runtime, a new UI element every ~1-2 s",
+   "Result-first hook: 'what you pay for' -> 'your version' cards with a progress bar filling to 100 % and a small time badge, landing inside the first ~6 % of runtime under a 2-line headline with the key verb in a accent box",
+   "Caption rides the gap between the top graphics band (10-35 % H) and the presenter's head, dropping to ~70 % H when graphics fill the frame"
+  ],
+  "why_it_works": "Promise and visual proof land together before doubt sets in; constant UI motion replaces cuts so a dense, pause-free voice never feels static."
+ },
+ "hook": {
+  "type": "open loop / result-first promise",
+  "first_word_s": 0.1,
+  "first_cut_s": null,
+  "first_frame": "Cream background, 2-line black headline at the top with one word in a accent box, two white UI cards with a progress bar below it, presenter head-and-shoulders in the bottom half, one karaoke caption line between graphics and head"
+ },
+ "structure": [
+  {
+   "beat": "hook",
+   "from_pct": 0,
+   "to_pct": 8,
+   "what": "spoken promise + headline with accent-boxed verb + before/after UI cards and a progress bar filling to 100 %"
+  },
+  {
+   "beat": "setup",
+   "from_pct": 8,
+   "to_pct": 15,
+   "what": "motion-blur whip out of the presenter; phone mock-up with stacking subscription notifications and a accent cost callout"
+  },
+  {
+   "beat": "claim",
+   "from_pct": 15,
+   "to_pct": 25,
+   "what": "presenter returns under two phones: original vs own version, zero-price tag, feature toggles switching on"
+  },
+  {
+   "beat": "proof",
+   "from_pct": 25,
+   "to_pct": 40,
+   "what": "full-screen graphics: the speaker's own version shared in a group chat card"
+  },
+  {
+   "beat": "list",
+   "from_pct": 40,
+   "to_pct": 61,
+   "what": "code-repository screenshot, then one phone mock-up per step of the toolkit"
+  },
+  {
+   "beat": "payoff",
+   "from_pct": 61,
+   "to_pct": 88,
+   "what": "twist: store review cards are read and fixed; the result becomes something you can sell"
+  },
+  {
+   "beat": "cta",
+   "from_pct": 88,
+   "to_pct": 100,
+   "what": "presenter returns; mock social comment with a keyword + DM card with a link; follow ask"
+  }
+ ],
+ "pacing": {
+  "pace": "single continuous composition (no hard cuts); motion-graphics-driven",
+  "median_shot_s": null,
+  "cuts_per_min": 0,
+  "wpm": 240,
+  "pauses_per_min": 0.0,
+  "visual_change_every_s": 1.5
+ },
+ "elements": {
+  "captions": [
+   {
+    "what": "one-line three-state karaoke caption, 3-5 words",
+    "when": "0-100 %",
+    "how": "centred, centre y 40.3 % H when the presenter is in frame, 69.5 % H when graphics are full-screen; whole phrase hard-cuts in on its first word; highlight switches in 1 frame within ±1 frame of each word start; hard cut to next phrase",
+    "catalog": [
+     22,
+     45
+    ]
+   }
+  ],
+  "background_text": [
+   {
+    "what": "2-line hook headline with one key word on a accent box",
+    "when": "0-8 % (≈90 frames)",
+    "how": "centred, lines at 12.8-18.8 % H, Inter 700 63 px near-black; accent box ~3.75 % H tall, ~6 px radius behind the key word; static, leaves with the whip",
+    "catalog": [
+     24
+    ]
+   }
+  ],
+  "motion_graphics": [
+   {
+    "what": "before/after UI cards + progress bar 2 % -> 100 % + small accent time badge",
+    "when": "0-6 %",
+    "how": "two white rounded cards at x 7-46 % and 54-92 %, y 21-32 %; thin green progress bar counts up synced to the spoken promise; badge pops at 100 %",
+    "catalog": [
+     93,
+     40
+    ]
+   },
+   {
+    "what": "phone mock-ups: notification stack, zero-price tag, settings toggles, group chat, repository screenshot, review cards",
+    "when": "8-88 %",
+    "how": "cards slide/scale in on the cream canvas with soft shadows; a new element every ~1-2 s; ease-out ~8-12 frames",
+    "catalog": [
+     19,
+     93,
+     81
+    ]
+   },
+   {
+    "what": "accent cost callout",
+    "when": "~14 % (when a cost is spoken)",
+    "how": "accent rounded box with bold black number + small grey line, ~x 42-76 %, y ~51-55 %",
+    "catalog": [
+     130
+    ]
+   }
+  ],
+  "cards_lists": [
+   {
+    "what": "one phone mock-up per step of a multi-part process",
+    "when": "40-61 %",
+    "how": "full-screen graphics, each step a new card replacing the last",
+    "catalog": [
+     126
+    ]
+   }
+  ],
+  "silhouettes_cutouts": [],
+  "broll_inserts": [
+   {
+    "what": "full-screen designed UI scenes instead of footage",
+    "when": "~70 % of runtime",
+    "how": "presenter hidden; same cream canvas so no visible cut",
+    "catalog": [
+     81,
+     105
+    ]
+   }
+  ],
+  "layout": [
+   {
+    "what": "stacked band layout on a cream canvas",
+    "when": "whenever the presenter is visible (~30 %)",
+    "how": "graphics band 10-35 % H, caption ~40 % H, presenter head-and-shoulders in the bottom ~55 %",
+    "catalog": [
+     3
+    ]
+   }
+  ],
+  "camera": [
+   {
+    "what": "locked-off presenter, no punch-ins",
+    "when": "throughout",
+    "how": "static medium close-up; all motion comes from graphics",
+    "catalog": [
+     46
+    ]
+   }
+  ],
+  "transitions": [
+   {
+    "what": "single motion-blur whip out of the presenter",
+    "when": "~8 %",
+    "how": "horizontal motion blur ~6-8 frames, presenter slides out, graphics take over",
+    "catalog": [
+     101
+    ]
+   },
+   {
+    "what": "presenter slides/fades out and back while UI cards animate in/out",
+    "when": "throughout",
+    "how": "no hard cuts",
+    "catalog": [
+     80
+    ]
+   }
+  ],
+  "end_card": [
+   {
+    "what": "mock social comment with a keyword + DM card with a link",
+    "when": "88-100 %",
+    "how": "presenter returns in the bottom half; comment card then DM card animate in above",
+    "catalog": [
+     35
+    ]
+   }
+  ]
+ },
+ "captions_spec": {
+  "script": "latin (as spoken)",
+  "case": {
+   "caption": "sentence case as spoken (capital on sentence starts and proper nouns)"
+  },
+  "punctuation": "none",
+  "emoji": "none",
+  "grouping": {
+   "words_per_caption": "3-5 (one line)",
+   "max_lines": 1,
+   "sync": "phrase shown whole on its first word; the highlight moves word by word on each word start",
+   "break": "hard cut to the next phrase on the first word of the next phrase"
+  },
+  "layout": {
+   "align": "centre (x 50 %)",
+   "center_y_pct": {
+    "presenter_in_frame": 40.3,
+    "graphics_full_screen": 69.5
+   },
+   "line_width_pct_of_W": "~55-65 for 4-5 words (x ~18.5-81.5 %)",
+   "rule": "the caption sits in the gap between the UI graphic block (top ~10-35 %) and the presenter's head (from ~45 %); when the presenter is hidden it drops to ~70 % H under the graphic",
+   "1080x1920_mapping": "same percentages (9:16)"
+  },
+  "type": {
+   "caption": {
+    "font_class": "wide geometric sans, extra-bold",
+    "closest_match": {
+     "local": "Poppins 800",
+     "google": "Montserrat ExtraBold 800"
+    },
+    "confidence": "medium-high (Montserrat) / medium (Poppins stand-in)",
+    "letterform_evidence": "double-storey a, wide round C and o, straight-tailed y, flat-topped t, wide letter widths (Montserrat traits); Poppins has a single-storey a",
+    "ink_height_pct_of_H": 2.5,
+    "k": 0.73,
+    "font_size_px_at_1920": 60,
+    "calibration": [
+     {
+      "word": "with",
+      "ink_pct_of_H": 2.5,
+      "width_pct_of_W": 12.9
+     },
+     {
+      "word": "sent",
+      "ink_pct_of_H": 2.11,
+      "width_pct_of_W": 12.5
+     }
+    ],
+    "calibration_note": "each calibration word measured as the active (near-black) word on clean cream",
+    "color": "three states: upcoming #D1CCC2 (light grey), already spoken #9C968C (mid grey), current word #161410 (near-black); background cream #F1EDE3",
+    "stroke": "none",
+    "shadow": "none",
+    "box": "none",
+    "tracking": "0em",
+    "verified_px": 60,
+    "fit": [
+     {
+      "font": "Poppins 800",
+      "word": "with",
+      "tracking_em": 0.0,
+      "px_for_height": 58.5,
+      "px_for_width": 61.6,
+      "verified_px": 60,
+      "at_verified_px": {
+       "ink_pct_of_H": 2.55,
+       "width_pct_of_W": 12.4
+      },
+      "within_tolerance": true
+     },
+     {
+      "font": "Poppins 800",
+      "word": "sent",
+      "tracking_em": 0.0,
+      "px_for_height": 57.9,
+      "px_for_width": 60.5,
+      "verified_px": 59,
+      "at_verified_px": {
+       "ink_pct_of_H": 2.19,
+       "width_pct_of_W": 12.0
+      },
+      "within_tolerance": true
+     }
+    ],
+    "k_formula_px_at_1920": 66
+   },
+   "headline": {
+    "font_class": "neo-grotesque sans, bold",
+    "closest_match": {
+     "local": "Inter 700",
+     "google": "Inter Bold"
+    },
+    "confidence": "medium",
+    "letterform_evidence": "double-storey a, single-storey g with hook, flat terminals, compact grotesque widths",
+    "ink_height_pct_of_H": 2.97,
+    "k": 0.99,
+    "font_size_px_at_1920": 63,
+    "calibration": [],
+    "calibration_note": "4-word sentence-case line measured at 2.97 % H ink, 56.1 % W; calibration phrase withheld (source text)",
+    "color": "#111111 (near-black)",
+    "stroke": "none",
+    "shadow": "none",
+    "box": "yellow highlight box on the key word: #FBD409, ~3.75 % H tall, small radius ~6 px @1080, text stays black",
+    "tracking": "-0.01em (estimated)",
+    "position": "2 centred lines at y 12.8-18.8 % (line centres 14.3 % and 17.3 %), persistent for the hook (~8 % of runtime)",
+    "verified_px": 63
+   }
+  },
+  "animation": {
+   "fps": 30,
+   "phrase_entry": "hard cut: the whole next phrase appears in 1 frame on its first word, first word already near-black",
+   "highlight": "colour switch in 1 frame per word, within ±1 frame of the word start; the previous word drops to mid grey #9C968C, later words stay light grey #D1CCC2",
+   "exit": "hard cut on the next phrase",
+   "idle": "none (no scale, no bounce)"
+  }
+ },
+ "other_text_spec": [
+  {
+   "type": "hook headline",
+   "when": "0-8 % of runtime",
+   "text": "'Headline here. / Second line with KEY WORD' - black bold grotesque, 2 centred lines at 12.8-18.8 % H; yellow #FBD409 box behind the key word"
+  },
+  {
+   "type": "UI cards",
+   "when": "0-8 % of runtime",
+   "text": "two white rounded cards (x 7-46 % and 54-92 %, y 21-32 %): 'what you pay for' (app icon + red recurring-cost label) -> 'your version' (icon + 'building…' -> green 'free, yours'), a thin progress bar filling 2 % -> 100 % and a yellow time badge"
+  },
+  {
+   "type": "callout",
+   "when": "~14 % of runtime",
+   "text": "yellow rounded box with a bold black number + small explanatory line, ~x 42-76 %, y ~51-55 % (estimated)"
+  },
+  {
+   "type": "UI mock-ups",
+   "when": "8-93 % of runtime",
+   "text": "phone mock-ups, notification stack, zero-price tag, settings toggles, group-chat card, code-repository screenshot, store review cards, social-app comment with a keyword + DM card with a link (designed UI, small grotesque text)"
+  },
+  {
+   "type": "titles / lower-thirds / emoji / end card",
+   "when": "none",
+   "text": "none"
+  }
+ ],
+ "style": {
+  "palette_roles": {
+   "text": "#161410",
+   "accent": "#FBD409",
+   "accent_2": "#9C968C",
+   "surface": "#F1EDE3",
+   "card_bg": "#FFFFFF"
+  },
+  "fonts": {
+   "caption": {
+    "closest_local": "Poppins 800",
+    "verified_px": 60,
+    "tracking": "0em"
+   },
+   "headline": {
+    "closest_local": "Inter 700",
+    "verified_px": 63,
+    "tracking": "-0.01em"
+   },
+   "ui_text": {
+    "closest_local": "Inter 500-700",
+    "verified_px": null,
+    "tracking": "0em"
+   }
+  },
+  "look_intent": "bright warm cream canvas, low-saturation, high-contrast black type, natural skin, soft radial vignette; colour only in graphics (yellow highlight, green success, red cost)"
+ },
+ "sound": {
+  "music": "voice only (no bed detected); flat, heavily compressed voice-led mix",
+  "sfx": [
+   "none detected; no hard cuts to hit (single take)",
+   "optional soft whoosh on the single whip and light ticks on UI pops if a bed is added (inferred, not measured)"
+  ],
+  "loudness_lufs": -14.1
+ },
+ "measured": {
+  "grade": {
+   "black_point": 6.8,
+   "midtone": 226.2,
+   "white_point": 252.6,
+   "contrast_range": 245.7,
+   "luma_std": 60.0,
+   "saturation": 0.111,
+   "colorfulness": 25.1,
+   "warmth_r_minus_b": 20.8,
+   "tint_g": 3.5,
+   "vignette_centre_over_edge": 0.93,
+   "label": "high-contrast, muted, warm"
+  },
+  "layout": {
+   "letterbox_share": 0.0,
+   "split_divider_share": 0.0
+  },
+  "sound": {
+   "has_audio": true,
+   "speech_coverage": 0.99,
+   "beat_periodicity": 0.05,
+   "beat_bpm_est": null,
+   "gap_level_rel_speech_db": null,
+   "music": "voice only (no bed detected)",
+   "cut_hit_share": null,
+   "method": "heuristic (onset-envelope beat periodicity + level in speech gaps); not a classifier"
+  }
+ },
+ "catalog_styles": [
+  {
+   "id": 22,
+   "name": "Karaoke Captions",
+   "role": "one-line three-state grey -> black word highlight"
+  },
+  {
+   "id": 81,
+   "name": "Motion-Graphics Explainer",
+   "role": "UI mock-ups carry ~70 % of runtime"
+  },
+  {
+   "id": 93,
+   "name": "UI / Website Animation",
+   "role": "before/after cards, progress bar, toggles, notifications"
+  },
+  {
+   "id": 19,
+   "name": "Device Mockup",
+   "role": "phone frames for every proof beat"
+  },
+  {
+   "id": 105,
+   "name": "White-Background Minimalist Motion Design",
+   "role": "cream canvas shared by presenter and graphics"
+  },
+  {
+   "id": 24,
+   "name": "Big-Text Hook",
+   "role": "2-line headline with a yellow-boxed key word"
+  },
+  {
+   "id": 101,
+   "name": "Whip-Pan Transitions",
+   "role": "single motion-blur whip out of the presenter"
+  },
+  {
+   "id": 35,
+   "name": "Fake Social-Media Comments",
+   "role": "comment-keyword + DM card CTA"
+  },
+  {
+   "id": 178,
+   "name": "Real-Time Continuous Scene",
+   "role": "zero hard cuts; graphics provide the visual change"
+  }
+ ],
+ "use_when": [
+  "The speaker is shot on a plain light background (or can be keyed onto one) and the topic is a tool, app or workflow that can be shown as UI",
+  "There are few or no usable cuts and the pace must come from graphics",
+  "The voice is dense and continuous (high wpm, no pauses) and the promise has a visual result that can be shown in the hook",
+  "The concept walks through a short multi-step process or toolkit"
+ ],
+ "avoid_when": [
+  "There is no time or budget to design a custom UI mock-up for nearly every line",
+  "The footage is dark, busy or outdoors (karaoke greys need a clean light background)",
+  "The piece relies on the speaker's on-camera presence or emotion"
+ ],
+ "match": {
+  "tags": [
+   "explainer-graphics",
+   "ui-mockups",
+   "karaoke-captions",
+   "light-background",
+   "cream-canvas",
+   "no-cuts",
+   "result-first-hook",
+   "progress-bar",
+   "headline-highlight-box",
+   "comment-cta",
+   "ai-tools",
+   "dense-voiceover"
+  ],
+  "keywords": [
+   "app",
+   "tool",
+   "build",
+   "diy",
+   "subscription",
+   "free",
+   "workflow",
+   "automation",
+   "ai",
+   "steps",
+   "feature",
+   "save",
+   "money",
+   "tutorial",
+   "hack",
+   "replace"
+  ],
+  "needs": {
+   "speaker_footage": true,
+   "screen_recordings": false,
+   "broll": false,
+   "brand_assets": false
+  }
+ },
+ "quality_score": 4,
+ "brand_prompt": "Use /video-pipeline with /video-captions on videos/<project>. Apply style blueprint B36 (video-reference-match/references/blueprints/B36.json) to this brand.\nCanvas 1080x1920, 30 fps. Speaker on a plain light canvas ({{SURFACE}}) in the bottom half, UI graphics in the top third.\n\nBRAND TOKENS (use the brand's colour/font for each role; keep the contrast relationship: current-word {{TEXT}} must stay >= 7:1 on {{SURFACE}}, upcoming grey must stay visibly lighter than spoken grey, {{ACCENT}} box must keep >= 7:1 behind {{TEXT}})\n- {{TEXT}}: default #161410 (current word, headline)\n- {{ACCENT}}: default #FBD409 (headline key-word box, badges, cost callouts)\n- {{ACCENT_2}}: default #9C968C (already-spoken words); upcoming words default #D1CCC2 (derive as a lighter tint of {{ACCENT_2}} toward {{SURFACE}})\n- {{SURFACE}}: default #F1EDE3 (warm cream canvas behind speaker and graphics)\n- {{CARD_BG}}: default #FFFFFF (UI cards, phone screens)\n- {{FONT_DISPLAY}}: default Inter 700 (headline)\n- {{FONT_BODY}}: default Poppins 800 (captions; Montserrat ExtraBold is the closer original)\n- {{HANDLE}}: default @handle (comment/DM CTA cards)\n- {{LOGO}}: optional, inside UI cards only; never a corner bug\n\nCAPTIONS\n1. Latin, as spoken, sentence case, no punctuation, no emoji.\n2. One line of 3-5 words per phrase; never 2 lines.\n3. {{FONT_BODY}} at 60 px, tracking 0, no stroke, no shadow, no box.\n4. Three states: whole phrase visible from its start in the upcoming grey (default #D1CCC2); the word being spoken in {{TEXT}}; words already spoken in {{ACCENT_2}}.\n5. Centred. Centre y 40.3 % H while the speaker is in frame (gap between top graphics and head); 69.5 % H when a graphic fills the frame.\n6. Phrase hard-cuts in on its first word (first word already {{TEXT}}); highlight jumps to each next word within ±1 frame of its start as a 1-frame colour switch; hard cut to the next phrase; no idle motion.\n\nOTHER TEXT AND EDIT DEVICES\n7. Hook headline (first ~8 % of runtime, ~90 frames): 2 centred lines in {{FONT_DISPLAY}} 63 px, {{TEXT}}, tracking -0.01em, lines at 12.8-18.8 % H (centres 14.3 % / 17.3 %); {{ACCENT}} box (~3.75 % H tall, ~6 px radius) behind the one KEY WORD, text stays {{TEXT}}.\n8. Result-first hook graphic: two {{CARD_BG}} rounded cards at x 7-46 % and 54-92 %, y 21-32 % ('what you pay for' -> 'your version'), a thin progress bar counting 2 % -> 100 % synced to the spoken promise, then a small {{ACCENT}} badge.\n9. No hard cuts: the speaker slides out with one motion-blur whip (~6-8 frames) at ~8 % and returns for the claim and the CTA; for ~70 % of runtime full-screen UI mock-ups on {{SURFACE}} carry the story, a new element every ~1-2 s (slide/scale in, 8-12 frame ease-out, soft shadows).\n10. When a cost or number is spoken, an {{ACCENT}} rounded callout with a bold {{TEXT}} number at ~x 42-76 %, y ~51-55 %.\n11. CTA (last ~12 %): speaker returns; mock comment card with a keyword from {{HANDLE}} + DM card with a link animate in above the head.\n12. No lower-thirds, no emoji, no end card.\n\nGRADE: Grade from the user's footage (video-style / grade.py); target look: bright warm cream, low saturation, high-contrast black type, natural skin, soft vignette.\nSOUND: voice-led, compressed, -14 LUFS, no music bed required; optional soft whoosh on the whip.\n\nVERIFY\na) Render a test frame with a 4-word phrase whose current word is \"with\", centred at 40.3 % H, and measure:\n   python video-reference-match/scripts/caption_probe.py <test_render> --out <dir> --at <t> --box 0.43,0.37,0.62,0.45 --ink \"{{TEXT}}:60\"   (default ink #161410)\n   Required: \"with\" ink 2.5 % ±0.5 of H and 12.9 % ±2 of W; centre y 40.3 %. Second check: \"sent\" 2.11 % H, 12.5 % W.\nb) Headline: render \"KEY WORD\" in {{FONT_DISPLAY}} at 63 px and measure with --box 0.15,0.12,0.85,0.158 --ink \"{{TEXT}}:80\"; expected ink for any word: video-reference-match/scripts/fit_font.py --font \"{{FONT_DISPLAY}}\" --word <word>.\nc) If {{FONT_BODY}} is not Poppins 800, re-solve px with fit_font.py --font \"{{FONT_BODY}}\" --word with --ink 2.5 --width 12.9 and use that size.",
+ "caption_family": "karaoke-highlight"
+}

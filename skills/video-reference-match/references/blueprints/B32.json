@@ -1,0 +1,499 @@
+{
+ "id": "B32",
+ "schema": "blueprint/1",
+ "format": {
+  "type": "explainer-graphics",
+  "aspect": "9:16",
+  "language": "English",
+  "duration_class": "short (15-60s)",
+  "people_on_screen": "1"
+ },
+ "topic_class": "business advice",
+ "signature": {
+  "one_line": "Cream line-art explainer: face-pill cutout in evolving metaphor, blur-slide captions, 2x pink key.",
+  "unique_devices": [
+   "Speaker becomes a small pink-bordered face pill (13-30 % W) linked into grey line art that morphs per sentence (one visual metaphor evolving through the whole piece)",
+   "Hook on desaturated, near-B&W footage with a hot-pink oval ring drawn around the face, then a hard switch to the cream canvas",
+   "Word-by-word captions that slide ~2 % W with a 3-frame horizontal motion blur into a pre-laid centred block in the top band; one key word per block on its own line at ~2x in hot pink",
+   "Concrete example as a full-screen contribution card on near-black: avatar rows with progress bars and counting percentages, the speaker's row in pink"
+  ],
+  "why_it_works": "Villain plus cost in the first sentence, then the graphic state changes every ~0.5-1.5 s; a single saturated accent on a desaturated world steers the eye."
+ },
+ "hook": {
+  "type": "bold claim / contrarian (villain + cost)",
+  "first_word_s": 0.06,
+  "first_cut_s": 9.433,
+  "first_frame": "Desaturated medium shot of the speaker on a patterned grey wall with a hot-pink oval ring around the face; white caption building word by word at ~65-70 % height"
+ },
+ "structure": [
+  {
+   "beat": "hook",
+   "from_pct": 0,
+   "to_pct": 11,
+   "what": "full thesis on desaturated footage with a pink face ring; key verb pops in big pink"
+  },
+  {
+   "beat": "claim",
+   "from_pct": 11,
+   "to_pct": 33,
+   "what": "hard switch to cream canvas; face pill becomes one link of a line-art chain; pink key words"
+  },
+  {
+   "beat": "example",
+   "from_pct": 33,
+   "to_pct": 47,
+   "what": "motion-blur drop to dark; full-screen contribution card with progress bars"
+  },
+  {
+   "beat": "proof",
+   "from_pct": 47,
+   "to_pct": 78,
+   "what": "inset of the speaker over the metaphor drawing breaking apart"
+  },
+  {
+   "beat": "payoff",
+   "from_pct": 78,
+   "to_pct": 100,
+   "what": "cost-of-coordination line on a node network; ends on a 2-word pink verdict and a horizontal pink chain"
+  }
+ ],
+ "pacing": {
+  "pace": "measured slow (few shots) but felt fast: graphic state changes every ~0.5-1.5 s",
+  "median_shot_s": 6.7,
+  "cuts_per_min": 6,
+  "wpm": 280,
+  "pauses_per_min": 0.0,
+  "visual_change_every_s": 1.0
+ },
+ "elements": {
+  "captions": [
+   {
+    "what": "word-by-word centred block with a 2x pink key word line",
+    "when": "0-100 %",
+    "how": "hook: block top 65 % H, lines at 66.8/71.2 %, key at 78.3 %; main: first line centre 15.1 %, key line 21.7-22.3 % (17.6 % when it opens the block), lines after key 24.5-28.9 %; lead Inter 500 77 px, key Inter 700 ~148-153 px; each word slides 2 % W with 3-frame motion blur on its spoken word; block exits blurring, fading and drifting up ~1 % H over ~6 frames",
+    "catalog": [
+     27,
+     31
+    ]
+   }
+  ],
+  "background_text": [],
+  "motion_graphics": [
+   {
+    "what": "evolving line-art metaphor with the face pill as one node",
+    "when": "11-33 % and 47-100 %",
+    "how": "grey line art on cream; face pill/rounded-rect cutout 13-30 % W with ~3 px pink border; drawing morphs every sentence (vertical -> broken -> network -> horizontal accent chain); link wobble, zoom-throughs",
+    "catalog": [
+     142,
+     76
+    ]
+   },
+   {
+    "what": "accent ring around the face",
+    "when": "0-11 %",
+    "how": "hot-pink oval outline ~1.5 % W stroke on desaturated footage with a faint white grid overlay",
+    "catalog": [
+     37
+    ]
+   }
+  ],
+  "cards_lists": [
+   {
+    "what": "contribution card with progress bars",
+    "when": "33-47 %",
+    "how": "white rounded card x 9-91 %, y 41.5-82.5 % on near-black with a soft pink glow; folder icon + bold title + grey subtitle; 5 rows avatar + name + bar + right-aligned % counting up; the speaker's bar pink, others light grey; other rows fade out to leave one highlighted",
+    "catalog": [
+     131,
+     93
+    ]
+   }
+  ],
+  "silhouettes_cutouts": [
+   {
+    "what": "speaker face in a pill cutout",
+    "when": "~70 % of runtime",
+    "how": "small pill or rounded-rect cutout with a pink border, linked into the line art; inset clips are rounded rects with a ~3 px pink border",
+    "catalog": [
+     5,
+     6
+    ]
+   }
+  ],
+  "broll_inserts": [],
+  "layout": [
+   {
+    "what": "cream canvas with top caption band",
+    "when": "11-100 %",
+    "how": "captions in the upper ~10-30 % H, graphics and face pill in the middle/lower area",
+    "catalog": [
+     105
+    ]
+   }
+  ],
+  "camera": [
+   {
+    "what": "static speaker footage, desaturated",
+    "when": "throughout",
+    "how": "no punch-ins on footage; motion comes from graphic zoom-throughs every ~1-2 s",
+    "catalog": [
+     103
+    ]
+   }
+  ],
+  "transitions": [
+   {
+    "what": "hard switch footage -> canvas",
+    "when": "~11 %",
+    "how": "single hard cut",
+    "catalog": []
+   },
+   {
+    "what": "motion-blur slides / drops between canvases",
+    "when": "~33 % and ~47 %",
+    "how": "vertical motion-blur drop ~6-8 frames",
+    "catalog": [
+     80,
+     103
+    ]
+   }
+  ],
+  "end_card": []
+ },
+ "captions_spec": {
+  "script": "latin (as spoken)",
+  "case": {
+   "lead": "sentence case as spoken; a block that continues a sentence starts lowercase",
+   "key": "lowercase as spoken"
+  },
+  "punctuation": "kept as spoken (commas, full stops, question marks)",
+  "emoji": "none",
+  "grouping": {
+   "words_per_caption": "2-8 (typically ~5)",
+   "key_words_per_caption": "0-1 (one per block)",
+   "max_lines": 4,
+   "sync": "word-by-word: every word appears on its spoken word, at its final position in a pre-laid-out centred block (the block does not re-centre as it grows)",
+   "break": "new block at each clause; old block blurs out, then the next block's first word arrives",
+   "inline_accent": "occasionally a lead-size word is coloured pink inline instead of being enlarged"
+  },
+  "layout": {
+   "hook_state": {
+    "over": "desaturated footage (first ~11 % of runtime)",
+    "align": "centre (x 50 %)",
+    "line_center_y_pct": [
+     66.8,
+     71.2
+    ],
+    "key_center_y_pct": 78.3,
+    "following_line_center_y_pct": "~84 (estimated)",
+    "block_top_pct": 65.0,
+    "line_pitch_pct_of_H": 4.4
+   },
+   "main_state": {
+    "over": "cream canvas #FBF8F7 or dark #121212",
+    "align": "centre (x 50 %)",
+    "first_line_top_pct": 13.3,
+    "first_line_center_y_pct": 15.1,
+    "key_line_center_y_pct": "21.7-22.3 when the key is line 2; 17.6 when the key opens the block",
+    "line_after_key_center_y_pct": "24.5-28.9",
+    "lead_line_pitch_pct_of_H": 4.9,
+    "lead_to_key_baseline_pitch_pct_of_H": 8.3
+   },
+   "max_line_width_pct_of_W": 78,
+   "lead_line_width_pct_of_W": "48-74",
+   "margins": "symmetric, >= 11 % of W each side"
+  },
+  "type": {
+   "lead": {
+    "font_class": "neo-grotesque sans, medium (round i-dot, double-storey a, single-storey g)",
+    "closest_match": {
+     "local": "Inter 500",
+     "google": "Inter Medium",
+     "confidence": "medium"
+    },
+    "ink_height_pct_of_H": 3.75,
+    "k": 0.99,
+    "font_size_px_at_1920": 73,
+    "calibration": [
+     {
+      "word": "everybody else is",
+      "ink_pct_of_H": 3.75,
+      "width_pct_of_W": 51.9
+     }
+    ],
+    "probe": {
+     "everybody else is": "--box 0.06,0.12,0.94,0.175 --ink #FFFFFF:50 (white over dark #121212)"
+    },
+    "color": "#31302E on cream; #FFFFFF on footage / dark sections",
+    "stroke": "none",
+    "shadow": "none",
+    "box": "none",
+    "tracking": "-0.02em",
+    "hook_note": "white hook lines over a light area measured 2.97-3.59 % H - same tier, sizes estimated from the dark-frame calibration",
+    "verified_px": 77,
+    "fit": [
+     {
+      "font": "Inter 500",
+      "word": "everybody else is",
+      "tracking_em": -0.02,
+      "px_for_height": 76.6,
+      "px_for_width": 76.7,
+      "verified_px": 77,
+      "at_verified_px": {
+       "ink_pct_of_H": 3.8,
+       "width_pct_of_W": 52.1
+      },
+      "within_tolerance": true
+     }
+    ]
+   },
+   "key": {
+    "font_class": "neo-grotesque sans, bold",
+    "closest_match": {
+     "local": "Inter 700",
+     "google": "Inter Bold",
+     "confidence": "medium"
+    },
+    "ink_height_pct_of_H": 5.62,
+    "k": 0.73,
+    "font_size_px_at_1920": 148,
+    "calibration": [
+     {
+      "word": "lose",
+      "ink_pct_of_H": 5.62,
+      "width_pct_of_W": 24.2
+     },
+     {
+      "word": "no point",
+      "ink_pct_of_H": 7.5,
+      "width_pct_of_W": 49.2
+     }
+    ],
+    "probe": {
+     "lose": "--box 0.06,0.18,0.94,0.26 --ink #E23A78:60",
+     "no point": "--box 0.06,0.10,0.94,0.215 --ink #E23A78:60"
+    },
+    "size_note": "fixed size, about 2.0x the lead (not fit-to-width): a 13-character word spans 77.6 % of W at the same size",
+    "color": "#E23A78 (hot pink)",
+    "stroke": "none",
+    "shadow": "none",
+    "box": "none",
+    "tracking": "-0.03em",
+    "selection_rule": "the verb/noun that carries the claim; always on its own centred line",
+    "verified_px": 151,
+    "fit": [
+     {
+      "font": "Inter 700",
+      "word": "lose",
+      "tracking_em": -0.03,
+      "px_for_height": 145.8,
+      "px_for_width": 150.2,
+      "verified_px": 148,
+      "at_verified_px": {
+       "ink_pct_of_H": 5.73,
+       "width_pct_of_W": 23.9
+      },
+      "within_tolerance": true
+     },
+     {
+      "font": "Inter 700",
+      "word": "no point",
+      "tracking_em": -0.03,
+      "px_for_height": 153.2,
+      "px_for_width": 152.7,
+      "verified_px": 153,
+      "at_verified_px": {
+       "ink_pct_of_H": 7.5,
+       "width_pct_of_W": 49.3
+      },
+      "within_tolerance": true
+     }
+    ]
+   }
+  },
+  "animation": {
+   "fps": 30,
+   "word_entry": "each word slides in from ~2 % W to the left of its final spot with horizontal motion blur: frame 1 smeared, frame 2 lightly blurred, frame 3 sharp in place (3 frames); no scale, no overshoot",
+   "key_entry": "same blur-slide as lead words (2-3 frames); no pop",
+   "timing": "on the spoken word: -5 to +6 frames vs word starts, typically 0-3 frames early",
+   "exit": "whole block blurs, fades to 0 and drifts up ~1 % H over ~6 frames; next block's first word lands ~1 frame after",
+   "highlight": "no moving highlight; the key colour is fixed per word",
+   "idle": "no motion while held"
+  }
+ },
+ "other_text_spec": [
+  {
+   "type": "hook face ring",
+   "when": "0-11 % of runtime",
+   "text": "no text: hot-pink #E23A78 oval/pill outline (~1.5 % W stroke, estimated) around the speaker's face on desaturated footage with a faint white diamond-grid overlay"
+  },
+  {
+   "type": "face pill cutout + line art",
+   "when": "11-33 % and 47-99 % of runtime",
+   "bg": "cream #FBF8F7",
+   "text": "no text: speaker face in a pink-bordered (#E23A78) pill / rounded-rect cutout 13-30 % of W, linked into grey #AFAEAD line art that morphs per sentence; inset clips are rounded rects with a ~3 px pink border"
+  },
+  {
+   "type": "UI card",
+   "when": "33-47 % of runtime",
+   "bg": "near-black #121212",
+   "text": "white rounded card x 9-91 %, y 41.5-82.5 % with a soft pink outer glow; pink folder icon + 'Card title' (bold #3A3A3A, ~2.3 % H) + grey subtitle; 5 rows: avatar circle, 'Name' (semibold), progress bar (pink #E33A78 for the speaker's row, light grey for others), right-aligned % that counts up; other rows fade out to leave one highlighted"
+  }
+ ],
+ "style": {
+  "palette_roles": {
+   "text": "#31302E",
+   "accent": "#E23A78",
+   "accent_2": "#AFAEAD",
+   "surface": "#FBF8F7",
+   "card_bg": "#121212"
+  },
+  "fonts": {
+   "lead": {
+    "closest_local": "Inter 500",
+    "verified_px": 77,
+    "tracking": "-0.02em"
+   },
+   "key": {
+    "closest_local": "Inter 700",
+    "verified_px": 151,
+    "tracking": "-0.03em"
+   },
+   "ui_card": {
+    "closest_local": "Inter 600",
+    "verified_px": null,
+    "tracking": "0em"
+   }
+  },
+  "look_intent": "near-B&W desaturated speaker, warm cream canvas, high-contrast dark text, grey line art, a single hot-pink accent"
+ },
+ "sound": {
+  "music": "voice only (no bed detected; gaps are true silence)",
+  "sfx": [
+   "no hits on the hard cuts (measured cut_hit_share 0.0)",
+   "soft whoosh on motion-blur drops and zoom-throughs (inferred)"
+  ],
+  "loudness_lufs": -14.1
+ },
+ "measured": {
+  "grade": {
+   "black_point": 2.0,
+   "midtone": 247.4,
+   "white_point": 253.0,
+   "contrast_range": 251.0,
+   "luma_std": 84.5,
+   "saturation": 0.062,
+   "colorfulness": 39.5,
+   "warmth_r_minus_b": 40.3,
+   "tint_g": -41.1,
+   "vignette_centre_over_edge": 1.01,
+   "label": "high-contrast, muted, warm"
+  },
+  "layout": {
+   "letterbox_share": 0.0,
+   "split_divider_share": 0.0
+  },
+  "sound": {
+   "has_audio": true,
+   "speech_coverage": 0.94,
+   "beat_periodicity": 0.08,
+   "beat_bpm_est": null,
+   "gap_level_rel_speech_db": -82.5,
+   "music": "voice only (no bed detected)",
+   "cut_hit_share": 0.0,
+   "method": "heuristic (onset-envelope beat periodicity + level in speech gaps); not a classifier"
+  }
+ },
+ "catalog_styles": [
+  {
+   "id": 142,
+   "name": "Animated Diagram",
+   "role": "evolving line-art metaphor"
+  },
+  {
+   "id": 5,
+   "name": "Layered-Head (Subject Cutout)",
+   "role": "face pill cutout inside the drawing"
+  },
+  {
+   "id": 27,
+   "name": "Word-by-Word Pop Captions",
+   "role": "blur-slide word build in the top band"
+  },
+  {
+   "id": 31,
+   "name": "Emphasis-Word Zoom",
+   "role": "2x pink key word per block"
+  },
+  {
+   "id": 105,
+   "name": "White-Background Minimalist Motion Design",
+   "role": "cream canvas"
+  },
+  {
+   "id": 131,
+   "name": "Data Point / Chart Reveal",
+   "role": "contribution card with progress bars"
+  },
+  {
+   "id": 103,
+   "name": "Zoom-Through Transitions",
+   "role": "graphic zoom-throughs and blur drops"
+  },
+  {
+   "id": 159,
+   "name": "Contrarian Argument / Hot Take",
+   "role": "villain + cost thesis"
+  }
+ ],
+ "use_when": [
+  "A management, leadership or workplace argument that can be expressed with one visual metaphor",
+  "Plain or unremarkable speaker footage that can be desaturated and shrunk to a cutout",
+  "A short, dense thesis with one concrete example that can be shown as a simple UI card",
+  "The brand has one strong accent colour to carry the whole piece"
+ ],
+ "avoid_when": [
+  "The speaker's face and expression are the main draw (they are tiny for most of the runtime)",
+  "No design time for custom line art per sentence"
+ ],
+ "match": {
+  "tags": [
+   "explainer-graphics",
+   "line-art-metaphor",
+   "face-pill-cutout",
+   "cream-canvas",
+   "desaturated-footage",
+   "accent-ring",
+   "word-by-word",
+   "pink-key-word",
+   "blur-slide",
+   "ui-card",
+   "hot-take",
+   "leadership"
+  ],
+  "keywords": [
+   "manager",
+   "team",
+   "performance",
+   "hiring",
+   "leadership",
+   "culture",
+   "employees",
+   "management",
+   "talent",
+   "workplace",
+   "productivity",
+   "delegation",
+   "metaphor",
+   "lesson"
+  ],
+  "needs": {
+   "speaker_footage": true,
+   "screen_recordings": false,
+   "broll": false,
+   "brand_assets": false
+  }
+ },
+ "quality_score": 3,
+ "brand_prompt": "Use /video-pipeline with /video-captions on videos/<project>. Apply style blueprint B32 (video-reference-match/references/blueprints/B32.json) to this brand.\nCanvas 1080x1920, 30 fps. Speaker footage desaturated; most of the piece on a light canvas with line art.\n\nBRAND TOKENS (use the brand's colour/font for each role; keep the contrast relationship: {{ACCENT}} is the ONLY saturated colour and must stay >= 3:1 on {{SURFACE}} and on the desaturated footage; {{TEXT}} >= 7:1 on {{SURFACE}})\n- {{TEXT}}: default #31302E on cream (white #FFFFFF on footage / dark sections)\n- {{ACCENT}}: default #E23A78 (key words, face ring, pill borders, highlighted bar)\n- {{ACCENT_2}}: default #AFAEAD (line art)\n- {{SURFACE}}: default #FBF8F7 (cream canvas)\n- {{CARD_BG}}: default #121212 (dark section behind the UI card)\n- {{FONT_DISPLAY}}: default Inter 700 (key words)\n- {{FONT_BODY}}: default Inter 500 (lead words)\n- {{HANDLE}}: not on screen\n- {{LOGO}}: none\n\nCAPTIONS\n1. Latin, as spoken, punctuation kept; sentence case (continuation blocks start lowercase); key words lowercase; no emoji.\n2. Blocks of 2-8 words (~5), up to 4 lines, laid out centred in advance (does not re-centre while growing); 0-1 key word per block on its own line.\n3. Lead: {{FONT_BODY}} at 77 px, tracking -0.02em, {{TEXT}}; key: {{FONT_DISPLAY}} at ~148-153 px (~2x lead, fixed size), tracking -0.03em, {{ACCENT}}. No stroke, shadow or box.\n4. Hook state (first ~11 %, over footage): block top 65 % H, lines at 66.8 % / 71.2 %, key at 78.3 %, pitch 4.4 % H. Main state (canvas): first line centre 15.1 % H, key line 21.7-22.3 % (17.6 % when it opens the block), lines after key 24.5-28.9 %, lead pitch 4.9 % H, lead-to-key baseline pitch 8.3 % H; max width 78 % W, margins >= 11 % W.\n5. Each word appears on its spoken word (0-3 frames early), sliding ~2 % W from the left with a 3-frame horizontal motion blur (smeared, light blur, sharp); no scale. Block exit: blur + fade + drift up ~1 % H over ~6 frames; the next block's first word lands ~1 frame later.\n\nGRAPHICS AND EDIT DEVICES\n6. Hook: desaturated footage, {{ACCENT}} oval ring (~1.5 % W stroke) around the face, faint white grid overlay; hard switch to {{SURFACE}} at ~11 %.\n7. Speaker as a face pill / rounded-rect cutout 13-30 % W with a ~3 px {{ACCENT}} border, linked into one {{ACCENT_2}} line-art metaphor that changes state every sentence (break, branch, network, final {{ACCENT}} version). Change the graphic state every ~0.5-1.5 s.\n8. Example beat (~14 % of runtime): motion-blur drop to {{CARD_BG}}; white rounded card x 9-91 %, y 41.5-82.5 % with a soft {{ACCENT}} glow; icon + 'Card title' + grey subtitle; 5 rows avatar + 'Name' + bar + counting %; the hero row's bar in {{ACCENT}}, others light grey; others fade out.\n9. Transitions: graphic zoom-throughs and vertical motion-blur drops (~6-8 frames); one hard footage->canvas switch.\n10. No lower-thirds, logos or emoji.\n\nGRADE: Grade from the user's footage (video-style / grade.py); target look: near-B&W desaturated speaker, warm cream canvas, high-contrast text, one saturated accent.\nSOUND: voice only, dense delivery (do not speed up artificially), -14 LUFS; soft whooshes on blur drops.\n\nVERIFY\na) Render the key word \"lose\" at 148 px on line 2 of a block on {{SURFACE}} and measure:\n   python video-reference-match/scripts/caption_probe.py <test_render> --out <dir> --at <t> --box 0.06,0.18,0.94,0.26 --ink \"{{ACCENT}}:60\"   (default ink #E23A78)\n   Required: 5.62 % ±0.5 of H, 24.2 % ±2 of W. \"no point\" at 153 px: 7.5 % H, 49.2 % W (--box 0.06,0.10,0.94,0.215).\nb) Lead: \"everybody else is\" at 77 px white over {{CARD_BG}}: --box 0.06,0.12,0.94,0.175 --ink \"#FFFFFF:50\" -> 3.75 % ±0.5 H, 51.9 % ±2 W.\nc) Expected ink for any other word: video-reference-match/scripts/fit_font.py --font \"{{FONT_BODY}}\" --word <word> --tracking -0.02.",
+ "caption_family": "stacked-kinetic"
+}

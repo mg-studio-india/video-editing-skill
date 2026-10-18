@@ -1,0 +1,477 @@
+{
+ "id": "B31",
+ "schema": "blueprint/1",
+ "format": {
+  "type": "talking-head",
+  "aspect": "9:16",
+  "language": "English",
+  "duration_class": "long (>180s)",
+  "people_on_screen": "1"
+ },
+ "topic_class": "tech/AI tools",
+ "signature": {
+  "one_line": "Game-show versus format: boxed 1-2-word captions at 78 % height, two-size jump cuts, pixel-art P1-vs-P2 scoreboard and a score-comment CTA after every round.",
+  "unique_devices": [
+   "Boxed caption rail: 1-2 words, bold neo-grotesque 50 px white on a text-hugging rounded rgba(47,47,47,.75) box (86 px tall, 25 px side padding), fixed at 78.4 % height on talking head, screen and split shots alike; hard cut ~6-7 frames after the first word",
+   "Game frame: full-frame pixel-art P1-vs-P2 scoreboard card (~94 frames; logos wipe in, names reveal letter by letter) plus a spoken score-comment CTA after every round and an early promise that the last round decides it",
+   "First-shot-only serif question title: 2-line accent high-contrast display serif '<A> vs <B>: question?' at 12.5-21.8 % height, gone at the first cut",
+   "Two-size jump cuts (MS <-> ~130-150 % MCU/CU every 30-90 frames) with contender logo + name labels on top of every screen capture and top/bottom splits for same-prompt comparisons"
+  ],
+  "why_it_works": "Viewers score along like a game: the question title, result-first flash and promised decider round keep a long comparison watchable, while the fixed boxed captions read on any background."
+ },
+ "hook": {
+  "type": "open loop (question title) + result first (finished outputs flashed)",
+  "first_word_s": 0.01,
+  "first_cut_s": 3.4,
+  "first_frame": "medium shot of the speaker in a warm lamp-lit home studio under a 2-line accent serif question title, boxed caption at 78 % height"
+ },
+ "structure": [
+  {
+   "beat": "hook",
+   "from_pct": 0,
+   "to_pct": 4,
+   "what": "question title, framing of the stakes, a short flash of finished outputs, MCU/CU jump cuts"
+  },
+  {
+   "beat": "setup",
+   "from_pct": 4,
+   "to_pct": 10,
+   "what": "scoreboard card introduces the contenders; output montage; retention promise that the final round decides"
+  },
+  {
+   "beat": "proof",
+   "from_pct": 10,
+   "to_pct": 29,
+   "what": "round 1: same prompt, both outputs shown in screen captures; score-comment CTA"
+  },
+  {
+   "beat": "proof",
+   "from_pct": 29,
+   "to_pct": 54,
+   "what": "round 2: split-screen prompts, one fails, the other ships a reveal; score-comment CTA"
+  },
+  {
+   "beat": "proof",
+   "from_pct": 54,
+   "to_pct": 67,
+   "what": "round 3: different routes to the same task, side-by-side results, stat tag; score-comment CTA"
+  },
+  {
+   "beat": "payoff",
+   "from_pct": 67,
+   "to_pct": 85,
+   "what": "decider round at peak pace: fast borrowed b-roll montage, then both outputs and the verdict"
+  },
+  {
+   "beat": "cta",
+   "from_pct": 85,
+   "to_pct": 100,
+   "what": "slower reflective opinion takes, final scores comment, share/follow CTA"
+  }
+ ],
+ "pacing": {
+  "pace": "fast",
+  "median_shot_s": 1.8,
+  "cuts_per_min": 23,
+  "wpm": 210,
+  "pauses_per_min": 0.5,
+  "visual_change_every_s": 1.8,
+  "note": "curve dips to ~15 cuts/min in round 1, peaks ~39 cuts/min in the decider round, drops to 7-9 cuts/min for the closing opinion; 57 of 92 cuts mid-sentence (prefer word boundaries)"
+ },
+ "elements": {
+  "captions": [
+   {
+    "what": "boxed 1-2-word caption rail",
+    "when": "0-100 % (hidden over the scoreboard card)",
+    "how": "Inter-Bold-like 50 px white, sentence case; rounded box rgba(47,47,47,.75), 86 px tall, 25 px side padding, radius ~9 px, hugs and resizes with each phrase; centred x 50 %, y 78.4 %; hard cut in ~6-7 frames after the first word, hard cut out",
+    "catalog": [
+     21
+    ]
+   }
+  ],
+  "background_text": [
+   {
+    "what": "2-line question title",
+    "when": "first shot only (~100 frames)",
+    "how": "accent #F4F2B5 display serif ~86 px, soft dark shadow, block centre y 17.1 % (x 5.8-93.5 %); on from frame 0, hard-cut out with the first cut",
+    "catalog": [
+     24
+    ]
+   },
+   {
+    "what": "contender logo + name label on every screen capture",
+    "when": "all screen segments",
+    "how": "small dark grey at top centre (y 8.5 %, ~1.1 % H per line) on light captures; large white block (centre y 17.1 %) on dark #1D1C1A comparison layouts",
+    "catalog": []
+   },
+   {
+    "what": "stat result tag",
+    "when": "once in round 3",
+    "how": "off-white regular sans 59 px centred at y 25.7 % between label and result",
+    "catalog": [
+     130
+    ]
+   },
+   {
+    "what": "source credit on borrowed footage",
+    "when": "borrowed b-roll only",
+    "how": "'Source - @handle' tiny white sans top-left (x 9 %, y 6 %)",
+    "catalog": []
+   }
+  ],
+  "motion_graphics": [
+   {
+    "what": "pixel-art P1-vs-P2 scoreboard card",
+    "when": "~4-6 % (setup)",
+    "how": "full frame, ~94 frames; 4-frame zoom settle on entry, logo wipe 3 frames, score fade 4 frames, name letter-by-letter ~6 frames; P2 fills the same way; hard cut out",
+    "catalog": [
+     129,
+     118
+    ]
+   }
+  ],
+  "cards_lists": [],
+  "silhouettes_cutouts": [],
+  "broll_inserts": [
+   {
+    "what": "screen recordings of each contender's output",
+    "when": "~33 % of frames across rounds",
+    "how": "full-frame captures with motion inside (orbits, walk-throughs), up to ~360-frame holds for the best result; label at the top",
+    "catalog": [
+     202
+    ]
+   },
+   {
+    "what": "borrowed b-roll montage (others' work)",
+    "when": "start of the decider round",
+    "how": "5 shots at ~15 frames each with a source credit",
+    "catalog": [
+     174
+    ]
+   }
+  ],
+  "layout": [
+   {
+    "what": "top/bottom split for same-prompt comparisons",
+    "when": "rounds 2-4",
+    "how": "two captures stacked on a dark #1D1C1A layout, each with its contender label; caption stays at 78.4 %",
+    "catalog": [
+     3
+    ]
+   },
+   {
+    "what": "full-frame 9:16 talking head",
+    "when": "~60 % of frames",
+    "how": "home studio MS / MCU",
+    "catalog": [
+     46
+    ]
+   }
+  ],
+  "camera": [
+   {
+    "what": "two-size jump cuts",
+    "when": "most talking-head cuts",
+    "how": "locked tripod; alternate MS and a ~130-150 % MCU/CU punch-in every 30-90 frames; no camera moves",
+    "catalog": [
+     173
+    ]
+   }
+  ],
+  "transitions": [
+   {
+    "what": "hard jump cuts only",
+    "when": "throughout",
+    "how": "no dissolves; motion inside captures reads as soft",
+    "catalog": [
+     173
+    ]
+   }
+  ],
+  "end_card": []
+ },
+ "captions_spec": {
+  "script": "latin (English as spoken)",
+  "case": {
+   "caption": "sentence case as spoken (capital only at a sentence start)"
+  },
+  "punctuation": "kept as transcribed (commas, full stops, apostrophes stay attached to their word)",
+  "numbers": "digits as in the transcript (e.g. version numbers stay numeric)",
+  "emoji": "none",
+  "grouping": {
+   "words_per_caption": "1-2 (mostly 2)",
+   "max_lines": 1,
+   "sync": "phrase of 1-2 words replaced as a unit",
+   "break": "new caption every 1-2 words; previous caption hard-cut out",
+   "gaps": "no captions over the full-frame scoreboard card"
+  },
+  "layout": {
+   "band_pct_of_H": [
+    76.25,
+    80.6
+   ],
+   "caption": {
+    "align": "center",
+    "center_x_pct_of_W": 50.0,
+    "text_center_y_pct": 78.4,
+    "box_center_y_pct": 78.4
+   },
+   "same_position_every_shot": true,
+   "max_line_width_pct_of_W": 29.0,
+   "on_1080x1920": "same 9:16 canvas: box centred at x 540 px, y 1505 px"
+  },
+  "type": {
+   "caption": {
+    "font_class": "neo-grotesque sans, bold (double-storey a, flat-cut t, Helvetica/Arial-like)",
+    "closest_match": {
+     "local": "Inter 700",
+     "google": "Inter Bold (alt: Arimo Bold / Helvetica-like)",
+     "confidence": "medium"
+    },
+    "ink_height_pct_of_H": 1.88,
+    "k": 0.73,
+    "font_size_px_at_1920": 50,
+    "k_note": "ascenders, no descenders -> k 0.73; formula 1.88 x 19.2 / 0.73 = 49 px; render-verified with Inter 700: 50 px (both calibration words within tolerance)",
+    "calibration": [],
+    "calibration_note": "ink measured inside the dark box (clean background) on two 2-word sentence-case phrases",
+    "color": "#FFFFFF",
+    "stroke": "none",
+    "shadow": "none",
+    "box": {
+     "color": "#2F2F2F",
+     "opacity": 0.75,
+     "css": "rgba(47,47,47,0.75)",
+     "height_pct_of_H": 4.45,
+     "height_px_at_1920": 86,
+     "padding_px_at_1920": {
+      "x": 25,
+      "y_from_ink": 25
+     },
+     "radius_px_at_1920": "~9 (estimated: 6 px at 720)",
+     "width": "hugs the text (text width + 2 x 25 px at 1920)",
+     "solve_note": "box over #BFC7C3 reads #525554, over #090C16 reads #262627 -> alpha 0.75, colour #2F2F2F"
+    },
+    "tracking": "0em",
+    "verified_px": 50,
+    "fit": [
+     {
+      "font": "Inter 700",
+      "tracking_em": 0.0,
+      "verified_px": 50
+     }
+    ]
+   }
+  },
+  "animation": {
+   "fps": 30,
+   "entry": "hard cut: new phrase and its resized box appear complete on one frame (no fade, scale or slide)",
+   "timing": "consistently ~6-7 frames after the first word's transcript start",
+   "highlight": "none",
+   "exit": "hard cut when the next phrase replaces it",
+   "idle": "no motion while held"
+  }
+ },
+ "other_text_spec": [
+  {
+   "type": "hook title",
+   "when": "first shot only (~100 frames from frame 0; hard-cut out with the first picture cut)",
+   "text": "'<A> vs <B>: / Question here?' 2 centred lines, pale yellow #F4F2B5, bold high-contrast display serif (closest local Playfair Display 700; Google DM Serif Display / Playfair Display Bold, confidence low-medium), soft dark drop shadow (estimated); render-fit Playfair Display 700: ~86 px at 1920 (line 1 -> 84 px, line 2 -> 89 px)",
+   "position": "block x 5.8-93.5 % W, y 12.5-21.8 % H, centre y 17.1 %; line 1 ink 3.98 % H (k 0.73), width ~88 % W; line 2 ink 3.91 % H, width ~60 % W; line gap 1.6 % H"
+  },
+  {
+   "type": "pixel-art scoreboard (full frame)",
+   "when": "~4-6 % of runtime, ~94 frames",
+   "text": "pixel-art game card on a nature background: 'SCORE' ribbon, 'P1' green tab, parchment panel with contender logo + 2-line name and a big pixel '0' over 'POINTS', a 'VS' badge, 'P2' red tab and a second panel that fills later",
+   "animation": "card cuts in with a slight zoom settle (~4 frames); P1 logo wipes in left-to-right (~3 frames), '0' fades in over ~4 frames, the name reveals left-to-right letter by letter (~6 frames); P2 fills the same way; hard cut out; no captions while it is up"
+  },
+  {
+   "type": "contender label on screen captures",
+   "when": "every screen-recording segment",
+   "text": "contender logo + 2-line name in a clean geometric sans; small dark-grey on light full-screen captures (each line ink 1.09 % H, centred at x 52 %, y 8.5 %), large white on the dark #1D1C1A comparison layouts (line 1 3.05 % H, line 2 2.42 % H, block centre y 17.1 %, logo + name 45 % W)"
+  },
+  {
+   "type": "result tag",
+   "when": "once, ~64 % of runtime",
+   "text": "short stat tag (e.g. '~N+ hours'), off-white #E3E3D7 regular sans on the dark layout, centred, ink 2.34 % H (k 0.73; render-fit Inter 400: 59 px at 1920), centre y 25.7 %, between the contender label and the result image"
+  },
+  {
+   "type": "source credit",
+   "when": "on borrowed b-roll only",
+   "text": "'Source - @handle' tiny white sans, ink 0.7 % H, top-left x 8.8 %, y 5.9 %"
+  },
+  {
+   "type": "end card / CTA graphic",
+   "when": "none",
+   "text": "none; CTAs are spoken only"
+  }
+ ],
+ "style": {
+  "palette_roles": {
+   "text": "#FFFFFF",
+   "accent": "#F4F2B5",
+   "accent_2": "#E3E3D7",
+   "surface": "#1D1C1A",
+   "card_bg": "#2F2F2F"
+  },
+  "fonts": {
+   "caption": {
+    "closest_local": "Inter 700",
+    "verified_px": 50,
+    "tracking": "0em"
+   },
+   "hook_title": {
+    "closest_local": "Playfair Display 700",
+    "verified_px": 86,
+    "tracking": "0em"
+   },
+   "result_tag": {
+    "closest_local": "Inter 400",
+    "verified_px": 59,
+    "tracking": "0em"
+   }
+  },
+  "look_intent": "warm, high-contrast, muted; lamp-lit home studio, beige walls, natural skin, gentle contrast"
+ },
+ "sound": {
+  "music": "music bed likely (heuristic, speech-gap level -8.2 dB); light and unobtrusive under dense speech",
+  "sfx": [
+   "hits on ~38 % of hard cuts (measured cut_hit_share 0.38): soft whoosh/pop when cutting to screen captures",
+   "8-bit blip on the scoreboard card reveals (suits the pixel-art frame; suggestion)"
+  ],
+  "loudness_lufs": -14.7
+ },
+ "measured": {
+  "grade": {
+   "black_point": 10.0,
+   "midtone": 118.6,
+   "white_point": 232.9,
+   "contrast_range": 223.0,
+   "luma_std": 71.2,
+   "saturation": 0.249,
+   "colorfulness": 40.0,
+   "warmth_r_minus_b": 18.1,
+   "tint_g": 2.1,
+   "vignette_centre_over_edge": 0.96,
+   "label": "high-contrast, muted, warm"
+  },
+  "layout": {
+   "letterbox_share": 0.0,
+   "split_divider_share": 0.04
+  },
+  "sound": {
+   "has_audio": true,
+   "speech_coverage": 0.97,
+   "beat_periodicity": 0.07,
+   "beat_bpm_est": null,
+   "gap_level_rel_speech_db": -8.2,
+   "music": "music bed likely",
+   "cut_hit_share": 0.4,
+   "method": "heuristic (onset-envelope beat periodicity + level in speech gaps); not a classifier"
+  }
+ },
+ "catalog_styles": [
+  {
+   "id": 21,
+   "name": "Caption-Edit",
+   "role": "boxed 1-2-word caption rail on every shot"
+  },
+  {
+   "id": 118,
+   "name": "A-Versus-B Comparison",
+   "role": "two contenders, same prompt per round"
+  },
+  {
+   "id": 129,
+   "name": "Ranking Leaderboard",
+   "role": "pixel-art P1-vs-P2 scoreboard card"
+  },
+  {
+   "id": 157,
+   "name": "Experiment / Challenge",
+   "role": "escalating test rounds with a decider"
+  },
+  {
+   "id": 173,
+   "name": "Jump-Cut Editing",
+   "role": "two-size MS / MCU jump cuts"
+  },
+  {
+   "id": 3,
+   "name": "Stacked Split-Screen",
+   "role": "top/bottom same-prompt comparisons"
+  },
+  {
+   "id": 24,
+   "name": "Big-Text Hook",
+   "role": "first-shot serif question title"
+  },
+  {
+   "id": 169,
+   "name": "Open-Loop Storytelling with a Delayed Payoff",
+   "role": "promised decider round at the end"
+  },
+  {
+   "id": 202,
+   "name": "Product Demo",
+   "role": "screen captures of each output"
+  }
+ ],
+ "use_when": [
+  "comparing two tools, products or approaches over several rounds",
+  "the user has talking-head footage plus screen recordings of results",
+  "the goal is comments and engagement (viewers score along)",
+  "a long-form reel needs a repeatable, legible caption system across mixed shot types"
+ ],
+ "avoid_when": [
+  "the piece is micro or short (the round structure needs room)",
+  "a serious finance or corporate tone where game visuals feel off",
+  "there is no head-to-head comparison"
+ ],
+ "match": {
+  "tags": [
+   "versus",
+   "comparison",
+   "game-show",
+   "scoreboard",
+   "pixel-art",
+   "boxed-captions",
+   "caption-rail",
+   "jump-cuts",
+   "two-size-punch-ins",
+   "screen-recording",
+   "split-screen",
+   "comment-cta",
+   "serif-title",
+   "long-form-reel"
+  ],
+  "keywords": [
+   "versus",
+   "vs",
+   "compare",
+   "test",
+   "rounds",
+   "winner",
+   "score",
+   "tools",
+   "models",
+   "ai",
+   "build",
+   "challenge",
+   "shootout",
+   "which",
+   "better",
+   "experiment",
+   "results",
+   "verdict"
+  ],
+  "needs": {
+   "speaker_footage": true,
+   "screen_recordings": true,
+   "broll": false,
+   "brand_assets": true
+  }
+ },
+ "quality_score": 4,
+ "brand_prompt": "Use /video-pipeline with /video-captions on videos/<project>. Apply style blueprint B31 (video-reference-match/references/blueprints/B31.json) to this brand.\nCanvas 1080x1920, 30 fps. All positions are % of frame; px are at 1080x1920.\n\nBRAND TOKENS (use the brand's colour/font for each role; keep the contrast relationship: {{TEXT}} must stay >= 4.5:1 on {{CARD_BG}} at 75 % opacity, {{ACCENT}} >= 3:1 on the footage behind the title)\n- {{TEXT}}      caption text, large labels on dark layouts   default #FFFFFF\n- {{ACCENT}}    hook question title                          default #F4F2B5 (pale yellow)\n- {{ACCENT_2}}  stat result tag                              default #E3E3D7 (off-white)\n- {{SURFACE}}   dark comparison / split layout               default #1D1C1A\n- {{CARD_BG}}   caption box (at 75 % opacity)                default #2F2F2F\n- {{FONT_DISPLAY}} hook title                                default Playfair Display 700 (bold high-contrast display serif)\n- {{FONT_BODY}}    captions, labels, tags                    default Inter 700 (captions) / Inter 400 (tag)\n- {{HANDLE}}    source credits on borrowed footage (\"Source - @handle\")\n- {{LOGO}}      contender logos on labels and the scoreboard card\n\nCAPTIONS\n1. English as spoken, sentence case (capital only at a sentence start); keep commas, full stops, apostrophes; digits as transcribed.\n2. 1-2 words per caption (mostly 2), one line, replaced as a unit; never more than one caption on screen.\n3. Type: {{FONT_BODY}} 700 at 50 px, tracking 0, {{TEXT}}, no stroke, no shadow.\n4. Box: rounded rectangle {{CARD_BG}} at 75 % opacity, 86 px tall, 25 px left/right padding, width hugging the text (resizes with each phrase), radius ~9 px.\n5. Position: centred (x 540 px), box and text centre at 78.4 % of height (y ~1505 px), identical on talking-head, screen-recording and split shots.\n6. Animation: hard cut in (text + resized box on one frame) ~6-7 frames after the phrase's first word starts; hard cut out on the next phrase. No fade, pop, slide, highlight or idle motion. Hide captions while a full-frame card is up.\n\nOTHER TEXT\n7. Hook title, first shot only (on from frame 0, hard-cut out with the first picture cut): 2-line question \"<A> vs <B>: / Question here?\" centred at the top, {{ACCENT}}, {{FONT_DISPLAY}} at ~86 px (line 1 ~84, line 2 ~89), soft dark drop shadow; block x 5.8-93.5 %, y 12.5-21.8 %, centre y 17.1 %, line gap 1.6 % H.\n8. Scoreboard card (~94 frames, when introducing the contenders): full-frame pixel-art game card: \"SCORE\" ribbon, P1/P2 tabs, parchment panels with {{LOGO}} + 2-line contender name and a big pixel \"0 / POINTS\", a \"VS\" badge. 4-frame zoom settle on entry; logo wipes in left-to-right (3 frames), score fades in (4 frames), name reveals letter by letter (~6 frames); P2 fills the same way; no captions over it.\n9. Contender label on every screen capture: {{LOGO}} + 2-line name; small dark grey at top centre (y ~8.5 %, ~1.1 % H per line) on light screens; large {{TEXT}} on a {{SURFACE}} comparison layout (block centre y ~17 %).\n10. Stat tag when a result needs a number: e.g. \"~N+ hours\", {{ACCENT_2}}, {{FONT_BODY}} 400 at 59 px, centred at y 25.7 %.\n11. Source credit on borrowed footage: \"Source - {{HANDLE}}\", tiny white sans (~0.7 % H), top-left at x 9 %, y 6 %.\n12. No end card; CTAs are spoken.\n\nEDIT DEVICES\n13. Two-size jump cuts on the talking head: alternate MS and a ~130-150 % MCU/CU every 30-90 frames (median shot ~54 frames); cut on word boundaries.\n14. Hook: question title + a short flash of finished results before any explanation. Re-hook at ~8 % of runtime by promising that the final round is the decider. After every round, a spoken score-comment CTA. Peak the cut rate (~39 cuts/min) in the decider round; slow to ~8 cuts/min for the closing opinion.\n15. Same-prompt comparisons as top/bottom splits on {{SURFACE}}.\n\nGRADE\n16. Grade from the user's footage (video-style / grade.py); target look: warm, high-contrast, muted, lamp-lit home studio with natural skin and gentle contrast.\n\nAUDIO\n17. Light music bed under dense speech; soft whoosh/pop on cuts into screen captures (about a third of cuts), optional 8-bit blips on the scoreboard. Master to about -14.7 LUFS with true peak <= -1 dBTP.\n\nVERIFY before rendering\na) Render a test frame with the caption \"KEY WORD\" in its box and measure:\n   python video-reference-match/scripts/caption_probe.py <test.mp4> --out <dir> --at <t> --box 0.25,0.75,0.75,0.82 --ink \"{{TEXT}}:45\"\nb) Expected ink: video-reference-match/scripts/fit_font.py with {{FONT_BODY}} 700 at 50 px (reference ink height 1.88 % H for mixed-case words with ascenders, no descenders). Required: within ±0.5 % H; centre y 78.4 % ±0.5; box height 4.45 % H; colours equal to the tokens. Title: --box 0.05,0.12,0.95,0.22 --ink \"{{ACCENT}}:60\", expected ink ~3.9-4.0 % H per line at the default font.\n",
+ "caption_family": "boxed-pill"
+}

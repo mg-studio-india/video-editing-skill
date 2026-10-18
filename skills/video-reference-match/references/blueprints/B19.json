@@ -1,0 +1,568 @@
+{
+ "id": "B19",
+ "schema": "blueprint/1",
+ "format": {
+  "type": "mixed",
+  "aspect": "9:16",
+  "language": "Hinglish",
+  "duration_class": "mid (60-180s)",
+  "people_on_screen": "1"
+ },
+ "topic_class": "tech/AI tools",
+ "signature": {
+  "one_line": "Selfie talking head rotating with split face-card + UI mock-ups; UPPERCASE word-by-word captions with one white-boxed accent key phrase.",
+  "unique_devices": [
+   "Three-layout rotation on nearly every cut: full-face selfie, split (rounded face card top 4-46 %, UI card below 56 %), full-screen white or accent UI explainer",
+   "Key phrase in a solid white rounded box with accent caps text, wiped in left-to-right over 2 frames, 5 frames after a small white lead-in word",
+   "Tools rebuilt as clean UI mock-ups (dot-grid off-white, mono labels, animated cursor, accent STEP tags) instead of raw screen recordings",
+   "Strike-through 'old method' card (grey button, accent X, tilted tag) and a gated CTA: padlock framework card + typed comment bar + keyword end-card pill"
+  ],
+  "why_it_works": "Every cut changes the layout so the eye always gets something new; mock-ups make a technical method legible, and the boxed key phrase gives each sentence one anchor."
+ },
+ "hook": {
+  "type": "direct address naming a pain + proof card",
+  "first_word_s": 0.07,
+  "first_cut_s": 1.9,
+  "first_frame": "mirrored selfie medium close-up holding a mic, warm wall; above the head a white stat card proving the problem and a second accent-highlighted title label; caption building at ~76 % height"
+ },
+ "structure": [
+  {
+   "beat": "hook",
+   "from_pct": 0,
+   "to_pct": 7,
+   "what": "name the pain in the first second over a stat card, then an animated mock-up of the tedious current method"
+  },
+  {
+   "beat": "claim",
+   "from_pct": 7,
+   "to_pct": 11,
+   "what": "'stop doing this': strike-through old-method card, then boxed key phrase introducing the easier way"
+  },
+  {
+   "beat": "setup",
+   "from_pct": 11,
+   "to_pct": 28,
+   "what": "credibility tag, an audience question card, a usage meter; boxed 'HOW' transition"
+  },
+  {
+   "beat": "list",
+   "from_pct": 28,
+   "to_pct": 46,
+   "what": "numbered steps as UI mock-ups with STEP tags, cursor clicks and a before/after stat comparison"
+  },
+  {
+   "beat": "proof",
+   "from_pct": 46,
+   "to_pct": 68,
+   "what": "mechanism: table, node-link diagram and a accent concept card explain why it works"
+  },
+  {
+   "beat": "example",
+   "from_pct": 68,
+   "to_pct": 79,
+   "what": "honest caveat with a ≠ statement card and a reasons table"
+  },
+  {
+   "beat": "cta",
+   "from_pct": 79,
+   "to_pct": 100,
+   "what": "gated lead magnet: locked framework card, typed comment keyword, accent end card with a keyword pill"
+  }
+ ],
+ "pacing": {
+  "pace": "moderate",
+  "median_shot_s": 3.7,
+  "cuts_per_min": 14,
+  "wpm": 150,
+  "pauses_per_min": 0.6,
+  "visual_change_every_s": 3.7,
+  "notes": "hard cuts only; 18 of 24 cuts mid-sentence (cut on caption phrases, not pauses); layout changes on 22 of 24 cuts; face shots 48-117 frames"
+ },
+ "elements": {
+  "captions": [
+   {
+    "what": "UPPERCASE word-by-word caption line",
+    "when": "all face and split shots",
+    "how": "Inter 800 46 px white (accent on light layouts), centred at y 75.9 % on face shots / y ~48-50 % between cards on splits; each word hard-cuts on in place (line pre-laid out, grows right)",
+    "catalog": [
+     27,
+     21
+    ]
+   },
+   {
+    "what": "boxed key phrase",
+    "when": "one per sentence",
+    "how": "white #F9FDFD rounded box (r ~8 px) under a lead-in word, box y 77.7-84.1 %, accent Inter 800 88 px -0.04em; 2-frame left-to-right wipe; accent layouts invert to accent box + white text",
+    "catalog": [
+     31
+    ]
+   }
+  ],
+  "background_text": [
+   {
+    "what": "hook title label on a second accent highlight bar",
+    "when": "0-2 %",
+    "how": "black heavy rounded type on second accent #BDF806 rectangle y 28-31 % above the head",
+    "catalog": [
+     24
+    ]
+   },
+   {
+    "what": "top headline on explainer graphics",
+    "when": "full-screen UI shots",
+    "how": "accent Inter 800 74-86 px -0.04em, centre y ~14 %, word-by-word reveal; key words royal accent",
+    "catalog": [
+     33
+    ]
+   }
+  ],
+  "motion_graphics": [
+   {
+    "what": "animated cursor clicks, check marks, bar fills, link-line draws, typing dots",
+    "when": "every UI mock-up shot",
+    "how": "short eased moves (power2.out ~8-12 frames), elements swap inside a shot",
+    "catalog": [
+     93,
+     81
+    ]
+   },
+   {
+    "what": "strike-through old method",
+    "when": "~7 %",
+    "how": "grey button, accent X draws across, tilted 'OLD METHOD' tag drops in, small handwritten aside",
+    "catalog": [
+     119,
+     37
+    ]
+   },
+   {
+    "what": "node-link diagram",
+    "when": "mechanism beat",
+    "how": "nodes and connecting lines draw on accent or white",
+    "catalog": [
+     142
+    ]
+   }
+  ],
+  "cards_lists": [
+   {
+    "what": "STEP tags on UI cards",
+    "when": "steps beat",
+    "how": "small accent mono 'STEP N · TOOL' tag at y ~64 % on each step",
+    "catalog": [
+     114
+    ]
+   },
+   {
+    "what": "stat comparison cards",
+    "when": "end of steps",
+    "how": "two cards 'small VS big' with large accent / accent numerals",
+    "catalog": [
+     118,
+     130
+    ]
+   },
+   {
+    "what": "≠ caveat pills",
+    "when": "caveat beat",
+    "how": "white and accent pills with a accent ≠ between them",
+    "catalog": [
+     115
+    ]
+   }
+  ],
+  "silhouettes_cutouts": [],
+  "broll_inserts": [
+   {
+    "what": "UI mock-ups instead of screen recordings",
+    "when": "~44 % full-screen + ~36 % in split",
+    "how": "rebuilt light UI on #EEF4FB dot grid, white rounded cards, accent dark-mode for mechanism and CTA",
+    "catalog": [
+     93,
+     62
+    ]
+   }
+  ],
+  "layout": [
+   {
+    "what": "split: rounded face card over UI card",
+    "when": "~36 % of runtime",
+    "how": "face card x 8-92 %, y 4-46 %; caption in the gap at y ~48-50 %; UI card from y ~56 %",
+    "catalog": [
+     3,
+     7
+    ]
+   },
+   {
+    "what": "full-face selfie",
+    "when": "~20 % of runtime, 48-117 frames per shot",
+    "how": "static mirrored MCU, caption at 76 %",
+    "catalog": [
+     46
+    ]
+   }
+  ],
+  "camera": [
+   {
+    "what": "fixed selfie MCU, no punch-ins",
+    "when": "all face shots",
+    "how": "motion comes from the UI animation, not the camera",
+    "catalog": [
+     61
+    ]
+   }
+  ],
+  "transitions": [
+   {
+    "what": "hard cuts only, mostly mid-sentence",
+    "when": "every cut",
+    "how": "cut on caption phrase boundaries; layout swaps with each cut",
+    "catalog": [
+     173
+    ]
+   }
+  ],
+  "end_card": [
+   {
+    "what": "gated CTA + keyword end card",
+    "when": "81-100 %",
+    "how": "padlock framework card 'IN YOUR DM', comment bar typing the keyword at y ~90 %, accent end card with logo lockup and accent 'Comment \"KEYWORD\"' pill",
+    "catalog": [
+     35,
+     148
+    ]
+   }
+  ]
+ },
+ "captions_spec": {
+  "script": "latin; the speech is Hinglish but the captions are an ENGLISH TRANSLATION, so word sync is approximate (a Hinglish/Roman transliteration also works with the same system)",
+  "case": {
+   "caption": "UPPERCASE",
+   "key": "UPPERCASE",
+   "headline": "UPPERCASE"
+  },
+  "grouping": {
+   "words_per_caption": "1-6 (one line, never wraps)",
+   "key_words_per_caption": "1-2 (one key phrase per sentence, on its own line under a 1-word lead-in)",
+   "max_lines": 2,
+   "sync": "word by word: each word switches on in place roughly as its meaning is spoken",
+   "break": "caption hard-cuts out (often a 1-frame gap) and the next phrase starts; layout changes on almost every picture cut"
+  },
+  "layout": {
+   "face_shots": "one line centred horizontally (x centre ~45-50 %), centre y 75.9 % (over the chest, under the chin/mic); a 5-word line spans ~x 13-74 %",
+   "key_on_face": "lead-in word small white centred at y 75.9 %, the boxed key phrase directly below: box x 27.4-72.6 %, y 77.7-84.1 % (centre y 80.9 %), text centre y 80.7 %",
+   "split_layout": "rounded face card on top (x 8-92 %, y 4-46 %), caption centred in the gap below it at y ~48-50 % (key box x 34-66 %, y 47.5-52.3 %), UI card below from y ~56 %",
+   "graphic_layout": "headline line at the top, centre y 13.7-14.3 %, laid out centred and revealed word by word (so partial lines look left-shifted)",
+   "reveal_in_place": "the full line is typeset at its final centred position first; words appear one by one at their final x, so the line grows to the right without re-centring"
+  },
+  "type": {
+   "caption": {
+    "font_class": "neo-grotesque sans, extra-bold, tight",
+    "closest_match": {
+     "local": "Inter 800",
+     "google": "Inter ExtraBold"
+    },
+    "confidence": "medium",
+    "letterform_evidence": "flat-sided grotesque caps, S with horizontal terminals, straight-armed Y, W with apex at cap height, very tight spacing",
+    "color": "#FFFFFF",
+    "stroke": "none",
+    "shadow": "faint soft dark shadow 0 2px 4px rgba(0,0,0,.35) (estimated)",
+    "box": "none",
+    "tracking": "0em",
+    "ink_height_pct_of_H": 1.8,
+    "k": 0.73,
+    "font_size_px_at_1920": 47,
+    "calibration": [],
+    "calibration_note": "source 5-word caps line measured ink 1.8 % H (cap height); compute expected width for any test line with fit_font.py",
+    "on_light_layouts": "same size and weight in navy #0B1327 between the face card and the UI card (ink ~1.4 % H)",
+    "verified_px": 46
+   },
+   "key": {
+    "font_class": "neo-grotesque sans, extra-bold, tight (same face as captions)",
+    "closest_match": {
+     "local": "Inter 800",
+     "google": "Inter ExtraBold"
+    },
+    "confidence": "medium",
+    "color": "#1F4FD6 royal blue",
+    "stroke": "none",
+    "shadow": "none on the text; the box has a very soft light glow on light layouts",
+    "box": "solid white #F9FDFD rounded rectangle, radius ~8 px at 1080 (estimated), padding ~27 px left/right, ~24 px top, ~30 px bottom at 1080 (measured: text x 30.1-70.3 % inside box 27.4-72.6 %, text y 78.9-82.5 % inside box 77.7-84.1 %)",
+    "tracking": "-0.04em",
+    "ink_height_pct_of_H": 3.67,
+    "k": 0.73,
+    "font_size_px_at_1920": 97,
+    "calibration": [
+     {
+      "word": "EASY WAY",
+      "ink_pct_of_H": 3.67,
+      "width_pct_of_W": 40.1,
+      "ink": "#1F4FD6:90"
+     }
+    ],
+    "split_layout_size": "smaller on split layouts: a single key word at ink 2.89 % H -> ~75 px in Inter 800 -0.04em",
+    "navy_variant": "on navy #091E47 layouts the box inverts: royal-blue #1D50DB box with a thin white outline, white text",
+    "selection_rule": "the noun phrase that names the idea of the sentence (the method, the 'how', the result word, the offer name)",
+    "verified_px": 88,
+    "fit": [
+     {
+      "font": "Inter 800",
+      "word": "EASY WAY",
+      "tracking_em": -0.04,
+      "px_for_height": 94.0,
+      "px_for_width": 85.9,
+      "verified_px": 88,
+      "at_verified_px": {
+       "ink_pct_of_H": 3.49,
+       "width_pct_of_W": 41.1
+      },
+      "within_tolerance": true
+     }
+    ]
+   },
+   "headline": {
+    "font_class": "neo-grotesque sans, extra-bold, tight (same face)",
+    "closest_match": {
+     "local": "Inter 800",
+     "google": "Inter ExtraBold"
+    },
+    "confidence": "medium",
+    "color": "navy #0B1327 on white/light #EEF4FB layouts; royal blue #1F4FD6 for the key phrase; white on navy",
+    "stroke": "none",
+    "shadow": "none",
+    "box": "none",
+    "tracking": "-0.04em",
+    "ink_height_pct_of_H": 2.89,
+    "k": 0.73,
+    "font_size_px_at_1920": 76,
+    "calibration": [
+     {
+      "word": "BECAUSE",
+      "ink_pct_of_H": 2.89,
+      "width_pct_of_W": 30.4,
+      "ink": "#0B1327:80"
+     }
+    ],
+    "position": "top of full-screen UI explainers, centre y 13.7-14.3 %",
+    "verified_px": 80,
+    "fit": [
+     {
+      "font": "Inter 800",
+      "word": "BECAUSE",
+      "tracking_em": -0.04,
+      "px_for_height": 74.0,
+      "px_for_width": 74.4,
+      "verified_px": 74,
+      "at_verified_px": {
+       "ink_pct_of_H": 2.86,
+       "width_pct_of_W": 30.0
+      },
+      "within_tolerance": true
+     }
+    ],
+    "fit_note": "a 2-word blue key headline solved to 86 px; use 74-86 px depending on line length"
+   }
+  },
+  "animation": {
+   "fps": 30,
+   "caption_entry": "hard cut on, word by word, no fade/scale/slide; each word appears complete in one frame, ~4-12 frames apart",
+   "key_entry": "the lead-in word cuts on first; the boxed key phrase follows 5 frames later with a left-to-right wipe of box + text over 2 frames, no overshoot",
+   "timing": "translation captions: the word appears when its spoken equivalent is said; key phrase can lead the spoken word by ~5 frames",
+   "exit": "hard cut; usually a 1-frame empty gap before the next caption",
+   "idle": "none"
+  },
+  "notes": "Positions, sizes, colours and frame timings measured on video frames; font names are closest matches (unverified); shadow and corner radius estimated."
+ },
+ "other_text_spec": [
+  {
+   "type": "hook title label",
+   "when": "first shot only (0-2 %, ~57 frames)",
+   "text": "'Headline here' black heavy rounded display type on a lime #BDF806 highlight rectangle (x ~13-90 %, y ~28-31 %) under a white stat card at the top (grey 'bad' count / green 'good' count) that proves the pain"
+  },
+  {
+   "type": "UI mock-up cards",
+   "when": "most split and full-graphic shots",
+   "text": "white rounded cards with soft shadow on #EEF4FB dot-grid: mono uppercase labels (JetBrains-Mono-like, grey, ~1 % H, letter-spaced), navy pill buttons with white caps text, royal-blue #1F4FD6 accents, small blue mono 'STEP 1 · TOOL NAME' tags at y ~64 %"
+  },
+  {
+   "type": "strike-through / comparison",
+   "when": "~7-10 % (old way), ~43-46 % (stat comparison), ~72 % (caveat)",
+   "text": "grey old-method button crossed by a blue X with a tilted 'OLD METHOD' tag and a small handwritten aside; 'small number VS big number' stat cards (big blue / navy numerals); 'X ≠ Y' caveat in white and navy pills with a blue ≠"
+  },
+  {
+   "type": "CTA",
+   "when": "81-100 %",
+   "text": "locked framework card with a padlock and 'IN YOUR DM' (~280 frames), a social-style comment bar (white pill, '+ KEYWORD', blue 'Post') at y ~90 % typing the keyword, then a navy end card with the brand lockup and a royal-blue 'Comment \"KEYWORD\"' pill (~78 frames)"
+  }
+ ],
+ "style": {
+  "palette_roles": {
+   "text": "#FFFFFF",
+   "accent": "#1F4FD6",
+   "accent_2": "#BDF806",
+   "surface": "#EEF4FB",
+   "card_bg": "#091E47"
+  },
+  "fonts": {
+   "caption": {
+    "closest_local": "Inter 800",
+    "verified_px": 46,
+    "tracking": "0em"
+   },
+   "key_box": {
+    "closest_local": "Inter 800",
+    "verified_px": 88,
+    "tracking": "-0.04em"
+   },
+   "headline": {
+    "closest_local": "Inter 800",
+    "verified_px": 80,
+    "tracking": "-0.04em"
+   },
+   "ui_label": {
+    "closest_local": "JetBrains Mono",
+    "verified_px": null,
+    "tracking": "0.1em"
+   }
+  },
+  "look_intent": "high-contrast, muted, neutral-warm: warm lamp-lit face footage against cool off-white and navy graphics, so the two layers separate"
+ },
+ "sound": {
+  "music": "possible low music bed (gap level -22 dB vs speech); mood not inferable",
+  "sfx": [
+   "click on cursor taps in UI mock-ups (optional)",
+   "no hits on hard cuts (measured cut_hit_share 0.21)",
+   "bed audible under the end card"
+  ],
+  "loudness_lufs": -14.1
+ },
+ "measured": {
+  "grade": {
+   "black_point": 14.8,
+   "midtone": 241.3,
+   "white_point": 252.6,
+   "contrast_range": 237.7,
+   "luma_std": 82.5,
+   "saturation": 0.192,
+   "colorfulness": 33.2,
+   "warmth_r_minus_b": 12.9,
+   "tint_g": -0.3,
+   "vignette_centre_over_edge": 0.88,
+   "label": "high-contrast, muted, neutral-warm"
+  },
+  "layout": {
+   "letterbox_share": 0.0,
+   "split_divider_share": 0.12
+  },
+  "sound": {
+   "has_audio": true,
+   "speech_coverage": 0.95,
+   "beat_periodicity": 0.08,
+   "beat_bpm_est": null,
+   "gap_level_rel_speech_db": -21.9,
+   "music": "possible music bed",
+   "cut_hit_share": 0.2,
+   "method": "heuristic (onset-envelope beat periodicity + level in speech gaps); not a classifier"
+  }
+ },
+ "catalog_styles": [
+  {
+   "id": 7,
+   "name": "Screen-Plus-Facecam",
+   "role": "split face card over UI card"
+  },
+  {
+   "id": 93,
+   "name": "UI / Website Animation",
+   "role": "UI mock-ups with cursor clicks"
+  },
+  {
+   "id": 27,
+   "name": "Word-by-Word Pop Captions",
+   "role": "uppercase word-by-word caption line"
+  },
+  {
+   "id": 31,
+   "name": "Emphasis-Word Zoom",
+   "role": "boxed royal-blue key phrase"
+  },
+  {
+   "id": 114,
+   "name": "Step-by-Step Tutorial",
+   "role": "STEP-tagged method"
+  },
+  {
+   "id": 119,
+   "name": "Do-This-Not-That Format",
+   "role": "strike-through old method card"
+  },
+  {
+   "id": 118,
+   "name": "A-Versus-B Comparison",
+   "role": "before/after stat cards"
+  },
+  {
+   "id": 35,
+   "name": "Fake Social-Media Comments",
+   "role": "typed comment-bar CTA"
+  }
+ ],
+ "use_when": [
+  "a how-to / hack about a software tool or workflow explained by one speaker",
+  "the user can rebuild the tool screens as clean mock-ups (or has screenshots to restyle)",
+  "the script has an old-way vs new-way turn and numbered steps",
+  "the CTA is a comment keyword / DM lead magnet",
+  "Hinglish or English speech with English on-screen text"
+ ],
+ "avoid_when": [
+  "no UI or process to show - pure opinion or story",
+  "the user wants a cinematic, face-first edit",
+  "no time to build ~10 mock-up graphics"
+ ],
+ "match": {
+  "tags": [
+   "talking-head",
+   "selfie",
+   "split-screen",
+   "ui-mockups",
+   "screen-demo",
+   "boxed-key-word",
+   "uppercase-captions",
+   "word-by-word",
+   "step-tags",
+   "old-vs-new",
+   "comment-keyword-cta",
+   "lead-magnet",
+   "hinglish",
+   "vertical"
+  ],
+  "keywords": [
+   "hack",
+   "tool",
+   "website",
+   "seo",
+   "workflow",
+   "steps",
+   "tutorial",
+   "method",
+   "software",
+   "dashboard",
+   "ai",
+   "prompt",
+   "comment",
+   "dm",
+   "framework",
+   "growth",
+   "pages"
+  ],
+  "needs": {
+   "speaker_footage": true,
+   "screen_recordings": true,
+   "broll": false,
+   "brand_assets": true
+  }
+ },
+ "quality_score": 4,
+ "brand_prompt": "Use /video-pipeline with /video-captions on videos/<project>. Apply style blueprint B19 (video-reference-match/references/blueprints/B19.json) to this brand.\n\nBRAND TOKENS (use the brand's colour/font for each role; keep the contrast relationship: {{ACCENT}} text must stay >= 4.5:1 on its white box, captions >= 3:1 on the footage)\n- {{TEXT}} caption text on footage - default #FFFFFF (navy #0B1327 on light layouts)\n- {{ACCENT}} key-phrase text / headline key words / STEP tags - default royal blue #1F4FD6\n- {{ACCENT_2}} hook title highlight bar - default lime #BDF806 (black text on it)\n- {{SURFACE}} light UI background - default #EEF4FB with a faint dot grid; cards white with soft shadow\n- {{CARD_BG}} dark-mode layout / end card - default navy #091E47 (key box inverts to an {{ACCENT}} box with a thin white outline and white text)\n- {{FONT_DISPLAY}} captions, key box, headlines - default Inter 800 (ExtraBold)\n- {{FONT_BODY}} UI mono labels - default JetBrains Mono, uppercase, letter-spaced, grey, ~1 % H\n- {{HANDLE}} - @handle (end card, under the logo)\n- {{LOGO}} - brand lockup on the navy end card\n\nCanvas 1080x1920, 30 fps.\n\nLAYOUT (rotate on almost every cut; only ~1 in 12 cuts keeps the same layout)\n1. Full-face selfie MCU (~20 % of runtime, 48-117 frames per shot), static, no punch-ins.\n2. Split (~36 %): rounded face card x 8-92 %, y 4-46 %; caption centred in the gap at y ~48-50 %; UI mock-up card from y ~56 % down on {{SURFACE}}.\n3. Full-screen UI explainer (~44 %) on {{SURFACE}} (or {{CARD_BG}} for mechanism / CTA): headline at the top, centre y ~14 %, UI cards below with animated cursor, check marks, bar fills, link lines; blue 'STEP N · TOOL' mono tags at y ~64 %.\n\nCAPTIONS\n4. Latin script, UPPERCASE (English translation of Hinglish speech is fine). 1-6 words on ONE line, never wraps.\n5. Caption: {{FONT_DISPLAY}} 46 px, {{TEXT}}, tracking 0, no stroke/box, faint shadow 0 2px 4px rgba(0,0,0,.35). Face shots: centred at y 75.9 %. Split shots: centred at y ~48-50 % (navy on light).\n6. Reveal in place: typeset the full line centred first, then switch words on one by one at their final x (hard cut, no fade/scale), ~4-12 frames apart; hard cut out, then a 1-frame gap before the next caption.\n7. Key phrase (one per sentence, the noun phrase that names the idea): small lead-in word in {{TEXT}} at y 75.9 %, then 5 frames later the key phrase in a solid white rounded box (r ~8 px, padding ~27 px L/R, ~24 px top, ~30 px bottom) at x 27.4-72.6 %, y 77.7-84.1 %, text {{ACCENT}} {{FONT_DISPLAY}} 88 px, tracking -0.04em, wiped left-to-right over 2 frames, no overshoot. On split layouts ~75 px. On {{CARD_BG}} layouts invert: {{ACCENT}} box, thin white outline, white text.\n8. Explainer headline: {{FONT_DISPLAY}} 74-86 px, -0.04em, navy on {{SURFACE}} (key words {{ACCENT}}), centre y 13.7-14.3 %, revealed word by word in place.\n\nOTHER TEXT / EDIT DEVICES\n9. Hook frame 1: a white stat card proving the pain at the top + 'Headline here' in black heavy rounded type on an {{ACCENT_2}} bar at y 28-31 %; first cut at frame ~57 into an animated mock-up of the slow current method.\n10. 'Stop doing this' beat: grey old-method button, {{ACCENT}} X drawing across, tilted 'OLD METHOD' tag, small handwritten aside.\n11. Comparison: two stat cards 'small VS big' with large {{ACCENT}} / navy numerals; caveat as 'X ≠ Y' white and navy pills with an {{ACCENT}} ≠.\n12. CTA (last ~19 %): locked framework card with padlock 'IN YOUR DM' (~280 frames), a comment bar (white pill, '+ KEYWORD', {{ACCENT}} 'Post') at y ~90 % typing the keyword, then {{CARD_BG}} end card with {{LOGO}}, {{HANDLE}} and an {{ACCENT}} 'Comment \"KEYWORD\"' pill (~78 frames).\n13. Cuts: hard cuts only, on caption-phrase boundaries (mid-sentence is fine).\n\nGRADE: Grade from the user's footage (video-style / grade.py); target look: high-contrast, muted, neutral-warm face footage set against cool off-white and navy graphics.\nSOUND: voice at about -14 LUFS, optional low bed under voice and end card, optional click on cursor taps.\n\nVERIFY before rendering (px values were render-verified with Inter; if the brand font differs, adjust px until the numbers match):\na) Render test frames: \"EASY WAY\" ({{ACCENT}} in the white box, 88 px, -0.04em), \"BECAUSE\" (navy headline, 74 px, -0.04em on {{SURFACE}}), and \"KEY WORD\" as a caption line (46 px {{TEXT}} over a dark area).\nb) Measure: python video-reference-match/scripts/caption_probe.py <test render or snapshot> --out <dir> --at <t> --box 0.28,0.775,0.72,0.835 --ink \"{{ACCENT}}:90\" (key box); --box 0.15,0.11,0.85,0.165 --ink \"#0B1327:80\" (headline); --box 0.1,0.745,0.9,0.775 --ink \"{{TEXT}}:60\" (caption).\nc) Required: \"EASY WAY\" ink 3.67 % +-0.5 of H and 40.1 % +-2 of W; \"BECAUSE\" 2.89 % +-0.5 and 30.4 % +-2; caption caps ink ~1.8 % H - compute the expected width of \"KEY WORD\" at 46 px with python video-reference-match/scripts/fit_font.py --font \"<{{FONT_DISPLAY}}>\" --word \"KEY WORD\". Box edges within +-1 % of the numbers above.",
+ "caption_family": "boxed-pill"
+}

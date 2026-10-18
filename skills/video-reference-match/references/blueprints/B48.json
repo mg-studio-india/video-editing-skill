@@ -1,0 +1,570 @@
+{
+ "id": "B48",
+ "schema": "blueprint/1",
+ "format": {
+  "type": "talking-head",
+  "aspect": "9:16",
+  "language": "English",
+  "duration_class": "short (15-60s)",
+  "people_on_screen": "1"
+ },
+ "topic_class": "career",
+ "signature": {
+  "one_line": "One-take listicle: chest captions with hopping black word box, boxed hook title, stacking list pills.",
+  "unique_devices": [
+   "Karaoke box highlight on the chest: whole 2-line chunk appears at once, the word being spoken sits in a hard-jumping black rounded box",
+   "Hook sentence as a merged per-line black-box title with the one viewer word in CAPS, plus a white 'save this' sticker pill that hard-cuts in under it ~31 frames in",
+   "Numbered black list pills that hard-cut in as each item is named, stacking 2-3 deep; the second stack restarts smaller and higher; captions hidden during the list"
+  ],
+  "why_it_works": "A surprising incentive plus a save prompt land within the first ~10 % of runtime; text changes every 30-60 frames so a single static take holds at ~180 wpm."
+ },
+ "hook": {
+  "type": "open loop (surprising claim + save promise)",
+  "first_word_s": 0.01,
+  "first_cut_s": null,
+  "first_frame": "Static medium close-up of the speaker against a soft beige backdrop with a plant; a 2-line white-on-black hook title across the chest from frame 0"
+ },
+ "structure": [
+  {
+   "beat": "hook",
+   "from_pct": 0,
+   "to_pct": 10,
+   "what": "Black-box hook title with the viewer word in caps; save sticker pops under it"
+  },
+  {
+   "beat": "setup",
+   "from_pct": 10,
+   "to_pct": 27,
+   "what": "Promise of a top-N list that gets the viewer results"
+  },
+  {
+   "beat": "list",
+   "from_pct": 27,
+   "to_pct": 48,
+   "what": "N items named rapidly as numbered black pills stacking under each other"
+  },
+  {
+   "beat": "proof",
+   "from_pct": 48,
+   "to_pct": 72,
+   "what": "Why the items work (insider access, unadvertised opportunities)"
+  },
+  {
+   "beat": "cta",
+   "from_pct": 72,
+   "to_pct": 100,
+   "what": "Comment-a-keyword for the links, then a follow ask"
+  }
+ ],
+ "pacing": {
+  "pace": "single take (no cuts), text changing every 30-60 frames",
+  "median_shot_s": null,
+  "cuts_per_min": 0,
+  "wpm": 180,
+  "pauses_per_min": 0.0,
+  "visual_change_every_s": 1.0
+ },
+ "elements": {
+  "captions": [
+   {
+    "what": "Chest-level 2-line chunks with active-word box",
+    "when": "10-27 % and 48-100 %",
+    "how": "Poppins 700 55 px white, 1-4 words over 2 short lines centred at x ~48 %, line 1 ink 66.7-69.6 % H, line 2 70.2-73.1 % H; chunk hard-cuts in ~2 frames after its first word; black rounded box (radius 6 px, ~3.67 % H tall) hops to each spoken word",
+    "catalog": [
+     22
+    ]
+   }
+  ],
+  "background_text": [
+   {
+    "what": "Black-box hook title",
+    "when": "0-9.5 %",
+    "how": "Hook sentence in 2 centred lines, Poppins 700 57 px white on merged black per-line boxes (rounded ~6 px) spanning x 11.9-81.2 %, y 61.6-70.4 %; viewer word in CAPS; ends with '..'; static, hard cut out",
+    "catalog": [
+     24
+    ]
+   },
+   {
+    "what": "Save sticker pill",
+    "when": "3.6-8.4 %",
+    "how": "White rounded pill (radius ~9 px) x 17.9-70.7 %, y 71.1-76.5 %, 0.7 % H under the title; black Poppins 700 56 px 3-word save prompt + green check emoji; hard cut in/out, no pop",
+    "catalog": [
+     24,
+     35
+    ]
+   }
+  ],
+  "motion_graphics": [],
+  "cards_lists": [
+   {
+    "what": "Numbered list pills",
+    "when": "29-48 % (replace captions)",
+    "how": "Black rounded pills (radius ~6 px) with white left-aligned 'N. Item' text; each hard-cuts in under the previous ~2 frames after the item is named. Stack 1 (items 1-3): 53 px text, pills 5.1 % H, left edge x 23.4 %, rows 64.7-69.8 % and 71.1-76.2 %. Stack 2 (items 4-6): 40 px text, pills 3.7 % H, left edge x 33.1 %, row tops 61.6 / 66.0 / 71.2 %",
+    "catalog": [
+     111,
+     112
+    ]
+   }
+  ],
+  "silhouettes_cutouts": [],
+  "broll_inserts": [],
+  "layout": [
+   {
+    "what": "Static MCU, text on the chest",
+    "when": "100 %",
+    "how": "Eyes at ~28 % H, chin ~57 %; all text between 61 and 77 % H",
+    "catalog": [
+     46
+    ]
+   }
+  ],
+  "camera": [
+   {
+    "what": "Locked phone on tripod",
+    "when": "100 %",
+    "how": "No cuts, no punch-ins; motion only from hand gestures",
+    "catalog": [
+     70
+    ]
+   }
+  ],
+  "transitions": [],
+  "end_card": []
+ },
+ "captions_spec": {
+  "script": "latin (English as spoken)",
+  "case": {
+   "normal": "sentence case as transcribed (capital at sentence starts and 'I'); contractions may be expanded",
+   "active": "same"
+  },
+  "punctuation": "sentence-final full stops kept; commas dropped",
+  "grouping": {
+   "words_per_caption": "1-4 (typically 3: 1-2 on line 1, 1-3 on line 2)",
+   "max_lines": 2,
+   "examples": [
+    "lead words / KEY WORD",
+    "lead / words here",
+    "KEY WORD."
+   ],
+   "sync": "the whole 2-line chunk appears at once ~2 frames after its first word; the black box hops word by word",
+   "break": "new chunk every 2-4 words, hard cut; a sentence-final word often gets its own 1-word chunk"
+  },
+  "layout": {
+   "band_pct_of_H": [
+    66.7,
+    73.2
+   ],
+   "block_center_y_pct": 69.9,
+   "align": "centre, line centres at x ~48 % of W",
+   "line1_ink_pct_of_H": [
+    66.7,
+    69.6
+   ],
+   "line2_ink_pct_of_H": [
+    70.2,
+    73.1
+   ],
+   "line_gap": "tight (~0.6 % H between ink boxes; the active box of line 2 touches line 1's descenders)",
+   "face_clearance": "below the chin (~57 %), on the chest"
+  },
+  "type": {
+   "normal": {
+    "font_class": "geometric sans, bold (single-storey g with open tail, round o, straight-leg y)",
+    "closest_match": {
+     "local": "Poppins 700",
+     "google": "Poppins Bold"
+    },
+    "confidence": "medium",
+    "color": "#FFFFFF",
+    "stroke": "none",
+    "shadow": "none visible",
+    "box": "none",
+    "tracking": "0em",
+    "case": "sentence",
+    "ink_height_pct_of_H": 2.27,
+    "calibration": [
+     {
+      "word": "connection",
+      "ink_pct_of_H": 2.27,
+      "width_pct_of_W": 29.3
+     },
+     {
+      "word": "recruitment",
+      "ink_pct_of_H": 2.27,
+      "width_pct_of_W": 31.9
+     }
+    ],
+    "verified_px": 55
+   },
+   "active": {
+    "font_class": "same font and size; only the box is added",
+    "closest_match": {
+     "local": "Poppins 700",
+     "google": "Poppins Bold"
+    },
+    "confidence": "medium",
+    "color": "#FFFFFF on the box",
+    "stroke": "none",
+    "shadow": "none",
+    "tracking": "0em",
+    "case": "sentence",
+    "box": {
+     "color": "#000000",
+     "opacity": 1.0,
+     "radius": "~6 px @1920",
+     "padding_px_at_1920": {
+      "x": 13,
+      "top": 12,
+      "bottom": 15
+     },
+     "height_pct_of_H": 3.67,
+     "example": "a 10-letter word's box spans x 31.9-63.8 %, y 69.6-73.2 %"
+    },
+    "calibration": [
+     {
+      "word": "connection",
+      "ink_pct_of_H": 2.27,
+      "width_pct_of_W": 29.3
+     }
+    ],
+    "verified_px": 55
+   }
+  },
+  "animation": {
+   "fps": 30,
+   "chunk_entry": "hard cut, whole chunk at once, ~2 frames after its first spoken word",
+   "highlight_move": "black box hard-jumps to the next word +2 to +5 frames after its start in the source (aim for 0-2); no box during short gaps between words",
+   "exit": "hard cut on the next chunk",
+   "idle": "none"
+  }
+ },
+ "other_text_spec": [
+  {
+   "type": "hook title (per-line black boxes)",
+   "when": "0-9.5 % of runtime (replaced by normal captions after)",
+   "copy": "hook sentence, sentence case, the one viewer word in CAPS, ends with a double full stop (placeholder 'Headline here that only / works if YOU act..')",
+   "font": {
+    "closest_match": {
+     "local": "Poppins 700",
+     "google": "Poppins Bold"
+    },
+    "color": "#FFFFFF",
+    "tracking": "0em"
+   },
+   "box": "#000000 behind each line, merged into one shape with rounded corners (~6 px @1920), spanning x 11.9-81.2 %, y 61.6-70.4 %",
+   "layout": {
+    "align": "centre (x ~46 %)",
+    "line1_ink_pct_of_H": [
+     63.1,
+     66.0
+    ],
+    "line1_x_pct": [
+     14.3,
+     77.8
+    ],
+    "line2_ink_pct_of_H": [
+     66.6,
+     69.5
+    ],
+    "line2_x_pct": [
+     17.6,
+     74.3
+    ]
+   },
+   "measured": {
+    "line1": {
+     "ink_pct_of_H": 2.97,
+     "width_pct_of_W": 63.5,
+     "chars": "~24"
+    },
+    "line2": {
+     "ink_pct_of_H": 2.97,
+     "width_pct_of_W": 56.7,
+     "chars": "~23"
+    }
+   },
+   "verified_px": 57,
+   "animation": "on from frame 0, static, hard cut out (~83 frames)"
+  },
+  {
+   "type": "save sticker pill",
+   "when": "3.6-8.4 % of runtime (in at frame ~31, out at frame ~73)",
+   "copy": "3-word save prompt + green check emoji (placeholder 'Save these now <check>')",
+   "pill": {
+    "color": "#FFFFFF",
+    "x_pct": [
+     17.9,
+     70.7
+    ],
+    "y_pct": [
+     71.1,
+     76.5
+    ],
+    "height_pct_of_H": 5.4,
+    "radius": "~9 px @1920 (estimated)",
+    "gap_below_title_pct_of_H": 0.7
+   },
+   "font": {
+    "closest_match": {
+     "local": "Poppins 700",
+     "google": "Poppins Bold"
+    },
+    "color": "#000000",
+    "tracking": "0em"
+   },
+   "text_ink_pct_of_H": [
+    72.7,
+    74.8
+   ],
+   "text_x_pct": [
+    20.1,
+    61.8
+   ],
+   "measured": {
+    "ink_pct_of_H": 2.27,
+    "width_pct_of_W": 41.7,
+    "chars": "~14 excluding emoji"
+   },
+   "verified_px": 56,
+   "animation": "hard cut in (full size on its first frame, no pop), hard cut out"
+  },
+  {
+   "type": "numbered list pills",
+   "when": "29-48 % of runtime (replace the captions)",
+   "copy": "'N. Item name' (number + full stop + name, Title case), 6 items",
+   "pill": {
+    "color": "#000000",
+    "radius": "~6 px @1920",
+    "text": "#FFFFFF Poppins 700, left-aligned"
+   },
+   "set_1": {
+    "items": "1-3",
+    "x_left_pct": 23.4,
+    "pill_height_pct_of_H": 5.08,
+    "rows_pct_of_H": [
+     [
+      64.7,
+      69.8
+     ],
+     [
+      71.1,
+      76.2
+     ]
+    ],
+    "padding_pct": {
+     "x_W": 2.1,
+     "y_H": 1.5
+    },
+    "measured": [
+     {
+      "item": "~17-character entry",
+      "ink_pct_of_H": 2.66,
+      "width_pct_of_W": 49.0
+     },
+     {
+      "item": "~10-character entry",
+      "ink_pct_of_H": 2.11,
+      "width_pct_of_W": 25.0
+     }
+    ],
+    "verified_px": 53
+   },
+   "set_2": {
+    "items": "4-6",
+    "x_left_pct": 33.1,
+    "pill_height_pct_of_H": 3.7,
+    "rows_pct_of_H": [
+     [
+      61.6,
+      65.1
+     ],
+     [
+      66.0,
+      69.8
+     ],
+     [
+      71.2,
+      74.9
+     ]
+    ],
+    "measured": [
+     {
+      "item": "~12-character entry",
+      "ink_pct_of_H": 1.48,
+      "width_pct_of_W": 25.6
+     },
+     {
+      "item": "~15-character entry",
+      "ink_pct_of_H": 2.03,
+      "width_pct_of_W": 28.9
+     }
+    ],
+    "verified_px": 40
+   },
+   "animation": "each pill hard-cuts in under the previous one ~2 frames after its item is spoken; the stack resets when item 4 starts a new, smaller stack higher up"
+  }
+ ],
+ "style": {
+  "palette_roles": {
+   "text": "#FFFFFF",
+   "accent": "#000000",
+   "accent_2": null,
+   "surface": null,
+   "card_bg": "#FFFFFF"
+  },
+  "fonts": {
+   "caption": {
+    "closest_local": "Poppins 700",
+    "verified_px": 55,
+    "tracking": "0em"
+   },
+   "hook_title": {
+    "closest_local": "Poppins 700",
+    "verified_px": 57,
+    "tracking": "0em"
+   },
+   "save_pill": {
+    "closest_local": "Poppins 700",
+    "verified_px": 56,
+    "tracking": "0em"
+   },
+   "list_pill_1": {
+    "closest_local": "Poppins 700",
+    "verified_px": 53,
+    "tracking": "0em"
+   },
+   "list_pill_2": {
+    "closest_local": "Poppins 700",
+    "verified_px": 40,
+    "tracking": "0em"
+   }
+  },
+  "look_intent": "low-contrast, saturated, warm: soft indoor light, beige backdrop with green plant, natural warm skin"
+ },
+ "sound": {
+  "music": "voice only (no bed detected; speech covers 100 %)",
+  "sfx": [
+   "none; no cuts",
+   "optional: soft pop on each list pill"
+  ],
+  "loudness_lufs": -14.5
+ },
+ "measured": {
+  "grade": {
+   "black_point": 18.9,
+   "midtone": 85.5,
+   "white_point": 181.0,
+   "contrast_range": 162.1,
+   "luma_std": 45.0,
+   "saturation": 0.452,
+   "colorfulness": 58.3,
+   "warmth_r_minus_b": 60.5,
+   "tint_g": -22.4,
+   "vignette_centre_over_edge": 0.9,
+   "label": "low-contrast, saturated, warm"
+  },
+  "layout": {
+   "letterbox_share": 0.0,
+   "split_divider_share": 0.0
+  },
+  "sound": {
+   "has_audio": true,
+   "speech_coverage": 1.0,
+   "beat_periodicity": 0.05,
+   "beat_bpm_est": null,
+   "gap_level_rel_speech_db": null,
+   "music": "voice only (no bed detected)",
+   "cut_hit_share": null,
+   "method": "heuristic (onset-envelope beat periodicity + level in speech gaps); not a classifier"
+  }
+ },
+ "catalog_styles": [
+  {
+   "id": 22,
+   "name": "Karaoke Captions",
+   "role": "black box hopping word by word on 2-line chunks"
+  },
+  {
+   "id": 24,
+   "name": "Big-Text Hook",
+   "role": "black-box hook title with the viewer word in caps"
+  },
+  {
+   "id": 35,
+   "name": "Fake Social-Media Comments",
+   "role": "white 'save this' sticker pill styled like a native sticker"
+  },
+  {
+   "id": 111,
+   "name": "Card-List",
+   "role": "numbered black list pills"
+  },
+  {
+   "id": 112,
+   "name": "Top-N Ranking",
+   "role": "top-N listicle structure"
+  },
+  {
+   "id": 46,
+   "name": "Talking-Head",
+   "role": "static MCU delivery"
+  },
+  {
+   "id": 70,
+   "name": "Single-Take / One-Shot Video (Oner)",
+   "role": "no cuts for the whole runtime"
+  }
+ ],
+ "use_when": [
+  "the user has one static talking-head take that names a list of resources, tools or companies",
+  "the content is a 'top N' or 'save this list' listicle with a comment-keyword CTA",
+  "delivery is fast and continuous (~170-190 wpm, few pauses)",
+  "the chest area below the chin is clean enough for text"
+ ],
+ "avoid_when": [
+  "the take is long with no cuts and the delivery has pauses (add punch-ins every 90-120 frames)",
+  "the brand wants a premium/editorial caption look rather than social-native pills",
+  "the speaker's chest area is busy or the shot is a tight close-up"
+ ],
+ "match": {
+  "tags": [
+   "listicle",
+   "top-n",
+   "karaoke-box",
+   "boxed-captions",
+   "list-pills",
+   "save-sticker",
+   "single-take",
+   "talking-head",
+   "comment-cta",
+   "chest-captions",
+   "career"
+  ],
+  "keywords": [
+   "list",
+   "top",
+   "best",
+   "resources",
+   "tools",
+   "companies",
+   "save",
+   "career",
+   "jobs",
+   "tips",
+   "names",
+   "recommendations",
+   "comment",
+   "links",
+   "agencies"
+  ],
+  "needs": {
+   "speaker_footage": true,
+   "screen_recordings": false,
+   "broll": false,
+   "brand_assets": false
+  }
+ },
+ "quality_score": 3,
+ "brand_prompt": "Use /video-pipeline with /video-captions on videos/<project>. Apply style blueprint B48 (video-reference-match/references/blueprints/B48.json) to this brand.\nCanvas 1080x1920, 30 fps. Static single-take talking head; all visual change is text on the chest (61-77 % H).\n\nBRAND TOKENS (use the brand's colour for each role; keep the contrast relationship: {{TEXT}} on {{ACCENT}} boxes >= 7:1, {{ACCENT}} boxes >= 3:1 against the clothing, {{ACCENT}} text on {{CARD_BG}} >= 7:1)\n- {{TEXT}}: caption and pill text, default #FFFFFF\n- {{ACCENT}}: active-word box, hook-title boxes, list pills, save-pill text, default #000000\n- {{ACCENT_2}}: unused, default none\n- {{SURFACE}}: unused, default none\n- {{CARD_BG}}: save sticker pill fill, default #FFFFFF\n- {{FONT_DISPLAY}}: default Poppins 700\n- {{FONT_BODY}}: default Poppins 700\n- {{HANDLE}}: not shown in the source; optional in the follow ask\n- {{LOGO}}: not shown in the source\n\nCAPTIONS\n1. As spoken, sentence case; keep sentence-final full stops, drop commas.\n2. Chunks of 1-4 words over 2 short lines (1-2 on line 1, 1-3 on line 2); a sentence-final word may stand alone (\"KEY WORD.\"). Whole chunk hard-cuts in ~2 frames after its first word.\n3. {{FONT_DISPLAY}} 55 px, {{TEXT}}, tracking 0, no stroke/shadow. Calibration: \"connection\" ink 2.27 % H / 29.3 % W; \"recruitment\" 2.27 % / 31.9 %.\n4. Active word: sits in a {{ACCENT}} box, radius 6 px, padding 13 px left/right, 12 px top, 15 px bottom (~3.67 % H tall); text stays {{TEXT}}, same size. The box hard-jumps to each word on its start (0-2 frames); no box during short gaps.\n5. Position: lines centred at x ~48 % W; line 1 ink 66.7-69.6 % H, line 2 70.2-73.1 % H (block centre ~70 %), tight line gap, below the chin.\n6. Hard cuts only: no fade, pop, scale or idle motion.\n\nOTHER TEXT\n7. Hook title (frames 0-~83, replaces captions): hook sentence in 2 centred lines (x ~46 %), {{FONT_DISPLAY}} 57 px {{TEXT}} on merged {{ACCENT}} per-line boxes (~6 px rounded corners) spanning x 11.9-81.2 %, y 61.6-70.4 %; the one viewer word in CAPS; end with \"..\". Line ink ~2.97 % H; a ~24-character line spans ~63.5 % W.\n8. Save sticker (frames ~31-73): {{CARD_BG}} rounded pill (radius ~9 px) x 17.9-70.7 %, y 71.1-76.5 %, 0.7 % H under the title; {{ACCENT}} {{FONT_BODY}} 56 px 3-word save prompt + green check emoji, left-aligned from x 20.1 %. Hard cut in/out, no pop.\n9. List items (replace captions while items are named, ~29-48 % of runtime): {{ACCENT}} pills, radius ~6 px, {{TEXT}} {{FONT_BODY}} \"N. Item\", left-aligned, each hard-cut in under the previous ~2 frames after its item is spoken. Stack 1 (items 1-3): 53 px text, pills 5.1 % H, left edge x 23.4 %, rows 64.7-69.8 % and 71.1-76.2 %. Stack 2 (items 4-6): 40 px text, pills 3.7 % H, left edge x 33.1 %, row tops 61.6 / 66.0 / 71.2 %.\n\nSTRUCTURE: hook ~10 %, setup ~17 %, list ~21 %, why/proof ~24 %, comment-keyword CTA then follow ask ~28 %.\nSOUND: voice only, no bed. Master to about -14.5 LUFS, true peak <= -1 dBTP.\nGRADE: Grade from the user's footage (video-style / grade.py); target look: low-contrast, saturated, warm soft indoor light, natural skin.\n\nVERIFY before rendering: render the calibration words and measure them:\n  video-reference-match/scripts/caption_probe.py <render-file> --out <dir> --at <t_connection> --box 0.2,0.700,0.8,0.728 --ink \"#FFFFFF:60\"\n  video-reference-match/scripts/caption_probe.py <render-file> --out <dir> --at <t_recruitment> --box 0.2,0.700,0.8,0.733 --ink \"#FFFFFF:60\"\n\"connection\" must read ink 2.27 % +-0.5 of H and width 29.3 % +-2 of W; \"recruitment\" 2.27 % +-0.5 / 31.9 % +-2; the active box measured with --ink \"#000000:25\" over --box 0.2,0.64,0.8,0.75 must be 3.67 % +-0.5 tall. Swap --ink colours to {{TEXT}} / {{ACCENT}}. Expected ink for other words: video-reference-match/scripts/fit_font.py with {{FONT_DISPLAY}} at 55 px. Positions within +-1 % of frame height.",
+ "caption_family": "boxed-pill"
+}

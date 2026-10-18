@@ -1,0 +1,486 @@
+{
+ "id": "B43",
+ "schema": "blueprint/1",
+ "format": {
+  "type": "brand-promo",
+  "aspect": "9:16",
+  "language": "none",
+  "duration_class": "short (15-60s)",
+  "people_on_screen": "0"
+ },
+ "topic_class": "tech/AI tools",
+ "signature": {
+  "one_line": "Music-only kinetic-type manifesto: one giant word per card flipping black/cream on the beat, accent punchline word, recurring 3D ball, logo hold.",
+  "unique_devices": [
+   "One giant black-weight word per card, a new card every 6-12 frames, background flipping black <-> cream on every cut so each cut is a contrast flip",
+   "A recurring glossy accent 3D ball that interacts with the type (bounces, swings as a pendulum and knocks letters out, becomes a light source)",
+   "Word-over-montage: one condensed white word held dead-centre while ~10 full-screen 3D backgrounds swap under it",
+   "Rhythm shaped as burst / slow light-sweep / burst / long logo hold"
+  ],
+  "why_it_works": "Every cut changes contrast on the beat, so it stops the scroll with no speaker; one moving object stitches the cards together and the long final hold lands the brand."
+ },
+ "hook": {
+  "type": "pattern interrupt (kinetic type burst)",
+  "first_word_s": null,
+  "first_cut_s": 0.8,
+  "first_frame": "glossy accent 3D ball on black; the first lowercase word arrives centred at frame ~15 with a tracking collapse"
+ },
+ "structure": [
+  {
+   "beat": "hook",
+   "from_pct": 0,
+   "to_pct": 17,
+   "what": "8 one-word cards on the beat, black/cream flips, accent punchline word"
+  },
+  {
+   "beat": "claim",
+   "from_pct": 17,
+   "to_pct": 39,
+   "what": "2-line uppercase manifesto on cream; line 2 swaps question -> answer while a pendulum ball knocks letters"
+  },
+  {
+   "beat": "setup",
+   "from_pct": 39,
+   "to_pct": 66,
+   "what": "slow section: dark wipe, the ball glows into a light source, a light cone sweeps across second accent"
+  },
+  {
+   "beat": "proof",
+   "from_pct": 66,
+   "to_pct": 82,
+   "what": "brand word held centre over a rapid montage of 3D backgrounds"
+  },
+  {
+   "beat": "payoff",
+   "from_pct": 82,
+   "to_pct": 100,
+   "what": "logo assembled from extruded tiles on electric second accent, long hold"
+  }
+ ],
+ "pacing": {
+  "pace": "frenetic",
+  "median_shot_s": 0.4,
+  "cuts_per_min": 65,
+  "wpm": null,
+  "pauses_per_min": null,
+  "visual_change_every_s": 0.4,
+  "notes": "cut-rate curve 96 / 24 / 96 / 42 cuts/min per 5-second window: two bursts with a slow light-sweep between; 28 % soft cuts (dark wipe, light sweep); cuts land on the beat (~75 BPM grid, cut_hit_share 0.4)"
+ },
+ "elements": {
+  "captions": [],
+  "background_text": [
+   {
+    "what": "tiny mono @handle watermark",
+    "when": "0-66 %",
+    "how": "top-left x 5 %, y ~13.5 %, ~1 % H, colour flips with the card",
+    "catalog": []
+   }
+  ],
+  "motion_graphics": [
+   {
+    "what": "one-word kinetic cards",
+    "when": "0-17 %",
+    "how": "Inter 900 ~236-324 px -0.03em centred at y 50 %; tracking collapse (2 frames) or scale 1.25 -> 1 + rise 15 % H (4 frames, power3.out, no overshoot); hard cut every 6-12 frames",
+    "catalog": [
+     23,
+     175
+    ]
+   },
+   {
+    "what": "pendulum ball knocking letters",
+    "when": "17-39 %",
+    "how": "3D ball on a string swings across the manifesto card; letters of the last line scatter with motion trails on impact",
+    "catalog": [
+     86,
+     192
+    ]
+   },
+   {
+    "what": "light-cone sweep",
+    "when": "39-66 %",
+    "how": "the ball glows and a cream light cone sweeps across a second accent field; slow (2 shots)",
+    "catalog": [
+     106
+    ]
+   },
+   {
+    "what": "3D tile logo assembly",
+    "when": "82-100 %",
+    "how": "extruded cream/accent tiles assemble into the mark on electric second accent, then hold",
+    "catalog": [
+     86
+    ]
+   }
+  ],
+  "cards_lists": [
+   {
+    "what": "2-line UPPERCASE manifesto",
+    "when": "17-39 %",
+    "how": "Poppins 900 ~172 px -0.06em, lines at y 35.4 % / 44.8 %, line 2 in accent swaps question -> answer",
+    "catalog": [
+     23,
+     33
+    ]
+   }
+  ],
+  "silhouettes_cutouts": [],
+  "broll_inserts": [
+   {
+    "what": "3D render backgrounds",
+    "when": "66-82 %",
+    "how": "~10 full-screen glossy renders (blob, primary-colour geometric blocks, spiral tunnel, halftone, falling shapes, extruded grid), 6-12 frames each",
+    "catalog": [
+     88,
+     108
+    ]
+   }
+  ],
+  "layout": [
+   {
+    "what": "full-screen graphics only",
+    "when": "100 %",
+    "how": "no footage, no person; all text centred",
+    "catalog": [
+     105
+    ]
+   }
+  ],
+  "camera": [
+   {
+    "what": "virtual camera only",
+    "when": "throughout",
+    "how": "pendulum swing, light sweep, 3D render moves; no footage",
+    "catalog": [
+     86
+    ]
+   }
+  ],
+  "transitions": [
+   {
+    "what": "hard cuts on the beat with contrast flip",
+    "when": "bursts",
+    "how": "black <-> cream background flip on each cut",
+    "catalog": [
+     175,
+     174
+    ]
+   },
+   {
+    "what": "dark wipe",
+    "when": "~39 %",
+    "how": "~12-frame dark wipe into the slow section",
+    "catalog": [
+     80
+    ]
+   }
+  ],
+  "end_card": [
+   {
+    "what": "3D logo hold",
+    "when": "82-100 %",
+    "how": "longest shot in the piece (~105 frames) after the fastest burst",
+    "catalog": [
+     203
+    ]
+   }
+  ]
+ },
+ "captions_spec": null,
+ "other_text_spec": [
+  {
+   "type": {
+    "font_class": "geometric sans, black (heaviest) weight",
+    "closest_match": {
+     "local": "Inter 900",
+     "google": "Inter Black"
+    },
+    "confidence": "low-medium",
+    "letterform_evidence": "near-circular o and bowls, flat-topped narrow t, flat stroke ends, very heavy; the original is more geometric than Inter (Gilroy/Outfit-like) - Poppins/Montserrat Black are closer in shape but ~15 % wider; Inter 900 at -0.03em matches the height/width ratio",
+    "color": "#09080A on cream cards; cream #EFE7D3 on black cards; the punchline word solid orange #FD5815 on cream",
+    "stroke": "none",
+    "shadow": "none",
+    "box": "none",
+    "tracking": "-0.03em",
+    "ink_height_pct_of_H": 12.66,
+    "k": 0.73,
+    "font_size_px_at_1920": 333,
+    "calibration": [
+     {
+      "word": "don’t",
+      "ink_pct_of_H": 12.66,
+      "width_pct_of_W": 70.0,
+      "ink": "#09080A:80"
+     }
+    ],
+    "size_spread": "not fit-to-width and not constant: a 7-letter punchline word solves to ~236 px (ink 9.2 % H, 60 % W); a 2-letter word ~45 % W",
+    "verified_px": 324,
+    "fit": [
+     {
+      "font": "Inter 900",
+      "word": "don’t",
+      "tracking_em": -0.03,
+      "px_for_height": 328.5,
+      "px_for_width": 321.7,
+      "verified_px": 324,
+      "at_verified_px": {
+       "ink_pct_of_H": 12.5,
+       "width_pct_of_W": 70.9
+      },
+      "within_tolerance": true
+     }
+    ]
+   },
+   "when": "hook 0-17 %: a new card every 6-12 frames (8 cards)",
+   "script": "latin, English on-screen copy; nothing is spoken",
+   "case": "lowercase with punctuation (full stops kept, curly apostrophe)",
+   "layout": "single word centred horizontally (x ~15-86 %), centre y 50 %; background flips black #0A090B <-> cream #F0E7D2 on (almost) every card",
+   "animation": "hard cut to the new card on the beat; the word arrives over 2-4 frames: either a tracking collapse (letters spread wide -> normal in 2 frames) or a scale-down + rise (~1.25x and ~15 % H low -> settled in 4 frames, ease-out, no overshoot)"
+  },
+  {
+   "type": {
+    "font_class": "geometric sans caps, black weight, very tight tracking",
+    "closest_match": {
+     "local": "Poppins 900",
+     "google": "Poppins Black"
+    },
+    "confidence": "medium",
+    "letterform_evidence": "round C and O, vertical-sided M, letters nearly touching",
+    "color": "line 1 #09080A, line 2 (the payoff) orange #FD5815, or both black",
+    "stroke": "none",
+    "shadow": "none",
+    "box": "none",
+    "tracking": "-0.06em",
+    "ink_height_pct_of_H": 6.48,
+    "k": 0.73,
+    "font_size_px_at_1920": 170,
+    "calibration": [
+     {
+      "word": "MADE",
+      "ink_pct_of_H": 6.48,
+      "width_pct_of_W": 45.7,
+      "ink": "#09080A:80"
+     }
+    ],
+    "verified_px": 172,
+    "fit": [
+     {
+      "font": "Poppins 900",
+      "word": "MADE",
+      "tracking_em": -0.06,
+      "px_for_height": 175.2,
+      "px_for_width": 178.2,
+      "verified_px": 177,
+      "at_verified_px": {
+       "ink_pct_of_H": 6.51,
+       "width_pct_of_W": 45.2
+      },
+      "within_tolerance": true
+     }
+    ],
+    "fit_note": "an 8-character orange payoff line solved to 168 px; use 168-177 px"
+   },
+   "when": "17-39 % (one long shot; line 2 swaps every ~15-24 frames)",
+   "layout": "two centred lines: line 1 centre y 35.4 % (~46 % W), line 2 centre y 44.8 % (~66 % W); line pitch 9.4 % H (leading ~1.0)",
+   "animation": "line 2 swaps while line 1 holds (question -> answer pattern: 'LEAD WORD?' / 'ANSWER.'); a swinging pendulum ball crosses and knocks letters out of the last line (letter scatter with motion trails)"
+  },
+  {
+   "type": {
+    "font_class": "condensed grotesque, heavy",
+    "closest_match": {
+     "local": "Anton 400",
+     "google": "Anton"
+    },
+    "confidence": "medium-high",
+    "color": "#FFFFFF (measured #FEFDFD)",
+    "stroke": "none",
+    "shadow": "hard dark drop shadow / dark edge so it reads over busy 3D renders (estimated 0 6px 0 rgba(0,0,0,.6) at 1080)",
+    "box": "none",
+    "tracking": "0em",
+    "ink_height_pct_of_H": 13.52,
+    "k": 0.73,
+    "font_size_px_at_1920": 356,
+    "calibration": [],
+    "calibration_note": "a 6-letter lowercase brand word measured ink 13.52 % H, 72.2 % W; compute expected ink for the user's word with fit_font.py",
+    "verified_px": 296
+   },
+   "when": "66-82 % (10 backgrounds, 6-12 frames each)",
+   "layout": "centred, centre y 49.9 %, x 14-86 %",
+   "animation": "text held perfectly still while full-screen 3D backgrounds hard-cut underneath every 6-12 frames"
+  },
+  {
+   "type": "@handle watermark",
+   "when": "0-66 %",
+   "text": "tiny mono (JetBrains-Mono-like) @handle, dark on cream / light on black, top-left x 5 %, y ~13.5 %, ~1 % H"
+  },
+  {
+   "type": "end logo",
+   "when": "82-100 % (~105 frames hold)",
+   "text": "brand mark built from cream and orange extruded 3D tiles on electric blue (#162CB3-like); a 3D render, not live text"
+  }
+ ],
+ "style": {
+  "palette_roles": {
+   "text": "#09080A",
+   "accent": "#FD5815",
+   "accent_2": "#1A39EF",
+   "surface": "#F0E7D2",
+   "card_bg": "#0A090B"
+  },
+  "fonts": {
+   "word_card": {
+    "closest_local": "Inter 900",
+    "verified_px": 324,
+    "tracking": "-0.03em"
+   },
+   "manifesto": {
+    "closest_local": "Poppins 900",
+    "verified_px": 172,
+    "tracking": "-0.06em"
+   },
+   "brand_word": {
+    "closest_local": "Anton 400",
+    "verified_px": 296,
+    "tracking": "0em"
+   },
+   "handle": {
+    "closest_local": "JetBrains Mono",
+    "verified_px": null,
+    "tracking": "0em"
+   }
+  },
+  "look_intent": "pure graphic palette: high-contrast, natural-saturation, cool overall; black, warm cream, signal orange and electric blue with glossy soft-shadow 3D renders"
+ },
+ "sound": {
+  "music": "music only (bed likely, beat ~75 BPM est., periodicity 0.45); rhythmic track drives every cut",
+  "sfx": [
+   "cuts on the beat (measured cut_hit_share 0.4)",
+   "optional impact / scatter hit when the pendulum ball knocks letters",
+   "optional riser under the light-cone sweep into the montage"
+  ],
+  "loudness_lufs": -14.1
+ },
+ "measured": {
+  "grade": {
+   "black_point": 6.2,
+   "midtone": 97.0,
+   "white_point": 230.2,
+   "contrast_range": 224.0,
+   "luma_std": 97.5,
+   "saturation": 0.382,
+   "colorfulness": 92.1,
+   "warmth_r_minus_b": -74.2,
+   "tint_g": -51.1,
+   "vignette_centre_over_edge": 1.14,
+   "label": "high-contrast, natural-saturation, cool"
+  },
+  "layout": {
+   "letterbox_share": 0.17,
+   "split_divider_share": 0.0
+  },
+  "sound": {
+   "has_audio": true,
+   "speech_coverage": 1.0,
+   "beat_periodicity": 0.45,
+   "beat_bpm_est": 75,
+   "gap_level_rel_speech_db": null,
+   "music": "music bed likely",
+   "cut_hit_share": 0.4,
+   "method": "heuristic (onset-envelope beat periodicity + level in speech gaps); not a classifier"
+  }
+ },
+ "catalog_styles": [
+  {
+   "id": 23,
+   "name": "Kinetic Typography",
+   "role": "one-word cards and manifesto"
+  },
+  {
+   "id": 175,
+   "name": "Beat-Synced Editing",
+   "role": "card cuts on the music grid"
+  },
+  {
+   "id": 174,
+   "name": "Rapid-Fire Cuts",
+   "role": "6-12-frame card and montage bursts"
+  },
+  {
+   "id": 86,
+   "name": "3D Product Animation",
+   "role": "recurring 3D ball and tile logo"
+  },
+  {
+   "id": 88,
+   "name": "Kinetic-Shape Animation",
+   "role": "3D background montage"
+  },
+  {
+   "id": 191,
+   "name": "Music-Led Montage with Minimal Dialogue",
+   "role": "music-only format"
+  },
+  {
+   "id": 203,
+   "name": "Product Launch Announcement",
+   "role": "brand / launch manifesto use"
+  },
+  {
+   "id": 204,
+   "name": "Brand Sizzle Reel",
+   "role": "burst-slow-burst-logo rhythm"
+  }
+ ],
+ "use_when": [
+  "a brand / product launch teaser or manifesto with no speaker",
+  "a title or chapter burst inside a longer video",
+  "the user has a music track with a clear beat and a short punchy copy line",
+  "the brand has a strong 2-3 colour palette and can use 3D or bold graphic assets"
+ ],
+ "avoid_when": [
+  "talking-head or interview footage that needs speech captions",
+  "long or explanatory copy (one word per card only)",
+  "no music or a beatless track"
+ ],
+ "match": {
+  "tags": [
+   "kinetic-typography",
+   "music-only",
+   "no-speaker",
+   "one-word-cards",
+   "contrast-flip",
+   "beat-synced",
+   "3d-renders",
+   "manifesto",
+   "brand-teaser",
+   "logo-sting",
+   "rapid-cuts",
+   "vertical"
+  ],
+  "keywords": [
+   "manifesto",
+   "launch",
+   "teaser",
+   "brand",
+   "typography",
+   "words",
+   "beat",
+   "music",
+   "3d",
+   "motion",
+   "design",
+   "announcement",
+   "sting",
+   "bold",
+   "logo"
+  ],
+  "needs": {
+   "speaker_footage": false,
+   "screen_recordings": false,
+   "broll": false,
+   "brand_assets": true
+  }
+ },
+ "quality_score": 2,
+ "brand_prompt": "Use /video-pipeline with /video-captions on videos/<project>. Apply style blueprint B43 (video-reference-match/references/blueprints/B43.json) to this brand.\nThis blueprint has NO speech captions: the kinetic type is the content. Cover only the text cards and edit devices below.\n\nBRAND TOKENS (use the brand's colour/font for each role; keep the contrast relationship: {{TEXT}} on {{SURFACE}} and {{SURFACE}}-coloured text on {{CARD_BG}} >= 7:1, {{ACCENT}} on {{SURFACE}} >= 3:1)\n- {{TEXT}} word-card ink on light cards - default near-black #09080A\n- {{ACCENT}} punchline word / payoff line / recurring 3D object - default signal orange #FD5815\n- {{ACCENT_2}} logo-hold field - default electric blue #1A39EF (render #162CB3-like)\n- {{SURFACE}} light card - default warm cream #F0E7D2\n- {{CARD_BG}} dark card - default near-black #0A090B\n- {{FONT_DISPLAY}} word cards - default Inter 900 (geometric Black faces like Gilroy/Outfit are closer); manifesto - Poppins 900; held brand word - Anton 400\n- {{FONT_BODY}} handle watermark - default JetBrains Mono\n- {{HANDLE}} - @handle, tiny, top-left\n- {{LOGO}} - the brand mark for the final hold (3D extruded tiles in {{SURFACE}} / {{ACCENT}} on {{ACCENT_2}})\n\nCanvas 1080x1920, 30 fps. Music-only; cut to the beat.\n\n1. Hook burst (first ~17 % of runtime): 8 one-word cards, a new card every 6-12 frames on the beat, background flipping {{CARD_BG}} <-> {{SURFACE}} on every cut. Word lowercase with punctuation, centred at y 50 %, {{FONT_DISPLAY}} ~324 px for a 5-letter word (ink 12.5 % H, ~70 % W; not fit-to-width - a 7-letter word ~236 px), tracking -0.03em, {{TEXT}} on {{SURFACE}} / {{SURFACE}} on {{CARD_BG}}; ONE punchline word in solid {{ACCENT}}. Entry over 2-4 frames: tracking collapse (spread letters -> normal) or scale 1.25 -> 1 with a 15 % H rise, power3.out, no overshoot. No shadow, stroke or box.\n2. Recurring object: one glossy {{ACCENT}} 3D object in every early shot that interacts with the type (bounce, pendulum swing, knocks letters out, becomes a light source).\n3. Manifesto (next ~23 %): {{SURFACE}} card, two centred UPPERCASE lines, Poppins 900 ~172 px, -0.06em, line centres y 35.4 % / 44.8 % (pitch 9.4 % H); line 1 {{TEXT}} holds while line 2 ('ANSWER.') swaps in {{ACCENT}} every ~15-24 frames; the pendulum ball knocks letters of the last line out with motion trails.\n4. Slow section (next ~27 %): ~12-frame dark wipe, then the object glows and a {{SURFACE}} light cone sweeps across navy; only 2 shots.\n5. Word over montage (next ~16 %): the brand word in Anton ~296 px, white, centred (y 49.9 %, x 14-86 %), hard dark shadow (0 6px 0 rgba(0,0,0,.6)), held still while ~10 full-screen 3D backgrounds hard-cut underneath every 6-12 frames.\n6. Logo hold (last ~18 %, ~105 frames): {{LOGO}} assembled from extruded {{SURFACE}}/{{ACCENT}} tiles on {{ACCENT_2}}.\n7. {{HANDLE}} tiny mono, top-left x 5 %, y ~13.5 %, ~1 % H, colour flipping with the card, until the montage.\n\nGRADE: Grade from the user's footage (video-style / grade.py) if any footage is used; target look: high-contrast, natural-saturation, cool graphic palette with glossy soft-shadow 3D.\nSOUND: music only, mastered to about -14 LUFS with true peak <= -1 dBTP; cuts on beats; optional impact on letter knock-outs and a riser into the montage.\n\nVERIFY before rendering (px values were render-verified with local fonts; if the brand font differs, adjust px until the numbers match):\na) Render test frames: \"don’t\" ({{FONT_DISPLAY}} 324 px, -0.03em, {{TEXT}} on {{SURFACE}}), \"MADE\" (Poppins 900 177 px, -0.06em), and \"KEY WORD\" as the held brand word (Anton 296 px, white over a dark area).\nb) Measure: python video-reference-match/scripts/caption_probe.py <test render or snapshot> --out <dir> --at <t> --box 0.1,0.41,0.9,0.6 --ink \"{{TEXT}}:80\" (word card); --box 0.2,0.3,0.8,0.395 --ink \"{{TEXT}}:80\" (manifesto line 1); --box 0.08,0.41,0.92,0.59 --ink \"#FEFDFD:60\" (held word).\nc) Required: \"don’t\" ink 12.66 % +-0.5 of H and 70.0 % +-2 of W; \"MADE\" 6.48 % +-0.5 and 45.7 % +-2. For the held brand word compute the expected ink with python video-reference-match/scripts/fit_font.py --font \"Anton 400\" --word \"<brand word>\" at 296 px.",
+ "caption_family": "title-only"
+}

@@ -1,0 +1,589 @@
+{
+ "id": "B08",
+ "schema": "blueprint/1",
+ "format": {
+  "type": "podcast-clip",
+  "aspect": "9:16",
+  "language": "English",
+  "duration_class": "short (15-60s)",
+  "people_on_screen": "2+"
+ },
+ "topic_class": "business advice",
+ "signature": {
+  "one_line": "Slow two-camera interview carried by lower-left stacked word blocks: thin light words plus one heavy accent glowing key word; B&W cold open.",
+  "unique_devices": [
+   "Left-aligned stacked word blocks in the lower-left (x 12-13 %, y 65-85 %): thin Light-300 words in two sizes + one heavy accent key word (~2x) with a dark-indigo glow, hard-cut in 2-3 frames before it is spoken",
+   "B&W cold open of the best line lifted from later (~100 frames, key word grey), then a pink-to-second accent gradient flash into the colour question; the line replays in colour later",
+   "Literal stock footage composited into the bottom ~40 % of frame under the caption block instead of a full cutaway",
+   "Captions as the motion layer: very long takes (median shot ~200 frames, one take ~43 % of runtime) with a slow MCU->CU tighten and an L-cut to the listener"
+  ],
+  "why_it_works": "The teaser promises the best line before context; with almost no cuts, the word-by-word blocks and glowing key words supply the motion, so a calm interview still feels edited."
+ },
+ "hook": {
+  "type": "cold open pull-quote (bold claim)",
+  "first_word_s": 0.12,
+  "first_cut_s": 4.04,
+  "first_frame": "guest medium close-up in black-and-white, hand to chin, shallow depth of field; caption block building word by word in the lower left"
+ },
+ "structure": [
+  {
+   "beat": "hook",
+   "from_pct": 0,
+   "to_pct": 8,
+   "what": "B&W pull-quote of the strongest line, no intro"
+  },
+  {
+   "beat": "setup",
+   "from_pct": 8,
+   "to_pct": 23,
+   "what": "colour flash into the host's question (profile MCU)"
+  },
+  {
+   "beat": "claim",
+   "from_pct": 23,
+   "to_pct": 46,
+   "what": "guest's answer; the cold-open line returns in colour"
+  },
+  {
+   "beat": "proof",
+   "from_pct": 46,
+   "to_pct": 67,
+   "what": "contrast case with stock footage composited under the speaker; slow tighten to CU"
+  },
+  {
+   "beat": "payoff",
+   "from_pct": 67,
+   "to_pct": 94,
+   "what": "big-picture opportunity; L-cut cutaway to the listener breaks the long take"
+  },
+  {
+   "beat": "cta",
+   "from_pct": 94,
+   "to_pct": 100,
+   "what": "white end card with animated logo, no spoken CTA"
+  }
+ ],
+ "pacing": {
+  "pace": "slow",
+  "median_shot_s": 8.1,
+  "cuts_per_min": 5,
+  "wpm": 200,
+  "pauses_per_min": 1.1,
+  "visual_change_every_s": 0.4,
+  "notes": "cuts are rare (75 % soft: dissolves / colour flash) but a new caption word lands every ~8-12 frames; pauses tightened under ~10 frames; one take covers ~43 % of runtime"
+ },
+ "elements": {
+  "captions": [
+   {
+    "what": "lower-left stacked word blocks",
+    "when": "whole video",
+    "how": "left edge x 12-13 %, y 65-85 %, max width 81 %; light lines Inter/Plus Jakarta 300 at 132 px (connective) or 87 px (secondary), each word fades in over 2 frames; tight leading; block hard-cuts out ~3 frames before the next phrase",
+    "catalog": [
+     23,
+     22
+    ]
+   },
+   {
+    "what": "heavy accent key word with indigo glow",
+    "when": "0-1 per block",
+    "how": "Poppins / Plus Jakarta 800 ~192 px (shrink to <= 81 % W; ~133 px on host shots), #2E88FE, glow 0 12px 60px rgba(30,25,120,.6); hard cut in 2-3 frames before the word; grey in B&W, second accent once",
+    "catalog": [
+     31
+    ]
+   }
+  ],
+  "background_text": [],
+  "motion_graphics": [
+   {
+    "what": "pink-to-second accent gradient flash",
+    "when": "~8 %",
+    "how": "full-frame gradient flash ~12 frames bridging the B&W cold open into colour",
+    "catalog": [
+     77,
+     99
+    ]
+   }
+  ],
+  "cards_lists": [],
+  "silhouettes_cutouts": [
+   {
+    "what": "stock footage composited behind the speaker's lower frame",
+    "when": "~55-63 %",
+    "how": "literal footage masked into the bottom ~40 % under the caption block, speaker stays above",
+    "catalog": [
+     13,
+     110
+    ]
+   }
+  ],
+  "broll_inserts": [
+   {
+    "what": "composited literal B-roll",
+    "when": "once, when a concrete thing is named",
+    "how": "~100 frames, lower 40 %, no full cutaway",
+    "catalog": [
+     51
+    ]
+   }
+  ],
+  "layout": [
+   {
+    "what": "full-frame two-camera interview",
+    "when": "~88 %",
+    "how": "guest MCU/CU, host profile MCU",
+    "catalog": [
+     56,
+     58
+    ]
+   }
+  ],
+  "camera": [
+   {
+    "what": "slow digital tighten inside a long take",
+    "when": "23-67 %",
+    "how": "MCU -> CU, ~100 -> 125 % over the take, linear / sine.inOut",
+    "catalog": [
+     46
+    ]
+   },
+   {
+    "what": "L-cut cutaway to the listener",
+    "when": "~80 %",
+    "how": "guest audio continues over the host listening, breaks a take longer than ~375 frames",
+    "catalog": [
+     195
+    ]
+   }
+  ],
+  "transitions": [
+   {
+    "what": "soft dissolves between speakers",
+    "when": "~75 % of cuts",
+    "how": "~8-12-frame dissolve on pauses",
+    "catalog": [
+     176
+    ]
+   },
+   {
+    "what": "colour flash",
+    "when": "~8 %",
+    "how": "see motion_graphics",
+    "catalog": [
+     99
+    ]
+   }
+  ],
+  "end_card": [
+   {
+    "what": "white logo card",
+    "when": "94-100 %",
+    "how": "near-white bg, animated circular logo ~45 % W centred, no text, no spoken CTA",
+    "catalog": []
+   }
+  ]
+ },
+ "captions_spec": {
+  "script": "latin (as spoken)",
+  "case": {
+   "light": "lowercase as spoken; sentence-initial capital only at the very start of a thought",
+   "key": "lowercase as spoken"
+  },
+  "punctuation": "none (apostrophes kept)",
+  "emoji": "none",
+  "grouping": {
+   "words_per_caption_block": "2-7 words over 2-4 stacked lines (1-4 words per line)",
+   "key_words_per_block": "0-1 (the word that carries the idea: a verb, adverb or concept noun)",
+   "max_lines": 4,
+   "sync": "word-by-word build: each word (or short line) is added on its spoken word; the block grows downward",
+   "break": "whole block hard-cuts out at the end of the phrase; the next phrase starts a fresh block"
+  },
+  "layout": {
+   "band_pct_of_H": [
+    62,
+    85
+   ],
+   "block": {
+    "align": "left (ragged right)",
+    "left_pct_of_W": "12-13 (measured 11.8-13.3)",
+    "max_width_pct_of_W": 81,
+    "first_line_top_pct_of_H": "65-66",
+    "key_line_center_y_pct": "72-81"
+   },
+   "stacking": "lines stack downward with very tight leading (ascenders of a line touch the descenders of the line above); a short trailing line may be right-aligned or indented under the end of the line above (e.g. indented to x ~40 %)",
+   "safe_area": "text stays in the lower-left two thirds; never covers the face (faces sit above 55 % H)",
+   "1080x1920_mapping": "same percentages (reference is 9:16)"
+  },
+  "type": {
+   "light_large": {
+    "font_class": "geometric sans, light (~300)",
+    "closest_match": {
+     "local": "Inter 300",
+     "google": "Plus Jakarta Sans Light 300"
+    },
+    "confidence": "medium-low",
+    "letterform_evidence": "double-storey a, single-storey round g, near-circular o/e, very low contrast, thin even strokes (Avenir/Gilroy-light feel); Inter is a grotesque stand-in",
+    "ink_height_pct_of_H": 5.47,
+    "k": 0.73,
+    "font_size_px_at_1920": 132,
+    "calibration": [
+     {
+      "word": "because",
+      "ink_pct_of_H": 5.47,
+      "width_pct_of_W": 41.7
+     }
+    ],
+    "calibration_note": "measured over a dark jacket (clean); a 4-word connective line cross-checks at ~138 px (ink 7.11 % H incl. ascenders, 72.6 % W)",
+    "used_for": "the first / connective line of a block (articles, pronouns, short verbs)",
+    "color": "#FFFFFF",
+    "stroke": "none",
+    "shadow": "none visible",
+    "box": "none",
+    "tracking": "0em",
+    "verified_px": 132,
+    "fit": [
+     {
+      "font": "Inter 300",
+      "word": "because",
+      "tracking_em": 0.0,
+      "px_for_height": 141.9,
+      "px_for_width": 126.9,
+      "verified_px": 132,
+      "at_verified_px": {
+       "ink_pct_of_H": 5.1,
+       "width_pct_of_W": 43.5
+      },
+      "within_tolerance": true
+     }
+    ],
+    "k_formula_px_at_1920": 144
+   },
+   "light_small": {
+    "font_class": "geometric sans, light (~300)",
+    "closest_match": {
+     "local": "Inter 300",
+     "google": "Plus Jakarta Sans Light 300"
+    },
+    "confidence": "medium-low",
+    "letterform_evidence": "same face as light_large at ~0.62x size",
+    "ink_height_pct_of_H": 3.44,
+    "k": 0.73,
+    "font_size_px_at_1920": 87,
+    "calibration": [],
+    "calibration_note": "an 8-letter lowercase noun measured ink 3.44 % H, 27.8 % W; compute expected ink for any word with fit_font.py at 87 px",
+    "used_for": "secondary lines inside a block, mostly in the host's question",
+    "color": "#FFFFFF",
+    "stroke": "none",
+    "shadow": "none",
+    "box": "none",
+    "tracking": "0em",
+    "verified_px": 87,
+    "k_formula_px_at_1920": 90
+   },
+   "key": {
+    "font_class": "geometric sans, extra-bold / heavy (~800)",
+    "closest_match": {
+     "local": "Poppins 800",
+     "google": "Plus Jakarta Sans ExtraBold 800"
+    },
+    "confidence": "medium-low",
+    "letterform_evidence": "round geometric bowls, double-storey a, round dot on i, straight-cut t top, low contrast; Poppins has a single-storey a (Plus Jakarta Sans is closer)",
+    "ink_height_pct_of_H": 8.83,
+    "k": 0.73,
+    "font_size_px_at_1920": 192,
+    "calibration": [
+     {
+      "word": "online",
+      "ink_pct_of_H": 8.83,
+      "width_pct_of_W": 53.8
+     },
+     {
+      "word": "frankly",
+      "ink_pct_of_H": 11.64,
+      "width_pct_of_W": 60.3
+     }
+    ],
+    "calibration_note": "the two words agree (~226-232 px by k formula). Size is NOT fixed (estimated rule): long words shrink to stay <= ~81 % W (an 11-letter word ~171 px); host-shot key words are smaller (see key_small)",
+    "color": "#2E88FE (blue, measured median); grey #8C8C8C in the B&W cold open (estimated); coral #FE664A once for a 'future / change' word",
+    "stroke": "none",
+    "shadow": "soft dark-indigo glow around/below the word (background under the word shifts from ~#191311 to ~#1E1938 when it appears; e.g. text-shadow 0 12px 60px rgba(30,25,120,.6), estimated)",
+    "box": "none",
+    "tracking": "-0.02em (estimated)",
+    "verified_px": 192,
+    "fit": [
+     {
+      "font": "Poppins 800",
+      "word": "online",
+      "tracking_em": -0.02,
+      "px_for_height": 206.8,
+      "px_for_width": 186.8,
+      "verified_px": 194,
+      "at_verified_px": {
+       "ink_pct_of_H": 8.28,
+       "width_pct_of_W": 55.8
+      },
+      "within_tolerance": false
+     },
+     {
+      "font": "Poppins 800",
+      "word": "frankly",
+      "tracking_em": -0.02,
+      "px_for_height": 210.8,
+      "px_for_width": 176.5,
+      "verified_px": 190,
+      "at_verified_px": {
+       "ink_pct_of_H": 10.47,
+       "width_pct_of_W": 64.8
+      },
+      "within_tolerance": false
+     }
+    ],
+    "fit_note": "Poppins cannot hit height and width together; Plus Jakarta Sans ExtraBold is closer - re-fit if installed",
+    "k_formula_px_at_1920": 232
+   },
+   "key_small": {
+    "font_class": "same face as key",
+    "closest_match": {
+     "local": "Poppins 800",
+     "google": "Plus Jakarta Sans ExtraBold 800"
+    },
+    "confidence": "medium-low",
+    "ink_height_pct_of_H": 7.97,
+    "k": 0.99,
+    "font_size_px_at_1920": 133,
+    "calibration": [
+     {
+      "word": "digital",
+      "ink_pct_of_H": 7.97,
+      "width_pct_of_W": 37.6
+     }
+    ],
+    "calibration_note": "fully entered, constant across frames; other host key words ~7.0 % H",
+    "used_for": "key words in the host / listener shots (estimated pattern)",
+    "color": "#2E88FE",
+    "stroke": "none",
+    "shadow": "same indigo glow as key",
+    "box": "none",
+    "tracking": "-0.02em (estimated)",
+    "verified_px": 133,
+    "fit": [
+     {
+      "font": "Poppins 800",
+      "word": "digital",
+      "tracking_em": -0.02,
+      "px_for_height": 140.4,
+      "px_for_width": 126.9,
+      "verified_px": 133,
+      "at_verified_px": {
+       "ink_pct_of_H": 7.6,
+       "width_pct_of_W": 38.9
+      },
+      "within_tolerance": true
+     }
+    ],
+    "k_formula_px_at_1920": 155
+   }
+  },
+  "animation": {
+   "fps": 25,
+   "light_entry": "each word fades in over 2 frames (half opacity on frame 1, full on frame 2), roughly on its word start; no drift, no scale",
+   "key_entry": "hard cut in (fully opaque, full size in 1 frame) together with its indigo glow, 2-3 frames BEFORE the spoken word",
+   "build": "block grows line by line downward; existing lines never move",
+   "exit": "whole block hard-cuts out (no fade) ~3 frames before the next phrase; new block starts empty",
+   "idle": "none while held"
+  },
+  "notes": "Positions, sizes, colours and frame timings measured on video frames (25 fps); font names closest matches (unverified); items marked estimated were not isolated."
+ },
+ "other_text_spec": [
+  {
+   "type": "B&W cold open",
+   "when": "0-8 % (~100 frames)",
+   "text": "same caption system; the key word renders grey #8C8C8C because the whole frame is graded black-and-white"
+  },
+  {
+   "type": "colour-flash transition",
+   "when": "~8 %",
+   "text": "no text; pink-to-orange gradient flash over the frame (~12 frames) between the cold open and the colour question"
+  },
+  {
+   "type": "composited b-roll under caption",
+   "when": "~55-63 % (~100 frames)",
+   "text": "literal stock footage composited into the bottom ~40 % of frame behind the caption block; captions unchanged"
+  },
+  {
+   "type": "end card",
+   "when": "94-100 % (~75 frames)",
+   "bg": "near-white #F6FDFF",
+   "text": "no text: animated brand logo (circular badge, ~45 % W) centred at ~45-55 % height"
+  },
+  {
+   "type": "titles / lower-thirds / emoji",
+   "when": "none",
+   "text": "none"
+  }
+ ],
+ "style": {
+  "palette_roles": {
+   "text": "#FFFFFF",
+   "accent": "#2E88FE",
+   "accent_2": "#FE664A",
+   "surface": null,
+   "card_bg": "#F6FDFF"
+  },
+  "fonts": {
+   "light_large": {
+    "closest_local": "Inter 300 (Plus Jakarta Sans Light closer)",
+    "verified_px": 132,
+    "tracking": "0em"
+   },
+   "light_small": {
+    "closest_local": "Inter 300",
+    "verified_px": 87,
+    "tracking": "0em"
+   },
+   "key": {
+    "closest_local": "Poppins 800 (Plus Jakarta Sans ExtraBold closer)",
+    "verified_px": 192,
+    "tracking": "-0.02em"
+   },
+   "key_small": {
+    "closest_local": "Poppins 800",
+    "verified_px": 133,
+    "tracking": "-0.02em"
+   }
+  },
+  "look_intent": "high-contrast, natural-saturation, neutral-warm natural skin with shallow depth of field; B&W cold open"
+ },
+ "sound": {
+  "music": "music bed likely (gap level -7 dB vs speech, periodicity 0.21); voice-led, compressed (LRA 3.2 LU)",
+  "sfx": [
+   "whoosh / shimmer on the colour-flash transition",
+   "no hits on cuts (measured cut_hit_share 0.0)"
+  ],
+  "loudness_lufs": -14.2
+ },
+ "measured": {
+  "grade": {
+   "black_point": 2.0,
+   "midtone": 64.7,
+   "white_point": 249.7,
+   "contrast_range": 247.7,
+   "luma_std": 54.1,
+   "saturation": 0.29,
+   "colorfulness": 36.3,
+   "warmth_r_minus_b": 11.0,
+   "tint_g": -1.4,
+   "vignette_centre_over_edge": 1.23,
+   "label": "high-contrast, natural-saturation, neutral-warm"
+  },
+  "layout": {
+   "letterbox_share": 0.0,
+   "split_divider_share": 0.0
+  },
+  "sound": {
+   "has_audio": true,
+   "speech_coverage": 0.89,
+   "beat_periodicity": 0.21,
+   "beat_bpm_est": 182,
+   "gap_level_rel_speech_db": -7.0,
+   "music": "music bed likely",
+   "cut_hit_share": 0.0,
+   "method": "heuristic (onset-envelope beat periodicity + level in speech gaps); not a classifier"
+  }
+ },
+ "catalog_styles": [
+  {
+   "id": 23,
+   "name": "Kinetic Typography",
+   "role": "lower-left stacked word blocks"
+  },
+  {
+   "id": 31,
+   "name": "Emphasis-Word Zoom",
+   "role": "heavy blue glowing key word"
+  },
+  {
+   "id": 58,
+   "name": "Podcast Clip",
+   "role": "two-camera interview recut"
+  },
+  {
+   "id": 169,
+   "name": "Open-Loop Storytelling with a Delayed Payoff",
+   "role": "B&W cold open replayed later"
+  },
+  {
+   "id": 99,
+   "name": "Light-Leak Transitions",
+   "role": "pink-orange colour flash"
+  },
+  {
+   "id": 13,
+   "name": "Layered Collage",
+   "role": "stock footage composited under the caption"
+  },
+  {
+   "id": 176,
+   "name": "Slow-Cinematic Pacing",
+   "role": "long takes carried by captions"
+  },
+  {
+   "id": 195,
+   "name": "Dialogue-First Interview Edit",
+   "role": "L-cut cutaway to listener"
+  }
+ ],
+ "use_when": [
+  "a calm two-person interview or podcast with long answers",
+  "few camera angles / little B-roll, so captions must carry the motion",
+  "a strong quotable line exists that can be lifted for a cold open",
+  "a premium, editorial feel rather than hype"
+ ],
+ "avoid_when": [
+  "fast hype edits or many short clips",
+  "Hinglish captions needing larger, simpler reading",
+  "busy lower-frame footage that fights left-aligned white text"
+ ],
+ "match": {
+  "tags": [
+   "podcast-clip",
+   "interview",
+   "two-person",
+   "cold-open",
+   "black-and-white-teaser",
+   "stacked-captions",
+   "left-aligned",
+   "glow-key-word",
+   "colour-flash",
+   "composited-broll",
+   "long-takes",
+   "logo-end-card",
+   "vertical"
+  ],
+  "keywords": [
+   "podcast",
+   "interview",
+   "industry",
+   "future",
+   "opinion",
+   "leader",
+   "founder",
+   "conversation",
+   "insight",
+   "prediction",
+   "expert",
+   "guest",
+   "calm",
+   "premium",
+   "quote"
+  ],
+  "needs": {
+   "speaker_footage": true,
+   "screen_recordings": false,
+   "broll": true,
+   "brand_assets": true
+  }
+ },
+ "quality_score": 4,
+ "brand_prompt": "Use /video-pipeline with /video-captions on videos/<project>. Apply style blueprint B08 (video-reference-match/references/blueprints/B08.json) to this brand.\n\nBRAND TOKENS (use the brand's colour/font for each role; keep the contrast relationship: the {{ACCENT}} key word must stay >= 3:1 on the footage, with its dark glow behind it; thin {{TEXT}} words need a dark area behind them)\n- {{TEXT}} light caption words - default #FFFFFF\n- {{ACCENT}} key word - default blue #2E88FE, with a dark glow tinted from it (default indigo rgba(30,25,120,.6))\n- {{ACCENT_2}} one-off key word for 'future / change' moments - default coral #FE664A\n- {{SURFACE}} - none (footage)\n- {{CARD_BG}} end card - default near-white #F6FDFF\n- {{FONT_DISPLAY}} key word - default Poppins 800 (Plus Jakarta Sans ExtraBold is closer)\n- {{FONT_BODY}} light words - default Inter 300 (Plus Jakarta Sans Light is closer)\n- {{HANDLE}} - @handle (not shown in this blueprint; optional on the end card)\n- {{LOGO}} - animated circular logo on the end card (~45 % W)\n\nCanvas 1080x1920, 25 fps.\n\nEDIT\n1. Cold open (~100 frames): lift the strongest line from later in the interview, grade it black-and-white, no intro (first word within ~3 frames); then a ~12-frame pink-to-orange gradient flash into the colour question. Replay the line in colour where it really occurs.\n2. Let takes run long (median shot ~200 frames); tighten slowly inside a long take (MCU -> CU, ~100 -> 125 %); break any take longer than ~375 frames with an L-cut to the listener. Soft dissolves (~8-12 frames) between speakers; tighten pauses under ~10 frames.\n3. When the speaker names a concrete thing, composite matching footage into the bottom ~40 % of frame under the caption block for ~100 frames instead of cutting away.\n4. End: ~75 frames {{CARD_BG}} card with {{LOGO}} animated, centred at 45-55 % H, no text.\n\nCAPTIONS\n5. Latin script, lowercase as spoken (capital only at the start of a thought), no punctuation, no emoji.\n6. Blocks of 2-7 words over 2-4 stacked lines, left-aligned at x 12-13 %, ragged right, max width 81 %, first line top at y 65-66 %, band y 62-85 %; very tight leading (ascenders touch the descenders above); a short trailing line may indent under the end of the line above. Never cover the face (faces above 55 % H).\n7. Light words: {{FONT_BODY}} 300, {{TEXT}}, no shadow/stroke/box; connective / first line 132 px, secondary lines 87 px. Each word fades in over 2 frames (half, then full) on its spoken word; no drift/scale.\n8. Key word (0-1 per block, the word that carries the idea): {{FONT_DISPLAY}} 800, -0.02em, {{ACCENT}}, ~192 px on the main speaker (shrink long words to stay <= 81 % W), ~133 px on the host / listener; dark glow 0 12px 60px; hard-cut in, full size, 2-3 frames BEFORE the spoken word. In the B&W cold open it reads grey (#8C8C8C); use {{ACCENT_2}} once for a 'future / change' word.\n9. Block grows downward line by line, existing lines never move; the whole block hard-cuts out ~3 frames before the next phrase.\n\nGRADE: Grade from the user's footage (video-style / grade.py); target look: high-contrast, natural-saturation, neutral-warm skin, shallow depth of field; B&W for the cold open only.\nSOUND: voice at about -14 LUFS over a low bed; whoosh/shimmer on the colour flash; no cut hits.\n\nVERIFY before rendering (px values were render-verified with Inter / Poppins; with the closer Plus Jakarta Sans, re-fit px until the numbers match):\na) Render test frames over a dark area: \"because\" ({{FONT_BODY}} 300, 132 px), \"online\" and \"frankly\" ({{FONT_DISPLAY}} 800, ~192 px, {{ACCENT}}), \"digital\" ({{FONT_DISPLAY}} 800, 133 px), and \"KEY WORD\" in {{FONT_BODY}} 300 at 87 px.\nb) Measure: python video-reference-match/scripts/caption_probe.py <test render or snapshot> --out <dir> --at <t> --box 0.1,0.62,0.95,0.86 --ink \"{{TEXT}}:60,{{ACCENT}}:80\" (tighten --box per line).\nc) Required: \"because\" ink 5.47 % +-0.5 of H and 41.7 % +-2 of W; \"online\" 8.83 % +-0.5 and 53.8 % +-2; \"frankly\" 11.64 % +-0.5 and 60.3 % +-2 (Poppins misses one axis - prefer the closer face); \"digital\" 7.97 % +-0.5 and 37.6 % +-2. For the 87 px tier compute expected ink with python video-reference-match/scripts/fit_font.py --font \"<{{FONT_BODY}}>\" --word \"KEY WORD\".",
+ "caption_family": "stacked-kinetic"
+}

@@ -1,0 +1,405 @@
+{
+ "id": "B26",
+ "schema": "blueprint/1",
+ "format": {
+  "type": "talking-head",
+  "aspect": "9:16",
+  "language": "English",
+  "duration_class": "short (15-60s)",
+  "people_on_screen": "1"
+ },
+ "topic_class": "career",
+ "signature": {
+  "one_line": "Tier-list over one static shot: S-E board in the lower 40 %, icon cards pop to centre then drop into rows; persistent black-box title.",
+  "unique_devices": [
+   "Graphic as the pacing engine: S-E tier board (dark rounded panel x 11.4-87.5 %, y 54.6-92 %, six rows with flat pastel accent-to-second accent label tiles) gets a new white icon card every ~66 frames, so one static shot carries ~93 % of the runtime",
+   "Card choreography: rises from below into the centre at ~2x with heavy vertical motion blur (~8 frames), holds until the tier is spoken, then shrinks and flies into its row slot in 2-3 frames",
+   "Caption parked in the gap between chin and board (centre 50.2 %): 1-2-word tight-tracked (-0.05em) semibold white, hard cuts, plus a persistent 2-line white-on-black square title box at 7.5-16.8 % height",
+   "Clean CTA reset: hard cut to the same framing with every graphic removed for the final ~7 % (save/follow ask)"
+  ],
+  "why_it_works": "Title plus empty board explain the format instantly; a verdict lands within a second, the board changes every ~2 seconds, and spicy ratings provoke comments."
+ },
+ "hook": {
+  "type": "in medias res + open loop (question title over an empty board)",
+  "first_word_s": 0.01,
+  "first_cut_s": 19.753,
+  "first_frame": "static MCU of the speaker in a warm lamp-lit room, black-box 2-line question title at the top, empty S-E tier board in the lower 40 %, a one-word caption at mid-frame"
+ },
+ "structure": [
+  {
+   "beat": "hook",
+   "from_pct": 0,
+   "to_pct": 9,
+   "what": "first item named and rated with no intro; title and empty board frame the format"
+  },
+  {
+   "beat": "list",
+   "from_pct": 9,
+   "to_pct": 47,
+   "what": "rapid ratings: item, tier, reason of 6 words or fewer; one deliberately spicy low rating"
+  },
+  {
+   "beat": "list",
+   "from_pct": 47,
+   "to_pct": 75,
+   "what": "more ratings until the board is nearly full"
+  },
+  {
+   "beat": "payoff",
+   "from_pct": 75,
+   "to_pct": 93,
+   "what": "the last item gets the longest reason as a takeaway"
+  },
+  {
+   "beat": "cta",
+   "from_pct": 93,
+   "to_pct": 100,
+   "what": "hard cut to a clean shot, save-and-follow ask"
+  }
+ ],
+ "pacing": {
+  "pace": "very slow / mostly static (graphic-driven)",
+  "median_shot_s": 10.7,
+  "cuts_per_min": 3,
+  "wpm": 250,
+  "pauses_per_min": 0.0,
+  "visual_change_every_s": 2.2,
+  "note": "only one picture cut; the board event every ~66 frames and 1-2-word caption swaps provide the motion; very dense speech, no pauses"
+ },
+ "elements": {
+  "captions": [
+   {
+    "what": "1-2-word white caption between face and board",
+    "when": "0-100 %",
+    "how": "Inter-SemiBold-like 60 px, tracking -0.05em, faint soft shadow, no box; centre x 50 %, y 50.2 %; hard cut on (up to 2 frames early) and off; same spot on the clean CTA shot",
+    "catalog": [
+     21
+    ]
+   }
+  ],
+  "background_text": [
+   {
+    "what": "persistent 2-line question title on a black box",
+    "when": "0-93 % (removed for the CTA shot)",
+    "how": "Inter-Bold-like 70 px, -0.05em, white on solid #060606 square rectangle x 23.2-76.3 %, y 7.5-16.8 %, ~18 px padding; static from frame 0",
+    "catalog": [
+     24
+    ]
+   }
+  ],
+  "motion_graphics": [
+   {
+    "what": "icon card pop-in and drop into row",
+    "when": "every ~66 frames through 0-93 %",
+    "how": "rise from below the board to centre at ~2x with vertical motion blur (~8 frames, power3.out), hold, then scale down and fly to its slot in 2-3 frames (power2.in)",
+    "catalog": [
+     17
+    ]
+   }
+  ],
+  "cards_lists": [
+   {
+    "what": "S-E tier-list board",
+    "when": "0-93 %",
+    "how": "dark #1A1A17 rounded panel x 11.4-87.5 %, y 54.6-92 %, 6 rows ~6.2 % H; label column to x 25.3 % with flat tiles S #FC7E7E, A #FEBD7E, B #FCDC7F, C #FCFC7F, D #BEFD7F, E #80FE81; white ~9.5 % W icon cards with tiny labels fill left to right",
+    "catalog": [
+     129,
+     112
+    ]
+   }
+  ],
+  "silhouettes_cutouts": [],
+  "broll_inserts": [],
+  "layout": [
+   {
+    "what": "full-frame MCU with board overlay",
+    "when": "0-93 %",
+    "how": "face in the upper half, caption at 50 %, board in the lower 40 %",
+    "catalog": [
+     46
+    ]
+   }
+  ],
+  "camera": [
+   {
+    "what": "locked-off MCU",
+    "when": "100 %",
+    "how": "no punch-ins or moves",
+    "catalog": [
+     46
+    ]
+   }
+  ],
+  "transitions": [
+   {
+    "what": "single hard cut to the clean CTA shot",
+    "when": "~93 %",
+    "how": "mid-sentence hard cut; all graphics drop out on the cut",
+    "catalog": []
+   }
+  ],
+  "end_card": [
+   {
+    "what": "clean CTA shot",
+    "when": "final ~7 %",
+    "how": "same MCU, no title or board, caption only; spoken save/follow ask",
+    "catalog": []
+   }
+  ]
+ },
+ "captions_spec": {
+  "script": "latin (English as spoken)",
+  "case": {
+   "caption": "sentence case following the transcript (capital at a sentence / item start, lower-case mid-sentence)"
+  },
+  "punctuation": "kept; most captions end in a full stop (each list item and verdict is its own sentence)",
+  "numbers": "as transcribed",
+  "emoji": "none",
+  "grouping": {
+   "words_per_caption": "1-2",
+   "max_lines": 1,
+   "sync": "one short phrase at a time, replaced as a unit",
+   "break": "every 1-2 words"
+  },
+  "layout": {
+   "band_pct_of_H": [
+    48.8,
+    51.7
+   ],
+   "caption": {
+    "align": "center",
+    "center_x_pct_of_W": 50.0,
+    "center_y_pct": 50.2
+   },
+   "rule": "sits in the gap between the chin and the top of the tier board (board top 54.6 %); stays at the same spot on the final clean CTA shot",
+   "on_1080x1920": "same 9:16 canvas: centre x 540 px, y 964 px"
+  },
+  "type": {
+   "caption": {
+    "font_class": "neo-grotesque sans, semibold, tight negative tracking (letters nearly touching, Inter-Display / SF-like)",
+    "closest_match": {
+     "local": "Inter 600",
+     "google": "Inter SemiBold (tracking -0.05em)",
+     "confidence": "medium"
+    },
+    "ink_height_pct_of_H": 3.05,
+    "k": 0.99,
+    "font_size_px_at_1920": 60,
+    "k_note": "a capitalised word with ascender and descenders -> k 0.99: 3.05 x 19.2 / 0.99 = 59 px; 'in the' (no descenders, k 0.73): 2.34 x 19.2 / 0.73 = 62 px; render-verified with Inter 600 at -0.05em: 60 px",
+    "calibration": [
+     {
+      "word": "in the",
+      "ink_pct_of_H": 2.34,
+      "width_pct_of_W": 12.1
+     }
+    ],
+    "calibration_note": "'in the' measured over the neck (clean background, --ink #FFFFFF:20); a capitalised one-word item with descenders measured by frame differencing at 3.05 % H",
+    "color": "#FFFFFF",
+    "stroke": "none",
+    "shadow": "faint soft dark shadow, ~0 2px 6px rgba(0,0,0,.25) at 1920 (estimated)",
+    "box": "none",
+    "tracking": "-0.05em",
+    "verified_px": 60,
+    "fit": [
+     {
+      "font": "Inter 600",
+      "word": "in the",
+      "tracking_em": -0.05,
+      "px_for_height": 60.7,
+      "px_for_width": 59.7,
+      "verified_px": 60,
+      "at_verified_px": {
+       "ink_pct_of_H": 2.29,
+       "width_pct_of_W": 12.2
+      },
+      "within_tolerance": true
+     }
+    ]
+   }
+  },
+  "animation": {
+   "fps": 29.97,
+   "entry": "hard cut, full size on frame 1 (no fade/scale/slide)",
+   "timing": "on or up to ~2 frames before the transcript word start",
+   "highlight": "none",
+   "exit": "hard cut on the next caption",
+   "idle": "no motion while held"
+  }
+ },
+ "other_text_spec": [
+  {
+   "type": "persistent title",
+   "when": "whole main shot (frame 0 to the cut to the CTA shot); removed for the CTA shot",
+   "text": "'Question Title / Goes Here?' 2 centred lines, white #EEEEEE-#FFFFFF, bold tight neo-grotesque (closest Inter 700, tracking ~-0.05em), Title Case",
+   "box": "solid black #060606 rectangle, square corners, x 23.2-76.3 % W, y 7.5-16.8 % H; padding ~12 px at 720 (~18 px at 1080) around the text",
+   "position": "line 1 ink 8.4-11.2 % H, width ~43 % W; line 2 ink 13.0-15.9 % H, width ~50 % W; line pitch 4.7 % H; each line ink 2.89 % H (k 0.73)",
+   "size": "render-fit Inter 700 at -0.05em: 70 px at 1920 (formula 2.89 x 19.2 / 0.73 = 76 px)",
+   "animation": "on from frame 0, static, hard-cut out with the picture cut to the CTA shot"
+  },
+  {
+   "type": "tier-list board",
+   "when": "whole main shot",
+   "panel": "dark #1A1A17 rounded panel, x 11.4-87.5 % W, y 54.6-92.0 % H, 6 equal rows (~6.2 % H each) separated by thin dark lines",
+   "labels": "left column x 11.4-25.3 % W, flat colour tiles with a small dark letter: S #FC7E7E, A #FEBD7E, B #FCDC7F, C #FCFC7F, D #BEFD7F, E #80FE81",
+   "items": "white rounded icon cards (~9.5 % W square) with an illustrated icon and a tiny dark item label, placed left-to-right in their row",
+   "animation": "a new card rises from below the board into the centre at ~2x size with heavy vertical motion blur (~8 frames), holds at centre until the tier is spoken, then shrinks and flies into its row slot in ~2-3 frames; one card every ~66 frames"
+  },
+  {
+   "type": "CTA shot",
+   "when": "final ~7 % of runtime",
+   "text": "clean MCU with all graphics removed; only the normal caption remains at the same position"
+  }
+ ],
+ "style": {
+  "palette_roles": {
+   "text": "#FFFFFF",
+   "accent": "#FC7E7E",
+   "accent_2": "#80FE81",
+   "surface": "#1A1A17",
+   "card_bg": "#060606"
+  },
+  "fonts": {
+   "caption": {
+    "closest_local": "Inter 600",
+    "verified_px": 60,
+    "tracking": "-0.05em"
+   },
+   "title": {
+    "closest_local": "Inter 700",
+    "verified_px": 70,
+    "tracking": "-0.05em"
+   }
+  },
+  "look_intent": "warm, high-contrast, muted; lamp-lit beige background, soft light, natural skin"
+ },
+ "sound": {
+  "music": "voice only (no bed detected); very dense speech, no pauses",
+  "sfx": [
+   "soft pop on each card arrival at centre (suggestion)",
+   "short whoosh/tick as each card drops into its row (suggestion)",
+   "the single cut is unhit (measured cut_hit_share 0.0)"
+  ],
+  "loudness_lufs": -14.1
+ },
+ "measured": {
+  "grade": {
+   "black_point": 0.0,
+   "midtone": 139.9,
+   "white_point": 250.7,
+   "contrast_range": 250.7,
+   "luma_std": 84.2,
+   "saturation": 0.205,
+   "colorfulness": 38.2,
+   "warmth_r_minus_b": 37.6,
+   "tint_g": -1.0,
+   "vignette_centre_over_edge": 0.83,
+   "label": "high-contrast, muted, warm"
+  },
+  "layout": {
+   "letterbox_share": 0.0,
+   "split_divider_share": 0.0
+  },
+  "sound": {
+   "has_audio": true,
+   "speech_coverage": 1.0,
+   "beat_periodicity": 0.09,
+   "beat_bpm_est": null,
+   "gap_level_rel_speech_db": null,
+   "music": "voice only (no bed detected)",
+   "cut_hit_share": 0.0,
+   "method": "heuristic (onset-envelope beat periodicity + level in speech gaps); not a classifier"
+  }
+ },
+ "catalog_styles": [
+  {
+   "id": 129,
+   "name": "Ranking Leaderboard",
+   "role": "S-E tier board that fills up"
+  },
+  {
+   "id": 112,
+   "name": "Top-N Ranking",
+   "role": "rapid list of rated items"
+  },
+  {
+   "id": 17,
+   "name": "Floating Cards",
+   "role": "icon cards popping to centre and dropping into rows"
+  },
+  {
+   "id": 21,
+   "name": "Caption-Edit",
+   "role": "1-2-word captions between face and board"
+  },
+  {
+   "id": 24,
+   "name": "Big-Text Hook",
+   "role": "persistent black-box question title"
+  },
+  {
+   "id": 46,
+   "name": "Talking-Head",
+   "role": "static MCU behind the graphics"
+  },
+  {
+   "id": 159,
+   "name": "Contrarian Argument / Hot Take",
+   "role": "spicy ratings that provoke comments"
+  }
+ ],
+ "use_when": [
+  "rating or ranking a list of items (skills, tools, products, habits) in a short reel",
+  "the user has one static talking-head take and needs motion without cutting",
+  "a save-worthy summary graphic is the goal (filled board at the end)",
+  "the item list can be illustrated with simple icons"
+ ],
+ "avoid_when": [
+  "the content is a narrative or a single argument, not a list",
+  "the speaker's chest/hands must stay visible (the board covers the lower 40 %)",
+  "no icons or item assets can be produced"
+ ],
+ "match": {
+  "tags": [
+   "tier-list",
+   "ranking",
+   "list-format",
+   "animated-board",
+   "icon-cards",
+   "persistent-title",
+   "black-box-title",
+   "graphic-driven",
+   "single-shot",
+   "short-reel",
+   "save-cta",
+   "hot-takes",
+   "tight-tracking-captions"
+  ],
+  "keywords": [
+   "tier",
+   "rank",
+   "rating",
+   "rate",
+   "skills",
+   "tools",
+   "best",
+   "worst",
+   "list",
+   "future",
+   "trending",
+   "careers",
+   "jobs",
+   "overrated",
+   "underrated",
+   "verdict"
+  ],
+  "needs": {
+   "speaker_footage": true,
+   "screen_recordings": false,
+   "broll": false,
+   "brand_assets": true
+  }
+ },
+ "quality_score": 4,
+ "brand_prompt": "Use /video-pipeline with /video-captions on videos/<project>. Apply style blueprint B26 (video-reference-match/references/blueprints/B26.json) to this brand.\nCanvas 1080x1920, 30 fps (reference 29.97). All positions are % of frame; px are at 1080x1920.\n\nBRAND TOKENS (use the brand's colour/font for each role; keep the contrast relationship: {{TEXT}} >= 7:1 on {{CARD_BG}}; the tier ramp must stay a clear hot-to-cool order from {{ACCENT}} (top tier) to {{ACCENT_2}} (bottom tier) with dark letters >= 4.5:1 on each tile)\n- {{TEXT}}      captions, title text, icon cards       default #FFFFFF\n- {{ACCENT}}    top-tier (S) label tile                default #FC7E7E (A #FEBD7E, B #FCDC7F, C #FCFC7F, D #BEFD7F interpolate)\n- {{ACCENT_2}}  bottom-tier (E) label tile             default #80FE81\n- {{SURFACE}}   tier board panel                       default #1A1A17\n- {{CARD_BG}}   title box                              default #060606\n- {{FONT_DISPLAY}} title                               default Inter 700 (tight neo-grotesque, -0.05em)\n- {{FONT_BODY}}    captions, card labels               default Inter 600 (-0.05em)\n- {{HANDLE}}    not shown\n- {{LOGO}}      optional small mark inside the board's corner; item icons are the brand's own illustrations\n\nCAPTIONS\n1. English as spoken, sentence case as transcribed; keep full stops and other punctuation.\n2. 1-2 words per caption, one line, replaced as a unit.\n3. Type: {{FONT_BODY}} at 60 px, letter-spacing -0.05em (letters nearly touch), {{TEXT}}, no stroke, no box, faint shadow 0 2px 6px rgba(0,0,0,.25).\n4. Position: centred, centre at 50.2 % of height (y ~964 px), in the gap between the chin and the board top (54.6 %). Same spot on the clean CTA shot.\n5. Animation: hard cut in on the word (up to 2 frames early), hard cut out on the next caption. No fade, pop, slide, highlight or idle motion.\n\nOTHER TEXT\n6. Persistent title for the whole main shot: 2 centred lines (\"Question Title / Goes Here?\") in {{FONT_DISPLAY}} at 70 px, tracking -0.05em, {{TEXT}}, Title Case, on a solid {{CARD_BG}} square-cornered rectangle x 23-76 %, y 7.5-16.8 % (~18 px padding), line pitch 4.7 % H; on from frame 0, static, removed at the cut to the CTA shot.\n7. Tier board: {{SURFACE}} rounded panel x 11.4-87.5 %, y 54.6-92.0 %, six equal rows separated by thin dark lines; left label column (to x 25.3 %) with flat tiles from {{ACCENT}} (S) through A/B/C/D to {{ACCENT_2}} (E), each with a small dark letter. Items are white rounded icon cards (~9.5 % W) with a tiny dark label, placed left to right in their row.\n8. Card animation: rise from below the board into the centre at ~2x size with strong vertical motion blur over ~8 frames, hold until the tier is spoken, then shrink and fly into its row slot in 2-3 frames; next card every ~66 frames.\n9. CTA: hard cut to the same framing with all graphics removed for the final ~7 %; captions only.\n\nEDIT DEVICES\n10. One static MCU for the main shot; no punch-ins. Script cadence: item, tier, reason of 6 words or fewer; include one or two spicy ratings; the last item gets the longest reason.\n\nGRADE\n11. Grade from the user's footage (video-style / grade.py); target look: warm, high-contrast, muted, lamp-lit, natural skin.\n\nAUDIO\n12. Voice only; soft pop on each card arrival and a short tick as it lands in its row. Master to about -14.1 LUFS, true peak <= -1 dBTP.\n\nVERIFY before rendering\na) Render a test frame with the caption \"in the\" over a dark area (not a white shirt) and measure:\n   python video-reference-match/scripts/caption_probe.py <test.mp4> --out <dir> --at <t> --box 0.3,0.47,0.7,0.535 --ink \"{{TEXT}}:20\"\n   Required at the default font: \"in the\" ink 2.34 % ±0.5 of height and 12.1 % ±2 of width; centre y 50.2 % ±0.5. With a brand font, compute the expected ink with video-reference-match/scripts/fit_font.py ({{FONT_BODY}}, 60 px, -0.05em).\nb) Title: render \"KEY WORD\" on each line; expected ink 2.89 % H per caps-height line at the default font (or the fit_font.py value for {{FONT_DISPLAY}} at 70 px); box edges within ±1 %.\n",
+ "caption_family": "phrase-plain"
+}

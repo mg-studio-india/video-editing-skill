@@ -1,0 +1,564 @@
+{
+ "id": "B30",
+ "schema": "blueprint/1",
+ "format": {
+  "type": "b-roll-voiceover",
+  "aspect": "9:16",
+  "language": "English",
+  "duration_class": "mid (60-180s)",
+  "people_on_screen": "2+"
+ },
+ "topic_class": "education (course / institute ad)",
+ "signature": {
+  "one_line": "B-roll course ad: one shot and one accent key word per module, lead words justified above.",
+  "unique_devices": [
+   "Justified lockup: small white lead words stretched to exactly the width of one big accent #F2D805 key word below them, at 62-70 % H over a dark bottom gradient",
+   "One-shot-per-item syllabus montage: each spoken module gets its own ~50-70 frame B-roll shot + its key word (26-43 cuts/min)",
+   "Top-flipped variant once for the big claim (key phrase at 19 % H, small words under it) with a falling-banknote overlay",
+   "Ad-style CTA stack: white serif 'CONTACT US:' + accent serif phone number, then a black end card with accent logo and tan label boxes"
+  ],
+  "why_it_works": "Viewers read the module list without full captions; constant shot changes plus one bold word per sentence make a long ad feel brisk."
+ },
+ "hook": {
+  "type": "Bold claim / contrarian (contradicts a common belief about the industry)",
+  "first_word_s": 0.05,
+  "first_cut_s": 1.167,
+  "first_frame": "a crew lined up at a decorated venue, small white lead word over a big accent key word at ~65 % height above a dark bottom gradient"
+ },
+ "structure": [
+  {
+   "beat": "hook",
+   "from_pct": 0,
+   "to_pct": 3,
+   "what": "contrarian line over two venue shots, light-leak flash, justified lockup callouts"
+  },
+  {
+   "beat": "claim",
+   "from_pct": 3,
+   "to_pct": 13,
+   "what": "top-variant key phrase + money-rain overlay, then a 3-line accent bullet list of benefits"
+  },
+  {
+   "beat": "setup",
+   "from_pct": 13,
+   "to_pct": 26,
+   "what": "brand named: logo badge pop over students, classroom shots, offer statement"
+  },
+  {
+   "beat": "list",
+   "from_pct": 26,
+   "to_pct": 58,
+   "what": "syllabus montage: one shot + one accent callout per module, screen push-ins"
+  },
+  {
+   "beat": "proof",
+   "from_pct": 58,
+   "to_pct": 81,
+   "what": "hands-on workshops and content-creation class as value proof"
+  },
+  {
+   "beat": "cta",
+   "from_pct": 81,
+   "to_pct": 100,
+   "what": "join line, short presenter shot with CONTACT US + number, black end card with logo, contacts and address"
+  }
+ ],
+ "pacing": {
+  "pace": "fast",
+  "median_shot_s": 2.4,
+  "cuts_per_min": 20,
+  "wpm": 140,
+  "pauses_per_min": 0.0,
+  "visual_change_every_s": 2.4
+ },
+ "elements": {
+  "captions": [
+   {
+    "what": "keyword callout lockup (lead words + key word)",
+    "when": "one per sentence with a topic phrase; many shots have none",
+    "how": "lead: Poppins 700 57 px white, slight shadow, centre y 62.3 %, justified to the key's width; key: Poppins 700 128 px #F2D805, -0.01 em, slight shadow, centre y 68 %, fixed size (never fit-to-width); words blur-fade + settle in over 3-4 f on their spoken word, hard-cut out with the shot",
+    "catalog": [
+     31,
+     44
+    ]
+   },
+   {
+    "what": "top variant",
+    "when": "once, the big claim (~3-10 %)",
+    "how": "key phrase centre y 19.4 % (x 7-94 %), small white words under it at 24.6 %, first flush left, last flush right",
+    "catalog": [
+     24
+    ]
+   },
+   {
+    "what": "stacked 2-word key",
+    "when": "two-word module names",
+    "how": "two accent lines, line 1 right-aligned to line 2, 61-73 % H",
+    "catalog": [
+     23
+    ]
+   }
+  ],
+  "background_text": [
+   {
+    "what": "small accent offer statement",
+    "when": "~16-22 %",
+    "how": "one line small bold accent at ~65 % H",
+    "catalog": []
+   }
+  ],
+  "motion_graphics": [
+   {
+    "what": "falling-banknote overlay",
+    "when": "~7-10 % (~75 frames)",
+    "how": "particle rain of notes over the top callout, on the money line",
+    "catalog": [
+     108
+    ]
+   },
+   {
+    "what": "logo badge pop",
+    "when": "~14 %",
+    "how": "circular logo scales in (~15 f, overshoot) at ~70 % H",
+    "catalog": [
+     192
+    ]
+   },
+   {
+    "what": "dark bottom gradient",
+    "when": "under every lower callout",
+    "how": "black -> transparent from the bottom edge to ~55 % H",
+    "catalog": []
+   }
+  ],
+  "cards_lists": [
+   {
+    "what": "3-line accent bullet list",
+    "when": "~10-13 %",
+    "how": "left-aligned accent lines with ring bullets, ~94 px, baseline pitch 5.5 % H, block x 12.8-89 % / y 62-76 %",
+    "catalog": [
+     111,
+     121
+    ]
+   }
+  ],
+  "silhouettes_cutouts": [],
+  "broll_inserts": [
+   {
+    "what": "B-roll carries ~96 % of runtime",
+    "when": "whole runtime",
+    "how": "venues, classrooms, workshops, market tours, screen shots; one 50-70 frame shot per list item",
+    "catalog": [
+     52
+    ]
+   },
+   {
+    "what": "screen push-ins",
+    "when": "design-tool section (~40-55 %)",
+    "how": "slow push-in on screen footage with soft swaps",
+    "catalog": [
+     62
+    ]
+   }
+  ],
+  "layout": [
+   {
+    "what": "full-frame vertical B-roll",
+    "when": "whole runtime",
+    "how": "text band 60-71 % H over a bottom gradient; top band used once",
+    "catalog": []
+   }
+  ],
+  "camera": [
+   {
+    "what": "handheld phone B-roll",
+    "when": "most shots",
+    "how": "gentle handheld moves; push-ins only on screen footage",
+    "catalog": [
+     51
+    ]
+   }
+  ],
+  "transitions": [
+   {
+    "what": "light-leak flashes",
+    "when": "hook (frames ~30 and ~90)",
+    "how": "pink/second accent flash over the first frames of the new shot",
+    "catalog": [
+     99
+    ]
+   },
+   {
+    "what": "J/L cuts",
+    "when": "list montage",
+    "how": "57 % of cuts are J/L: the VO starts the next item before the picture changes",
+    "catalog": [
+     175
+    ]
+   },
+   {
+    "what": "soft swaps",
+    "when": "screen section",
+    "how": "28 % soft transitions overall",
+    "catalog": []
+   }
+  ],
+  "end_card": [
+   {
+    "what": "black contact end card",
+    "when": "last ~5 % (~114 frames)",
+    "how": "accent-gradient logo + name 28-42 %, tan #CF9C5E box with white caps descriptor 45-50 %, tan #B18B63 caps headings with white caps contact / address lines 54-71 %",
+    "catalog": [
+     201
+    ]
+   }
+  ]
+ },
+ "captions_spec": {
+  "script": "latin (English voice-over)",
+  "case": {
+   "lead": "lowercase as spoken",
+   "key": "Title Case"
+  },
+  "punctuation": "none in callouts (apostrophes kept in contractions); colon after the CTA heading",
+  "emoji": "none (a falling-banknote overlay is used once, ~7-10 % of runtime)",
+  "grouping": {
+   "lead_words_per_caption": "1-3",
+   "key_words_per_caption": "1-2 (the topic noun phrase of the sentence: the module, skill or claim word)",
+   "max_lines": 2,
+   "sync": "word by word: each lead word, then the key word, appears as it is spoken",
+   "break": "one callout per sentence; many B-roll shots have no callout"
+  },
+  "layout": {
+   "band_pct_of_H": [
+    60,
+    71
+   ],
+   "lockup": "the white lead line sits directly above the key word and is JUSTIFIED to the key word's width: first lead word flush with the key's left edge, last lead word flush with its right edge, extra space between words (a 3-word lead over a 10-letter key spans x 18.5-84 %)",
+   "lead": {
+    "center_y_pct": 62.3,
+    "align": "justified to the key word"
+   },
+   "key": {
+    "align": "centre (x 50 %)",
+    "center_y_pct": 68.0
+   },
+   "top_variant": "once (the big-claim sentence, ~3-10 % of runtime) the lockup flips to the top: a 2-word key phrase centre y 19.4 % spanning x 7.2-94.3 %, with the small white words UNDER it at 24.6 %, first word flush left (x 7.6 %) and last word flush right",
+   "stack_variant": "two-word key phrases can stack as two yellow lines, line 1 right-aligned to line 2 (61-73 % H)",
+   "background": "dark bottom gradient (black -> transparent, from the bottom edge to ~55 %) behind the lower callouts"
+  },
+  "type": {
+   "lead": {
+    "font_class": "geometric sans, bold (Montserrat-like: two-storey a, round o, angled t)",
+    "closest_match": {
+     "local": "Poppins 700",
+     "confidence": "medium",
+     "web_font": "Montserrat Bold"
+    },
+    "ink_height_pct_of_H": 2.81,
+    "k": 0.99,
+    "font_size_px_at_1920": 54,
+    "calibration": [
+     {
+      "word": "just",
+      "ink_pct_of_H": 2.81,
+      "width_pct_of_W": 11.7,
+      "note": "(estimated): height-based 50 px vs width-based 66 px differ ~30 %, the j dot/descender was probably clipped; trust the width"
+     }
+    ],
+    "color": "#FFFFFF",
+    "stroke": "none",
+    "shadow": "slight dark shadow (estimated 0 2px 4px rgba(0,0,0,.4))",
+    "box": "none",
+    "tracking": "0em",
+    "word_spacing": "stretched to justify the line to the key word's width",
+    "verified_px": 57,
+    "fit": [
+     {
+      "font": "Poppins 700",
+      "word": "just",
+      "tracking_em": 0.0,
+      "px_for_height": 50.0,
+      "px_for_width": 65.8,
+      "verified_px": 57,
+      "at_verified_px": {
+       "ink_pct_of_H": 3.12,
+       "width_pct_of_W": 10.2
+      },
+      "within_tolerance": true
+     }
+    ],
+    "k_note": "a 3-letter b+g lead word measured 2.58 % H -> ~50 px"
+   },
+   "key": {
+    "font_class": "geometric sans, bold/extra-bold (Montserrat-like)",
+    "closest_match": {
+     "local": "Poppins 700",
+     "confidence": "medium",
+     "web_font": "Montserrat ExtraBold"
+    },
+    "ink_height_pct_of_H": 5.16,
+    "k": 0.73,
+    "font_size_px_at_1920": 136,
+    "size_note": "roughly fixed size (~125-129 px), not fit-to-width: a 10-letter key word measured ink 5.16 % H / 65.1 % W; a 2-word 13-letter phrase runs to ~87 % W (6.72 % H incl. descender)",
+    "color": "#F2D805 (measured #EFD807-#F4D803)",
+    "stroke": "none",
+    "shadow": "slight dark shadow (estimated 0 2px 6px rgba(0,0,0,.4))",
+    "box": "none",
+    "tracking": "-0.01em",
+    "verified_px": 128
+   },
+   "cta": {
+    "font_class": "bold high-contrast serif caps (display serif) for the contact line",
+    "closest_match": {
+     "local": "Playfair Display 700",
+     "confidence": "low",
+     "web_font": "Playfair Display Bold (alt DM Serif Display)"
+    },
+    "case": "UPPERCASE",
+    "ink_height_pct_of_H": 2.66,
+    "k": 0.73,
+    "font_size_px_at_1920": 70,
+    "calibration": [
+     {
+      "word": "CONTACT US:",
+      "ink_pct_of_H": 2.66,
+      "width_pct_of_W": 39.6
+     }
+    ],
+    "second_line": {
+     "text": "phone number(s) in the same serif, yellow #F2D805, ink 2.5 % H, 77.4 % W, centre y 69.8 %"
+    },
+    "color": "#FFFFFF",
+    "stroke": "none",
+    "shadow": "dark shadow (estimated)",
+    "box": "none",
+    "tracking": "0.02em",
+    "verified_px": 64,
+    "fit": [
+     {
+      "font": "Playfair Display 700",
+      "word": "CONTACT US:",
+      "tracking_em": 0.02,
+      "px_for_height": 69.0,
+      "px_for_width": 63.0,
+      "verified_px": 64,
+      "at_verified_px": {
+       "ink_pct_of_H": 2.55,
+       "width_pct_of_W": 40.4
+      },
+      "within_tolerance": true
+     }
+    ]
+   }
+  },
+  "animation": {
+   "fps": 30,
+   "entry": "each word fades in with a blur and a slight scale-down / upward settle over ~3-4 frames (blurred on frame 1, sharp by frame 3-4)",
+   "timing": "word by word in speech rhythm (lead words ~2-5 frames apart, key word last); judge sync from picture if the transcript timing drifts",
+   "exit": "hard cut with the shot change (callouts live inside their shot); some first frames of a new shot carry a light-leak flash",
+   "idle": "none"
+  }
+ },
+ "other_text_spec": [
+  {
+   "type": "bullet list",
+   "when": "~10-13 % of runtime",
+   "text": "3 left-aligned yellow #F2D805 lines with yellow ring bullets (3 short benefit lines, placeholder 'Lead words here' x3), bold geometric, line ink ~3.6 % H (~94 px), baseline pitch 5.5 % H, block x 12.8-89 %, y 62-76 %, over the dark bottom gradient"
+  },
+  {
+   "type": "logo badge",
+   "when": "~14 % of runtime (when the brand is first named)",
+   "text": "circular brand logo badge pops in (scale-in ~15 frames) at ~70 % height (estimated)"
+  },
+  {
+   "type": "small yellow statement",
+   "when": "~16-22 % of runtime",
+   "text": "one-line offer statement ('Headline here') in small yellow bold, ~65 % H (estimated)"
+  },
+  {
+   "type": "money-rain overlay",
+   "when": "~7-10 % of runtime (~75 frames) on the money / revenue line",
+   "text": "falling banknotes over the top-variant callout"
+  },
+  {
+   "type": "CTA contact line",
+   "when": "~92-95 % of runtime",
+   "text": "'CONTACT US:' white bold serif caps centre y 65.6 % (ink 2.66 % H, 39.6 % W) + phone number(s) in yellow serif centre y 69.8 % (77.4 % W)"
+  },
+  {
+   "type": "end card",
+   "when": "~95 % to end (~114 frames)",
+   "bg": "black #000000",
+   "text": "gold-gradient logo mark + brand name at 28-42 %; tan box #CF9C5E with white caps descriptor lines at 45-50 %; 'contact' and 'location' headings in tan #B18B63 caps with white caps details below (54-71 %), neo-grotesque caps"
+  }
+ ],
+ "style": {
+  "palette_roles": {
+   "text": "#FFFFFF",
+   "accent": "#F2D805",
+   "accent_2": "#CF9C5E",
+   "surface": "#000000",
+   "card_bg": "#B18B63"
+  },
+  "fonts": {
+   "lead": {
+    "closest_local": "Poppins 700 (Montserrat Bold closer)",
+    "verified_px": 57,
+    "tracking": "0em"
+   },
+   "key": {
+    "closest_local": "Poppins 700 (Montserrat ExtraBold closer)",
+    "verified_px": 128,
+    "tracking": "-0.01em"
+   },
+   "bullets": {
+    "closest_local": "Poppins 700",
+    "verified_px": null,
+    "tracking": "0em"
+   },
+   "cta": {
+    "closest_local": "Playfair Display 700 (UPPERCASE)",
+    "verified_px": 64,
+    "tracking": "0.02em"
+   }
+  },
+  "look_intent": "warm, saturated, golden venue light; high-contrast, natural saturation, dark bottom vignette/gradient for text"
+ },
+ "sound": {
+  "music": "music bed likely (heuristic) under continuous VO; upbeat corporate / motivational bed",
+  "sfx": [
+   "cash / whoosh on the money-rain overlay (inferred)",
+   "pop on the logo badge (inferred)",
+   "soft whoosh on light-leak flashes (inferred)",
+   "cuts rarely land on beats (measured cut_hit_share 0.05)"
+  ],
+  "loudness_lufs": -14.3
+ },
+ "measured": {
+  "grade": {
+   "black_point": 0.9,
+   "midtone": 126.8,
+   "white_point": 246.2,
+   "contrast_range": 245.3,
+   "luma_std": 74.6,
+   "saturation": 0.356,
+   "colorfulness": 51.6,
+   "warmth_r_minus_b": 42.5,
+   "tint_g": -2.3,
+   "vignette_centre_over_edge": 1.2,
+   "label": "high-contrast, natural-saturation, warm"
+  },
+  "layout": {
+   "letterbox_share": 0.21,
+   "split_divider_share": 0.0
+  },
+  "sound": {
+   "has_audio": true,
+   "speech_coverage": 0.95,
+   "beat_periodicity": 0.07,
+   "beat_bpm_est": null,
+   "gap_level_rel_speech_db": 5.3,
+   "music": "music bed likely",
+   "cut_hit_share": 0.1,
+   "method": "heuristic (onset-envelope beat periodicity + level in speech gaps); not a classifier"
+  }
+ },
+ "catalog_styles": [
+  {
+   "id": 52,
+   "name": "Voiceover Plus B-Roll",
+   "role": "VO over ~96 % B-roll"
+  },
+  {
+   "id": 31,
+   "name": "Emphasis-Word Zoom",
+   "role": "one big yellow key word per sentence"
+  },
+  {
+   "id": 44,
+   "name": "Text-on-B-Roll",
+   "role": "callouts sit over B-roll on a bottom gradient"
+  },
+  {
+   "id": 111,
+   "name": "Card-List",
+   "role": "3-line benefit bullets"
+  },
+  {
+   "id": 177,
+   "name": "Montage Editing",
+   "role": "one shot per syllabus module"
+  },
+  {
+   "id": 99,
+   "name": "Light-Leak Transitions",
+   "role": "flashes in the hook"
+  },
+  {
+   "id": 214,
+   "name": "Course Lesson",
+   "role": "course / institute offer"
+  },
+  {
+   "id": 201,
+   "name": "Product Advertisement",
+   "role": "phone-number CTA and contact end card"
+  }
+ ],
+ "use_when": [
+  "a course, institute, agency or service ad built mostly from B-roll with a voice-over",
+  "the script lists many modules, services or features (one shot + key word each)",
+  "the brand has lots of venue / classroom / workshop footage",
+  "a direct-response CTA with phone numbers and an address end card is wanted"
+ ],
+ "avoid_when": [
+  "the speaker's face and personality should carry the video",
+  "premium / minimal brands (the accent callouts and money rain read as a local ad)",
+  "micro-length hook-only clips"
+ ],
+ "match": {
+  "tags": [
+   "b-roll",
+   "voiceover",
+   "ad",
+   "education",
+   "course-promo",
+   "keyword-callouts",
+   "yellow-text",
+   "justified-lockup",
+   "money-rain",
+   "light-leak",
+   "list-montage",
+   "contact-end-card",
+   "j-cuts"
+  ],
+  "keywords": [
+   "course",
+   "institute",
+   "training",
+   "academy",
+   "admissions",
+   "students",
+   "classes",
+   "modules",
+   "syllabus",
+   "skills",
+   "business",
+   "workshop",
+   "career",
+   "enroll",
+   "contact",
+   "ad"
+  ],
+  "needs": {
+   "speaker_footage": false,
+   "screen_recordings": true,
+   "broll": true,
+   "brand_assets": true
+  }
+ },
+ "quality_score": 3,
+ "brand_prompt": "Use /video-pipeline with /video-captions on videos/<project>. Apply style blueprint B30 (video-reference-match/references/blueprints/B30.json) to this brand.\n\nBRAND TOKENS (use the brand's colour for each role; keep the contrast relationship — text and accent must stay >= 4.5:1 / >= 3:1 against what sits behind them on the footage):\n- {{TEXT}}      default #FFFFFF (lead words, CTA heading)\n- {{ACCENT}}    default #F2D805 (key words, bullets, phone number)\n- {{ACCENT_2}}  default #CF9C5E (end-card descriptor box)\n- {{SURFACE}}   default #000000 (end card / bottom gradient)\n- {{CARD_BG}}   default #B18B63 (end-card headings)\n- {{FONT_DISPLAY}} default Poppins 700 (Montserrat ExtraBold is closer)\n- {{FONT_BODY}}    default Poppins 700; Playfair Display 700 for the CTA heading\n- {{HANDLE}}    default @handle\n- {{LOGO}}      default the brand's logo file (transparent PNG/SVG)\n{{ACCENT}} must stay >= 3:1 on the footage even above the gradient; a dark brand colour needs a lighter tint for the key words.\nCanvas 1080x1920, 30 fps.\n\nCAPTIONS (keyword callouts, not full transcripts)\n1. One callout per sentence, only on shots where the sentence has a clear topic phrase: 1-3 small lowercase lead-in words as spoken + ONE key word or 2-word phrase in Title Case (placeholder 'lead words here' + 'KEY WORD'). No punctuation, no emoji.\n2. Key: {{FONT_DISPLAY}} at 128 px (fixed size, never fit-to-width; a 2-word phrase may run to ~87 % W), {{ACCENT}}, tracking -0.01 em, slight dark shadow 0 2px 6px rgba(0,0,0,.4), no stroke / box, centred at ~68 % H. Two-word phrases may stack as two lines, line 1 right-aligned to line 2.\n3. Lead-in: {{FONT_DISPLAY}} at 57 px, {{TEXT}}, slight shadow, directly above the key word and JUSTIFIED to the key's width (first word flush left, last flush right, extra word spacing), centre ~62.3 % H.\n4. Top variant (once, for the big claim): key phrase at the top (centre 19.4 %), small {{TEXT}} words UNDER it at 24.6 %, first flush left, last flush right.\n5. Background: dark bottom gradient ({{SURFACE}} -> transparent from the bottom edge to ~55 % H) under the lower callouts.\n6. Animation: each word appears as it is spoken — fade + blur + slight scale-down / upward settle over 3-4 frames; lead words first, key word last. Callouts hard-cut out with their shot. No idle motion.\n\nOTHER TEXT (only where the script has a matching beat)\n7. Bullet list (3 benefits): left-aligned {{ACCENT}} lines with ring bullets, bold geometric ~94 px, baseline pitch 5.5 % H, block x 12.8-89 %, y 62-76 %.\n8. {{LOGO}} badge pop (~15-frame scale-in) at ~70 % H when the brand is first named; optional money-rain overlay (~75 frames) on a revenue / earnings line.\n9. CTA: 'CONTACT US:' in {{TEXT}} bold serif caps (Playfair Display 700, 64 px, +0.02 em) centred at 65.6 %, phone number(s) in {{ACCENT}} serif below at 69.8 % (~77 % W).\n10. End card (last ~114 frames): {{SURFACE}}; {{LOGO}} + brand name at 28-42 %; {{ACCENT_2}} box with white caps descriptor lines at 45-50 %; 'contact' / 'location' headings in {{CARD_BG}} caps with white caps details below (54-71 %).\n11. Edit: B-roll for ~96 % of runtime, median ~73 frames per shot; in list sections one 50-70 frame shot per item; VO leads cuts (J-cuts); two light-leak flashes in the hook; screen footage gets slow push-ins. Limit the master to -1 dBTP.\n\nGRADE\nGrade from the user's footage (video-style / grade.py); target look: warm, saturated, golden light, high contrast, dark bottom vignette for text.\n\nVERIFY before rendering\na) Render the lead word 'just' (in a lead line 'lead just here') over 'KEY WORD', and 'CONTACT US:', then measure:\n   python3 video-reference-match/scripts/caption_probe.py <test-render> --out <dir> --at <t> --box 0.12,0.655,0.88,0.71 --ink \"{{ACCENT}}:60\"\n   python3 video-reference-match/scripts/caption_probe.py <test-render> --out <dir> --at <t> --box 0.42,0.6,0.56,0.655 --ink \"{{TEXT}}:40\"\n   python3 video-reference-match/scripts/caption_probe.py <test-render> --out <dir> --at <t> --box 0.2,0.63,0.8,0.68 --ink \"{{TEXT}}:50\"\n   Expected (±0.5 % H, ±2 % W): 'just' ~2.8 % H (estimated) / 11.7 % W; 'CONTACT US:' 2.66 % H / 39.6 % W at 64 px Playfair 700.\nb) Key word: python3 video-reference-match/scripts/fit_font.py --font \"Poppins 700\" --word \"<Key word without descenders>\" --ink 5.16 --tracking -0.01 -> ~122-128 px with Poppins (128 px is the width-balanced value; Montserrat ExtraBold matches better). Lead words: --font \"Poppins 700\" --word \"just\" --width 11.7 -> ~57-66 px. Measure white over a dark area. (fit_font.py needs a target: --ink and/or --width; it returns the px that reproduces that ink for YOUR word plus the width it will read at that px. Requires Pillow.)\nc) Positions within ±1 % H: lead centre 62.3 %, key centre 68 %, top-variant key 19.4 %, CTA heading 65.6 %, number line 69.8 %.",
+ "caption_family": "giant-keyword"
+}

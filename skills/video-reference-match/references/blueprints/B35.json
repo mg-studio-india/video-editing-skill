@@ -1,0 +1,347 @@
+{
+ "id": "B35",
+ "schema": "blueprint/1",
+ "format": {
+  "type": "talking-head",
+  "aspect": "9:16",
+  "language": "English",
+  "duration_class": "long (>180s)",
+  "people_on_screen": "1"
+ },
+ "topic_class": "career",
+ "signature": {
+  "one_line": "Single locked-off standing take carried only by progressive word-by-word captions that fade in white on the chest; credential-stack hook and spoken numbered signposts.",
+  "unique_devices": [
+   "Opacity-ramp word reveal: each word fades 0 -> 0.73 over 6 frames then snaps to 1.0 on frame 7, so the word being spoken reads as dim grey for a moment; layout pre-fixed so earlier words never move",
+   "Top-anchored caption block: first line's ink top fixed at 61.0 % height on the speaker's dark top, a second line grows downward (pitch 3.1 % H); white bold grotesque 50 px with a thin ~2 px near-black outline, no box",
+   "Phrase hand-off rhythm: the finished phrase hard-cuts out, the band stays empty ~4 frames, then the next phrase's first word fades in",
+   "Zero-edit thigh-up standing take in a bare room; structure comes only from a credential-stack hook and spoken 'Number N' signposts every ~15-20 % of runtime"
+  ],
+  "why_it_works": "Stacked credentials plus a failure twist earn authority in seconds; the progressive reveal keeps eyes on the words while a fast, pause-light delivery and numbered signposts carry an uncut take."
+ },
+ "hook": {
+  "type": "social proof (credential stack) + vulnerable twist",
+  "first_word_s": 0.05,
+  "first_cut_s": null,
+  "first_frame": "thigh-up wide shot of the speaker standing centred in a bright bare room, gesturing; first caption word fading in on the chest at ~61 % height"
+ },
+ "structure": [
+  {
+   "beat": "hook",
+   "from_pct": 0,
+   "to_pct": 5,
+   "what": "four quick credentials, then a vulnerable failure twist"
+  },
+  {
+   "beat": "setup",
+   "from_pct": 5,
+   "to_pct": 14,
+   "what": "current authority + the question the talk answers + one authority line"
+  },
+  {
+   "beat": "list",
+   "from_pct": 14,
+   "to_pct": 44,
+   "what": "points 1-2, each opened with a spoken numbered signpost; insider reject criteria"
+  },
+  {
+   "beat": "example",
+   "from_pct": 44,
+   "to_pct": 61,
+   "what": "point 3 answers the viewer's obvious objection with a worked example"
+  },
+  {
+   "beat": "list",
+   "from_pct": 61,
+   "to_pct": 93,
+   "what": "points 4-5 with a stat and a direct instruction"
+  },
+  {
+   "beat": "payoff",
+   "from_pct": 93,
+   "to_pct": 100,
+   "what": "optimistic payoff line and a one-word sign-off; no CTA"
+  }
+ ],
+ "pacing": {
+  "pace": "very slow / mostly static (single take)",
+  "median_shot_s": null,
+  "cuts_per_min": 0,
+  "wpm": 220,
+  "pauses_per_min": 2.4,
+  "visual_change_every_s": 1.4,
+  "note": "one continuous take (median shot = full runtime); the only visual change is the caption phrase (4-6 words) swapping roughly every 40-45 frames"
+ },
+ "elements": {
+  "captions": [
+   {
+    "what": "progressive word-by-word caption block, 1-7 words over max 2 lines",
+    "when": "0-100 %",
+    "how": "Inter-ExtraBold-like 50 px white, ~2 px near-black outline, no box; centred, first-line ink top at 61.0 % H, line pitch 60 px, grows downward, max line 55 % W; per-word opacity ramp over 6 frames then snap to full on frame 7, 2-9 frames after the word; phrase hard-cuts out, ~4 empty frames",
+    "catalog": [
+     21,
+     22
+    ]
+   }
+  ],
+  "background_text": [],
+  "motion_graphics": [],
+  "cards_lists": [
+   {
+    "what": "spoken numbered list (no on-screen cards)",
+    "when": "points at ~14, 28, 44, 61 and 81 % of runtime",
+    "how": "each point opens with a spoken 'Number N' signpost; nothing on screen marks it",
+    "catalog": [
+     121
+    ]
+   }
+  ],
+  "silhouettes_cutouts": [],
+  "broll_inserts": [],
+  "layout": [
+   {
+    "what": "full-frame thigh-up standing medium shot",
+    "when": "100 %",
+    "how": "speaker centred, generous headroom, dark top so the white captions sit on it",
+    "catalog": [
+     46
+    ]
+   }
+  ],
+  "camera": [
+   {
+    "what": "locked-off single take",
+    "when": "100 %",
+    "how": "tripod, no punch-ins or digital moves; motion only from gestures",
+    "catalog": [
+     70,
+     187
+    ]
+   }
+  ],
+  "transitions": [],
+  "end_card": []
+ },
+ "captions_spec": {
+  "script": "latin (English as spoken)",
+  "case": {
+   "caption": "sentence case as spoken (capital only at a sentence start)"
+  },
+  "punctuation": "kept (commas, full stops, apostrophes)",
+  "numbers": "as transcribed",
+  "emoji": "none",
+  "grouping": {
+   "words_per_caption": "1-7 (typically 4-6 at full build)",
+   "max_lines": 2,
+   "max_line_width_pct_of_W": 55,
+   "sync": "word-by-word: each word appears as it is spoken into a phrase layout that is fixed in advance (later words do not re-centre earlier ones)",
+   "break": "phrase ends at a clause / line-full; the whole phrase hard-cuts out, ~4 frames empty, then the next phrase's first word fades in"
+  },
+  "layout": {
+   "band_pct_of_H": [
+    61.0,
+    66.4
+   ],
+   "caption": {
+    "align": "center",
+    "center_x_pct_of_W": 50.0,
+    "top_of_first_line_pct": 61.0,
+    "one_line_center_y_pct": 62.2,
+    "two_line_center_y_pct": 63.7,
+    "line_pitch_pct_of_H": 3.1,
+    "anchor": "top-anchored: a second line grows downward"
+   },
+   "margins_pct_of_W": "≥ 22.5 each side",
+   "on_1080x1920": "same 9:16 canvas: first-line ink top at y 1171 px, line pitch 60 px, centred at x 540 px"
+  },
+  "type": {
+   "caption": {
+    "font_class": "neo-grotesque / grotesque sans, bold-extra-bold (double-storey a, single-storey g, straight-tailed y, wide round o/e)",
+    "closest_match": {
+     "local": "Inter 800",
+     "google": "Inter ExtraBold (alt: Figtree Bold / Plus Jakarta Sans Bold)",
+     "confidence": "low-medium"
+    },
+    "ink_height_pct_of_H": 2.42,
+    "k": 0.99,
+    "font_size_px_at_1920": 50,
+    "k_note": "a line with ascenders and descenders -> k 0.99: 2.42 x 19.2 / 0.99 = 47 px; cross-check on a line without descenders (k 0.73): 1.88 x 19.2 / 0.73 = 49 px; render-verified with Inter 800: 50 px",
+    "calibration": [],
+    "calibration_note": "measured on a one-line and a two-line phrase over a dark grey t-shirt (white ink isolated cleanly); lines with descenders 2.42 % H, without 1.88 % H",
+    "color": "#FFFFFF (spoken, settled); mid-fade words read as dim grey because they are semi-transparent white",
+    "stroke": "thin dark outline ~1 px at 720p (≈2 px at 1920), near-black, hugging the letters",
+    "shadow": "none beyond the outline (no blurred drop shadow measured)",
+    "box": "none",
+    "tracking": "0em",
+    "verified_px": 50,
+    "fit": [
+     {
+      "font": "Inter 800",
+      "tracking_em": 0.0,
+      "verified_px": 50
+     }
+    ]
+   }
+  },
+  "animation": {
+   "fps": 30,
+   "entry": "per word: opacity ramps 0 -> 0.11 -> 0.20 -> 0.30 -> 0.41 -> 0.57 -> 0.73 over 6 frames, then snaps to 1.0 on frame 7; no scale, no slide, no blur",
+   "timing": "each word starts fading in 2-9 frames after its transcript start",
+   "highlight": "none (no colour change once settled; the dim-grey look is only the fade)",
+   "exit": "the whole phrase hard-cuts out (1 frame), the band stays empty ~4 frames, then the next phrase begins",
+   "idle": "no motion while held"
+  }
+ },
+ "other_text_spec": [
+  {
+   "type": "titles / cards / lower-thirds / stickers / end card",
+   "when": "none",
+   "text": "none: one locked-off take; the captions are the only added layer"
+  }
+ ],
+ "style": {
+  "palette_roles": {
+   "text": "#FFFFFF",
+   "accent": null,
+   "accent_2": null,
+   "surface": null,
+   "card_bg": null
+  },
+  "fonts": {
+   "caption": {
+    "closest_local": "Inter 800 (+ ~2 px near-black outline)",
+    "verified_px": 50,
+    "tracking": "0em"
+   }
+  },
+  "look_intent": "mid-contrast, muted, warm-leaning natural daylight in a bright bare room; flat, ungraded look"
+ },
+ "sound": {
+  "music": "voice only (no bed detected; speech gaps sit ~39 dB below speech); lav-mic dry voice",
+  "sfx": [
+   "none"
+  ],
+  "loudness_lufs": -14.0
+ },
+ "measured": {
+  "grade": {
+   "black_point": 26.9,
+   "midtone": 116.9,
+   "white_point": 200.1,
+   "contrast_range": 173.2,
+   "luma_std": 44.9,
+   "saturation": 0.177,
+   "colorfulness": 28.9,
+   "warmth_r_minus_b": 22.6,
+   "tint_g": -1.1,
+   "vignette_centre_over_edge": 0.78,
+   "label": "mid-contrast, muted, warm"
+  },
+  "layout": {
+   "letterbox_share": 0.0,
+   "split_divider_share": 0.0
+  },
+  "sound": {
+   "has_audio": true,
+   "speech_coverage": 0.97,
+   "beat_periodicity": 0.04,
+   "beat_bpm_est": null,
+   "gap_level_rel_speech_db": -38.8,
+   "music": "voice only (no bed detected)",
+   "cut_hit_share": null,
+   "method": "heuristic (onset-envelope beat periodicity + level in speech gaps); not a classifier"
+  }
+ },
+ "catalog_styles": [
+  {
+   "id": 46,
+   "name": "Talking-Head",
+   "role": "the whole video: standing direct address"
+  },
+  {
+   "id": 70,
+   "name": "Single-Take / One-Shot Video (Oner)",
+   "role": "no cuts for the full runtime"
+  },
+  {
+   "id": 187,
+   "name": "Long-Take Storytelling",
+   "role": "delivery carries retention instead of edits"
+  },
+  {
+   "id": 21,
+   "name": "Caption-Edit",
+   "role": "captions are the only added layer"
+  },
+  {
+   "id": 22,
+   "name": "Karaoke Captions",
+   "role": "progressive per-word opacity reveal"
+  },
+  {
+   "id": 121,
+   "name": "Tips-and-Tricks List",
+   "role": "five numbered points with spoken signposts"
+  },
+  {
+   "id": 161,
+   "name": "Lessons Learned",
+   "role": "credential + failure framing of the advice"
+  }
+ ],
+ "use_when": [
+  "the user has one long uncut advice take and wants captions as the only edit",
+  "the script is a numbered list of tips with spoken signposts",
+  "the speaker wears a dark top that gives the chest-level white captions contrast",
+  "a calm, readable, distraction-free caption style is preferred over flashy emphasis"
+ ],
+ "avoid_when": [
+  "fast short-form pacing is required (no cuts at all here)",
+  "the speaker wears white or light clothing at chest height",
+  "there are products, screens or b-roll to show"
+ ],
+ "match": {
+  "tags": [
+   "talking-head",
+   "single-take",
+   "standing",
+   "progressive-reveal-captions",
+   "word-by-word-captions",
+   "outline-captions",
+   "numbered-list",
+   "credential-hook",
+   "career-advice",
+   "no-music",
+   "no-cta",
+   "minimal-edit",
+   "long-form"
+  ],
+  "keywords": [
+   "hired",
+   "hiring",
+   "interview",
+   "resume",
+   "job",
+   "career",
+   "tips",
+   "rules",
+   "advice",
+   "confidence",
+   "rejected",
+   "candidates",
+   "employer",
+   "students",
+   "skills",
+   "lessons"
+  ],
+  "needs": {
+   "speaker_footage": true,
+   "screen_recordings": false,
+   "broll": false,
+   "brand_assets": false
+  }
+ },
+ "quality_score": 3,
+ "brand_prompt": "Use /video-pipeline with /video-captions on videos/<project>. Apply style blueprint B35 (video-reference-match/references/blueprints/B35.json) to this brand.\nCanvas 1080x1920, 30 fps. All positions are % of frame; px are at 1080x1920.\n\nBRAND TOKENS (use the brand's colour/font for each role; keep the contrast relationship: {{TEXT}} must stay >= 4.5:1 on the speaker's top where it sits, with the thin dark outline)\n- {{TEXT}}      caption words                          default #FFFFFF\n- {{ACCENT}}    none (no highlight colour; the dim look is only the fade)  default none\n- {{ACCENT_2}}  caption outline                        default near-black (#111111)\n- {{SURFACE}}   none                                   default none\n- {{CARD_BG}}   none                                   default none\n- {{FONT_DISPLAY}} captions                            default Inter 800 (bold grotesque; alt Figtree Bold / Plus Jakarta Sans Bold)\n- {{FONT_BODY}}    same as display                     default Inter 800\n- {{HANDLE}}    not shown\n- {{LOGO}}      not shown\n\nCAPTIONS\n1. English as spoken, sentence case (capital at a sentence start); keep commas, full stops, apostrophes.\n2. Phrases of up to ~7 words over at most 2 centred lines, max line width ~55 % W (~595 px). Lay out the whole phrase first (line breaks and centring fixed), then reveal word by word as spoken; earlier words never move.\n3. Type: {{FONT_DISPLAY}} at 50 px, line pitch 60 px, tracking 0, {{TEXT}}, thin {{ACCENT_2}} outline ~2 px (paint-order stroke or a 1 px 4-direction text-shadow), no blurred shadow, no box.\n4. Position: centred; the first line's ink top fixed at 61.0 % of height (y ~1171 px): one line centres at 62.2 %, a second line grows downward (centre 63.7 %). Keep it on the speaker's chest / dark clothing.\n5. Per-word animation: opacity 0 -> 0.11 -> 0.20 -> 0.30 -> 0.41 -> 0.57 -> 0.73 over 6 frames, then snap to 1.0 on frame 7 (ease-in); start 2-9 frames after the word's transcript start. No scale, slide or blur. When the phrase is complete, cut it out on one frame, leave the band empty ~4 frames, then start the next phrase.\n6. No colour highlight and no idle motion.\n\nOTHER TEXT\n7. None: no title, lower third, sticker, CTA card or end card.\n\nEDIT DEVICES\n8. Keep one locked-off thigh-up take; trim only head and tail. Script shape: credential stack + failure twist in the first ~5 % of runtime, the question by ~10 %, then numbered points with spoken signposts every ~15-20 % of runtime, one-word sign-off. (For a faster cut, add a punch-in every ~90-150 frames without moving the caption position.)\n\nGRADE\n9. Grade from the user's footage (video-style / grade.py); target look: mid-contrast, muted, warm-leaning natural daylight; flat, ungraded feel.\n\nAUDIO\n10. Dry voice only, no music, no SFX; keep natural short pauses. Master to about -14.0 LUFS, true peak <= -1 dBTP.\n\nVERIFY before rendering\na) Render a test frame with a fully built one-line caption \"KEY WORD\" over a dark area and measure:\n   python video-reference-match/scripts/caption_probe.py <test.mp4> --out <dir> --at <t> --box 0.2,0.585,0.8,0.67 --ink \"{{TEXT}}:60\"\nb) Expected ink: video-reference-match/scripts/fit_font.py with {{FONT_DISPLAY}} at 50 px (reference: lines with descenders 2.42 % H, without 1.88 % H). Required: within ±0.5 % H; first-line ink top at 61.0 % ±0.5; colour equal to {{TEXT}}. Check a mid-fade frame: the word at frame 6 of its ramp must read at ~73 % opacity.\n",
+ "caption_family": "word-by-word-plain"
+}

@@ -1,0 +1,364 @@
+{
+ "id": "B42",
+ "schema": "blueprint/1",
+ "format": {
+  "type": "ugc-ad",
+  "aspect": "9:16",
+  "language": "none",
+  "duration_class": "micro (<15s)",
+  "people_on_screen": "2+"
+ },
+ "topic_class": "lifestyle / career perks (trend format)",
+ "signature": {
+  "one_line": "Still group shot under a colon-ended serif title, then a textless ~10-frame-per-clip highlight burst.",
+  "unique_devices": [
+   "Hold-then-burst: a near-static opener for ~44 % of runtime, then 16 clips of 6-13 frames each (~110 cuts/min, up to ~190 in the peak window)",
+   "Two-line title that ends in a colon: small white condensed serif lead-in over a large accent brush italic key phrase, first word regular and key word bold at the same size",
+   "Title lives only on the opener and hard-cuts out with it; the burst carries no text at all",
+   "Burst ordered by intensity, ending on the biggest visual (pyro / jets / fireworks) so the loop restarts on a high"
+  ],
+  "why_it_works": "The colon promises a list; the long still hold builds tension; the burst pays it off faster than it can be read, inviting a rewatch."
+ },
+ "hook": {
+  "type": "open loop (title ending in a colon)",
+  "first_word_s": 0.0,
+  "first_cut_s": 3.867,
+  "first_frame": "Near-static warm, softly faded medium shot of three young crew members with staff passes leaning on a railing, venue behind; 2-line title above their heads"
+ },
+ "structure": [
+  {
+   "beat": "hook",
+   "from_pct": 0,
+   "to_pct": 44,
+   "what": "Still group shot with the colon-ended title; short trend voice line then music"
+  },
+  {
+   "beat": "payoff",
+   "from_pct": 44,
+   "to_pct": 75,
+   "what": "10-clip burst of perks: venue, stage acts, lasers, DJ, athletes"
+  },
+  {
+   "beat": "loop",
+   "from_pct": 75,
+   "to_pct": 100,
+   "what": "6 more clips escalating to fireworks, crowd, flame and CO2 jets; ends on the biggest visual"
+  }
+ ],
+ "pacing": {
+  "pace": "frenetic",
+  "median_shot_s": 0.3,
+  "cuts_per_min": 109,
+  "wpm": null,
+  "pauses_per_min": 0.0,
+  "visual_change_every_s": 0.33
+ },
+ "elements": {
+  "captions": [],
+  "background_text": [
+   {
+    "what": "Two-line colon title",
+    "when": "0-44 % (opener shot only)",
+    "how": "Centred above the subjects' heads: line 1 white condensed serif centre 23.8 % H (x 35-65 %), line 2 accent brush italic centre 28.7 % H (x 18-82 %), 0.9 % H gap; on from frame 0, static, hard-cut out with the shot",
+    "catalog": [
+     24,
+     33
+    ]
+   }
+  ],
+  "motion_graphics": [],
+  "cards_lists": [],
+  "silhouettes_cutouts": [],
+  "broll_inserts": [
+   {
+    "what": "Event-highlight burst",
+    "when": "44-100 % (~56 % of runtime)",
+    "how": "16 handheld clips, 6-13 frames each (median ~10), full frame, ungraded and saturated; order by intensity, biggest visual last",
+    "catalog": [
+     174,
+     68
+    ]
+   }
+  ],
+  "layout": [
+   {
+    "what": "Full-frame vertical footage",
+    "when": "100 %",
+    "how": "No split or cards",
+    "catalog": []
+   }
+  ],
+  "camera": [
+   {
+    "what": "Locked-off opener",
+    "when": "0-44 %",
+    "how": "Near-static medium group shot, subjects in the lower 2/3, clean sky/venue above for the title",
+    "catalog": [
+     46
+    ]
+   },
+   {
+    "what": "Handheld burst clips",
+    "when": "44-100 %",
+    "how": "Wides of stages and crowds, no punch-ins",
+    "catalog": [
+     51
+    ]
+   }
+  ],
+  "transitions": [
+   {
+    "what": "Hard cuts + quick blends",
+    "when": "44-100 %",
+    "how": "44 % of changes are 2-3-frame blends, the rest hard cuts, all on music beats",
+    "catalog": [
+     175,
+     174
+    ]
+   }
+  ],
+  "end_card": []
+ },
+ "captions_spec": null,
+ "other_text_spec": [
+  {
+   "type": "title line 1 (lead-in)",
+   "when": "0-44 % of runtime (opener shot only)",
+   "copy": "short lead-in, ~12 characters, sentence case (placeholder 'Lead words')",
+   "case": "sentence",
+   "font_class": "condensed old-style serif, regular/medium, bracketed serifs, tall ascenders",
+   "closest_match": {
+    "local": "Playfair Display 500",
+    "google": "Instrument Serif",
+    "confidence": "low (original ~1/3 narrower than Playfair)"
+   },
+   "tracking": "0em",
+   "color": "#FFFFFF",
+   "stroke": "none",
+   "shadow": "none",
+   "box": "none",
+   "layout": {
+    "align": "centre",
+    "center_y_pct": 23.8,
+    "top_pct": 21.7,
+    "bottom_pct": 25.8,
+    "x_pct": [
+     35.3,
+     64.7
+    ]
+   },
+   "measured": {
+    "ink_pct_of_H": 4.14,
+    "width_pct_of_W": 29.4,
+    "chars": "~12 incl. spaces"
+   },
+   "verified_px": 63,
+   "fit_note": "original is a condensed serif (width/height ratio 0.67 of Playfair); Playfair 63 px balances height and width; for the look use a condensed serif and size it to the measured ink"
+  },
+  {
+   "type": "title line 2 (key phrase)",
+   "when": "0-44 % of runtime",
+   "copy": "two-word key phrase ending with ' :' (placeholder 'KEY WORD :'); first word regular weight, second word bold, same size",
+   "case": "sentence",
+   "font_class": "informal brush italic (single-storey a and g, flared strokes)",
+   "closest_match": {
+    "local": "Playfair Display 700 italic",
+    "google": "Merienda 700 (brush feel)",
+    "confidence": "low (size and slant only)"
+   },
+   "tracking": "0em",
+   "color": "#FF0021",
+   "stroke": "none",
+   "shadow": "none",
+   "box": "none",
+   "layout": {
+    "align": "centre",
+    "center_y_pct": 28.7,
+    "top_pct": 26.7,
+    "bottom_pct": 30.7,
+    "x_pct": [
+     18.3,
+     81.7
+    ],
+    "gap_to_line1_pct_of_H": 0.9
+   },
+   "words": [
+    {
+     "position": "first word (~5 letters, regular)",
+     "ink_pct_of_H": 3.05,
+     "width_pct_of_W": 14.2,
+     "x_pct": [
+      18.3,
+      32.5
+     ]
+    },
+    {
+     "position": "key word + colon (~11 characters, bold)",
+     "ink_pct_of_H": 3.59,
+     "width_pct_of_W": 46.7,
+     "x_pct": [
+      35.0,
+      81.7
+     ],
+     "x_height_ink_pct_of_H": 2.58
+    }
+   ],
+   "measured": {
+    "ink_pct_of_H": 4.06,
+    "width_pct_of_W": 63.3,
+    "chars": "~17 incl. colon"
+   },
+   "verified_px": 78
+  },
+  {
+   "type": "title animation",
+   "fps": 30,
+   "entry": "on screen from frame 0, no animation",
+   "idle": "static; the opener shot itself is near-static",
+   "exit": "hard cut out with the opener shot (~116 frames); the burst after it has no text"
+  }
+ ],
+ "style": {
+  "palette_roles": {
+   "text": "#FFFFFF",
+   "accent": "#FF0021",
+   "accent_2": null,
+   "surface": null,
+   "card_bg": null
+  },
+  "fonts": {
+   "lead_in": {
+    "closest_local": "Playfair Display 500",
+    "verified_px": 63,
+    "tracking": "0em"
+   },
+   "key_phrase": {
+    "closest_local": "Playfair Display 700 italic",
+    "verified_px": 78,
+    "tracking": "0em"
+   }
+  },
+  "look_intent": "warm, softly faded, high-contrast opener; burst clips left saturated and natural (blue lasers, magenta, orange pyro, daylight venue)"
+ },
+ "sound": {
+  "music": "trend audio: a short voice line over the first ~17 % (speech_coverage 0.17), then a music drop; beat periodicity 0.37, ~182 bpm estimate",
+  "sfx": [
+   "none added; burst cuts follow the music (detector cut_hit_share 0.0 on 9 hard cuts, so they sit between onsets)",
+   "optional: drop / impact on the first burst cut"
+  ],
+  "loudness_lufs": -14.2
+ },
+ "measured": {
+  "grade": {
+   "black_point": 7.2,
+   "midtone": 86.3,
+   "white_point": 227.0,
+   "contrast_range": 219.8,
+   "luma_std": 69.3,
+   "saturation": 0.393,
+   "colorfulness": 63.3,
+   "warmth_r_minus_b": 23.0,
+   "tint_g": 5.6,
+   "vignette_centre_over_edge": 1.22,
+   "label": "high-contrast, natural-saturation, warm"
+  },
+  "layout": {
+   "letterbox_share": 0.04,
+   "split_divider_share": 0.04
+  },
+  "sound": {
+   "has_audio": true,
+   "speech_coverage": 0.17,
+   "beat_periodicity": 0.37,
+   "beat_bpm_est": 182,
+   "gap_level_rel_speech_db": 6.1,
+   "music": "music bed likely",
+   "cut_hit_share": 0.0,
+   "method": "heuristic (onset-envelope beat periodicity + level in speech gaps); not a classifier"
+  }
+ },
+ "catalog_styles": [
+  {
+   "id": 24,
+   "name": "Big-Text Hook",
+   "role": "colon-ended 2-line title on the still opener"
+  },
+  {
+   "id": 33,
+   "name": "Oversized Editorial Headlines",
+   "role": "serif lead-in + brush italic key phrase pairing"
+  },
+  {
+   "id": 174,
+   "name": "Rapid-Fire Cuts",
+   "role": "16-clip payoff burst"
+  },
+  {
+   "id": 175,
+   "name": "Beat-Synced Editing",
+   "role": "burst cuts on the music"
+  },
+  {
+   "id": 68,
+   "name": "Event Recap",
+   "role": "highlight clips content"
+  },
+  {
+   "id": 170,
+   "name": "Circular Storytelling (Looping Narrative)",
+   "role": "ends on the biggest visual so the loop restarts high"
+  }
+ ],
+ "use_when": [
+  "the user has one calm group/team shot plus many short highlight clips",
+  "the concept is a 'job perks / backstage access' trend or a list-like tease",
+  "the piece should stay in the micro duration class and loop well",
+  "music or trend audio carries it with no voiceover"
+ ],
+ "avoid_when": [
+  "the message needs explanation or captions",
+  "fewer than ~12 usable highlight clips are available",
+  "the audience needs to read anything during the burst"
+ ],
+ "match": {
+  "tags": [
+   "hold-then-burst",
+   "rapid-fire",
+   "trend-format",
+   "serif-title",
+   "colon-title",
+   "montage",
+   "event",
+   "loop",
+   "music-only",
+   "no-captions",
+   "highlights"
+  ],
+  "keywords": [
+   "perks",
+   "job",
+   "career",
+   "behind",
+   "access",
+   "highlights",
+   "montage",
+   "trend",
+   "team",
+   "crew",
+   "concert",
+   "festival",
+   "loop",
+   "fast",
+   "burst"
+  ],
+  "needs": {
+   "speaker_footage": false,
+   "screen_recordings": false,
+   "broll": true,
+   "brand_assets": false
+  }
+ },
+ "quality_score": 2,
+ "brand_prompt": "Use /video-pipeline with /video-captions on videos/<project>. Apply style blueprint B42 (video-reference-match/references/blueprints/B42.json) to this brand.\nThis blueprint has NO captions: one 2-line title on a still opener, then a textless highlight burst. Canvas 1080x1920, 30 fps.\n\nBRAND TOKENS (use the brand's colour for each role; keep the contrast relationship: {{ACCENT}} must stay >= 3:1 on the sky/background behind the title; {{TEXT}} must sit on a non-white area)\n- {{TEXT}}: lead-in line, default #FFFFFF\n- {{ACCENT}}: key phrase, default #FF0021\n- {{ACCENT_2}}: unused, default none\n- {{SURFACE}}: unused (no cards), default none\n- {{CARD_BG}}: unused, default none\n- {{FONT_DISPLAY}}: key phrase brush italic, default Playfair Display 700 italic (Merienda 700 closer in feel)\n- {{FONT_BODY}}: lead-in condensed serif, default Playfair Display 500 (Instrument Serif closer)\n- {{HANDLE}}: not shown in the source\n- {{LOGO}}: not shown in the source\n\nOTHER TEXT (opener only)\n1. First shot near-static, ~44 % of runtime, title in clean sky/background above the subjects' heads. Two centred lines, no stroke/shadow/box:\n   a. Lead-in (\"Lead words\", ~12 characters): {{FONT_BODY}} 63 px, {{TEXT}}, centre y 23.8 % H (x 35-65 %, ink ~4.14 % H). With a condensed serif size it to that ink.\n   b. Key phrase ending in \" :\" (\"KEY WORD :\"): {{FONT_DISPLAY}} 78 px, {{ACCENT}}, centre y 28.7 % H (x 18-82 %), 0.9 % H under line 1; first word regular weight, key word bold, same size (ink ~4.06 % H / 63.3 % W at ~17 characters).\n2. Both lines on from frame 0, static, hard-cut out with the opener shot. No text in the burst.\n\nEDIT\n3. Burst: 16 clips of 6-13 frames (median ~10, ~110 cuts/min, peak ~190) on the music beats, 44 % as 2-3-frame blends and the rest hard cuts; order by intensity and end on the biggest visual so the loop restarts high. No punch-ins.\n\nSOUND: short trend voice line or sting over the opener, then the music drop on the first burst cut. Master to about -14 LUFS, true peak <= -1 dBTP.\nGRADE: Grade from the user's footage (video-style / grade.py); target look: warm, softly faded opener; burst clips kept saturated and natural.\n\nVERIFY before rendering: render the title with the brand's lines (or \"Lead words\" / \"KEY WORD :\") and measure:\n  video-reference-match/scripts/caption_probe.py <render-file> --out <dir> --at 1.0 --box 0.15,0.26,0.85,0.31 --ink \"#FF0021:90\"\n  video-reference-match/scripts/caption_probe.py <render-file> --out <dir> --at 1.0 --box 0.3,0.205,0.7,0.26 --ink \"#FFFFFF:35\"\nSwap the --ink colours to {{ACCENT}} / {{TEXT}}. Compute the expected ink of the actual lines with video-reference-match/scripts/fit_font.py (63 px {{FONT_BODY}}, 78 px {{FONT_DISPLAY}}); a ~17-character key phrase should read ~4.06 % H / 63.3 % W. Line centres within +-1 % of frame height of 23.8 / 28.7 %.",
+ "caption_family": "title-only"
+}

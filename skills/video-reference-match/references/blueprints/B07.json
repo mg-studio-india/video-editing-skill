@@ -1,0 +1,399 @@
+{
+ "id": "B07",
+ "schema": "blueprint/1",
+ "format": {
+  "type": "brand-promo",
+  "aspect": "9:16",
+  "language": "none",
+  "duration_class": "micro (<15s)",
+  "people_on_screen": "1"
+ },
+ "topic_class": "career (training / coaching brand promo)",
+ "signature": {
+  "one_line": "Music-only save-bait: quoted viewer question, caps reply, dark note-screenshot list, framed monogram card.",
+  "unique_devices": [
+   "Small regular-weight quoted viewer question dead-centre at 50 % H, screen-fixed while the footage slowly pushes in",
+   "Two-to-three-word UPPERCASE reassurance line hard-cut in under the question at ~27 % of runtime",
+   "Answer delivered as real dark-mode phone note screenshots with accent 'yes' / red 'no' highlighter headings, paged every ~30 frames as save-bait",
+   "Black end card with a thin white rectangular frame, monogram, spaced caps wordmark and a serif 'by founder' line"
+  ],
+  "why_it_works": "The hook is the viewer's own worry in their words; the answer is too dense to read at speed, so people pause, rewatch and save."
+ },
+ "hook": {
+  "type": "Direct address (viewer's question quoted on screen)",
+  "first_word_s": null,
+  "first_cut_s": 3.7,
+  "first_frame": "behind-the-scenes studio wide of one person seated on a stool, light stands in frame, small white quoted question centred at 50 % height"
+ },
+ "structure": [
+  {
+   "beat": "hook",
+   "from_pct": 0,
+   "to_pct": 27,
+   "what": "quoted viewer question over a slow push-in on a studio wide"
+  },
+  {
+   "beat": "claim",
+   "from_pct": 27,
+   "to_pct": 46,
+   "what": "caps reassurance line added under the question; push-in continues"
+  },
+  {
+   "beat": "list",
+   "from_pct": 46,
+   "to_pct": 88,
+   "what": "hard cut to dark-mode note screenshots, highlighted yes/no category headings, a page every ~30 frames"
+  },
+  {
+   "beat": "cta",
+   "from_pct": 88,
+   "to_pct": 100,
+   "what": "static framed monogram end card, no spoken CTA"
+  }
+ ],
+ "pacing": {
+  "pace": "moderate",
+  "median_shot_s": 4.0,
+  "cuts_per_min": 8,
+  "wpm": null,
+  "pauses_per_min": null,
+  "visual_change_every_s": 1.0
+ },
+ "elements": {
+  "captions": [],
+  "background_text": [
+   {
+    "what": "quoted viewer question (hook title)",
+    "when": "0-46 % of runtime",
+    "how": "one line, sentence case in curly quotes, regular neo-grotesque 43 px white, centred, ink centre y 50.2 %, ~68 % W; on from frame 0, screen-fixed, no motion",
+    "catalog": [
+     24
+    ]
+   },
+   {
+    "what": "UPPERCASE reassurance answer line",
+    "when": "27-46 %",
+    "how": "regular caps 46 px white, centred at 57.3 % H, ~28 % W, hard cut in, hard cut out with the shot",
+    "catalog": [
+     123
+    ]
+   }
+  ],
+  "motion_graphics": [],
+  "cards_lists": [
+   {
+    "what": "phone note-taking list screenshots",
+    "when": "46-88 %",
+    "how": "full-frame dark-mode capture, body text light grey at x 11-89 %, headings with accent or red highlight bands, red cross emoji on the 'no' heading; hard page jumps every ~30 frames",
+    "catalog": [
+     113,
+     116
+    ]
+   }
+  ],
+  "silhouettes_cutouts": [],
+  "broll_inserts": [
+   {
+    "what": "behind-the-scenes studio wide",
+    "when": "0-46 %",
+    "how": "one person on a stool against a grey backdrop, crew gear visible at the edges",
+    "catalog": [
+     50
+    ]
+   }
+  ],
+  "layout": [
+   {
+    "what": "full-frame footage, then full-frame screen capture",
+    "when": "whole runtime",
+    "how": "no split or PIP; measured letterbox share 0.54 comes from the black UI / end card",
+    "catalog": []
+   }
+  ],
+  "camera": [
+   {
+    "what": "slow push-in",
+    "when": "0-46 %",
+    "how": "linear scale from wide to medium (~110-115 %) across the whole first shot; text stays screen-fixed",
+    "catalog": [
+     95
+    ]
+   }
+  ],
+  "transitions": [
+   {
+    "what": "hard cuts only",
+    "when": "shot change at ~46 %, page jumps inside the screen section",
+    "how": "no dissolves, no SFX",
+    "catalog": []
+   }
+  ],
+  "end_card": [
+   {
+    "what": "framed monogram end card",
+    "when": "88-100 %",
+    "how": "black, 2 px white frame x 15-85 % / y 21-79 %, line-art monogram 28-37 %, spaced bold caps wordmark at 41 %, light caps sub-line, short rule at 53.5 %, serif 'by' + spaced serif founder name at 70.4 %; static",
+    "catalog": []
+   }
+  ]
+ },
+ "captions_spec": null,
+ "other_text_spec": [
+  {
+   "type": "hook title tiers (no speech captions; these are the only typeset lines over footage)",
+   "spec": {
+    "script": "latin (on-screen text only; no speech, music only)",
+    "case": {
+     "quote": "sentence case inside curly double quotes",
+     "answer": "UPPERCASE with a double exclamation mark"
+    },
+    "punctuation": "curly double quotes around the question, inch/foot marks kept if present; double exclamation on the answer",
+    "emoji": "none on the title; one red cross emoji inside the list screenshot",
+    "grouping": {
+     "words_per_caption": "question: one full sentence (~7 words) on one line; answer line 2-3 words",
+     "max_lines": 2,
+     "sync": "not tied to speech (none); question on from frame 0, answer hard-cut in at ~27 % of runtime (frame ~65 at 30 fps)",
+     "break": "both lines hard-cut out with the first shot cut (~46 % of runtime)"
+    },
+    "layout": {
+     "band_pct_of_H": [
+      49,
+      58.5
+     ],
+     "quote": {
+      "align": "centre (x 50 %)",
+      "center_y_pct": 50.2,
+      "x_pct": [
+       16.0,
+       83.8
+      ]
+     },
+     "answer": {
+      "align": "centre (x 50 %)",
+      "center_y_pct": 57.3,
+      "x_pct": [
+       35.6,
+       64.0
+      ]
+     },
+     "note": "text sits over the subject's torso/background in a wide shot; screen-fixed (does not scale with the slow push-in)"
+    },
+    "type": {
+     "quote": {
+      "font_class": "neo-grotesque sans, regular (phone system-UI feel)",
+      "closest_match": {
+       "local": "Inter 400",
+       "confidence": "medium",
+       "web_font": "Inter Regular"
+      },
+      "ink_height_pct_of_H": 1.95,
+      "k": 0.99,
+      "font_size_px_at_1920": 38,
+      "color": "#FFFFFF (reads ~#F0F0F0 after compression)",
+      "stroke": "none",
+      "shadow": "none",
+      "box": "none",
+      "tracking": "0em",
+      "verified_px": 43
+     },
+     "answer": {
+      "font_class": "neo-grotesque sans, regular, caps",
+      "closest_match": {
+       "local": "Inter 400",
+       "confidence": "medium",
+       "web_font": "Inter Regular"
+      },
+      "case": "UPPERCASE",
+      "ink_height_pct_of_H": 1.72,
+      "k": 0.73,
+      "font_size_px_at_1920": 45,
+      "color": "#FFFFFF",
+      "stroke": "none",
+      "shadow": "none",
+      "box": "none",
+      "tracking": "0em",
+      "verified_px": 46
+     }
+    },
+    "animation": {
+     "fps": 30,
+     "quote_entry": "present from frame 0 (hard on)",
+     "answer_entry": "hard cut in ~65 frames after the start (full ink on the first frame, no fade / scale)",
+     "exit": "both lines hard-cut out with the shot cut to the list screens (~111 frames in)",
+     "idle": "no motion; the text stays fixed while the footage slowly pushes in"
+    }
+   }
+  },
+  {
+   "type": "phone note-taking screenshots (screen capture, not typeset)",
+   "when": "~46-88 % of runtime, a new page every ~30 frames (hard cuts)",
+   "bg": "pure black #000000 dark-mode note-taking UI with the yellow-orange UI icons kept top and bottom",
+   "text": "light-grey #CAD1D1 body text, left-aligned at x 11 %, right edge ~89 %, line pitch ~3.8 % of H (estimated); headings highlighted: teal text #71CAC3 on a dark-teal highlight band #0F2025-#396060 for 'yes' categories, red/pink italic text on a dark-red band for 'no' categories, a red cross emoji before the 'no' heading"
+  },
+  {
+   "type": "end card",
+   "when": "~88-100 % of runtime (~24 frames, static, hard cut in)",
+   "bg": "black #000000",
+   "text": "thin (~2 px) white rectangular frame x 14.7-85 %, y 20.6-79 % (estimated); line-art monogram at ~28-37 %; brand name in bold geometric caps, wide tracking (~0.3 em), ink 1.72 % H, 48.6 % W, centre y 41.1 %; sub-line in light caps, same tracking, just below (~44.5 %); short white rule at ~53.5 %; small serif 'by' at ~63.5 %; founder name in spaced high-contrast serif caps (closest Playfair Display), ink 1.95 % H, 49.3 % W, centre y 70.4 %"
+  }
+ ],
+ "style": {
+  "palette_roles": {
+   "text": "#FFFFFF",
+   "accent": "#71CAC3",
+   "accent_2": null,
+   "surface": "#000000",
+   "card_bg": "#0F2025"
+  },
+  "fonts": {
+   "quote": {
+    "closest_local": "Inter 400",
+    "verified_px": 43,
+    "tracking": "0em"
+   },
+   "answer": {
+    "closest_local": "Inter 400 (UPPERCASE)",
+    "verified_px": 46,
+    "tracking": "0em"
+   },
+   "end_card_wordmark": {
+    "closest_local": "Poppins 700 (UPPERCASE)",
+    "verified_px": null,
+    "tracking": "0.3em"
+   },
+   "end_card_name": {
+    "closest_local": "Playfair Display (UPPERCASE)",
+    "verified_px": null,
+    "tracking": "0.3em"
+   }
+  },
+  "look_intent": "low-contrast, muted, neutral-warm; dim warm studio with a grey backdrop, then pure-black dark-mode UI"
+ },
+ "sound": {
+  "music": "music-only (measured), ~74 BPM estimate; calm/aspirational trend bed, no voice",
+  "sfx": [
+   "none; cuts do not land on beats (measured cut_hit_share 0.0)"
+  ],
+  "loudness_lufs": -14.0
+ },
+ "measured": {
+  "grade": {
+   "black_point": 0.9,
+   "midtone": 77.3,
+   "white_point": 148.5,
+   "contrast_range": 147.5,
+   "luma_std": 37.6,
+   "saturation": 0.232,
+   "colorfulness": 12.7,
+   "warmth_r_minus_b": 9.6,
+   "tint_g": -2.4,
+   "vignette_centre_over_edge": 1.13,
+   "label": "low-contrast, muted, neutral-warm"
+  },
+  "layout": {
+   "letterbox_share": 0.54,
+   "split_divider_share": 0.0
+  },
+  "sound": {
+   "has_audio": true,
+   "speech_coverage": 0.0,
+   "beat_periodicity": 0.43,
+   "beat_bpm_est": 74,
+   "gap_level_rel_speech_db": 0.0,
+   "music": "music-only",
+   "cut_hit_share": 0.0,
+   "method": "heuristic (onset-envelope beat periodicity + level in speech gaps); not a classifier"
+  }
+ },
+ "catalog_styles": [
+  {
+   "id": 24,
+   "name": "Big-Text Hook",
+   "role": "quoted viewer question as the opening frame text (small, not big: a quiet variant)"
+  },
+  {
+   "id": 123,
+   "name": "Question-and-Answer Cards",
+   "role": "question line answered by a caps reassurance line"
+  },
+  {
+   "id": 113,
+   "name": "Checklist",
+   "role": "highlighted yes/no category list on note screenshots"
+  },
+  {
+   "id": 50,
+   "name": "Behind-the-Scenes (BTS)",
+   "role": "studio wide under the hook"
+  },
+  {
+   "id": 95,
+   "name": "Parallax Photo Animation (2.5D / Camera Projection)",
+   "role": "slow push-in giving motion to a static wide"
+  },
+  {
+   "id": 191,
+   "name": "Music-Led Montage with Minimal Dialogue",
+   "role": "music-only bed, no voice"
+  },
+  {
+   "id": 201,
+   "name": "Product Advertisement",
+   "role": "brand end card closes a soft promo"
+  }
+ ],
+ "use_when": [
+  "no voiceover; a music-only post answering one common audience question",
+  "the answer is a list the viewer would want to save (categories, do/don't, requirements)",
+  "the brand has behind-the-scenes footage but no presenter to camera",
+  "the goal is saves/shares rather than watch time"
+ ],
+ "avoid_when": [
+  "there is a speaking presenter or interview to caption",
+  "the list must be readable without pausing (accessibility)",
+  "explanations that need more than micro length"
+ ],
+ "match": {
+  "tags": [
+   "music-only",
+   "no-speech",
+   "text-post",
+   "save-bait",
+   "quoted-question-hook",
+   "note-screenshot",
+   "highlighted-list",
+   "slow-push-in",
+   "bts-studio",
+   "monogram-end-card",
+   "micro"
+  ],
+  "keywords": [
+   "question",
+   "faq",
+   "myth",
+   "answer",
+   "list",
+   "save",
+   "tips",
+   "studio",
+   "training",
+   "academy",
+   "course",
+   "coaching",
+   "beginners",
+   "requirements",
+   "types",
+   "career",
+   "audience"
+  ],
+  "needs": {
+   "speaker_footage": false,
+   "screen_recordings": true,
+   "broll": true,
+   "brand_assets": true
+  }
+ },
+ "quality_score": 1,
+ "brand_prompt": "Use /video-pipeline with /video-captions on videos/<project>. Apply style blueprint B07 (video-reference-match/references/blueprints/B07.json) to this brand.\n\nBRAND TOKENS (use the brand's colour for each role; keep the contrast relationship — text and accent must stay >= 4.5:1 / >= 3:1 against what sits behind them on the footage):\n- {{TEXT}}      default #FFFFFF (title lines, end-card type and frame)\n- {{ACCENT}}    default #71CAC3 (teal 'yes' heading)\n- {{ACCENT_2}}  default unmeasured red/pink ('no' heading; use the brand's warning colour)\n- {{SURFACE}}   default #000000 (dark-mode UI / end card)\n- {{CARD_BG}}   default #0F2025 (dark-teal highlight band behind 'yes' headings)\n- {{FONT_DISPLAY}} default Inter 400 (title lines); spaced bold geometric caps for the end-card wordmark\n- {{FONT_BODY}}    default Inter 400\n- {{HANDLE}}    default @handle\n- {{LOGO}}      default the brand's logo file (transparent PNG/SVG)\nKeep the highlight band dark and the heading text light (>= 4.5:1 inside the band).\nCanvas 1080x1920, sizes are px at that canvas; frame counts at 30 fps.\n\nCAPTIONS\n1. No speech captions (music-only format). If the edit has speech, do not add a caption track unless asked.\n\nOTHER TEXT\n2. Hook question (frame 0 to the first cut, ~46 % of runtime): the audience's own question in curly double quotes, sentence case, one line, {{FONT_BODY}} at 43 px, {{TEXT}}, tracking 0, no stroke / shadow / box, centred, ink centre at 50 % H, ~68 % W. Screen-fixed while the footage slowly pushes in.\n3. Answer line: UPPERCASE 2-3 word reassurance ending in '!!' (placeholder 'KEY WORD!!'), {{FONT_BODY}} 46 px, {{TEXT}}, centred at 57.3 % H. Hard cut in ~65 frames after the start; both lines hard-cut out with the shot cut.\n4. Proof screens: real dark-mode phone note screenshots of the brand's list, {{SURFACE}} background, light-grey body text left-aligned at x 11 % (~3.8 % H line pitch); 'yes' headings in {{ACCENT}} on a {{CARD_BG}} highlight band, 'no' headings in {{ACCENT_2}} italic on a dark-red band with a cross emoji; a new page every ~30 frames by hard cut.\n5. End card (~24 frames, hard cut in, static): {{SURFACE}}; thin 2 px {{TEXT}} frame (x 15-85 %, y 21-79 %); {{LOGO}} monogram at 28-37 %; brand name in bold geometric caps, ~0.3 em tracking (ink 1.72 % H, ~49 % W, centre 41 %); light spaced-caps sub-line below; short rule at ~53.5 %; small serif 'by' at ~63.5 %; founder / team name in spaced serif caps (Playfair Display, ink 1.95 % H, ~49 % W, centre 70.4 %).\n6. Footage: one slow linear push-in (~110-115 %) across the first shot; hard cuts only; music-only bed, no SFX.\n\nGRADE\nGrade from the user's footage (video-style / grade.py); target look: low-contrast, muted, neutral-warm; dim warm studio, then pure-black UI.\n\nVERIFY before rendering\na) Render the hook question and the answer line with neutral placeholders ('Headline here, is this a question?' and 'KEY WORD!!'), then measure:\n   python3 video-reference-match/scripts/caption_probe.py <test-render> --out <dir> --at <t> --box 0.1,0.475,0.9,0.52 --ink \"{{TEXT}}:70\"\n   python3 video-reference-match/scripts/caption_probe.py <test-render> --out <dir> --at <t> --box 0.3,0.55,0.7,0.6 --ink \"{{TEXT}}:70\"\nb) python3 video-reference-match/scripts/fit_font.py --font \"Inter 400\" --word \"<your question line>\" --ink 1.95 -> ~39-43 px (keep 43 px if your line spans <= ~70 % W); answer: --word \"<ANSWER>!!\" --upper --ink 1.72 -> ~44-46 px. The returned width is what the probe should read. Measure over mid-grey or darker background. (fit_font.py needs a target: --ink and/or --width; it returns the px that reproduces that ink for YOUR word plus the width it will read at that px. Requires Pillow.)\nc) Positions within ±1 % H: question centre 50.2 %, answer centre 57.3 %, end-card wordmark 41.1 %, founder line 70.4 %.",
+ "caption_family": "title-only"
+}

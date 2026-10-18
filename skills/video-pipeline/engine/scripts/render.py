@@ -14,6 +14,7 @@ Resolution presets (HyperFrames): portrait 1080x1920, portrait-4k 2160x3840, lan
 3840x2160, square 1080x1080. Over ~2 minutes of 4K, see the render traps in motion-graphics/references/kit-motion.md.
 """
 import argparse, os, subprocess, sys
+from pathlib import Path
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
@@ -79,6 +80,10 @@ def main():
     ap.add_argument("--gpu", action="store_true")
     ap.add_argument("--workers", default="auto")
     ap.add_argument("--bitrate", help="override the preset's video bitrate, e.g. 16M")
+    ap.add_argument("--sdr", action="store_true", default=True,
+                    help="force SDR output (default: True, matches BT.709 mastering)")
+    ap.add_argument("--hdr", dest="sdr", action="store_false",
+                    help="allow HDR output when source is HDR")
     a = ap.parse_args()
     if not a.public:
         ap.error("--public or --hyperframes is required")
@@ -92,6 +97,8 @@ def main():
         hf_bin = find_hyperframes_cmd()
         cmd = [*hf_bin, "render", a.public, "--resolution", hf_res, "--video-bitrate", br,
                "--workers", str(a.workers), "-o", raw]
+        if a.sdr:
+            cmd.append("--sdr")
         if a.gpu:
             cmd.append("--gpu")
         step("render (%s, %s)" % (hf_res, br), cmd)

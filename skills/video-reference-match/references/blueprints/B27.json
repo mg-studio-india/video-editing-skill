@@ -1,0 +1,433 @@
+{
+ "id": "B27",
+ "schema": "blueprint/1",
+ "format": {
+  "type": "mixed",
+  "aspect": "9:16",
+  "language": "English",
+  "duration_class": "mid (60-180s)",
+  "people_on_screen": "1"
+ },
+ "topic_class": "consumer tech review",
+ "signature": {
+  "one_line": "Question-hook comparison test: front-loaded roll-call cuts, then repeated identical POV test rounds under a one-word-at-a-time uppercase white caption rail.",
+  "unique_devices": [
+   "One-word caption rail: every spoken word (function words too) as a single small UPPERCASE heavy geometric word, 42 px, +0.05em, fixed at 68.5 % height in every shot, hard-cut swap 0-7 frames after the word, no animation",
+   "Product roll-call: as contenders are named, flash each for 10-12 frames (4 shots in ~45 frames), captions dropped during the flashes",
+   "Object-pinned type-on spec label tracked to the handheld product: white square grows from a dot (6 frames), characters type in right-to-left with collapsing letter-spacing (~22 frames), delete right-to-left on exit (~9 frames)",
+   "Test ladder: identical POV framing for each contender, results improving round by round, the hero's take runs longest, ending unresolved with no CTA"
+  ],
+  "why_it_works": "A yes/no stakes question opens a loop; front-loaded cuts lock attention, then one repeatable test frame makes rounds comparable while the verdict is withheld."
+ },
+ "hook": {
+  "type": "open loop (yes/no stakes question) + pattern interrupt (product roll-call)",
+  "first_word_s": 0.07,
+  "first_cut_s": 0.467,
+  "first_frame": "medium close-up of the speaker holding a handheld mic in a moody LED-backlit set, one uppercase caption word at 68.5 % height"
+ },
+ "structure": [
+  {
+   "beat": "hook",
+   "from_pct": 0,
+   "to_pct": 11,
+   "what": "stakes question to camera, hero product with pinned spec label, contender fan + 10-12-frame roll-call"
+  },
+  {
+   "beat": "setup",
+   "from_pct": 11,
+   "to_pct": 20,
+   "what": "location jump outdoors; POV establishes the test target and the rules"
+  },
+  {
+   "beat": "proof",
+   "from_pct": 20,
+   "to_pct": 50,
+   "what": "contenders 1-2 tested in identical POV framing"
+  },
+  {
+   "beat": "proof",
+   "from_pct": 50,
+   "to_pct": 78,
+   "what": "contenders 3-4, results improving, raising stakes for the hero"
+  },
+  {
+   "beat": "payoff",
+   "from_pct": 78,
+   "to_pct": 94,
+   "what": "hero product tested in the longest single take with live reaction"
+  },
+  {
+   "beat": "loop",
+   "from_pct": 94,
+   "to_pct": 100,
+   "what": "unresolved reaction ending, no CTA (invites comments and rewatch)"
+  }
+ ],
+ "pacing": {
+  "pace": "fast",
+  "median_shot_s": 1.5,
+  "cuts_per_min": 23,
+  "wpm": 240,
+  "pauses_per_min": 0.0,
+  "visual_change_every_s": 1.5,
+  "note": "front-loaded: ~72 cuts/min in the hook, ~12 cuts/min during the test rounds; the one-word caption swaps ~4 times per second; 76 % of cuts are J/L, none on pauses"
+ },
+ "elements": {
+  "captions": [
+   {
+    "what": "one-word UPPERCASE caption rail",
+    "when": "0-100 % except roll-call flashes",
+    "how": "heavy geometric caps 42 px, +0.05em, white, tight soft dark shadow, no box; centre x 50 %, y 68.5 % in every shot; hard cut on 0-7 frames after each spoken word; punctuation stripped, numbers spelled as spoken",
+    "catalog": [
+     27
+    ]
+   }
+  ],
+  "background_text": [],
+  "motion_graphics": [
+   {
+    "what": "object-pinned type-on spec label on the hero product",
+    "when": "second hook shot (~1-5 % of runtime)",
+    "how": "white square grows from a dot (6 frames), bold geometric ~39 px characters appear right-to-left with collapsing letter-spacing (~22 frames), tracked and scaled with the handheld product under its logo; deletes right-to-left + square shrinks (~9 frames) before the cut",
+    "catalog": [
+     28
+    ]
+   }
+  ],
+  "cards_lists": [],
+  "silhouettes_cutouts": [],
+  "broll_inserts": [
+   {
+    "what": "contender roll-call flashes",
+    "when": "~9-11 %",
+    "how": "4 product inserts at 10-12 frames each, hard cuts on motion, no captions",
+    "catalog": [
+     174,
+     64
+    ]
+   },
+   {
+    "what": "POV test rounds",
+    "when": "~13-100 %",
+    "how": "handheld POV of a device screen aimed at the same target; device zoom UI visible; 90-300-frame takes, hero longest",
+    "catalog": [
+     54,
+     63
+    ]
+   }
+  ],
+  "layout": [
+   {
+    "what": "full-frame 9:16 throughout",
+    "when": "100 %",
+    "how": "no splits or frames; captions float over footage",
+    "catalog": []
+   }
+  ],
+  "camera": [
+   {
+    "what": "locked MCU indoors, handheld POV outdoors",
+    "when": "intro / test rounds",
+    "how": "no digital punch-ins; all zoom is the device's own, shown on screen",
+    "catalog": [
+     46,
+     54
+    ]
+   }
+  ],
+  "transitions": [
+   {
+    "what": "hard cuts on hand / device motion",
+    "when": "throughout",
+    "how": "motion blur hides the cut (detector reads 80 % as soft); voice runs through, 76 % J/L",
+    "catalog": [
+     173
+    ]
+   },
+   {
+    "what": "one location jump indoor -> outdoor",
+    "when": "~11 %",
+    "how": "hard cut to a wide shot, resets attention",
+    "catalog": []
+   }
+  ],
+  "end_card": []
+ },
+ "captions_spec": {
+  "script": "latin (English as spoken)",
+  "case": {
+   "word": "UPPERCASE"
+  },
+  "punctuation": "stripped (no commas, full stops or question marks); apostrophes kept (LET'S)",
+  "numbers": "spelled out as spoken and captioned word by word (e.g. '10x' -> TEN / TIMES)",
+  "emoji": "none",
+  "grouping": {
+   "words_per_caption": 1,
+   "max_lines": 1,
+   "every_word_captioned": true,
+   "sync": "one word per caption, replaced on each spoken word (function words included: THE, CAN, SO)",
+   "gaps": "no captions during the fast product roll-call inserts (10-12-frame shots) or on a wordless pointing / establishing shot"
+  },
+  "layout": {
+   "band_pct_of_H": [
+    67.8,
+    69.3
+   ],
+   "word": {
+    "align": "center",
+    "center_x_pct_of_W": 50.0,
+    "center_y_pct": 68.5
+   },
+   "same_position_every_shot": true,
+   "max_line_width_pct_of_W": 23.2,
+   "on_1080x1920": "same 9:16 canvas: centre at x 540 px, y 1315 px"
+  },
+  "type": {
+   "word": {
+    "font_class": "geometric sans, black/extra-bold, wide caps (pointed A apex, round C/O, geometric S)",
+    "closest_match": {
+     "local": "Poppins 900",
+     "google": "Poppins Black (alt: Montserrat Black, wider caps)",
+     "confidence": "medium"
+    },
+    "case": "UPPERCASE",
+    "ink_height_pct_of_H": 1.56,
+    "k": 0.73,
+    "font_size_px_at_1920": 42,
+    "k_note": "all caps, no descenders -> k 0.73; formula 1.56 x 19.2 / 0.73 = 41 px; render-verified with Poppins 900 + 0.05em tracking: 42 px (ACTUALLY 1.61 % H / 22.7 % W at 43 px; WORST 1.56 / 14.9 at 41 px)",
+    "calibration": [
+     {
+      "word": "ACTUALLY",
+      "ink_pct_of_H": 1.56,
+      "width_pct_of_W": 23.2
+     },
+     {
+      "word": "WORST",
+      "ink_pct_of_H": 1.56,
+      "width_pct_of_W": 15.0
+     }
+    ],
+    "calibration_note": "ACTUALLY measured over a dark shirt (clean); WORST over a bright orange object/skin (same ink height, consistent)",
+    "color": "#FFFFFF",
+    "stroke": "none",
+    "shadow": "tight soft dark shadow hugging the letters (darkens a flat olive background from ~84 to ~57 grey within 2 px of the ink, gone by ~6 px at 720p): ~0 1px 6px rgba(0,0,0,.55) at 1920 (estimated)",
+    "box": "none",
+    "tracking": "0.05em",
+    "verified_px": 42,
+    "fit": [
+     {
+      "font": "Poppins 900",
+      "word": "ACTUALLY",
+      "tracking_em": 0.05,
+      "px_for_height": 42.2,
+      "px_for_width": 43.7,
+      "verified_px": 43,
+      "at_verified_px": {
+       "ink_pct_of_H": 1.61,
+       "width_pct_of_W": 22.7
+      },
+      "within_tolerance": true
+     },
+     {
+      "font": "Poppins 900",
+      "word": "WORST",
+      "tracking_em": 0.05,
+      "px_for_height": 41.6,
+      "px_for_width": 40.8,
+      "verified_px": 41,
+      "at_verified_px": {
+       "ink_pct_of_H": 1.56,
+       "width_pct_of_W": 14.9
+      },
+      "within_tolerance": true
+     }
+    ]
+   }
+  },
+  "animation": {
+   "fps": 30,
+   "entry": "hard cut: the new word is full size and full opacity on its first frame (no scale / fade / slide)",
+   "timing": "on the spoken word: 0-7 frames after the transcript word start (never early); one stretch runs ~12-15 frames late",
+   "highlight": "none (all words white)",
+   "exit": "hard cut when the next word replaces it; disappears with the picture cut into the roll-call",
+   "idle": "no motion while held"
+  }
+ },
+ "other_text_spec": [
+  {
+   "type": "object-pinned type-on label",
+   "when": "second hook shot (hero product held to the lens), ~77 frames",
+   "text": "'■ Label here': solid white square (4.2 % W x 2.34 % H, a square ~45 px at 1080) then a short mixed-case spec label in a bold geometric sans (closest Poppins 700, ~39 px at 1920, tracking 0.05em at rest), white #FFFFFF, no shadow",
+   "position": "pinned just under the product's logo: square left edge x 37.5 % W, text x 43.8-63.8 % W, centre y 58.5 % H; it moves and scales with the handheld product (text width grows ~20 -> 22 % W as the product nears the lens)",
+   "size_note": "spec label ink 1.41 % H, k 0.73, ~37-39 px at 1920",
+   "animation": "square grows from a dot at its bottom-left into place over ~6 frames; characters then appear right-to-left with very wide letter-spacing that collapses to normal, settled after ~22 frames; exit over ~9 frames: characters delete right-to-left while the square shrinks to a dot, gone before the cut"
+  },
+  {
+   "type": "camera-app UI",
+   "when": "~20-100 % of runtime",
+   "text": "the devices' own zoom readouts and mode labels are part of the footage, not added graphics"
+  },
+  {
+   "type": "titles / cards / lower-thirds / end card",
+   "when": "none",
+   "text": "none"
+  }
+ ],
+ "style": {
+  "palette_roles": {
+   "text": "#FFFFFF",
+   "accent": null,
+   "accent_2": null,
+   "surface": null,
+   "card_bg": null
+  },
+  "fonts": {
+   "caption_word": {
+    "closest_local": "Poppins 900 (Montserrat Black slightly wider)",
+    "verified_px": 42,
+    "tracking": "0.05em"
+   },
+   "pinned_label": {
+    "closest_local": "Poppins 700",
+    "verified_px": null,
+    "tracking": "0.05em"
+   }
+  },
+  "look_intent": "warm, mid-contrast, natural saturation; moody low-key LED-backlit intro (cool rim light, warm skin) then bright natural daylight outdoors"
+ },
+ "sound": {
+  "music": "music bed likely (heuristic: speech-gap level ~0 dB, continuous bed or ambience under the VO); upbeat, unobtrusive",
+  "sfx": [
+   "hits / whooshes on most hard cuts (measured cut_hit_share 0.8), especially the roll-call flashes",
+   "optional soft ticks as the pinned label types on"
+  ],
+  "loudness_lufs": -14.1
+ },
+ "measured": {
+  "grade": {
+   "black_point": 2.8,
+   "midtone": 106.6,
+   "white_point": 201.5,
+   "contrast_range": 198.7,
+   "luma_std": 55.2,
+   "saturation": 0.374,
+   "colorfulness": 57.0,
+   "warmth_r_minus_b": 20.4,
+   "tint_g": -2.0,
+   "vignette_centre_over_edge": 0.75,
+   "label": "mid-contrast, natural-saturation, warm"
+  },
+  "layout": {
+   "letterbox_share": 0.04,
+   "split_divider_share": 0.0
+  },
+  "sound": {
+   "has_audio": true,
+   "speech_coverage": 0.98,
+   "beat_periodicity": 0.15,
+   "beat_bpm_est": null,
+   "gap_level_rel_speech_db": 0.3,
+   "music": "music bed likely",
+   "cut_hit_share": 0.8,
+   "method": "heuristic (onset-envelope beat periodicity + level in speech gaps); not a classifier"
+  }
+ },
+ "catalog_styles": [
+  {
+   "id": 27,
+   "name": "Word-by-Word Pop Captions",
+   "role": "one-word caption rail (hard-cut, no pop)"
+  },
+  {
+   "id": 174,
+   "name": "Rapid-Fire Cuts",
+   "role": "10-12-frame contender roll-call in the hook"
+  },
+  {
+   "id": 54,
+   "name": "POV Video (Point-of-View)",
+   "role": "test rounds shot from the tester's view"
+  },
+  {
+   "id": 157,
+   "name": "Experiment / Challenge",
+   "role": "one repeatable test across contenders"
+  },
+  {
+   "id": 220,
+   "name": "Comparison / Buying Guide",
+   "role": "contenders compared on the same task"
+  },
+  {
+   "id": 28,
+   "name": "Typewriter Text",
+   "role": "right-to-left type-on spec label pinned to the product"
+  },
+  {
+   "id": 169,
+   "name": "Open-Loop Storytelling with a Delayed Payoff",
+   "role": "stakes question answered only in the final take, left unresolved"
+  },
+  {
+   "id": 63,
+   "name": "Live Demonstration",
+   "role": "results shown live on the device screen"
+  }
+ ],
+ "use_when": [
+  "comparing several products or options on one repeatable test",
+  "most footage is POV / hands-on demo with the speaker off camera",
+  "a fast talker needs minimal caption chrome that never covers the product",
+  "the concept is a yes/no question with a reveal at the end"
+ ],
+ "avoid_when": [
+  "brand colour emphasis or keyword highlighting is needed in captions",
+  "a calm, reflective talking-head piece (one-word swaps feel frantic)",
+  "there is no physical product or test to show"
+ ],
+ "match": {
+  "tags": [
+   "product-comparison",
+   "tech-review",
+   "pov-demo",
+   "one-word-captions",
+   "uppercase-captions",
+   "caption-rail",
+   "roll-call",
+   "fast-hook",
+   "front-loaded-cuts",
+   "type-on-label",
+   "object-tracking",
+   "cliffhanger-ending",
+   "no-cta"
+  ],
+  "keywords": [
+   "versus",
+   "test",
+   "compare",
+   "comparison",
+   "zoom",
+   "camera",
+   "phone",
+   "gadget",
+   "review",
+   "which",
+   "best",
+   "beat",
+   "challenge",
+   "results",
+   "gadgets",
+   "device",
+   "spec"
+  ],
+  "needs": {
+   "speaker_footage": true,
+   "screen_recordings": false,
+   "broll": true,
+   "brand_assets": false
+  }
+ },
+ "quality_score": 2,
+ "brand_prompt": "Use /video-pipeline with /video-captions on videos/<project>. Apply style blueprint B27 (video-reference-match/references/blueprints/B27.json) to this brand.\nCanvas 1080x1920, 30 fps. All positions are % of frame; px are at 1080x1920.\n\nBRAND TOKENS (use the brand's colour/font for each role; keep the contrast relationship: {{TEXT}} must stay >= 3:1 on the footage at 68.5 % height, helped by the tight shadow)\n- {{TEXT}}      caption words and pinned label          default #FFFFFF\n- {{ACCENT}}    none (no emphasis colour; do not add one) default none\n- {{ACCENT_2}}  none                                     default none\n- {{SURFACE}}   none                                     default none\n- {{CARD_BG}}   pinned-label square                       default #FFFFFF (same as {{TEXT}})\n- {{FONT_DISPLAY}} caption words                         default Poppins 900 (heavy geometric caps; Montserrat Black slightly wider)\n- {{FONT_BODY}}    pinned spec label                     default Poppins 700\n- {{HANDLE}}    not shown\n- {{LOGO}}      not shown (the label pins under the product's own logo)\n\nCAPTIONS\n1. English as spoken, ALL UPPERCASE. Strip commas, full stops and question marks; keep apostrophes (LET'S). Spell numbers as spoken (e.g. \"10x\" -> TEN, TIMES).\n2. Exactly ONE word on screen at a time; every spoken word captioned (including THE, CAN, SO). Never two words, never two lines.\n3. Type: {{FONT_DISPLAY}} at 42 px, letter-spacing +0.05em, {{TEXT}}, no stroke, no box, tight soft dark shadow 0 1px 6px rgba(0,0,0,.55).\n4. Position: centred horizontally (x 540 px), vertical centre 68.5 % of height (y ~1315 px), the same spot in every shot.\n5. Animation: hard cut in at full size and opacity 0-7 frames after the word's transcript start (never early); hard cut out when the next word replaces it. No fade, pop, scale, slide, highlight or idle motion.\n6. Drop captions during 10-12-frame product roll-call inserts and on wordless pointing / establishing shots.\n\nOTHER TEXT\n7. Object-pinned spec label when the hero product is held to camera (~77 frames): a {{CARD_BG}} square (~45x45 px) then a short spec label (\"Label here\") in {{FONT_BODY}} ~39 px, {{TEXT}}, tracking 0.05em, no shadow, pinned just under the product's logo (reference: square x 37.5 %, text x 44-64 %, centre y 58.5 %) and tracked so it moves and scales with the object. Square grows from a dot at its bottom-left over 6 frames; characters appear right-to-left with very wide letter-spacing collapsing to normal over ~22 frames; exit: characters delete right-to-left while the square shrinks to a dot over ~9 frames, before the cut.\n8. No title cards, lower thirds, stickers, CTA or end card.\n\nEDIT DEVICES\n9. Hook: yes/no stakes question in the first word; ~9 cuts in the first 300 frames, including a roll-call of each contender at 10-12 frames as it is named. Then relax to ~12 cuts/min.\n10. Body: identical POV framing for every contender's round; cut on hand/device motion (motion blur hides the cut); voice continuous across cuts (J/L). Give the hero the longest take; end on an unresolved reaction, no CTA.\n\nGRADE\n11. Grade from the user's footage (video-style / grade.py); target look: warm, mid-contrast, natural saturation; moody LED-backlit intro, bright natural daylight for the test rounds.\n\nAUDIO\n12. Light continuous bed or ambience under the VO; a hit/whoosh on most hard cuts and every roll-call flash. Master to about -14.1 LUFS, true peak <= -1 dBTP.\n\nVERIFY before rendering\na) Render a test frame with the caption \"ACTUALLY\" (and then \"WORST\") over a dark area and measure:\n   python video-reference-match/scripts/caption_probe.py <test.mp4> --out <dir> --at <t> --box 0.35,0.66,0.65,0.72 --ink \"{{TEXT}}:45\"\n   Required at the default font: \"ACTUALLY\" ink 1.56 % ±0.5 of height and 23.2 % ±2 of width; \"WORST\" 1.56 % H, 15.0 % W; centre y 68.5 % ±0.5. With a brand font, compute the expected ink with video-reference-match/scripts/fit_font.py ({{FONT_DISPLAY}}, 42 px, +0.05em) and match it within ±0.5 % H.\n",
+ "caption_family": "word-by-word-plain"
+}

@@ -1,0 +1,508 @@
+{
+ "id": "B23",
+ "schema": "blueprint/1",
+ "format": {
+  "type": "talking-head",
+  "aspect": "16:9",
+  "language": "Hinglish",
+  "duration_class": "short (15-60s)",
+  "people_on_screen": "1"
+ },
+ "topic_class": "business advice",
+ "signature": {
+  "one_line": "Landscape walk-and-talk: one-word captions, flash-burst hook, corner titles with accent swash-italic word.",
+  "unique_devices": [
+   "Hook line accumulates word by word in one very widely spaced line across the frame (fixed slots, 2-frame fades), then a 4-shot b-roll flash burst at ~0.5 s per shot",
+   "Two-line corner titles beside the head: white sans line over one huge accent-gradient swash-italic key word (about 2x the sans height), words fading in one by one",
+   "Deliberately quiet running captions: one small white lowercase word at a time on the chest, no emphasis",
+   "Half-frame split wipe (b-roll | presenter) used as a transition twice"
+  ],
+  "why_it_works": "A confessional contrarian opener plus an early visual jolt; big type is saved for 2-3 key phrases, so they read as headlines over a calm walking monologue."
+ },
+ "hook": {
+  "type": "bold claim / contrarian confession",
+  "first_word_s": 0.04,
+  "first_cut_s": 1.267,
+  "first_frame": "Wide shot of the speaker walking toward camera outside a glass office building with trees, natural daylight; the first words placing themselves across the frame at ~55 % height"
+ },
+ "structure": [
+  {
+   "beat": "hook",
+   "from_pct": 0,
+   "to_pct": 12,
+   "what": "confessional contrarian line built across the frame, then a 4-shot b-roll flash burst"
+  },
+  {
+   "beat": "setup",
+   "from_pct": 12,
+   "to_pct": 35,
+   "what": "backstory with a 2-line corner title; founder-at-work b-roll"
+  },
+  {
+   "beat": "claim",
+   "from_pct": 35,
+   "to_pct": 49,
+   "what": "the reversal: now running a company, systems are needed; studio behind-the-scenes b-roll"
+  },
+  {
+   "beat": "example",
+   "from_pct": 49,
+   "to_pct": 71,
+   "what": "generalise across business types; split wipe with team b-roll"
+  },
+  {
+   "beat": "payoff",
+   "from_pct": 71,
+   "to_pct": 90,
+   "what": "consequence line as a corner title with the accent key word"
+  },
+  {
+   "beat": "cta",
+   "from_pct": 90,
+   "to_pct": 100,
+   "what": "black end card with series logo (no spoken CTA)"
+  }
+ ],
+ "pacing": {
+  "pace": "fast, front-loaded (~72 cuts/min in the first ~14 %, then 24-36)",
+  "median_shot_s": 1.6,
+  "cuts_per_min": 32,
+  "wpm": 200,
+  "pauses_per_min": 1.7,
+  "visual_change_every_s": 1.6
+ },
+ "elements": {
+  "captions": [
+   {
+    "what": "one small white lowercase word at a time",
+    "when": "12-90 %",
+    "how": "Inter 500, centred, centre y 55.7 % H on the chest, same position over b-roll; hard cut per word 0-6 frames after the spoken start; no emphasis",
+    "catalog": [
+     27,
+     29
+    ]
+   },
+   {
+    "what": "spaced build-up hook line",
+    "when": "0-7 %",
+    "how": "words take fixed slots spread across x 15-80 % W at ~55 % H with ~3-5 % W gaps, each fading in over 2 frames, earlier words stay",
+    "catalog": [
+     28
+    ]
+   }
+  ],
+  "background_text": [
+   {
+    "what": "2-line corner title: white sans line + accent swash-italic key word",
+    "when": "12-22 % and 70-87 % (2-3 per minute)",
+    "how": "top-left (or top-right) beside the head, left edge ~8.6-17.6 % W; line 1 at 17-23 % H, line 2 at 25-36 % H starting further left and tucked under line 1; words fade in ~3 frames each with slight blur; hold 2-3 s; hard cut out",
+    "catalog": [
+     33,
+     37
+    ]
+   }
+  ],
+  "motion_graphics": [],
+  "cards_lists": [],
+  "silhouettes_cutouts": [],
+  "broll_inserts": [
+   {
+    "what": "founder-at-work b-roll",
+    "when": "~25 % of runtime",
+    "how": "handheld, 1-2.3 s per shot, warmer/redder interiors; captions keep their chest position",
+    "catalog": [
+     51,
+     50
+    ]
+   },
+   {
+    "what": "4-shot flash montage",
+    "when": "7-12 %",
+    "how": "four ~15-frame b-roll shots back to back right after the first line",
+    "catalog": [
+     180
+    ]
+   }
+  ],
+  "layout": [
+   {
+    "what": "half-frame split screen (b-roll | presenter)",
+    "when": "~31 % and ~49 %",
+    "how": "vertical half split wiped in as a transition, then resolves to one side",
+    "catalog": [
+     1
+    ]
+   }
+  ],
+  "camera": [
+   {
+    "what": "handheld/gimbal walk-and-talk with wide <-> medium alternation",
+    "when": "throughout presenter shots",
+    "how": "WS <-> MS (~130 %) every ~1.5-3 s",
+    "catalog": [
+     48,
+     173
+    ]
+   }
+  ],
+  "transitions": [
+   {
+    "what": "hard cuts + split wipes",
+    "when": "throughout; split wipes twice",
+    "how": "half-frame wipe ~8-10 frames",
+    "catalog": [
+     80
+    ]
+   }
+  ],
+  "end_card": [
+   {
+    "what": "black logo card",
+    "when": "last ~10 %",
+    "how": "pure black, white monogram (~7 % W on 16:9, ~20 % W on 9:16) centred at 48 % H, small letter-spaced caps brand name (~1.5 % H, tracking ~0.4em) at 54.5 % H",
+    "catalog": [
+     204
+    ]
+   }
+  ]
+ },
+ "captions_spec": {
+  "script": "latin (spoken words; corner titles in Roman Hinglish)",
+  "case": {
+   "caption": "lowercase (only 'I' capitalised)",
+   "title": "sentence case"
+  },
+  "punctuation": "none",
+  "emoji": "none",
+  "grouping": {
+   "words_per_caption": "1 (hook: words accumulate into one spaced line of up to 7 words)",
+   "max_lines": 1,
+   "sync": "word-by-word",
+   "break": "each word replaces the previous one (hard cut)"
+  },
+  "layout": {
+   "caption": {
+    "align": "centre",
+    "center_y_pct_of_H": 55.7,
+    "center_x_pct_of_W": 50,
+    "note": "on the presenter's chest; stays at the same screen position on b-roll"
+   },
+   "hook_line": "words placed at fixed positions spread across x 15-80 % W at y ~55 % H with very wide gaps (~3-5 % W), accumulating left to right",
+   "corner_title": {
+    "align": "left",
+    "left_pct_of_W": "8.6-17.6",
+    "lines_y_pct_of_H": "line 1 (sans) 17-23 %, line 2 (script) 25-36 %",
+    "side": "top-left (or top-right) beside the head, never over the face"
+   },
+   "1080x1920_mapping": "centre-crop the 16:9 frame to 9:16: caption stays centred at y 55.7 %; corner titles fall outside the crop, so move them to the top-left safe area (left 8 % W, y 15-32 %) at the mapped size"
+  },
+  "type": {
+   "caption": {
+    "font_class": "neo-grotesque sans, medium",
+    "closest_match": {
+     "local": "Inter 500",
+     "google": "Inter Medium"
+    },
+    "confidence": "medium",
+    "letterform_evidence": "double-storey a, flat-ended d stem, plain grotesque shapes, small size",
+    "ink_height_pct_of_H": 2.65,
+    "k": 0.73,
+    "font_size_px_at_1920": 76,
+    "font_size_note": "font_size_px_at_1920 = verified_px (solved on a 1920x1080 canvas) x 1.778, i.e. the same % of frame height on a 1080x1920 canvas",
+    "calibration": [
+     {
+      "word": "and",
+      "ink_pct_of_H": 2.65,
+      "width_pct_of_W": 4.5
+     },
+     {
+      "word": "processes",
+      "ink_pct_of_H": 2.79,
+      "width_pct_of_W": 13.0
+     }
+    ],
+    "calibration_note": "white over a dark shirt (clean); % of the 16:9 frame",
+    "color": "#FFFFFF",
+    "stroke": "none",
+    "shadow": "none visible",
+    "box": "none",
+    "tracking": "0em",
+    "verified_px": 43,
+    "fit": [
+     {
+      "font": "Inter 500",
+      "word": "and",
+      "tracking_em": 0.0,
+      "px_for_height": 38.7,
+      "px_for_width": 55.4,
+      "verified_px": 43,
+      "at_verified_px": {
+       "ink_pct_of_H": 2.96,
+       "width_pct_of_W": 3.5
+      },
+      "within_tolerance": true
+     }
+    ],
+    "k_formula_px_at_1920": 70
+   },
+   "title_sans": {
+    "font_class": "neo-grotesque sans, regular/medium",
+    "closest_match": {
+     "local": "Inter 500",
+     "google": "Inter Medium"
+    },
+    "confidence": "medium",
+    "ink_height_pct_of_H": 6.41,
+    "k": 0.99,
+    "font_size_px_at_1920": 140,
+    "font_size_note": "font_size_px_at_1920 = verified_px (solved on a 1920x1080 canvas) x 1.778",
+    "calibration": [],
+    "calibration_note": "2-word sentence-case line measured at 6.41 % H, 18.2 % W, white over dark trees (clean); source words withheld",
+    "color": "#FFFFFF",
+    "stroke": "none",
+    "shadow": "soft dark (estimated)",
+    "box": "none",
+    "tracking": "-0.01em (estimated)",
+    "verified_px": 79
+   },
+   "title_script": {
+    "font_class": "swash italic serif / script, high contrast",
+    "closest_match": {
+     "local": "Playfair Display 700",
+     "google": "Playfair Display Italic (low); a swash script such as Great Vibes for the g-loop (low)"
+    },
+    "confidence": "low",
+    "letterform_evidence": "italic, thick-thin contrast, long swash descender on g sweeping left under the line",
+    "ink_height_pct_of_H": 11.0,
+    "k": 0.99,
+    "font_size_px_at_1920": 302,
+    "font_size_note": "font_size_px_at_1920 = verified_px (solved on a 1920x1080 canvas) x 1.778",
+    "calibration": [
+     {
+      "word": "grow",
+      "ink_pct_of_H": 11.0,
+      "width_pct_of_W": 22.2
+     }
+    ],
+    "calibration_note": "gold over dark trees (clean); the swash g makes the ink taller than a plain italic",
+    "color": "gold gradient: #F5D34C (light) to ~#E0A820 (deep, estimated); k-means #EDCD42",
+    "stroke": "none",
+    "shadow": "none",
+    "box": "none",
+    "tracking": "0em",
+    "position": "second line, starting 9 % W further left than the sans line and overlapping its descenders",
+    "verified_px": 170,
+    "fit": [
+     {
+      "font": "Playfair Display 700",
+      "word": "grow",
+      "tracking_em": 0.0,
+      "px_for_height": 165.0,
+      "px_for_width": 180.6,
+      "verified_px": 170,
+      "at_verified_px": {
+       "ink_pct_of_H": 11.48,
+       "width_pct_of_W": 20.9
+      },
+      "within_tolerance": true
+     }
+    ],
+    "k_formula_px_at_1920": 213
+   }
+  },
+  "animation": {
+   "fps": 30,
+   "caption_entry": "hard cut per word; typically 4-6 frames late vs the spoken start (on-time is fine)",
+   "hook_build": "each new word fades in over ~2 frames at its fixed slot in the spaced line, earlier words stay",
+   "title_build": "words of the corner title fade in one by one over ~3 frames with a slight blur; the title holds 2-3 s, then cuts",
+   "exit": "hard cut",
+   "idle": "none",
+   "timing_note": "running captions follow the spoken words; corner titles restate the key phrase in Roman Hinglish"
+  }
+ },
+ "other_text_spec": [
+  {
+   "type": "corner title",
+   "when": "12-22 % and 70-87 % of runtime",
+   "text": "2 lines top-left: white sans 'lead words' / gold swash-italic 'KEY WORD' + optional trailing white sans word"
+  },
+  {
+   "type": "split wipes",
+   "when": "~31 % and ~49 % of runtime",
+   "text": "no text; half-frame split screens"
+  },
+  {
+   "type": "end card",
+   "when": "last ~10 % of runtime",
+   "bg": "pure black",
+   "text": "white logo monogram (~7 % W) centred at 48 % H with a letter-spaced caps brand name (~1.5 % H) under it at 54.5 % H"
+  },
+  {
+   "type": "lower-thirds / emoji",
+   "when": "none",
+   "text": "none"
+  }
+ ],
+ "style": {
+  "palette_roles": {
+   "text": "#FFFFFF",
+   "accent": "#F5D34C",
+   "accent_2": "#E0A820",
+   "surface": null,
+   "card_bg": "#000000"
+  },
+  "fonts": {
+   "caption": {
+    "closest_local": "Inter 500",
+    "verified_px": 43,
+    "px_1080x1920": 76,
+    "tracking": "0em"
+   },
+   "title_sans": {
+    "closest_local": "Inter 500",
+    "verified_px": 79,
+    "px_1080x1920": 140,
+    "tracking": "-0.01em"
+   },
+   "title_script": {
+    "closest_local": "Playfair Display 700 italic (swash script preferred)",
+    "verified_px": 170,
+    "px_1080x1920": 302,
+    "tracking": "0em"
+   }
+  },
+  "look_intent": "natural daylight, moderate saturation, soft mid contrast, neutral-warm; greens and glass outdoors, warmer/redder interiors in b-roll"
+ },
+ "sound": {
+  "music": "music bed likely (heuristic beat ~72 bpm); calm, under the voice; carries the speechless end card",
+  "sfx": [
+   "few hits on cuts (measured cut_hit_share 0.13)",
+   "optional quick swish per flash-montage shot (inferred)",
+   "logo sting on the end card (inferred)"
+  ],
+  "loudness_lufs": -14.1
+ },
+ "measured": {
+  "grade": {
+   "black_point": 0.0,
+   "midtone": 59.0,
+   "white_point": 213.1,
+   "contrast_range": 213.1,
+   "luma_std": 59.5,
+   "saturation": 0.418,
+   "colorfulness": 35.0,
+   "warmth_r_minus_b": 11.8,
+   "tint_g": 5.0,
+   "vignette_centre_over_edge": 1.5,
+   "label": "mid-contrast, natural-saturation, neutral-warm"
+  },
+  "layout": {
+   "letterbox_share": 0.04,
+   "split_divider_share": 0.0
+  },
+  "sound": {
+   "has_audio": true,
+   "speech_coverage": 0.84,
+   "beat_periodicity": 0.29,
+   "beat_bpm_est": 72,
+   "gap_level_rel_speech_db": -1.0,
+   "music": "music bed likely",
+   "cut_hit_share": 0.1,
+   "method": "heuristic (onset-envelope beat periodicity + level in speech gaps); not a classifier"
+  }
+ },
+ "catalog_styles": [
+  {
+   "id": 27,
+   "name": "Word-by-Word Pop Captions",
+   "role": "one small word at a time on the chest"
+  },
+  {
+   "id": 33,
+   "name": "Oversized Editorial Headlines",
+   "role": "corner titles with gold swash-italic key word"
+  },
+  {
+   "id": 180,
+   "name": "Flash-Cut Editing",
+   "role": "4-shot b-roll burst after the hook line"
+  },
+  {
+   "id": 48,
+   "name": "Walk-and-Talk",
+   "role": "outdoor piece to camera"
+  },
+  {
+   "id": 1,
+   "name": "Split-Screen",
+   "role": "half-frame split wipes"
+  },
+  {
+   "id": 173,
+   "name": "Jump-Cut Editing",
+   "role": "WS <-> MS alternation"
+  },
+  {
+   "id": 50,
+   "name": "Behind-the-Scenes (BTS)",
+   "role": "founder-at-work b-roll"
+  },
+  {
+   "id": 166,
+   "name": "Opinion / Commentary Essay",
+   "role": "confession -> reversal -> lesson"
+  }
+ ],
+ "use_when": [
+  "A founder or leader talking to camera outdoors or on the move, landscape or easily reframed",
+  "Hinglish or bilingual speech where 2-3 key phrases deserve big headline treatment",
+  "There is founder-at-work / team b-roll to intercut (~25 % of runtime)",
+  "A reflective or contrarian opinion piece that should feel premium and calm rather than loud"
+ ],
+ "avoid_when": [
+  "The goal is maximum caption readability for sound-off viewing (one small word at a time is quiet)",
+  "No b-roll exists for the flash burst and intercuts",
+  "The face fills the frame so there is no room beside the head for corner titles"
+ ],
+ "match": {
+  "tags": [
+   "talking-head",
+   "hinglish",
+   "landscape",
+   "walk-and-talk",
+   "word-by-word",
+   "corner-title",
+   "gold-script-accent",
+   "flash-montage",
+   "split-wipe",
+   "founder-broll",
+   "logo-end-card",
+   "opinion"
+  ],
+  "keywords": [
+   "founder",
+   "systems",
+   "process",
+   "discipline",
+   "company",
+   "grow",
+   "business",
+   "mindset",
+   "routine",
+   "startup",
+   "leadership",
+   "lesson",
+   "office",
+   "team"
+  ],
+  "needs": {
+   "speaker_footage": true,
+   "screen_recordings": false,
+   "broll": true,
+   "brand_assets": true
+  }
+ },
+ "quality_score": 3,
+ "brand_prompt": "Use /video-pipeline with /video-captions on videos/<project>. Apply style blueprint B23 (video-reference-match/references/blueprints/B23.json) to this brand.\nNative canvas 1920x1080 at 30 fps (sizes below give the 16:9 px and the 1080x1920 px for a 9:16 reframe).\n\nBRAND TOKENS (use the brand's colour/font for each role; keep the contrast relationship: {{TEXT}} >= 4.5:1 on the chest; {{ACCENT}} gradient must stay >= 3:1 on the background behind the title, e.g. dark foliage or walls)\n- {{TEXT}}: default #FFFFFF (captions, title sans line, end-card wordmark)\n- {{ACCENT}}: default #F5D34C (gold gradient light stop)\n- {{ACCENT_2}}: default #E0A820 (gold gradient deep stop)\n- {{SURFACE}}: none (footage)\n- {{CARD_BG}}: default #000000 (end card)\n- {{FONT_DISPLAY}}: default Playfair Display 700 italic (a swash italic/script is closer)\n- {{FONT_BODY}}: default Inter 500\n- {{HANDLE}}: not used\n- {{LOGO}}: monogram for the end card\n\nCAPTIONS\n1. Latin, as spoken, lowercase except 'I'; no punctuation, no emoji.\n2. One word at a time: {{FONT_BODY}} at 43 px on 1920x1080 (76 px on 1080x1920), {{TEXT}}, no stroke, no shadow, no box, tracking 0; centred, centre y 55.7 % H (chest), same position over b-roll.\n3. Hook only (first ~7 % of runtime): the opening sentence accumulates in ONE widely spaced line at ~55 % H; each word gets a fixed slot with ~3-5 % W gaps (16:9: x 15-80 %; 9:16: inside x 8-92 %); each word fades in over 2 frames.\n4. Each word hard-cuts in 0-6 frames after its spoken start and out when the next starts; no idle motion.\n\nCORNER TITLES (2-3 per minute, for the key phrase)\n5. Two lines beside the head, never over the face. Line 1: {{FONT_BODY}} at 79 px on 16:9 (140 px on 9:16), {{TEXT}}, sentence case 'lead words', left edge 8.6 % W, y 17-23 % (9:16: left 8 % W, y 15-21 %). Line 2: the KEY WORD in {{FONT_DISPLAY}} at 170 px on 16:9 (302 px on 9:16), vertical gradient {{ACCENT}} -> {{ACCENT_2}}, starting ~3-9 % W further left and tucked under line 1 (y 25-36 %); any trailing word in the white sans.\n6. Title words fade in one by one (~3 frames each, slight blur-in), hold 2-3 s, hard cut out.\n\nEDIT DEVICES\n7. Right after the first line: 4 b-roll shots of ~15 frames each (flash burst).\n8. Alternate WS and MS (~130 %) every 1.5-3 s; intercut founder-at-work b-roll for ~25 % of runtime, 1-2.3 s per shot.\n9. Twice per piece, a half-frame split wipe (b-roll | presenter) as the transition.\n10. End card (last ~10 %): {{CARD_BG}}, {{LOGO}} monogram (~7 % W on 16:9, ~20 % W on 9:16) centred at 48 % H, letter-spaced caps brand name (~1.5 % H, tracking ~0.4em) at 54.5 % H. No lower-thirds, no emoji.\n\nGRADE: Grade from the user's footage (video-style / grade.py); target look: natural daylight, moderate saturation, soft mid contrast, neutral-warm.\nSOUND: calm music bed (~72 bpm) under the voice, carrying the end card; keep true peak below -1 dBTP; -14 LUFS.\n\nVERIFY\na) Render the caption word \"and\" at 43 px on 1920x1080 (or 76 px on 1080x1920) over a dark area at 55.7 % H and measure:\n   python video-reference-match/scripts/caption_probe.py <test_render> --out <dir> --at <t> --box 0.4,0.5,0.6,0.61 --ink \"{{TEXT}}:60\"   (default ink #FFFFFF)\n   Required (16:9 frame): 2.65 % ±0.5 of H, 4.5 % ±2 of W; \"processes\" 2.79 % H, 13.0 % W.\nb) Corner title: render \"grow\" in {{FONT_DISPLAY}} at 170 px (16:9) and measure with --ink \"{{ACCENT}}:90\": 11.0 % ±0.5 H, 22.2 % ±2 W.\nc) Expected ink for any other word: video-reference-match/scripts/fit_font.py --font \"{{FONT_BODY}}\" --word <word> --canvas 1920x1080.",
+ "caption_family": "word-by-word-plain"
+}

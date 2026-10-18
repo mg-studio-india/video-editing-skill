@@ -1,0 +1,458 @@
+{
+ "id": "B15",
+ "schema": "blueprint/1",
+ "format": {
+  "type": "street-interview",
+  "aspect": "9:16",
+  "language": "English",
+  "duration_class": "mid (60-180s)",
+  "people_on_screen": "2+"
+ },
+ "topic_class": "business advice",
+ "signature": {
+  "one_line": "Doorstep two-camera interview: small subtitles, top promise pill, broadcast lower third, keyword pill.",
+  "unique_devices": [
+   "Doorstep cold open: handheld chase toward a stranger's door with a whip blur, 5 cuts in the first ~2 % of runtime, first word inside one frame",
+   "Static promise pill at the top for the first ~10 %: white humanist sans on a black rounded box, one bold accent key word on line 2",
+   "Broadcast lower third that builds in ~0.75 s: second accent role tag wipes in and types on letter by letter, then a white box with a black serif name and an offset second accent bar, plus a white company-logo tile under the subtitle",
+   "Small 1-2 line humanist-sans subtitles on a faint translucent box at ~76 % H, so the pills and faces own attention; CTA pill laid over the emotional payoff, not after it"
+  ],
+  "why_it_works": "Starts mid-action with a big promise on screen, then cuts host/guest on nearly every sentence so a long, conversational interview keeps momentum."
+ },
+ "hook": {
+  "type": "in medias res + social-proof title",
+  "first_word_s": 0.02,
+  "first_cut_s": 0.52,
+  "first_frame": "Handheld, rainy wet street seen while running toward a gate; black rounded title pill fixed at the top with one accent key word"
+ },
+ "structure": [
+  {
+   "beat": "hook",
+   "from_pct": 0,
+   "to_pct": 2,
+   "what": "chase to the door, whip blur, a doorstep question to the owner; promise pill on screen"
+  },
+  {
+   "beat": "setup",
+   "from_pct": 2,
+   "to_pct": 11,
+   "what": "asks for a few minutes; guest invites the host in"
+  },
+  {
+   "beat": "proof",
+   "from_pct": 11,
+   "to_pct": 18,
+   "what": "credential: broadcast lower third + company logo tile; family business background"
+  },
+  {
+   "beat": "example",
+   "from_pct": 18,
+   "to_pct": 44,
+   "what": "context and philosophy: heritage room, a classic quote, family memories"
+  },
+  {
+   "beat": "claim",
+   "from_pct": 44,
+   "to_pct": 75,
+   "what": "career advice; mid-roll sponsor integration with logo pill + link-in-bio pill"
+  },
+  {
+   "beat": "payoff",
+   "from_pct": 75,
+   "to_pct": 92,
+   "what": "why businesses fail; one emotional photo insert; closing life lesson"
+  },
+  {
+   "beat": "cta",
+   "from_pct": 92,
+   "to_pct": 100,
+   "what": "comment-keyword pill over the closing lines and thank-you"
+  }
+ ],
+ "pacing": {
+  "pace": "frenetic, front-loaded (~80 cuts/min in the first ~8 %, then 20-45)",
+  "median_shot_s": 1.0,
+  "cuts_per_min": 43,
+  "wpm": 220,
+  "pauses_per_min": 0.4,
+  "visual_change_every_s": 1.04
+ },
+ "elements": {
+  "captions": [
+   {
+    "what": "small broadcast subtitles on a faint translucent box",
+    "when": "0-100 %",
+    "how": "1-10 words (~6), up to 2 centred lines, centre y 76.2 % H, max line width 57 % W; humanist sans 38 px white on rgba(0,0,0,.25); full punctuation; hard cut ~1 frame before the first word",
+    "catalog": [
+     29,
+     26
+    ]
+   }
+  ],
+  "background_text": [
+   {
+    "what": "promise title pill",
+    "when": "0-10 %",
+    "how": "solid black rounded box x 16-83 %, y 8-20.5 %, 2 centred lines at 12.1 % / 16.4 % H; line 1 white regular ~65 px, line 2 key word bold accent ~74 px; static on every frame",
+    "catalog": [
+     24
+    ]
+   },
+   {
+    "what": "broadcast lower third + logo tile",
+    "when": "11-14 % (once, at the name reveal)",
+    "how": "second accent tag x 16-60 %, y 59.4-62.3 % with small white serif role line; white box x 15.5-77 %, y 62.7-67 % with black serif name (~58 px) and a second accent offset bar; tag wipes in L->R ~5 frames, text types on ~8 frames, name box wipes ~3 frames, name fades ~3 frames; white rounded logo tile x 35.8-64 %, y 79.4-90.2 %",
+    "catalog": [
+     21
+    ]
+   },
+   {
+    "what": "sponsor pills",
+    "when": "61-66 %",
+    "how": "'Link in Bio' white bold on dark grey rounded pill, centre y 13.6 %, ~5.8 % H; sponsor logo on a white rounded pill x 25.6-74.2 %, centre y 67.5 %, ~7.3 % H",
+    "catalog": [
+     201
+    ]
+   }
+  ],
+  "motion_graphics": [],
+  "cards_lists": [],
+  "silhouettes_cutouts": [],
+  "broll_inserts": [
+   {
+    "what": "single emotional photo insert",
+    "when": "~80 %",
+    "how": "~1 s still of family photos before the closing lesson",
+    "catalog": [
+     72
+    ]
+   }
+  ],
+  "layout": [],
+  "camera": [
+   {
+    "what": "two handheld cameras, host and guest singles",
+    "when": "throughout",
+    "how": "MCU singles alternating per sentence, occasional walking two-shots; no punch-ins",
+    "catalog": [
+     57,
+     48
+    ]
+   }
+  ],
+  "transitions": [
+   {
+    "what": "hard cuts between the two cameras",
+    "when": "throughout",
+    "how": "~half on pauses, ~half mid-sentence; handheld motion blur reads as soft",
+    "catalog": [
+     173
+    ]
+   },
+   {
+    "what": "one whip / motion blur in the cold open",
+    "when": "~1 %",
+    "how": "~6 frames",
+    "catalog": [
+     101
+    ]
+   }
+  ],
+  "end_card": [
+   {
+    "what": "comment-keyword CTA pill",
+    "when": "last ~8 %",
+    "how": "solid black rounded pill x 20-78 %, centre y 67.4 %, ~6.2 % H: 'Comment' white medium + keyword in curly quotes bold pale accent; over the closing lines",
+    "catalog": [
+     35
+    ]
+   }
+  ]
+ },
+ "captions_spec": {
+  "script": "latin (as spoken; proper nouns corrected on screen)",
+  "case": {
+   "subtitle": "sentence case with full punctuation, like broadcast subtitles"
+  },
+  "punctuation": "full (commas, full stops, '?', '!', ellipsis '...' when a sentence continues)",
+  "emoji": "none",
+  "grouping": {
+   "words_per_caption": "1-10 (a sentence or clause, ~6)",
+   "max_lines": 2,
+   "sync": "phrase-level, hard cut on the first word",
+   "break": "sentence / clause; long sentences wrap to 2 centred lines"
+  },
+  "layout": {
+   "align": "centre (x 50 %)",
+   "center_y_pct": 76.2,
+   "two_line_block_center_y_pct": "~75.5",
+   "max_line_width_pct_of_W": 57,
+   "margins": "symmetric, >= 20 % W each side"
+  },
+  "type": {
+   "subtitle": {
+    "font_class": "humanist sans, regular (Tahoma/Verdana-like)",
+    "closest_match": {
+     "local": "Noto Sans Devanagari 400 (its Latin = Noto Sans)",
+     "google": "Noto Sans Regular / Open Sans",
+     "confidence": "low"
+    },
+    "ink_height_pct_of_H": 1.95,
+    "k": 0.99,
+    "font_size_px_at_1920": 38,
+    "calibration": [],
+    "calibration_note": "a 7-word sentence-case question measured 1.95 % H / 56.9 % W, white over a dark shirt (words withheld)",
+    "probe": {
+     "subtitle": "--box 0.15,0.735,0.85,0.785 --ink #FFFFFF:60 (white over dark clothing)"
+    },
+    "color": "#FFFFFF",
+    "stroke": "none",
+    "shadow": "none",
+    "box": "translucent black rectangle ~rgba(0,0,0,0.25) (background luminance x0.77 inside the box), padding ~1.5 % W, small radius (estimated)",
+    "tracking": "0em",
+    "verified_px": 38
+   },
+   "title": {
+    "font_class": "humanist sans; line 1 regular white, key word bold yellow",
+    "closest_match": {
+     "local": "Noto Sans Devanagari 400",
+     "google": "Noto Sans / Open Sans",
+     "confidence": "low"
+    },
+    "ink_height_pct_of_H": 2.81,
+    "k": 0.73,
+    "font_size_px_at_1920": 74,
+    "calibration": [],
+    "calibration_note": "a 3-word Title Case line measured 2.81 % H / 49.6 % W (words withheld)",
+    "probe": {
+     "line 1": "--box 0.18,0.095,0.82,0.14 --ink #FFFFFF:60",
+     "key word": "--box 0.43,0.14,0.82,0.19 --ink #EEFB1F:90 -> an 11-letter bold word measured 2.89 % H, 34.2 % W"
+    },
+    "color": "#FFFFFF; key word #EEFB1F bold",
+    "stroke": "none",
+    "shadow": "none",
+    "box": "solid black #000000 rounded rectangle x 16-83 %, y 8-20.5 % (radius ~3 % W, estimated), 2 centred lines at centre y 12.1 % and 16.4 %",
+    "tracking": "0em",
+    "when": "first ~10 % of runtime, on every frame, static",
+    "verified_px": 65
+   },
+   "title_key": {
+    "font_class": "humanist sans, bold",
+    "closest_match": {
+     "local": "Noto Sans Devanagari 700",
+     "google": "Noto Sans Bold / Open Sans Bold",
+     "confidence": "low"
+    },
+    "ink_height_pct_of_H": 2.89,
+    "k": 0.73,
+    "font_size_px_at_1920": 76,
+    "calibration": [],
+    "calibration_note": "an 11-letter Title Case word measured 2.89 % H / 34.2 % W (word withheld)",
+    "color": "#EEFB1F",
+    "tracking": "0em",
+    "verified_px": 74
+   }
+  },
+  "animation": {
+   "fps": 25,
+   "entry": "hard cut, whole sentence at once, ~1 frame before the spoken word",
+   "exit": "hard cut on the next subtitle",
+   "highlight": "none",
+   "idle": "none"
+  }
+ },
+ "other_text_spec": [
+  {
+   "type": "broadcast lower third",
+   "when": "11-14 % of runtime (once, at the name reveal)",
+   "text": "blue #2771B3 tag x 16-60 %, y 59.4-62.3 % with small white serif 'Role of the Company Group.' (ink 1.09 % H, ~38 % W); below it a white #FCFCFD box x 15.5-77 %, y 62.7-67 % with black #151618 serif 'Name Surname' (ink ~3.0 % H incl. descender -> ~58 px, Times-like serif; closest Playfair Display 400, low) and a blue offset bar under its bottom/right edge",
+   "animation": "blue tag wipes in left->right over ~5 frames, its text types on letter by letter (~8 frames), then the white name box wipes in (~3 frames) and the name fades in (~3 frames); total ~0.75 s"
+  },
+  {
+   "type": "company logo tile",
+   "when": "with the lower third",
+   "text": "white rounded tile x 35.8-64 %, y 79.4-90.2 % with the company logo + name (below the subtitle)"
+  },
+  {
+   "type": "sponsor pills",
+   "when": "61-66 % of runtime",
+   "text": "'Link in Bio' white bold sans on a dark grey #2E2E2E rounded pill x 32-68 %, centre y 13.6 %, height ~5.8 % H; sponsor logo on a white rounded pill x 25.6-74.2 %, centre y 67.5 %, height ~7.3 % H, just above the subtitle"
+  },
+  {
+   "type": "CTA pill",
+   "when": "last ~8 % of runtime",
+   "text": "solid black rounded pill x 20-78 %, centre y 67.4 %, height ~6.2 % H: 'Comment' white medium sans (ink 2.27 % H, 22.9 % W -> Inter 500 ~57 px) + '“KEYWORD”' in curly quotes, bold yellow #E8F582 (~2.5 % H -> Inter 700 ~59 px)"
+  }
+ ],
+ "style": {
+  "palette_roles": {
+   "text": "#FFFFFF",
+   "accent": "#EEFB1F",
+   "accent_2": "#2771B3",
+   "surface": "#000000",
+   "card_bg": "#FCFCFD"
+  },
+  "fonts": {
+   "subtitle": {
+    "closest_local": "Noto Sans 400 (Noto Sans Devanagari file)",
+    "verified_px": 38,
+    "tracking": "0em"
+   },
+   "title": {
+    "closest_local": "Noto Sans 400",
+    "verified_px": 65,
+    "tracking": "0em"
+   },
+   "title_key": {
+    "closest_local": "Noto Sans 700",
+    "verified_px": 74,
+    "tracking": "0em"
+   },
+   "lower_third_name": {
+    "closest_local": "Playfair Display 400",
+    "verified_px": null,
+    "approx_px": 58,
+    "tracking": "0em"
+   },
+   "cta_pill": {
+    "closest_local": "Inter 500 / Inter 700",
+    "verified_px": null,
+    "approx_px": 57,
+    "tracking": "0em"
+   }
+  },
+  "look_intent": "natural, slightly warm, mid-to-high contrast; wet greens and gold exteriors, tungsten heritage interiors"
+ },
+ "sound": {
+  "music": "music bed likely (gaps ~5 dB below speech) under live location sound; rain ambience in the cold open",
+  "sfx": [
+   "hits/whooshes on about half the hard cuts (measured cut_hit_share 0.48)",
+   "whoosh on the opening whip (inferred)"
+  ],
+  "loudness_lufs": -14.1
+ },
+ "measured": {
+  "grade": {
+   "black_point": 0.0,
+   "midtone": 105.0,
+   "white_point": 255.0,
+   "contrast_range": 255.0,
+   "luma_std": 70.6,
+   "saturation": 0.409,
+   "colorfulness": 50.4,
+   "warmth_r_minus_b": 43.3,
+   "tint_g": 2.8,
+   "vignette_centre_over_edge": 0.77,
+   "label": "high-contrast, natural-saturation, warm"
+  },
+  "layout": {
+   "letterbox_share": 0.0,
+   "split_divider_share": 0.0
+  },
+  "sound": {
+   "has_audio": true,
+   "speech_coverage": 0.95,
+   "beat_periodicity": 0.06,
+   "beat_bpm_est": null,
+   "gap_level_rel_speech_db": -5.2,
+   "music": "music bed likely",
+   "cut_hit_share": 0.5,
+   "method": "heuristic (onset-envelope beat periodicity + level in speech gaps); not a classifier"
+  }
+ },
+ "catalog_styles": [
+  {
+   "id": 57,
+   "name": "Street Interview / Vox Pop",
+   "role": "doorstep two-camera interview"
+  },
+  {
+   "id": 29,
+   "name": "Minimal Subtitle Style",
+   "role": "small broadcast subtitles on a faint box"
+  },
+  {
+   "id": 24,
+   "name": "Big-Text Hook",
+   "role": "top promise pill with a yellow key word"
+  },
+  {
+   "id": 21,
+   "name": "Caption-Edit",
+   "role": "broadcast lower third + logo tile"
+  },
+  {
+   "id": 173,
+   "name": "Jump-Cut Editing",
+   "role": "host/guest cut on nearly every sentence"
+  },
+  {
+   "id": 101,
+   "name": "Whip-Pan Transitions",
+   "role": "cold-open whip"
+  },
+  {
+   "id": 35,
+   "name": "Fake Social-Media Comments",
+   "role": "comment-keyword CTA pill"
+  },
+  {
+   "id": 201,
+   "name": "Product Advertisement",
+   "role": "mid-roll sponsor pills"
+  }
+ ],
+ "use_when": [
+  "Run-and-gun interview footage from one or two handheld cameras on location",
+  "The guest has a strong credential worth a broadcast lower third and a promise title",
+  "A longer conversational piece (1-3 min) that needs fast cutting to hold attention",
+  "There is a sponsor or lead magnet to integrate as pills"
+ ],
+ "avoid_when": [
+  "Solo talking-head content (the format relies on host/guest alternation)",
+  "Sub-30 s clips where the lower third and promise pill have no room",
+  "Brands wanting bold kinetic captions (subtitles here are deliberately small)"
+ ],
+ "match": {
+  "tags": [
+   "street-interview",
+   "doorstep",
+   "two-camera",
+   "handheld",
+   "subtitles",
+   "promise-title-pill",
+   "broadcast-lower-third",
+   "logo-tile",
+   "sponsor-pill",
+   "comment-cta",
+   "front-loaded-pacing",
+   "long-form"
+  ],
+  "keywords": [
+   "interview",
+   "founder",
+   "businessman",
+   "legacy",
+   "family",
+   "advice",
+   "wisdom",
+   "career",
+   "success",
+   "failure",
+   "values",
+   "visit",
+   "home",
+   "story",
+   "leader"
+  ],
+  "needs": {
+   "speaker_footage": true,
+   "screen_recordings": false,
+   "broll": false,
+   "brand_assets": true
+  }
+ },
+ "quality_score": 3,
+ "brand_prompt": "Use /video-pipeline with /video-captions on videos/<project>. Apply style blueprint B15 (video-reference-match/references/blueprints/B15.json) to this brand.\nCanvas 1080x1920, 25 fps. Two handheld cameras (host + guest), location sound.\n\nBRAND TOKENS (use the brand's colour/font for each role; keep the contrast relationship: {{ACCENT}} key word >= 7:1 on the black pill; white subtitle >= 4.5:1 on its faint box over the footage; {{ACCENT_2}} tag >= 4.5:1 behind white text)\n- {{TEXT}}: default #FFFFFF (subtitles, pill text)\n- {{ACCENT}}: default #EEFB1F (title key word; CTA keyword #E8F582)\n- {{ACCENT_2}}: default #2771B3 (lower-third role tag and offset bar)\n- {{SURFACE}}: default #000000 (title and CTA pills); subtitle box rgba(0,0,0,.25)\n- {{CARD_BG}}: default #FCFCFD (name box, logo tile)\n- {{FONT_DISPLAY}}: default Playfair Display 400 (serif name and role)\n- {{FONT_BODY}}: default Noto Sans 400/700 (subtitles, title pill)\n- {{HANDLE}}: default @handle\n- {{LOGO}}: company logo tile + sponsor logo pill\n\nCAPTIONS (subtitles)\n1. Latin, as spoken, sentence case with full punctuation (commas, full stops, ?, !, ellipsis when continuing); correct proper nouns; no emoji.\n2. A sentence or clause per subtitle (1-10 words, ~6), up to 2 centred lines, max line width 57 % W (margins >= 20 % W).\n3. {{FONT_BODY}} 400 at 38 px, {{TEXT}}, no stroke/shadow, on a translucent rgba(0,0,0,.25) box, padding ~1.5 % W, small radius.\n4. Centre y 76.2 % H (2-line block ~75.5 %).\n5. Hard cut in ~1 frame before the first word; hard cut out on the next subtitle.\n\nOTHER TEXT AND EDIT DEVICES\n6. Promise title pill (first ~10 % of runtime, static): {{SURFACE}} rounded box x 16-83 %, y 8-20.5 %, radius ~3 % W; line 1 'Headline here' {{FONT_BODY}} 400 65 px {{TEXT}} at 12.1 % H; line 2 with the KEY WORD in {{FONT_BODY}} 700 74 px {{ACCENT}} at 16.4 % H.\n7. Lower third once at the name reveal (~11-14 % of runtime, ~75 frames): {{ACCENT_2}} tag x 16-60 %, y 59.4-62.3 % with small white serif 'Role, Company'; {{CARD_BG}} box x 15.5-77 %, y 62.7-67 % with black {{FONT_DISPLAY}} 'Name Surname' (~58 px) and an offset {{ACCENT_2}} bar; tag wipes L->R ~5 frames, role types on ~8 frames, name box wipes ~3 frames, name fades ~3 frames. {{LOGO}} on a white rounded tile x 35.8-64 %, y 79.4-90.2 %.\n8. Sponsor (~60 % of runtime, ~150 frames): 'Link in Bio' white bold on a dark grey rounded pill at 13.6 % H (~5.8 % H tall); sponsor logo on a white rounded pill x 25.6-74.2 % at 67.5 % H (~7.3 % H tall).\n9. CTA over the last ~8 % (during the payoff, not after): {{SURFACE}} rounded pill x 20-78 % at 67.4 % H (~6.2 % H tall): 'Comment' Inter 500 ~57 px white + '“KEYWORD”' Inter 700 ~59 px {{ACCENT}}.\n10. Cold open: handheld approach with one whip (~6 frames), ~5 cuts in the first ~2 %; then cut host/guest on nearly every sentence (median ~1 s), easing to 20-45 cuts/min. One ~1 s emotional photo insert before the closing lesson. No punch-ins.\n\nGRADE: Grade from the user's footage (video-style / grade.py); target look: natural, slightly warm, mid-high contrast, rich exterior greens, tungsten interiors.\nSOUND: location dialogue up front, low bed (~5 dB under speech gaps), hits on ~half the cuts; -14 LUFS, true peak <= -2 dBTP.\n\nVERIFY\na) Render a 7-word subtitle at 38 px at 76.2 % H over dark clothing and measure:\n   python video-reference-match/scripts/caption_probe.py <test_render> --out <dir> --at <t> --box 0.15,0.735,0.85,0.785 --ink \"{{TEXT}}:60\"   (default ink #FFFFFF)\n   Expected: ~1.95 % H for mixed-case words with ascenders/descenders and a '?'; compute the exact ink/width for your phrase with video-reference-match/scripts/fit_font.py --font \"Noto Sans Devanagari 400\" --word \"<phrase>\".\nb) Title pill: render \"KEY WORD\" in {{FONT_BODY}} 700 at 74 px, --box 0.43,0.14,0.82,0.19 --ink \"{{ACCENT}}:90\"; compare with fit_font.py output for that word.",
+ "caption_family": "other:subtitle-box"
+}

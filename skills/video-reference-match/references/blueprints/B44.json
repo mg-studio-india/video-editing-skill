@@ -1,0 +1,417 @@
+{
+ "id": "B44",
+ "schema": "blueprint/1",
+ "format": {
+  "type": "podcast-clip",
+  "aspect": "9:16",
+  "language": "English",
+  "duration_class": "short (15-60s)",
+  "people_on_screen": "2+"
+ },
+ "topic_class": "business advice",
+ "signature": {
+  "one_line": "Zero-cut speaker-over-listener split; glowing three-tier seam captions with one accent key word.",
+  "unique_devices": [
+   "Three-tier glowing stack on the split seam: thin light white lead words above, one heavy accent black-weight key word with a accent halo exactly on the seam, a small heavy white follow-on word below",
+   "Letter-by-letter fade-out running left to right (~4 frames) while key words blur-fade in over ~6 frames; no hard text cuts at all",
+   "Zero picture cuts: a permanent 50/50 vertical split (speaker top, reacting listener bottom); attention reset by swapping the top panel to a second voice at ~60 % runtime",
+   "Dark warm low-key grade chosen so the accent glow is the brightest thing in frame"
+  ],
+  "why_it_works": "A face is always reacting on screen so no cuts are needed; captions on the seam never cover a face and the accent key word gives a rhythmic visual beat."
+ },
+ "hook": {
+  "type": "bold claim / contrarian",
+  "first_word_s": 0.13,
+  "first_cut_s": null,
+  "first_frame": "50/50 vertical split: guest at a microphone against a warm slatted wall on top, host listening in dark clothing below; thin white lead words glowing on the seam"
+ },
+ "structure": [
+  {
+   "beat": "hook",
+   "from_pct": 0,
+   "to_pct": 19,
+   "what": "soft contrarian claim; accent key word every ~1.5-2 s"
+  },
+  {
+   "beat": "claim",
+   "from_pct": 19,
+   "to_pct": 46,
+   "what": "positive reframe of the claim"
+  },
+  {
+   "beat": "example",
+   "from_pct": 46,
+   "to_pct": 59,
+   "what": "sarcastic counter-example of the opposite advice"
+  },
+  {
+   "beat": "proof",
+   "from_pct": 59,
+   "to_pct": 85,
+   "what": "top panel swaps to a second voice reinforcing the point"
+  },
+  {
+   "beat": "payoff",
+   "from_pct": 85,
+   "to_pct": 100,
+   "what": "nuanced closing distinction; no CTA"
+  }
+ ],
+ "pacing": {
+  "pace": "single continuous composition (split screen, one panel swap)",
+  "median_shot_s": null,
+  "cuts_per_min": 0,
+  "wpm": 200,
+  "pauses_per_min": 0.0,
+  "visual_change_every_s": 1.0
+ },
+ "elements": {
+  "captions": [
+   {
+    "what": "three-tier seam stack: light lead / accent key / small heavy follow-on",
+    "when": "0-100 %",
+    "how": "centred; lead centre y 45.1 %, key centre 50.1-50.7 % (on the seam), small word 54.1 %; lead Inter 300 65 px white glow; key Poppins 900 133 px accent with halo; small Poppins 800 47 px; lead words fade in ~3 frames, key blur+fade ~6 frames, small ~4 frames; stack clears with a left-to-right letter fade ~4 frames",
+    "catalog": [
+     23,
+     31
+    ]
+   }
+  ],
+  "background_text": [],
+  "motion_graphics": [],
+  "cards_lists": [],
+  "silhouettes_cutouts": [],
+  "broll_inserts": [],
+  "layout": [
+   {
+    "what": "50/50 vertical split, speaker top / listener bottom",
+    "when": "0-100 %",
+    "how": "two MCU panels each 50 % H, seam at 50 % H with no visible divider; top panel content swaps once at ~59 %",
+    "catalog": [
+     3,
+     9
+    ]
+   }
+  ],
+  "camera": [
+   {
+    "what": "static locked-off podcast cameras",
+    "when": "throughout",
+    "how": "no punch-ins",
+    "catalog": [
+     58
+    ]
+   }
+  ],
+  "transitions": [
+   {
+    "what": "single in-panel swap",
+    "when": "~59 %",
+    "how": "hard cut inside the top panel only; bottom listener continues",
+    "catalog": [
+     12
+    ]
+   }
+  ],
+  "end_card": []
+ },
+ "captions_spec": {
+  "script": "latin (as spoken)",
+  "case": {
+   "lead": "sentence case as spoken",
+   "key": "lowercase",
+   "small": "lowercase"
+  },
+  "punctuation": "none (apostrophes kept)",
+  "emoji": "none",
+  "grouping": {
+   "lead_words_per_caption": "1-3",
+   "key_words_per_caption": "0-1 (the stressed word of the phrase)",
+   "small_words": "0-2 (the word(s) right after the key)",
+   "max_lines": 3,
+   "sync": "word-by-word; lead words appear on their words, the key word on its word, the small word after it",
+   "break": "the stack clears (letter-by-letter fade-out) before the next phrase"
+  },
+  "layout": {
+   "align": "centre (x 50 %)",
+   "lead_center_y_pct": 45.1,
+   "key_center_y_pct": "50.1-50.7 (sits ON the split seam at 50 %)",
+   "small_center_y_pct": 54.1,
+   "lines_without_key": "lead line alone stays at ~45 % (or drops to ~50 % on the seam when it is the only line, estimated)",
+   "1080x1920_mapping": "same percentages (9:16); designed for a 50/50 vertical split, speaker top / listener bottom"
+  },
+  "type": {
+   "lead": {
+    "font_class": "geometric sans, light",
+    "closest_match": {
+     "local": "Inter 300",
+     "google": "Montserrat Light 300"
+    },
+    "confidence": "high (Montserrat) / low (Inter stand-in)",
+    "letterform_evidence": "Montserrat: wide round S and o, flat-topped t, double-storey a, very thin even strokes",
+    "ink_height_pct_of_H": 2.19,
+    "k": 0.73,
+    "font_size_px_at_1920": 65,
+    "calibration": [],
+    "calibration_note": "a 3-word sentence-case lead line measured 2.19 % H / 26.9 % W over a dark top (clean; words withheld)",
+    "color": "#FFFFFF",
+    "stroke": "none",
+    "shadow": "soft white outer glow, ~9 px @1080 (e.g. 0 0 15px rgba(255,255,255,.55), estimated)",
+    "box": "none",
+    "tracking": "0em",
+    "verified_px": 65,
+    "k_formula_px_at_1920": 58
+   },
+   "key": {
+    "font_class": "wide geometric sans, black",
+    "closest_match": {
+     "local": "Poppins 900",
+     "google": "Montserrat Black 900"
+    },
+    "confidence": "high (Montserrat) / medium (Poppins stand-in)",
+    "letterform_evidence": "Montserrat Black: double-storey a, wide e with horizontal bar, flat t top, very heavy stems",
+    "ink_height_pct_of_H": 4.61,
+    "k": 0.73,
+    "font_size_px_at_1920": 133,
+    "calibration": [
+     {
+      "word": "not",
+      "ink_pct_of_H": 4.61,
+      "width_pct_of_W": 21.5
+     }
+    ],
+    "calibration_note": "on the seam (clean, gold-only ink); a 7-letter word with a descender measured 4.69 % H / 52.2 % W",
+    "color": "#EAB827 (warm gold, measured median)",
+    "stroke": "none",
+    "shadow": "soft gold glow around the word (blurred halo ~12 px @1080, e.g. 0 0 21px rgba(234,184,39,.6), estimated)",
+    "box": "none",
+    "tracking": "-0.01em (estimated)",
+    "verified_px": 133,
+    "fit": [
+     {
+      "font": "Poppins 900",
+      "word": "not",
+      "tracking_em": -0.01,
+      "px_for_height": 126.4,
+      "px_for_width": 139.0,
+      "verified_px": 133,
+      "at_verified_px": {
+       "ink_pct_of_H": 4.9,
+       "width_pct_of_W": 20.5
+      },
+      "within_tolerance": true
+     }
+    ],
+    "k_formula_px_at_1920": 121
+   },
+   "small": {
+    "font_class": "heavy display sans with ink-trap notches (stencil-like cuts in e, s, o)",
+    "closest_match": {
+     "local": "Poppins 800",
+     "google": "Archivo Black (low)"
+    },
+    "confidence": "low",
+    "ink_height_pct_of_H": 1.72,
+    "k": 0.73,
+    "font_size_px_at_1920": 47,
+    "calibration": [
+     {
+      "word": "person",
+      "ink_pct_of_H": 1.72,
+      "width_pct_of_W": 16.8
+     }
+    ],
+    "calibration_note": "white under the gold key (clean)",
+    "color": "#FFFFFF",
+    "stroke": "none",
+    "shadow": "soft white glow (estimated)",
+    "box": "none",
+    "tracking": "0em",
+    "verified_px": 47,
+    "fit": [
+     {
+      "font": "Poppins 800",
+      "word": "person",
+      "tracking_em": 0.0,
+      "px_for_height": 39.8,
+      "px_for_width": 51.5,
+      "verified_px": 47,
+      "at_verified_px": {
+       "ink_pct_of_H": 2.08,
+       "width_pct_of_W": 15.3
+      },
+      "within_tolerance": true
+     }
+    ],
+    "k_formula_px_at_1920": 45
+   }
+  },
+  "animation": {
+   "fps": 29.97,
+   "lead_entry": "each word fades in over ~3 frames with a light blur, roughly on its word",
+   "key_entry": "blur + fade in over ~6 frames (dim and blurred first, full and sharp after ~6 frames); no scale",
+   "small_entry": "fades in over ~4 frames right after the key",
+   "exit": "letter-by-letter fade-out running left to right over ~4 frames, lead first while the key/small stay a little longer",
+   "idle": "none",
+   "timing_note": "time entries to the audio; automatic transcripts can drop repeated filler words"
+  }
+ },
+ "other_text_spec": [
+  {
+   "type": "titles / lower-thirds / stickers / end card",
+   "when": "none",
+   "text": "none; the split-screen layout and captions carry the video"
+  }
+ ],
+ "style": {
+  "palette_roles": {
+   "text": "#FFFFFF",
+   "accent": "#EAB827",
+   "accent_2": null,
+   "surface": null,
+   "card_bg": null
+  },
+  "fonts": {
+   "lead": {
+    "closest_local": "Inter 300 (Montserrat Light is the original feel)",
+    "verified_px": 65,
+    "tracking": "0em"
+   },
+   "key": {
+    "closest_local": "Poppins 900",
+    "verified_px": 133,
+    "tracking": "-0.01em"
+   },
+   "small": {
+    "closest_local": "Poppins 800",
+    "verified_px": 47,
+    "tracking": "0em"
+   }
+  },
+  "look_intent": "dark, warm, moody low-key studio; saturated rust/orange walls, deep blacks, low contrast mids, natural skin"
+ },
+ "sound": {
+  "music": "voice only (no bed detected)",
+  "sfx": [
+   "none (no cuts, single take)"
+  ],
+  "loudness_lufs": -14.6
+ },
+ "measured": {
+  "grade": {
+   "black_point": 0.6,
+   "midtone": 25.1,
+   "white_point": 145.0,
+   "contrast_range": 144.4,
+   "luma_std": 35.1,
+   "saturation": 0.559,
+   "colorfulness": 42.9,
+   "warmth_r_minus_b": 65.5,
+   "tint_g": -15.5,
+   "vignette_centre_over_edge": 1.77,
+   "label": "low-contrast, saturated, warm"
+  },
+  "layout": {
+   "letterbox_share": 0.0,
+   "split_divider_share": 0.0
+  },
+  "sound": {
+   "has_audio": true,
+   "speech_coverage": 0.99,
+   "beat_periodicity": 0.09,
+   "beat_bpm_est": null,
+   "gap_level_rel_speech_db": null,
+   "music": "voice only (no bed detected)",
+   "cut_hit_share": null,
+   "method": "heuristic (onset-envelope beat periodicity + level in speech gaps); not a classifier"
+  }
+ },
+ "catalog_styles": [
+  {
+   "id": 3,
+   "name": "Stacked Split-Screen",
+   "role": "permanent 50/50 speaker-over-listener layout"
+  },
+  {
+   "id": 9,
+   "name": "Duet / Reaction Layout",
+   "role": "listener reaction always visible"
+  },
+  {
+   "id": 58,
+   "name": "Podcast Clip",
+   "role": "source footage"
+  },
+  {
+   "id": 23,
+   "name": "Kinetic Typography",
+   "role": "three-tier glowing stack with letter fade-out"
+  },
+  {
+   "id": 31,
+   "name": "Emphasis-Word Zoom",
+   "role": "~2x gold key word per phrase"
+  },
+  {
+   "id": 178,
+   "name": "Real-Time Continuous Scene",
+   "role": "zero cuts, one in-panel swap"
+  },
+  {
+   "id": 159,
+   "name": "Contrarian Argument / Hot Take",
+   "role": "soft anti-hustle claim"
+  }
+ ],
+ "use_when": [
+  "Two-camera podcast or interview footage with a visibly reacting listener",
+  "Few or no usable cut points; the clip should play as one continuous take",
+  "A calm, reflective or contrarian opinion where key words deserve a gentle emphasis",
+  "Dark or moody footage where a glowing warm accent will pop"
+ ],
+ "avoid_when": [
+  "Single-camera footage (no listener for the bottom panel)",
+  "Bright, white or pastel sets where the glow and white thin text lose contrast",
+  "Fast hype edits needing punch-ins and graphics"
+ ],
+ "match": {
+  "tags": [
+   "podcast-clip",
+   "split-screen",
+   "speaker-over-listener",
+   "no-cuts",
+   "seam-captions",
+   "gold-key-word",
+   "glow-text",
+   "letter-fade",
+   "dark-moody-grade",
+   "opinion",
+   "contrarian"
+  ],
+  "keywords": [
+   "podcast",
+   "conversation",
+   "founder",
+   "entrepreneur",
+   "balance",
+   "burnout",
+   "hustle",
+   "mindset",
+   "life",
+   "work",
+   "success",
+   "opinion",
+   "interview",
+   "guest"
+  ],
+  "needs": {
+   "speaker_footage": true,
+   "screen_recordings": false,
+   "broll": false,
+   "brand_assets": false
+  }
+ },
+ "quality_score": 3,
+ "brand_prompt": "Use /video-pipeline with /video-captions on videos/<project>. Apply style blueprint B44 (video-reference-match/references/blueprints/B44.json) to this brand.\nCanvas 1080x1920, 29.97/30 fps. Two-camera conversation as a 50/50 vertical split: speaker top, listener bottom, seam at 50 % H.\n\nBRAND TOKENS (use the brand's colour/font for each role; keep the contrast relationship: {{ACCENT}} key word must stay >= 3:1 and be the brightest saturated element on the footage; thin {{TEXT}} lead words need a dark area behind them)\n- {{TEXT}}: default #FFFFFF (lead and small words)\n- {{ACCENT}}: default #EAB827 (key word + its glow)\n- {{ACCENT_2}}: none\n- {{SURFACE}}: none (footage)\n- {{CARD_BG}}: none\n- {{FONT_DISPLAY}}: default Poppins 900 (key word; Montserrat Black is the original feel)\n- {{FONT_BODY}}: default Inter 300 (lead words; Montserrat Light preferred); small words Poppins 800\n- {{HANDLE}}: not on screen\n- {{LOGO}}: none\n\nCAPTIONS (three-tier seam stack)\n1. Latin, as spoken; lead words sentence case, key and small words lowercase; no punctuation except apostrophes; no emoji.\n2. Per phrase: 1-3 lead words, 0-1 key word (the stressed word), 0-2 small follow-on words.\n3. Lead: {{FONT_BODY}} at 65 px, {{TEXT}}, soft white glow 0 0 15px rgba(255,255,255,.55), centred at 45.1 % H.\n4. Key: {{FONT_DISPLAY}} at 133 px, {{ACCENT}}, tracking -0.01em, soft halo 0 0 21px of {{ACCENT}} at 60 % opacity, centred ON the seam at 50.1-50.7 % H.\n5. Small: Poppins 800 at 47 px, {{TEXT}}, soft glow, centred at 54.1 % H.\n6. Motion (30 fps): lead words fade in ~3 frames with light blur on their words; key word blur+fade in over ~6 frames (no scale); small word fades in ~4 frames after the key; the stack clears with a left-to-right letter-by-letter fade over ~4 frames before the next phrase. No hard text cuts, no idle motion.\n\nLAYOUT AND EDIT DEVICES\n7. No picture cuts: keep the split for the whole piece. At ~60 % of runtime swap the top panel to a second voice/angle (cut inside the panel only).\n8. No titles, lower-thirds, b-roll, punch-ins or end card.\n\nGRADE: Grade from the user's footage (video-style / grade.py); target look: dark, warm, moody low-key, saturated warm walls, deep blacks, natural skin.\nSOUND: voice only, trimmed to the first word (~4 frames), -14 LUFS (source sits slightly under, -14.6).\n\nVERIFY\na) Render the key word \"not\" at 133 px on the seam and measure:\n   python video-reference-match/scripts/caption_probe.py <test_render> --out <dir> --at <t> --box 0.3,0.47,0.7,0.54 --ink \"{{ACCENT}}:70\"   (default ink #EAB827)\n   Required: 4.61 % ±0.5 of H, 21.5 % ±2 of W, centre y ~50.4 %.\nb) Small word \"person\" at 47 px: --box 0.3,0.52,0.7,0.565 --ink \"{{TEXT}}:60\" -> 1.72 % ±0.5 H, 16.8 % ±2 W.\nc) Lead line: render \"KEY WORD\" in {{FONT_BODY}} at 65 px at 45.1 % H; expected ink from video-reference-match/scripts/fit_font.py --font \"{{FONT_BODY}}\" --word <word> (a 3-word lowercase-ish line ~2.2 % H).",
+ "caption_family": "stacked-kinetic"
+}

@@ -1,0 +1,385 @@
+{
+ "id": "B37",
+ "schema": "blueprint/1",
+ "format": {
+  "type": "brand-promo",
+  "aspect": "9:16",
+  "language": "none",
+  "duration_class": "short (15-60s)",
+  "people_on_screen": "2+"
+ },
+ "topic_class": "event services / brand BTS",
+ "signature": {
+  "one_line": "Music-led BTS event montage, flash transitions, no overlays until an outlined brand + contact card.",
+  "unique_devices": [
+   "Zero text overlays for ~95 % of runtime: the brand reads only through in-shot uniforms, signage and branded props",
+   "Light-flash / white-out soft changes between locations (62 % of cuts soft, one full white-out at ~24 %)",
+   "End card only on the last ~38 frames, hard-cut onto the final high wide: accent brand line with white outline over a 1.2x larger black contact number with white outline at 28-32 % H",
+   "Calm walk-to-camera opener (~13 % of runtime) then two bursts of ~15-frame shots at 48-60 cuts/min"
+  ],
+  "why_it_works": "Scale and energy of a real event do the selling; constant motion and music hits hold attention; the only text is the one thing the viewer must act on."
+ },
+ "hook": {
+  "type": "in medias res (walk-to-camera through a busy set)",
+  "first_word_s": null,
+  "first_cut_s": 5.967,
+  "first_frame": "A crew lead with a headset mic walks toward camera through a lit, crowded event set; uniformed team and lit props behind; coloured stage light shifting"
+ },
+ "structure": [
+  {
+   "beat": "hook",
+   "from_pct": 0,
+   "to_pct": 14,
+   "what": "Crew lead walks to camera through the set, music hook lands on frame 0"
+  },
+  {
+   "beat": "setup",
+   "from_pct": 14,
+   "to_pct": 35,
+   "what": "Crew prepping, white-out flash, props raised, a costumed performer as a pattern interrupt"
+  },
+  {
+   "beat": "proof",
+   "from_pct": 35,
+   "to_pct": 74,
+   "what": "DJ/host on mic, branded stage vehicles, performers in line; scale of the operation"
+  },
+  {
+   "beat": "payoff",
+   "from_pct": 74,
+   "to_pct": 95,
+   "what": "Coordinators directing with headsets, the happy client, family placards, crowd from above"
+  },
+  {
+   "beat": "cta",
+   "from_pct": 95,
+   "to_pct": 100,
+   "what": "High wide of the whole procession with the two-line brand + contact end card"
+  }
+ ],
+ "pacing": {
+  "pace": "fast",
+  "median_shot_s": 1.4,
+  "cuts_per_min": 31,
+  "wpm": null,
+  "pauses_per_min": null,
+  "visual_change_every_s": 1.4
+ },
+ "elements": {
+  "captions": [],
+  "background_text": [],
+  "motion_graphics": [],
+  "cards_lists": [],
+  "silhouettes_cutouts": [],
+  "broll_inserts": [
+   {
+    "what": "100 % B-roll montage of the crew and event",
+    "when": "0-100 %",
+    "how": "~55 % medium handheld shots of crew/people, ~35 % wides of set and vehicles, ~10 % close shots of the client; every shot shows branded uniforms or signage",
+    "catalog": [
+     50,
+     68,
+     177
+    ]
+   }
+  ],
+  "layout": [
+   {
+    "what": "Full-frame vertical phone footage",
+    "when": "100 %",
+    "how": "No split, card or letterbox",
+    "catalog": []
+   }
+  ],
+  "camera": [
+   {
+    "what": "Walk-to-camera opener",
+    "when": "0-14 %",
+    "how": "Handheld, subject walks in from mid-ground to medium shot",
+    "catalog": [
+     48
+    ]
+   },
+   {
+    "what": "Handheld coverage, no punch-ins",
+    "when": "14-100 %",
+    "how": "All motion from the phone operator; one high-angle wide for the payoff and the end card",
+    "catalog": [
+     51
+    ]
+   }
+  ],
+  "transitions": [
+   {
+    "what": "Light-flash / quick blend",
+    "when": "62 % of changes",
+    "how": "~6-frame flare/flash or blend between locations",
+    "catalog": [
+     99
+    ]
+   },
+   {
+    "what": "White-out",
+    "when": "~24 %",
+    "how": "~6-frame flash to white between setup shots",
+    "catalog": [
+     77
+    ]
+   },
+   {
+    "what": "Hard cuts in bursts",
+    "when": "~20-40 % and ~60-80 %",
+    "how": "Shots of ~15 frames (48-60 cuts/min) on music hits",
+    "catalog": [
+     175,
+     174
+    ]
+   }
+  ],
+  "end_card": [
+   {
+    "what": "Two-line brand + contact card",
+    "when": "last ~5 % (~38 frames)",
+    "how": "Hard cut in on the same frame as the last shot, static, held to the final frame, over the dark/sky part of a high wide; line 1 brand name centre 28.5 % H, line 2 contact number centre 31.8 % H, both white-outlined, no box",
+    "catalog": [
+     201
+    ]
+   }
+  ]
+ },
+ "captions_spec": null,
+ "other_text_spec": [
+  {
+   "type": "end card: brand line",
+   "when": "last ~5 % of runtime (final shot only, ~38 frames)",
+   "copy": "brand name, sentence case, ~14 characters (placeholder 'Brand name here')",
+   "font_class": "geometric/neo-grotesque sans, semibold-bold, double-storey a, round o (social-app 'classic' text look)",
+   "closest_match": {
+    "local": "Poppins 600",
+    "google": "Poppins SemiBold",
+    "confidence": "low-medium"
+   },
+   "case": "sentence",
+   "tracking": "0em",
+   "color": "#E31E28 fill",
+   "stroke": "#FFFFFF outline ~4 px @1920",
+   "shadow": "none",
+   "box": "none",
+   "layout": {
+    "align": "centre",
+    "center_y_pct": 28.5,
+    "top_pct": 27.0,
+    "bottom_pct": 29.9,
+    "x_pct": [
+     25.8,
+     72.6
+    ]
+   },
+   "measured": {
+    "ink_pct_of_H": 2.97,
+    "width_pct_of_W": 46.8,
+    "chars": "~14 incl. spaces"
+   },
+   "verified_px": 61
+  },
+  {
+   "type": "end card: contact line",
+   "when": "same as brand line",
+   "copy": "10-digit phone number, no spaces (or @handle)",
+   "font_class": "same sans",
+   "closest_match": {
+    "local": "Poppins 600",
+    "google": "Poppins SemiBold",
+    "confidence": "low-medium"
+   },
+   "case": "digits",
+   "tracking": "0em",
+   "color": "#000000 fill",
+   "stroke": "#FFFFFF outline ~4 px @1920",
+   "shadow": "none",
+   "box": "none",
+   "layout": {
+    "align": "centre",
+    "center_y_pct": 31.8,
+    "outline_bbox_pct_of_H": [
+     30.0,
+     33.6
+    ],
+    "x_pct_outline": [
+     31.1,
+     68.8
+    ],
+    "directly_under_brand": true
+   },
+   "measured": {
+    "ink_pct_of_H": 3.2,
+    "width_pct_of_W": 36.8,
+    "note": "10 digits; fill estimated = outline bbox (3.67 % H / 37.6 % W) minus the stroke"
+   },
+   "verified_px": 73,
+   "note": "the number is set ~1.2x larger than the brand line"
+  },
+  {
+   "type": "end card animation",
+   "fps": 30,
+   "entry": "hard cut in on the same frame as the last shot, no fade/pop",
+   "idle": "static, not tracked",
+   "exit": "video ends (~38 frames on screen)"
+  }
+ ],
+ "style": {
+  "palette_roles": {
+   "text": "#FFFFFF",
+   "accent": "#E31E28",
+   "accent_2": "#000000",
+   "surface": null,
+   "card_bg": null
+  },
+  "fonts": {
+   "brand_line": {
+    "closest_local": "Poppins 600",
+    "verified_px": 61,
+    "tracking": "0em"
+   },
+   "contact_line": {
+    "closest_local": "Poppins 600",
+    "verified_px": 73,
+    "tracking": "0em"
+   }
+  },
+  "look_intent": "mid-contrast, saturated, neutral-warm night event footage: magenta/red uniforms, purple-blue stage light, warm gold practicals; phone-native"
+ },
+ "sound": {
+  "music": "music with vocals throughout (party rap/pop; measured speech_coverage 0.74 is the sung vocal), beat periodicity 0.74, ~64 bpm estimate (half-time); no voiceover, no ducking",
+  "sfx": [
+   "none; the 5 hard cuts are not on detected onsets (measured cut_hit_share 0.0) - cuts follow the music phrases, not lyrics",
+   "optional: light whoosh/flash hit on the white-out"
+  ],
+  "loudness_lufs": -14.1
+ },
+ "measured": {
+  "grade": {
+   "black_point": 3.1,
+   "midtone": 77.9,
+   "white_point": 210.2,
+   "contrast_range": 207.1,
+   "luma_std": 50.2,
+   "saturation": 0.489,
+   "colorfulness": 81.9,
+   "warmth_r_minus_b": 8.3,
+   "tint_g": -27.9,
+   "vignette_centre_over_edge": 0.99,
+   "label": "mid-contrast, saturated, neutral-warm"
+  },
+  "layout": {
+   "letterbox_share": 0.0,
+   "split_divider_share": 0.0
+  },
+  "sound": {
+   "has_audio": true,
+   "speech_coverage": 0.74,
+   "beat_periodicity": 0.74,
+   "beat_bpm_est": 64,
+   "gap_level_rel_speech_db": -6.7,
+   "music": "music bed likely",
+   "cut_hit_share": 0.0,
+   "method": "heuristic (onset-envelope beat periodicity + level in speech gaps); not a classifier"
+  }
+ },
+ "catalog_styles": [
+  {
+   "id": 191,
+   "name": "Music-Led Montage with Minimal Dialogue",
+   "role": "whole piece: song-driven, no voice"
+  },
+  {
+   "id": 50,
+   "name": "Behind-the-Scenes (BTS)",
+   "role": "crew prepping and directing"
+  },
+  {
+   "id": 68,
+   "name": "Event Recap",
+   "role": "scale shots of the live event"
+  },
+  {
+   "id": 177,
+   "name": "Montage Editing",
+   "role": "location-to-location build"
+  },
+  {
+   "id": 175,
+   "name": "Beat-Synced Editing",
+   "role": "two fast-cut bursts on music hits"
+  },
+  {
+   "id": 99,
+   "name": "Light-Leak Transitions",
+   "role": "light-flash soft changes"
+  },
+  {
+   "id": 77,
+   "name": "Whiteout",
+   "role": "single white-out between setup shots"
+  },
+  {
+   "id": 204,
+   "name": "Brand Sizzle Reel",
+   "role": "service-business capability showcase with contact end card"
+  }
+ ],
+ "use_when": [
+  "the user has lots of raw phone clips from an event, shoot or job and wants a sizzle/BTS reel",
+  "branding is visible in the footage itself (uniforms, signage, vehicles, props)",
+  "the goal is bookings/enquiries with one contact line at the end",
+  "there is no speech, or only music"
+ ],
+ "avoid_when": [
+  "the message needs explanation, steps or claims in words",
+  "the footage carries no visible branding (add a persistent logo bug instead)",
+  "only a licensed commercial song is available and the platform will mute it"
+ ],
+ "match": {
+  "tags": [
+   "bts",
+   "event",
+   "montage",
+   "music-led",
+   "phone-footage",
+   "no-captions",
+   "light-flash",
+   "white-out",
+   "end-card",
+   "contact-cta",
+   "service-business",
+   "sizzle-reel"
+  ],
+  "keywords": [
+   "event",
+   "wedding",
+   "party",
+   "celebration",
+   "crew",
+   "team",
+   "montage",
+   "behind",
+   "scenes",
+   "booking",
+   "service",
+   "planner",
+   "music",
+   "highlights",
+   "recap",
+   "procession"
+  ],
+  "needs": {
+   "speaker_footage": false,
+   "screen_recordings": false,
+   "broll": true,
+   "brand_assets": true
+  }
+ },
+ "quality_score": 2,
+ "brand_prompt": "Use /video-pipeline with /video-captions on videos/<project>. Apply style blueprint B37 (video-reference-match/references/blueprints/B37.json) to this brand.\nThis blueprint has NO captions and NO overlays until the end card: a music-led phone BTS montage. Canvas 1080x1920, 30 fps.\n\nBRAND TOKENS (use the brand's colour for each role; keep the contrast relationship: {{ACCENT}} and {{ACCENT_2}} fills sit inside a {{TEXT}} outline, and the outlined lines must stay >= 3:1 against the dark/sky area of the last shot)\n- {{TEXT}}: outline colour of both end-card lines, default #FFFFFF\n- {{ACCENT}}: brand-name fill, default #E31E28\n- {{ACCENT_2}}: contact-line fill, default #000000\n- {{SURFACE}}: unused, default none\n- {{CARD_BG}}: unused, default none\n- {{FONT_DISPLAY}}: default Poppins 600\n- {{FONT_BODY}}: default Poppins 600\n- {{HANDLE}}: contact line (phone number or \"@handle\")\n- {{LOGO}}: not overlaid; the brand must be visible in-shot (uniforms, signage, props)\n\nEDIT\n1. Open with a walk-to-camera of the lead person through the busiest part of the set (~13 % of runtime), music hitting on frame 0.\n2. Then cut every ~42 frames (median shot 1.42), with two bursts of ~15-frame shots (48-60 cuts/min) at ~20-40 % and ~60-80 % of runtime on the music's hits; cut on musical phrases, not on lyrics.\n3. ~62 % of changes soft: ~6-frame light-flash/flare or quick blend between locations; one ~6-frame white-out early (~24 %). No punch-ins; all motion handheld.\n4. Order: walk-in -> prep / pattern interrupt -> scale proof (vehicles, stage, performers) -> people directing + happy client -> high wide.\n\nCAPTIONS\n5. None; do not caption song lyrics. No logo bug; let in-shot branding carry the brand 5+ times.\n\nOTHER TEXT (end card, last shot only, ~38 frames)\n6. Hard-cut in on the same frame as the final high wide, static, held to the last frame, over a dark/sky area.\n7. Line 1, brand name, sentence case: {{FONT_DISPLAY}} 61 px, fill {{ACCENT}}, {{TEXT}} outline ~4 px, no shadow/box; centred, centre y 28.5 % H (x 25.8-72.6 % at ~14 characters, ink 2.97 % H).\n8. Line 2, {{HANDLE}} / phone digits: {{FONT_BODY}} 73 px (~1.2x line 1), fill {{ACCENT_2}}, {{TEXT}} outline ~4 px; centred directly under line 1, centre y 31.8 % H (outline box 30.0-33.6 % H, ~37.6 % W for 10 digits).\n\nSOUND: music with vocals at full level, no voiceover. Normalise to -14 LUFS and limit true peak to -1 dBTP (do not clip).\nGRADE: Grade from the user's footage (video-style / grade.py); target look: mid-contrast, saturated, neutral-warm night event colour (rich uniforms, purple-blue stage light, warm practicals).\n\nVERIFY before rendering: render a test end-card frame with \"Brand name here\" (or the real brand) and a 10-digit number, then measure:\n  video-reference-match/scripts/caption_probe.py <render-file> --out <dir> --at <t_endcard> --box 0.22,0.255,0.78,0.30 --ink \"#E31E28:80\"\n  video-reference-match/scripts/caption_probe.py <render-file> --out <dir> --at <t_endcard> --box 0.25,0.30,0.75,0.34 --ink \"#FFFFFF:40\"\nSwap the --ink colours to {{ACCENT}} / {{TEXT}}. Compute the expected ink height/width of the brand's actual line with video-reference-match/scripts/fit_font.py at 61 px / 73 px; a 14-character line in Poppins 600 61 px should read ~2.97-3.2 % H; the 10-digit outline box ~3.67 % H / 37.6 % W. Positions within +-1 % of frame height.",
+ "caption_family": "title-only"
+}

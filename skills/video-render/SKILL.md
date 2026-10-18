@@ -30,7 +30,7 @@ ENG="${VIDEO_ENGINE:-$HOME/.agents/skills/video-pipeline/engine}"; S="$ENG/scrip
   --resolution portrait --audio-preset shorts [--denoise auto|strong|neural|off] [--music "$W/music/bed.wav"] [--gpu]
 ```
 
-It renders with HyperFrames, adds the BT.709 tags losslessly, masters the audio (`audio-chain.py`: loudness to the
+It renders with HyperFrames in the most compatible format: **Standard Dynamic Range (SDR) with `--sdr` enabled by default** and adds lossless BT.709 color tags. Never render in HDR by default as HDR triggers gamma shifts, excessive disk consumption, and playback incompatibilities on mobile and web platforms. Masters the audio (`audio-chain.py`: loudness to the
 preset, true-peak limit, adaptive/neural noise filtering, ducked music), and runs `verify-render.py` (resolution, tags, bitrate, duration against the
 composition, A/V offset, black frames and one-frame flashes) into `$W/processed/<project>-v<N>-VERIFY.md`. Exit 1 means do not
 deliver. `--raw FILE` finishes a render made elsewhere. `--denoise auto` (default) automatically applies adaptive multi-band

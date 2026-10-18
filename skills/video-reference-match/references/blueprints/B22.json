@@ -1,0 +1,334 @@
+{
+ "id": "B22",
+ "schema": "blueprint/1",
+ "format": {
+  "type": "skit",
+  "aspect": "9:16",
+  "language": "English",
+  "duration_class": "micro (<15s)",
+  "people_on_screen": "2+"
+ },
+ "topic_class": "comedy skit (relatable work / career meme)",
+ "signature": {
+  "one_line": "Phone meme: quoted ironic claim over deadpan selfie, then held three-line reality set-up.",
+  "unique_devices": [
+   "Quoted one-line ironic claim in thin white sans at 26 % H over a deadpan front-camera selfie",
+   "Hard swap on the first cut to a 3-line centred set-up + native emoji at 17-28 % H, held unchanged across all remaining shots",
+   "No captions, no graphics, no grade: ungraded handheld phone footage, all cuts on audio pauses",
+   "Ends on a small human reaction shot (quiet smile) instead of a CTA"
+  ],
+  "why_it_works": "Viewers recognise the gap between the claim and reality instantly; the deadpan face and held text let the footage tell the joke."
+ },
+ "hook": {
+  "type": "Bold claim / contrarian (ironic quoted claim)",
+  "first_word_s": 0.0,
+  "first_cut_s": 2.533,
+  "first_frame": "front-camera selfie of one person in a vehicle, deadpan look off camera, small white quoted line centred at ~26 % height"
+ },
+ "structure": [
+  {
+   "beat": "hook",
+   "from_pct": 0,
+   "to_pct": 28,
+   "what": "deadpan selfie under the quoted ironic claim"
+  },
+  {
+   "beat": "proof",
+   "from_pct": 28,
+   "to_pct": 73,
+   "what": "text swaps to the 'reality' set-up; handheld walk-through of a crowded venue, then a packed corridor"
+  },
+  {
+   "beat": "payoff",
+   "from_pct": 73,
+   "to_pct": 100,
+   "what": "side-profile reaction shot of the subject waiting, small smile; text still held"
+  }
+ ],
+ "pacing": {
+  "pace": "moderate",
+  "median_shot_s": 2.5,
+  "cuts_per_min": 19,
+  "wpm": null,
+  "pauses_per_min": 0.0,
+  "visual_change_every_s": 2.5
+ },
+ "elements": {
+  "captions": [],
+  "background_text": [
+   {
+    "what": "quoted ironic claim (meme text 1)",
+    "when": "0-28 %",
+    "how": "one line in curly quotes, thin geometric sans 54 px white, centred, ink centre y 26 %, ~47 % W; on from frame 0, no motion",
+    "catalog": [
+     24
+    ]
+   },
+   {
+    "what": "3-line reality set-up + emoji (meme text 2)",
+    "when": "28-100 %",
+    "how": "3 centred lines, block y 17-27.7 %, line pitch 4.2 % H, widest line ~53 % W, same type; hard swap on the cut, held screen-fixed over 3 shots",
+    "catalog": [
+     117
+    ]
+   }
+  ],
+  "motion_graphics": [],
+  "cards_lists": [],
+  "silhouettes_cutouts": [],
+  "broll_inserts": [
+   {
+    "what": "handheld phone reality footage",
+    "when": "28-73 %",
+    "how": "walking POV through a crowd, then a crowded corridor; raw phone look",
+    "catalog": [
+     54
+    ]
+   }
+  ],
+  "layout": [
+   {
+    "what": "full-frame vertical phone footage",
+    "when": "whole runtime",
+    "how": "text confined to the upper 17-28 % band so faces stay clear",
+    "catalog": [
+     61
+    ]
+   }
+  ],
+  "camera": [
+   {
+    "what": "handheld phone throughout",
+    "when": "whole runtime",
+    "how": "selfie MCU, walking track, near-static profile; no punch-ins or stabilised moves",
+    "catalog": [
+     54
+    ]
+   }
+  ],
+  "transitions": [
+   {
+    "what": "hard cuts on audio pauses",
+    "when": "~28 %, ~62 %, ~73 %",
+    "how": "3 of 3 cuts on pauses; pace speeds up toward the end",
+    "catalog": [
+     173
+    ]
+   }
+  ],
+  "end_card": []
+ },
+ "captions_spec": null,
+ "other_text_spec": [
+  {
+   "type": "meme-text overlays (no speech captions; these are the only text)",
+   "spec": {
+    "script": "latin (English on-screen text; any speech is a few ambient words, not captioned)",
+    "case": {
+     "meme_text": "sentence case"
+    },
+    "punctuation": "curly double quotes around the ironic claim; no full stops",
+    "emoji": "one native colour emoji (e.g. smiling face with tear) at the end of the set-up line, same size as the text",
+    "grouping": {
+     "words_per_caption": "3 (quoted claim) / ~7 + emoji (set-up)",
+     "max_lines": 3,
+     "sync": "not tied to speech: text swaps exactly on the first shot cut (~28 % of runtime)",
+     "break": "balanced centred line breaks (~17 / 19 / 10 characters + emoji)"
+    },
+    "layout": {
+     "band_pct_of_H": [
+      17,
+      28
+     ],
+     "quote": {
+      "align": "centre (x 50 %)",
+      "center_y_pct": 26.0,
+      "x_pct": [
+       26.7,
+       73.6
+      ]
+     },
+     "setup": {
+      "align": "centre (x 50 %)",
+      "block_y_pct": [
+       17.0,
+       27.7
+      ],
+      "center_y_pct": 22.3,
+      "line_pitch_pct_of_H": 4.2,
+      "max_line_width_pct_of_W": 53.1
+     },
+     "note": "upper third, clear of the subject's face; the set-up block is held across the last 3 shots (~28-100 % of runtime)"
+    },
+    "type": {
+     "meme_text": {
+      "font_class": "geometric sans, light/regular (single-storey a and g, straight-tail y, round o)",
+      "closest_match": {
+       "local": "Poppins 500",
+       "confidence": "medium",
+       "note": "Poppins 500 matches the measured proportions but is heavier and has a two-storey a; the original is lighter (~300-400)",
+       "web_font": "a light geometric sans with single-storey a (Urbanist Regular) or Poppins Light 300"
+      },
+      "ink_height_pct_of_H": 2.97,
+      "k": 0.99,
+      "font_size_px_at_1920": 58,
+      "color": "#FFFFFF",
+      "stroke": "none",
+      "shadow": "none",
+      "box": "none",
+      "tracking": "0em",
+      "line_height": "~1.25 (pitch 4.2 % of H)",
+      "verified_px": 54
+     }
+    },
+    "animation": {
+     "fps": 30,
+     "entry": "hard cut in, swapped exactly on the shot cut (1 frame); no fade, no scale, no typewriter",
+     "exit": "the first text hard-cuts to the second at the cut; the second holds to the end (~72 % of runtime, across three shots)",
+     "idle": "no motion; screen-fixed over handheld footage"
+    }
+   }
+  },
+  {
+   "type": "none",
+   "text": "no titles, lower-thirds, logos, watermark or end card"
+  }
+ ],
+ "style": {
+  "palette_roles": {
+   "text": "#FFFFFF",
+   "accent": "#FFFFFF",
+   "accent_2": null,
+   "surface": null,
+   "card_bg": null
+  },
+  "fonts": {
+   "meme_text": {
+    "closest_local": "Poppins 500 (or a lighter 300-400 geometric with single-storey a)",
+    "verified_px": 54,
+    "tracking": "0em"
+   }
+  },
+  "look_intent": "high-contrast, muted, warm; ungraded phone daylight with sun streaks, natural skin"
+ },
+ "sound": {
+  "music": "music bed likely (heuristic, ~120 BPM estimate) under a few ambient words; trending-audio feel",
+  "sfx": [
+   "none; cuts sit on pauses, not on beats (measured cut_hit_share 0.0)"
+  ],
+  "loudness_lufs": -14.0
+ },
+ "measured": {
+  "grade": {
+   "black_point": 4.5,
+   "midtone": 116.5,
+   "white_point": 232.1,
+   "contrast_range": 227.6,
+   "luma_std": 59.0,
+   "saturation": 0.234,
+   "colorfulness": 33.4,
+   "warmth_r_minus_b": 25.2,
+   "tint_g": -2.5,
+   "vignette_centre_over_edge": 0.84,
+   "label": "high-contrast, muted, warm"
+  },
+  "layout": {
+   "letterbox_share": 0.0,
+   "split_divider_share": 0.0
+  },
+  "sound": {
+   "has_audio": true,
+   "speech_coverage": 0.22,
+   "beat_periodicity": 0.58,
+   "beat_bpm_est": 120,
+   "gap_level_rel_speech_db": 22.8,
+   "music": "music bed likely",
+   "cut_hit_share": 0.0,
+   "method": "heuristic (onset-envelope beat periodicity + level in speech gaps); not a classifier"
+  }
+ },
+ "catalog_styles": [
+  {
+   "id": 117,
+   "name": "Before-and-After Reveal",
+   "role": "expectation line vs reality footage"
+  },
+  {
+   "id": 61,
+   "name": "UGC Selfie-Style Video (User-Generated Content)",
+   "role": "front-camera deadpan hook and raw phone look"
+  },
+  {
+   "id": 54,
+   "name": "POV Video (Point-of-View)",
+   "role": "handheld walk-through of the reality"
+  },
+  {
+   "id": 24,
+   "name": "Big-Text Hook",
+   "role": "quoted ironic claim as the opening text"
+  },
+  {
+   "id": 173,
+   "name": "Jump-Cut Editing",
+   "role": "hard cuts on pauses, no transitions"
+  },
+  {
+   "id": 191,
+   "name": "Music-Led Montage with Minimal Dialogue",
+   "role": "trend audio carries the clip"
+  }
+ ],
+ "use_when": [
+  "a relatable 'what people think vs what it is really like' joke about a job or industry",
+  "only raw phone footage is available, no presenter speaking",
+  "the post is meant to be shared as a meme, not to teach",
+  "micro-length, 3-5 shots"
+ ],
+ "avoid_when": [
+  "there is a spoken explanation to caption",
+  "the brand needs logos, CTAs or polished graphics",
+  "the reality footage is not instantly readable without words"
+ ],
+ "match": {
+  "tags": [
+   "meme-text",
+   "expectation-vs-reality",
+   "phone-footage",
+   "handheld",
+   "no-voiceover",
+   "ugc",
+   "selfie-hook",
+   "held-overlay",
+   "emoji",
+   "micro",
+   "relatable-humour"
+  ],
+  "keywords": [
+   "meme",
+   "relatable",
+   "expectation",
+   "reality",
+   "pov",
+   "funny",
+   "struggle",
+   "behind",
+   "scenes",
+   "day",
+   "job",
+   "industry",
+   "queue",
+   "selfie",
+   "irony"
+  ],
+  "needs": {
+   "speaker_footage": false,
+   "screen_recordings": false,
+   "broll": true,
+   "brand_assets": false
+  }
+ },
+ "quality_score": 1,
+ "brand_prompt": "Use /video-pipeline with /video-captions on videos/<project>. Apply style blueprint B22 (video-reference-match/references/blueprints/B22.json) to this brand.\n\nBRAND TOKENS (use the brand's colour for each role; keep the contrast relationship — text and accent must stay >= 4.5:1 / >= 3:1 against what sits behind them on the footage):\n- {{TEXT}}      default #FFFFFF (meme text)\n- {{ACCENT}}    default #FFFFFF (no accent colour in this style; keep it white unless the brand insists)\n- {{ACCENT_2}}  default none\n- {{SURFACE}}   default none (text sits directly on footage)\n- {{CARD_BG}}   default none\n- {{FONT_DISPLAY}} default Poppins 500 (a lighter 300-400 geometric with single-storey a is closer)\n- {{FONT_BODY}}    default same as display\n- {{HANDLE}}    default @handle\n- {{LOGO}}      default the brand's logo file (transparent PNG/SVG)\nText must stay >= 4.5:1 on the footage behind the 17-28 % band; pick shots with a darker upper third rather than adding a box.\nCanvas 1080x1920, sizes are px at that canvas; frame counts at 30 fps.\n\nCAPTIONS\n1. No speech captions. The only text is two meme-text overlays in a native in-app text look.\n2. Overlay 1 (ironic claim, over the hook shot, ~28 % of runtime): one line in curly double quotes, sentence case (placeholder '“Headline here”'), {{FONT_DISPLAY}} 54 px, {{TEXT}}, centred, ink centre at 26 % H.\n3. Overlay 2 (the reality, from the first cut to the end, held across every following shot): 3 centred lines, sentence case, balanced breaks, ending in one native emoji (placeholder 'Set-up line here / lead words KEY WORD / closing words <emoji>'). Block 17-27.7 % H, line pitch 4.2 % H (line-height ~1.25), widest line ~53 % W.\n4. Type: {{FONT_DISPLAY}} at 54 px, {{TEXT}}, tracking 0, no stroke / shadow / box; emoji at text size.\n5. Animation: none. Overlay 1 on from frame 0; swapped for overlay 2 by hard cut exactly on the first shot cut; text never moves, fades or scales.\n\nOTHER TEXT\n6. None: no titles, {{LOGO}}, watermark or end card (add {{HANDLE}} only if the brand requires it, small, bottom-centre, outside the 17-28 % band).\n7. Edit: 3-5 handheld phone shots, hard cuts on audio pauses, end on a quiet reaction shot (~25 % of runtime). Trend audio / music bed, no SFX.\n\nGRADE\nGrade from the user's footage (video-style / grade.py); target look: high-contrast, muted, warm; ungraded-phone daylight, natural skin.\n\nVERIFY before rendering\na) Render overlay 1 and overlay 2 with the placeholders and measure:\n   python3 video-reference-match/scripts/caption_probe.py <test-render> --out <dir> --at <t> --box 0.2,0.235,0.8,0.28 --ink \"{{TEXT}}:45\"\n   python3 video-reference-match/scripts/caption_probe.py <test-render> --out <dir> --at <t> --box 0.15,0.16,0.85,0.30 --ink \"{{TEXT}}:45\"\nb) python3 video-reference-match/scripts/fit_font.py --font \"Poppins 500\" --word \"<your line>\" --ink 2.97 -> ~54-55 px for a line with ascenders and descenders; widest set-up line must stay <= ~53 % W (read at_verified_px). Line tops ~4.2 % H apart. Measure over mid/dark background. (fit_font.py needs a target: --ink and/or --width; it returns the px that reproduces that ink for YOUR word plus the width it will read at that px. Requires Pillow.)\nc) Positions within ±1 % H: overlay 1 centre 26 %, overlay 2 block 17-27.7 %.",
+ "caption_family": "other:meme-text"
+}

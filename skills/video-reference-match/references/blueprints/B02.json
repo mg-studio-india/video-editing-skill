@@ -1,0 +1,404 @@
+{
+ "id": "B02",
+ "schema": "blueprint/1",
+ "format": {
+  "type": "podcast-clip",
+  "aspect": "9:10",
+  "language": "Hinglish",
+  "duration_class": "short (15-60s)",
+  "people_on_screen": "1"
+ },
+ "topic_class": "personal finance (motivational opinion)",
+ "signature": {
+  "one_line": "Podcast holds carried by word-by-word caps captions completed by a glowing accent script line.",
+  "unique_devices": [
+   "Two typographic tiers per phrase: UPPERCASE extra-bold geometric line, then a lowercase monoline connected script completion in pale accent with a glow",
+   "Script line tucked up so its tall ascenders overlap the bottom of the caps line",
+   "Pre-laid-out lines revealed word by word in place with 5-10 frame opacity fades, 2-8 frames after each spoken word",
+   "Warm creamy 'beauty' grade with bloom and strong sharpening on a high-key beige set"
+  ],
+  "why_it_works": "Constant word reveals give motion to 7-8 s static holds; the script tier makes the phrase ending feel like a personal, emotional punch."
+ },
+ "hook": {
+  "type": "Direct address (imperatives to 'you' from word one)",
+  "first_word_s": 0.02,
+  "first_cut_s": 8.633,
+  "first_frame": "motion-blurred zoom into a 3/4-angle podcast medium close-up (mic in frame) that is sharp within ~15 frames"
+ },
+ "structure": [
+  {
+   "beat": "hook",
+   "from_pct": 0,
+   "to_pct": 23,
+   "what": "zoom-blur pull into the speaker; three quick commands to the viewer"
+  },
+  {
+   "beat": "claim",
+   "from_pct": 23,
+   "to_pct": 44,
+   "what": "the reason: money equals freedom"
+  },
+  {
+   "beat": "proof",
+   "from_pct": 44,
+   "to_pct": 82,
+   "what": "L-trail cut to a second angle; freedom gives courage to stand up for yourself"
+  },
+  {
+   "beat": "payoff",
+   "from_pct": 82,
+   "to_pct": 100,
+   "what": "soft cut to a ~115 % tighter crop for the defiant punchline"
+  }
+ ],
+ "pacing": {
+  "pace": "slow",
+  "median_shot_s": 7.3,
+  "cuts_per_min": 6,
+  "wpm": 240,
+  "pauses_per_min": 9.2,
+  "visual_change_every_s": 0.5
+ },
+ "elements": {
+  "captions": [
+   {
+    "what": "two-tier caption block: caps line 1 + script line 2",
+    "when": "all speech",
+    "how": "line 1 Poppins 800 57 px, +0.04 em, warm white, soft dark shadow, centre y 62.0 % of 1920 (69.2 % of the 9:10 picture), max ~75 % W; line 2 monoline script ~66 px pale accent with outer glow, centre y 64.7 %, ascenders overlapping line 1",
+    "catalog": [
+     27,
+     31
+    ]
+   },
+   {
+    "what": "word-by-word in-place reveal",
+    "when": "every phrase",
+    "how": "each word fades 0->100 % over 5-8 f (script words 6-10 f), no scale / slide, 2-8 f after the spoken word; line 2 starts after line 1 completes; block hard-cuts out, 2-3 empty frames before the next",
+    "catalog": [
+     22
+    ]
+   }
+  ],
+  "background_text": [],
+  "motion_graphics": [],
+  "cards_lists": [],
+  "silhouettes_cutouts": [],
+  "broll_inserts": [],
+  "layout": [
+   {
+    "what": "9:10 podcast picture",
+    "when": "whole runtime",
+    "how": "720x800 source; for 9:16 delivery place it full-width (1080x1200 at y 360-1560) or crop full-bleed and keep the caption on the lower chest below the mic",
+    "catalog": [
+     58
+    ]
+   }
+  ],
+  "camera": [
+   {
+    "what": "zoom-blur intro",
+    "when": "first ~15 frames",
+    "how": "radial zoom blur scaling in to the MCU, sharp by frame ~15; first word on frame 1",
+    "catalog": [
+     103
+    ]
+   },
+   {
+    "what": "tighter payoff crop",
+    "when": "last ~18 %",
+    "how": "~115 % digital crop of the same angle, entered with a soft cut",
+    "catalog": [
+     31
+    ]
+   }
+  ],
+  "transitions": [
+   {
+    "what": "L-trail hard cut to a second angle",
+    "when": "~44 %",
+    "how": "audio of the previous phrase trails over the new angle",
+    "catalog": [
+     173
+    ]
+   },
+   {
+    "what": "soft cut into the tight crop",
+    "when": "~82 %",
+    "how": "short dissolve / blur into the ~115 % crop",
+    "catalog": []
+   }
+  ],
+  "end_card": []
+ },
+ "captions_spec": {
+  "script": "latin (Roman Hinglish). Transcribers may return Devanagari; captions are Roman transliterations of the same speech",
+  "case": {
+   "line1": "UPPERCASE",
+   "line2": "lowercase"
+  },
+  "punctuation": "none",
+  "emoji": "none",
+  "grouping": {
+   "words_per_caption": "line 1: 1-5 words, line 2: 1-5 words (one spoken phrase split across the two tiers: opening words in caps, completion in script)",
+   "max_lines": 2,
+   "sync": "word by word on both tiers: each word fades in on its spoken word, in its final position of the pre-centred line",
+   "break": "new two-tier block per phrase; the previous block hard-cuts out, then a 2-3 frame empty gap"
+  },
+  "layout": {
+   "band_pct_of_H_ref": [
+    65.5,
+    77
+   ],
+   "band_pct_of_H_1920": [
+    59.7,
+    66.9
+   ],
+   "line1": {
+    "align": "centre (x 50 %)",
+    "center_y_pct_ref": 69.2,
+    "center_y_pct_1920": 62.0,
+    "max_line_width_pct_of_W": 75
+   },
+   "line2": {
+    "align": "centre (x 50 %) of the full phrase; the script's tall ascenders overlap the bottom ~1 % of line 1",
+    "center_y_pct_ref": 73.6,
+    "center_y_pct_1920": 64.7
+   },
+   "reveal_note": "each line is laid out for the whole phrase first; words appear in place (the first word of a line shows left of centre, where it will sit in the finished line)"
+  },
+  "type": {
+   "line1": {
+    "font_class": "geometric sans, extra-bold caps, slightly open tracking",
+    "closest_match": {
+     "local": "Poppins 800",
+     "confidence": "medium",
+     "web_font": "Poppins ExtraBold (alt Montserrat ExtraBold)"
+    },
+    "case": "UPPERCASE",
+    "ink_height_pct_of_H": 2.11,
+    "k": 0.73,
+    "font_size_px_at_1920": 56,
+    "calibration": [
+     {
+      "word": "FINANCIALLY",
+      "ink_pct_of_H": 2.11,
+      "width_pct_of_W": 37.6
+     }
+    ],
+    "calibration_ref": [
+     {
+      "word": "FINANCIALLY",
+      "ink_pct_of_H_800": 3.38,
+      "width_pct_of_W": 37.6,
+      "x_pct": [
+       30.8,
+       68.5
+      ]
+     }
+    ],
+    "color": "#EEE6E2 (warm white after the creamy grade; design value #FFFFFF)",
+    "stroke": "none",
+    "shadow": "soft dark drop shadow ~0 2px 6px rgba(0,0,0,.45) (estimated)",
+    "box": "none",
+    "tracking": "0.04em",
+    "verified_px": 57,
+    "fit": [
+     {
+      "font": "Poppins 800",
+      "word": "FINANCIALLY",
+      "tracking_em": 0.04,
+      "px_for_height": 57.1,
+      "px_for_width": 57.5,
+      "verified_px": 57,
+      "at_verified_px": {
+       "ink_pct_of_H": 2.14,
+       "width_pct_of_W": 37.0
+      },
+      "within_tolerance": true
+     }
+    ]
+   },
+   "line2": {
+    "font_class": "monoline handwritten connected script, lowercase, very tall ascenders, small x-height",
+    "closest_match": {
+     "local": null,
+     "local_fallback": "none of the local fonts is a script; Playfair Display italic only as a last resort",
+     "confidence": "low",
+     "web_font": "Sacramento (closest monoline connected script)"
+    },
+    "ink_height_pct_of_H": 3.05,
+    "size_note": "no k factor for scripts: match ink height ~3.05 % of 1920 H (4.88 % of the 9:10 picture) for a two-word lowercase line spanning ~52 % W; start ~66 px",
+    "color": "#D2C974 measured core (pale lime-yellow under the warm grade; brighter design value ~#E5EB7A (estimated))",
+    "stroke": "none",
+    "shadow": "none",
+    "glow": "soft lime outer glow ~0 0 8px rgba(229,235,122,.6) (estimated)",
+    "box": "none",
+    "tracking": "0em"
+   }
+  },
+  "animation": {
+   "fps": 30,
+   "line1_entry": "word by word opacity fade 0 -> 100 % with no scale or move: measured ink 157 -> 438 -> 773 -> 1146 -> 1293 px at +1..+5 frames for a short word; longer words take ~8 frames",
+   "line2_entry": "same word-by-word fade in place, 6-10 frames per word; a final short word may follow ~7 frames after the previous one",
+   "timing": "each word appears 2-8 frames AFTER its spoken start (typically +3-5 f; up to +8 f on the first script word)",
+   "exit": "the whole two-tier block hard-cuts out at the phrase end, then 2-3 empty frames before the next block's first word",
+   "idle": "no motion while held"
+  },
+  "canvas_mapping": {
+   "reference": "720x800 (9:10), 30 fps",
+   "to_1080x1920": "the 9:10 picture scaled to full width = 1080x1200, centred vertically (y offset 360 px). y_1920_pct = (360 + y_ref_pct/100 x 1200) / 19.2. Sizes scale x1.5 with width; ink % of H on 1920 = ink % of 800 x 0.625. If instead the edit is a full-bleed 9:16 crop of similar podcast footage, keep the reference % positions relative to the subject (caption on the lower chest, below the mic).",
+   "calibration_values_below": "ink_pct_of_H in the type tiers is already mapped to the 1080x1920 canvas (x0.625); raw 9:10 values are in calibration_ref"
+  }
+ },
+ "other_text_spec": [
+  {
+   "type": "none",
+   "text": "no titles, lower-thirds, logos, watermark, emoji or end card"
+  }
+ ],
+ "style": {
+  "palette_roles": {
+   "text": "#EEE6E2",
+   "accent": "#E5EB7A",
+   "accent_2": null,
+   "surface": null,
+   "card_bg": null
+  },
+  "fonts": {
+   "line1_caps": {
+    "closest_local": "Poppins 800",
+    "verified_px": 57,
+    "tracking": "0.04em"
+   },
+   "line2_script": {
+    "closest_local": "none local; install Sacramento (monoline connected script)",
+    "verified_px": null,
+    "tracking": "0em"
+   }
+  },
+  "look_intent": "warm, creamy, high-key with lifted blacks, bloom/glow and strong sharpening; natural saturation; beige set"
+ },
+ "sound": {
+  "music": "music bed likely (heuristic, very low under continuous speech); soft emotional bed",
+  "sfx": [
+   "optional whoosh on the zoom-blur intro (inferred)",
+   "no hits on cuts (measured cut_hit_share 0.0)"
+  ],
+  "loudness_lufs": -14.1
+ },
+ "measured": {
+  "grade": {
+   "black_point": 24.1,
+   "midtone": 173.8,
+   "white_point": 247.9,
+   "contrast_range": 223.9,
+   "luma_std": 70.3,
+   "saturation": 0.255,
+   "colorfulness": 46.1,
+   "warmth_r_minus_b": 31.9,
+   "tint_g": -14.4,
+   "vignette_centre_over_edge": 0.88,
+   "label": "high-contrast, natural-saturation, warm"
+  },
+  "layout": {
+   "letterbox_share": 0.0,
+   "split_divider_share": 0.0
+  },
+  "sound": {
+   "has_audio": true,
+   "speech_coverage": 0.88,
+   "beat_periodicity": 0.1,
+   "beat_bpm_est": null,
+   "gap_level_rel_speech_db": -15.0,
+   "music": "music bed likely",
+   "cut_hit_share": 0.0,
+   "method": "heuristic (onset-envelope beat periodicity + level in speech gaps); not a classifier"
+  }
+ },
+ "catalog_styles": [
+  {
+   "id": 58,
+   "name": "Podcast Clip",
+   "role": "single-speaker podcast source, 2 angles"
+  },
+  {
+   "id": 27,
+   "name": "Word-by-Word Pop Captions",
+   "role": "word-by-word in-place reveal (soft fades instead of pops)"
+  },
+  {
+   "id": 31,
+   "name": "Emphasis-Word Zoom",
+   "role": "tighter crop on the punchline"
+  },
+  {
+   "id": 37,
+   "name": "Handwritten Annotations",
+   "role": "glowing handwritten script tier completing each phrase"
+  },
+  {
+   "id": 103,
+   "name": "Zoom-Through Transitions",
+   "role": "zoom-blur intro into the first frame"
+  },
+  {
+   "id": 176,
+   "name": "Slow-Cinematic Pacing",
+   "role": "7-8 s holds, only 3 shots"
+  }
+ ],
+ "use_when": [
+  "a single-speaker podcast or interview clip with few angles and long holds",
+  "emotional / motivational opinion lines where the phrase ending deserves emphasis",
+  "Hinglish or bilingual speech captioned in Roman script",
+  "a soft, warm, feminine or lifestyle brand look"
+ ],
+ "avoid_when": [
+  "fast information-dense explainers with numbers and lists",
+  "the brand cannot install a script font (no local script match)",
+  "footage is already sharp and contrasty (the glow + sharpen look will over-process it)"
+ ],
+ "match": {
+  "tags": [
+   "podcast-clip",
+   "hinglish",
+   "roman-hinglish-captions",
+   "two-tier-captions",
+   "script-font",
+   "word-by-word",
+   "glow-grade",
+   "warm-grade",
+   "single-speaker",
+   "long-holds",
+   "zoom-blur-intro",
+   "non-vertical"
+  ],
+  "keywords": [
+   "podcast",
+   "money",
+   "freedom",
+   "women",
+   "independence",
+   "motivation",
+   "opinion",
+   "emotional",
+   "confidence",
+   "advice",
+   "lifestyle",
+   "interview",
+   "quote",
+   "self",
+   "growth",
+   "hinglish"
+  ],
+  "needs": {
+   "speaker_footage": true,
+   "screen_recordings": false,
+   "broll": false,
+   "brand_assets": false
+  }
+ },
+ "quality_score": 4,
+ "brand_prompt": "Use /video-pipeline with /video-captions on videos/<project>. Apply style blueprint B02 (video-reference-match/references/blueprints/B02.json) to this brand.\n\nBRAND TOKENS (use the brand's colour for each role; keep the contrast relationship — text and accent must stay >= 4.5:1 / >= 3:1 against what sits behind them on the footage):\n- {{TEXT}}      default #EEE6E2 (warm white caps line; #FFFFFF before a warm grade)\n- {{ACCENT}}    default #E5EB7A (pale lime script line + glow)\n- {{ACCENT_2}}  default none\n- {{SURFACE}}   default none (captions sit on footage)\n- {{CARD_BG}}   default none\n- {{FONT_DISPLAY}} default Poppins 800 (caps line)\n- {{FONT_BODY}}    default a monoline connected script, e.g. Sacramento (completion line)\n- {{HANDLE}}    default @handle\n- {{LOGO}}      default the brand's logo file (transparent PNG/SVG)\nThe script line is thin: keep {{ACCENT}} light enough for >= 3:1 on the clothing behind it and keep its glow; if the brand accent is dark, use a light tint of it.\nCanvas 1080x1920, 30 fps. The reference picture is 9:10 placed full-width (1080x1200 at y 360-1560); if your footage fills 9:16, keep the captions on the lower chest just below the mic (69 % / 74 % of the picture height).\n\nCAPTIONS\n1. Roman script as spoken (transliterate Devanagari). Split each phrase into two tiers: line 1 = first 1-5 words in UPPERCASE; line 2 = the completion (1-5 words) in lowercase script (placeholder 'LEAD WORDS' / 'key word here'). No punctuation, no emoji.\n2. Line 1: {{FONT_DISPLAY}} at 57 px, tracking +0.04 em, {{TEXT}}, soft dark drop shadow 0 2px 6px rgba(0,0,0,.45), no stroke / box. Centred; ink centre at 62.0 % H. Max line width ~75 % W.\n3. Line 2: {{FONT_BODY}}, lowercase, {{ACCENT}}, soft outer glow 0 0 8px {{ACCENT}} at ~60 % opacity, centred with its centre at 64.7 % H so the tall ascenders overlap the bottom of line 1. Start at ~66 px.\n4. Reveal: lay out the full two-tier phrase first, then reveal it word by word IN PLACE. Each word fades 0->100 % over 5-8 frames (script words 6-10), no scale / slide, starting 2-8 frames after the word is spoken. Line 2 begins after line 1 is complete.\n5. Exit: the whole block hard-cuts out at the phrase end; 2-3 empty frames before the next block. No idle motion.\n\nOTHER TEXT\n6. None: no titles, lower-thirds, {{LOGO}}, watermark or end card.\n7. Edit: open with a ~15-frame zoom-blur into the first MCU with the first word on frame 1; hold 7-8 s shots; L-trail cut to a second angle mid-way; soft cut to a ~115 % crop for the final line.\n\nGRADE\nGrade from the user's footage (video-style / grade.py); target look: warm, creamy, high-key with bloom/glow and crisp sharpening, natural saturation.\n\nVERIFY before rendering\na) Render 'FINANCIALLY' on line 1 and a two-word placeholder 'key word' on line 2, then measure:\n   python3 video-reference-match/scripts/caption_probe.py <test-render> --out <dir> --at <t> --box 0.25,0.59,0.75,0.635 --ink \"{{TEXT}}:45\"\n   python3 video-reference-match/scripts/caption_probe.py <test-render> --out <dir> --at <t> --box 0.15,0.625,0.85,0.68 --ink \"{{ACCENT}}:60\"\n   Expected (±0.5 % H, ±2 % W): 'FINANCIALLY' ink 2.11 % H / 37.6 % W at 57 px Poppins 800 +0.04 em. Script line: ink ~3.05 % H for a two-word lowercase line; adjust px from 66 until it matches.\nb) Any other caps word / font: python3 video-reference-match/scripts/fit_font.py --font \"Poppins 800\" --word \"<WORD>\" --upper --ink 2.11 --tracking 0.04 -> ~57 px. Measure over dark clothing, not the light set. (fit_font.py needs a target: --ink and/or --width; it returns the px that reproduces that ink for YOUR word plus the width it will read at that px. Requires Pillow.)\nc) Positions within ±1 % H: line 1 centre 62.0 %, line 2 centre 64.7 %.",
+ "caption_family": "two-tier-script"
+}

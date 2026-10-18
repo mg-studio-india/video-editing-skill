@@ -1,0 +1,366 @@
+{
+ "id": "B34",
+ "schema": "blueprint/1",
+ "format": {
+  "type": "talking-head",
+  "aspect": "9:16",
+  "language": "English",
+  "duration_class": "mid (60-180s)",
+  "people_on_screen": "1"
+ },
+ "topic_class": "business advice",
+ "signature": {
+  "one_line": "Zero-cut single-take talking head carried by one persistent two-box header (light box topic over dark box value range); list withholds final item for DM CTA.",
+  "unique_devices": [
+   "Stacked two-box header held for 100 % of runtime: square light box with the topic (Title Case) over a narrower square dark box with a value/price range, 0.9 % H gap, spanning 12.5-25.6 % height",
+   "Zero-edit delivery: one continuous take, no captions, no b-roll, no punch-ins, no transitions; the header is the only design layer",
+   "Withheld-final-item CTA: deliver all but the last list item, then offer the 'best' item via DM in the final ~4 % of runtime"
+  ],
+  "why_it_works": "The header states topic and value before the first sentence ends; the numbered promise and the withheld last item keep viewers to the end and drive DMs."
+ },
+ "hook": {
+  "type": "open loop: numbered promise plus two pain removals, direct address",
+  "first_word_s": 0.01,
+  "first_cut_s": null,
+  "first_frame": "static centred medium close-up of the speaker at a desk mic, bright window behind, two-box header already on screen at the top"
+ },
+ "structure": [
+  {
+   "beat": "hook",
+   "from_pct": 0,
+   "to_pct": 9,
+   "what": "numbered promise (N best ways) and two things the viewer will not have to do"
+  },
+  {
+   "beat": "setup",
+   "from_pct": 9,
+   "to_pct": 30,
+   "what": "why the common approach fails; contrarian framing builds authority"
+  },
+  {
+   "beat": "list",
+   "from_pct": 30,
+   "to_pct": 67,
+   "what": "method 1 explained, including a spoken outreach script"
+  },
+  {
+   "beat": "list",
+   "from_pct": 67,
+   "to_pct": 96,
+   "what": "method 2 with concrete percentages and deal sizes, win-win logic"
+  },
+  {
+   "beat": "cta",
+   "from_pct": 96,
+   "to_pct": 100,
+   "what": "final (best) method withheld; viewer told to DM their situation to get it"
+  }
+ ],
+ "pacing": {
+  "pace": "very slow / mostly static (single take)",
+  "median_shot_s": null,
+  "cuts_per_min": 0,
+  "wpm": 220,
+  "pauses_per_min": 1.7,
+  "visual_change_every_s": null,
+  "note": "one continuous take: median shot = full runtime, no cuts, nothing changes on screen; fast continuous speech carries it"
+ },
+ "elements": {
+  "captions": [],
+  "background_text": [
+   {
+    "what": "persistent two-box header: line 1 topic on a square light box, line 2 value/price range on a square dark box",
+    "when": "0-100 % of runtime",
+    "how": "line 1 box x 5.1-94.9 %, y 12.5-18.9 %; line 2 box x 10.1-87.5 %, y 19.8-25.6 %; 0.9 % H gap; text centred, light geometric sans 51 px at 1080x1920; no radius, stroke, shadow or animation; present from frame 0, never exits",
+    "catalog": [
+     24
+    ]
+   }
+  ],
+  "motion_graphics": [],
+  "cards_lists": [
+   {
+    "what": "spoken-only numbered list (no on-screen list cards)",
+    "when": "30-96 % of runtime",
+    "how": "list items exist only in speech; the header carries the count and value promise",
+    "catalog": [
+     121
+    ]
+   }
+  ],
+  "silhouettes_cutouts": [],
+  "broll_inserts": [],
+  "layout": [
+   {
+    "what": "full-frame 9:16 selfie medium close-up",
+    "when": "100 %",
+    "how": "speaker centred, head at ~35-50 % height under the header, desk mic covering the chest in the lower third",
+    "catalog": [
+     46
+    ]
+   }
+  ],
+  "camera": [
+   {
+    "what": "locked-off single take",
+    "when": "100 %",
+    "how": "no punch-ins, no reframes, no camera moves",
+    "catalog": [
+     70,
+     187
+    ]
+   }
+  ],
+  "transitions": [],
+  "end_card": []
+ },
+ "captions_spec": null,
+ "other_text_spec": [
+  {
+   "type": {
+    "header_line1": {
+     "font_class": "thin geometric sans (circular O and 0, single-storey g), light weight",
+     "closest_match": {
+      "local": "Poppins 500",
+      "google": "Poppins Light 300 / Jost Light",
+      "confidence": "low",
+      "note": "Poppins has the right proportions; the original stroke is lighter (~300)"
+     },
+     "ink_height_pct_of_H": 2.73,
+     "k": 0.99,
+     "font_size_px_at_1920": 53,
+     "calibration": [],
+     "color": "#101010 on the white box",
+     "stroke": "none",
+     "shadow": "none",
+     "box": "white #FDFDFD, see layout",
+     "tracking": "0em",
+     "verified_px": 51,
+     "fit": [
+      {
+       "font": "Poppins 500",
+       "tracking_em": 0.0,
+       "verified_px": 51
+      }
+     ],
+     "ink_note": "ink height measured on a thin-stroke Title Case line with a 2-px row threshold"
+    },
+    "header_line2": {
+     "font_class": "same face",
+     "closest_match": {
+      "local": "Poppins 500",
+      "google": "Poppins Light 300 / Jost Light",
+      "confidence": "low"
+     },
+     "ink_height_pct_of_H": 2.81,
+     "k": 0.99,
+     "font_size_px_at_1920": 54,
+     "calibration": [],
+     "color": "#FFFFFF on the black box",
+     "stroke": "none",
+     "shadow": "none",
+     "box": "black #010101, see layout",
+     "tracking": "0em",
+     "verified_px": 51,
+     "fit": [
+      {
+       "font": "Poppins 500",
+       "tracking_em": 0.0,
+       "verified_px": 51
+      }
+     ],
+     "ink_note": "same measure; line 2 is a value/price range with brackets and digits"
+    }
+   },
+   "when": "frame 0 to the last frame (100 % of runtime)",
+   "note": "no running speech captions; these tiers describe the persistent two-box header, the only text layer",
+   "script": "latin (English)",
+   "case": {
+    "header": "Title Case"
+   },
+   "layout": {
+    "header_line1_box": {
+     "color": "#FDFDFD (white)",
+     "x_pct": [
+      5.1,
+      94.9
+     ],
+     "y_pct": [
+      12.5,
+      18.9
+     ],
+     "text_center_y_pct": 16.0,
+     "text_align": "centre"
+    },
+    "header_line2_box": {
+     "color": "#010101 (black)",
+     "x_pct": [
+      10.1,
+      87.5
+     ],
+     "y_pct": [
+      19.8,
+      25.6
+     ],
+     "text_center_y_pct": 22.8,
+     "text_align": "centre"
+    },
+    "gap_between_boxes_pct_of_H": 0.9,
+    "boxes": "square corners, no radius, no shadow; each box is ~2-5 % W wider than its text on each side"
+   },
+   "animation": {
+    "fps": 30,
+    "entry": "present from frame 0",
+    "exit": "never (on screen 100 % of the runtime)",
+    "idle": "static"
+   }
+  }
+ ],
+ "style": {
+  "palette_roles": {
+   "text": "#101010",
+   "accent": "#010101",
+   "accent_2": "#FFFFFF",
+   "surface": null,
+   "card_bg": "#FDFDFD"
+  },
+  "fonts": {
+   "header_line1": {
+    "closest_local": "Poppins 500 (original lighter, ~300)",
+    "verified_px": 51,
+    "tracking": "0em"
+   },
+   "header_line2": {
+    "closest_local": "Poppins 500 (original lighter, ~300)",
+    "verified_px": 51,
+    "tracking": "0em"
+   }
+  },
+  "look_intent": "cool, high-contrast, natural saturation; teal-leaning bright window background against warm skin, soft selfie light"
+ },
+ "sound": {
+  "music": "possible music bed (heuristic, gap level -17.2 dB below speech); mood not inferable",
+  "sfx": [
+   "none (no cuts or graphics to hit)"
+  ],
+  "loudness_lufs": -15.0
+ },
+ "measured": {
+  "grade": {
+   "black_point": 0.0,
+   "midtone": 120.4,
+   "white_point": 252.0,
+   "contrast_range": 252.0,
+   "luma_std": 65.6,
+   "saturation": 0.349,
+   "colorfulness": 58.0,
+   "warmth_r_minus_b": -29.5,
+   "tint_g": 7.3,
+   "vignette_centre_over_edge": 1.22,
+   "label": "high-contrast, natural-saturation, cool"
+  },
+  "layout": {
+   "letterbox_share": 0.0,
+   "split_divider_share": 0.0
+  },
+  "sound": {
+   "has_audio": true,
+   "speech_coverage": 0.96,
+   "beat_periodicity": 0.02,
+   "beat_bpm_est": null,
+   "gap_level_rel_speech_db": -17.2,
+   "music": "possible music bed",
+   "cut_hit_share": null,
+   "method": "heuristic (onset-envelope beat periodicity + level in speech gaps); not a classifier"
+  }
+ },
+ "catalog_styles": [
+  {
+   "id": 46,
+   "name": "Talking-Head",
+   "role": "the entire video: direct-address selfie MCU"
+  },
+  {
+   "id": 70,
+   "name": "Single-Take / One-Shot Video (Oner)",
+   "role": "no cuts for the full runtime"
+  },
+  {
+   "id": 187,
+   "name": "Long-Take Storytelling",
+   "role": "pacing: continuous speech carries retention instead of edits"
+  },
+  {
+   "id": 24,
+   "name": "Big-Text Hook",
+   "role": "two-box header states topic and value range from frame 0"
+  },
+  {
+   "id": 121,
+   "name": "Tips-and-Tricks List",
+   "role": "numbered methods structure, spoken only"
+  },
+  {
+   "id": 169,
+   "name": "Open-Loop Storytelling with a Delayed Payoff",
+   "role": "last list item withheld behind a DM CTA"
+  }
+ ],
+ "use_when": [
+  "the user has one long uncut selfie take and wants minimal editing",
+  "the concept is a numbered how-to / methods list with a lead-generation (DM) goal",
+  "a fast, articulate speaker (200+ wpm) can hold attention without cuts",
+  "the brand wants a clean, low-effort persistent title that states topic and value range"
+ ],
+ "avoid_when": [
+  "the target is high-retention short-form pacing (needs a visual change every few seconds)",
+  "the audience watches muted (no captions in this blueprint)",
+  "there is b-roll, screen material or proof to show"
+ ],
+ "match": {
+  "tags": [
+   "talking-head",
+   "single-take",
+   "no-captions",
+   "persistent-header",
+   "two-box-title",
+   "selfie",
+   "indoor",
+   "listicle",
+   "dm-cta",
+   "withheld-item",
+   "minimal-edit",
+   "mid-length",
+   "lead-generation"
+  ],
+  "keywords": [
+   "clients",
+   "agency",
+   "methods",
+   "ways",
+   "outreach",
+   "leads",
+   "referral",
+   "partnership",
+   "consulting",
+   "dm",
+   "advice",
+   "list",
+   "header",
+   "simple",
+   "uncut",
+   "business",
+   "selling",
+   "pricing"
+  ],
+  "needs": {
+   "speaker_footage": true,
+   "screen_recordings": false,
+   "broll": false,
+   "brand_assets": false
+  }
+ },
+ "quality_score": 2,
+ "brand_prompt": "Use /video-pipeline with /video-captions on videos/<project>. Apply style blueprint B34 (video-reference-match/references/blueprints/B34.json) to this brand.\nCanvas 1080x1920, 30 fps. All positions are % of frame; px are at 1080x1920.\n\nBRAND TOKENS (use the brand's colour/font for each role; keep the contrast relationship: header text must stay >= 4.5:1 on its own box, and the two boxes must read as light-over-dark)\n- {{TEXT}}      line 1 text on the light box      default #101010\n- {{ACCENT}}    line 2 box fill (dark bar)        default #010101\n- {{ACCENT_2}}  line 2 text on the dark bar       default #FFFFFF\n- {{SURFACE}}   not used (footage fills the frame) default none\n- {{CARD_BG}}   line 1 box fill (light box)       default #FDFDFD\n- {{FONT_DISPLAY}} header font                    default Poppins 500 (Poppins Light 300 / Jost Light if available; the look is a light geometric sans)\n- {{FONT_BODY}}    same as display                default Poppins 500\n- {{HANDLE}}    not shown on screen (spoken DM CTA only)\n- {{LOGO}}      not used\n\nCAPTIONS\n1. Add NO running speech captions.\n\nOTHER TEXT\n2. One static 2-line header, on screen for 100 % of the runtime (frame 0 to last frame, no entry/exit animation):\n   - Line 1 (topic, Title Case, e.g. \"Headline here\"): {{FONT_DISPLAY}} at 51 px, {{TEXT}}, centred on a square {{CARD_BG}} box spanning x 5.1-94.9 %, y 12.5-18.9 % (text centre y 16.0 %).\n   - Line 2 (value / price range, Title Case, e.g. \"(Range) Key Word\"): same font at 51 px, {{ACCENT_2}}, centred on a square {{ACCENT}} box spanning x 10.1-87.5 %, y 19.8-25.6 % (text centre y 22.8 %), 0.9 % of height below the light box.\n   - Each box is ~2-5 % W wider than its text on each side. No radius, stroke or shadow. Tracking 0em. Proof-read both lines.\n\nEDIT DEVICES\n3. Keep the take whole: no cuts, punch-ins, b-roll or transitions. Only trim the head/tail.\n4. Structure: numbered promise in the first ~9 % of runtime; deliver all list items but the last; in the final ~4 % withhold the last (\"best\") item behind a spoken \"DM me\" CTA.\n\nGRADE\n5. Grade from the user's footage (video-style / grade.py); target look: cool, high-contrast, natural saturation, teal-leaning background against warm skin.\n\nAUDIO\n6. Master speech to about -15 LUFS integrated with true peak <= -1 dBTP. No SFX. An optional faint music bed sits ~17 dB under speech.\n\nVERIFY before rendering\na) Render a test frame with the user's header text (or \"KEY WORD\" on both lines) at 51 px and measure (thin strokes: use a 2-px row threshold):\n   python video-reference-match/scripts/caption_probe.py <test.mp4> --out <dir> --at <t> --box 0.07,0.13,0.93,0.188 --ink \"{{TEXT}}:90\"\n   python video-reference-match/scripts/caption_probe.py <test.mp4> --out <dir> --at <t> --box 0.11,0.2,0.86,0.255 --ink \"{{ACCENT_2}}:90\"\nb) Expected ink for the actual words: video-reference-match/scripts/fit_font.py with {{FONT_DISPLAY}} at 51 px (reference ink height ~2.7-2.8 % of H for a Title Case line). Required: measured ink within ±0.5 % H of the fit_font.py value; box edges within ±1 % of the geometry above; colours equal to the tokens.\n",
+ "caption_family": "title-only"
+}

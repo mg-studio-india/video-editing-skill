@@ -1,0 +1,326 @@
+{
+ "id": "B16",
+ "schema": "blueprint/1",
+ "format": {
+  "type": "ugc-ad",
+  "aspect": "9:16",
+  "language": "Hinglish",
+  "duration_class": "micro (<15s)",
+  "people_on_screen": "1"
+ },
+ "topic_class": "recruitment / hiring",
+ "signature": {
+  "one_line": "Locked same-mark team lineup dissolving every ~42 frames under a fixed text colour serif Hinglish offer.",
+  "unique_devices": [
+   "Same-mark person swap: locked camera and identical medium framing, a new team member replaces the last every ~42 frames via ~6-frame dissolves (5 people)",
+   "Identical micro-action per person: eyes closed or looking down, then eyes open and a small smile within ~24 frames of their shot",
+   "One persistent 2-line Roman-script Hinglish offer in text colour condensed serif across the chest, line 2 ~1.2x larger than line 1, no stroke or box"
+  ],
+  "why_it_works": "The offer is readable in the viewer's own register from frame one; the swaps show team size and warmth without any B-roll or speech."
+ },
+ "hook": {
+  "type": "direct address (on-screen offer)",
+  "first_word_s": 0.0,
+  "first_cut_s": 1.3,
+  "first_frame": "Centred medium shot of one team member with eyes closed in front of a single-colour building backdrop; text colour 2-line offer across the chest"
+ },
+ "structure": [
+  {
+   "beat": "hook",
+   "from_pct": 0,
+   "to_pct": 19,
+   "what": "Person 1 opens eyes and smiles; offer line already on screen"
+  },
+  {
+   "beat": "proof",
+   "from_pct": 19,
+   "to_pct": 80,
+   "what": "Persons 2-4 dissolve in on the same mark, same action, ~42 frames each"
+  },
+  {
+   "beat": "cta",
+   "from_pct": 80,
+   "to_pct": 100,
+   "what": "Person 5 after a hard cut, same action; offer still on screen"
+  }
+ ],
+ "pacing": {
+  "pace": "fast",
+  "median_shot_s": 1.4,
+  "cuts_per_min": 34,
+  "wpm": null,
+  "pauses_per_min": 0.0,
+  "visual_change_every_s": 1.4
+ },
+ "elements": {
+  "captions": [],
+  "background_text": [
+   {
+    "what": "Fixed 2-line offer title",
+    "when": "0-100 % of runtime",
+    "how": "Roman Hinglish, sentence case, no punctuation, ~5 + 3 words; text colour condensed serif; line 1 centre 52.0 % H (x 13-88 %), line 2 centre 57.7 % H (x 20-82 %), line 2 ~1.2x larger; static from frame 0 to the last frame, untouched by the dissolves; optional slight bulge warp",
+    "catalog": [
+     24
+    ]
+   }
+  ],
+  "motion_graphics": [],
+  "cards_lists": [],
+  "silhouettes_cutouts": [],
+  "broll_inserts": [],
+  "layout": [
+   {
+    "what": "Centred medium shot on a fixed mark",
+    "when": "100 %",
+    "how": "Subject centred, head in the upper third, chest at 45-60 % H under the text; same single-colour backdrop in every shot",
+    "catalog": [
+     46
+    ]
+   }
+  ],
+  "camera": [
+   {
+    "what": "Locked-off camera",
+    "when": "100 %",
+    "how": "Tripod or steady phone, identical framing for every person; no punch-ins",
+    "catalog": [
+     187
+    ]
+   }
+  ],
+  "transitions": [
+   {
+    "what": "Same-mark dissolves",
+    "when": "~19 %, ~39 %, ~60 %",
+    "how": "~6-frame cross-dissolve between people on the same spot (75 % of changes soft)",
+    "catalog": [
+     102
+    ]
+   },
+   {
+    "what": "Final hard cut",
+    "when": "~80 %",
+    "how": "Hard cut to the last person",
+    "catalog": [
+     102
+    ]
+   }
+  ],
+  "end_card": []
+ },
+ "captions_spec": null,
+ "other_text_spec": [
+  {
+   "type": "static offer title (2 lines)",
+   "when": "0-100 % of runtime (across 3 dissolves and 1 cut)",
+   "copy": "offer in Roman-script Hinglish, 2 lines (~5 + 3 words), sentence case per line, no punctuation (placeholder 'Lead words here' / 'KEY WORD')",
+   "script": "latin (Roman Hinglish)",
+   "font_class": "condensed transitional serif, regular weight, moderate contrast, bracketed serifs, tall ascenders; slight bulge warp (line ends compressed)",
+   "closest_match": {
+    "local": "Playfair Display 400",
+    "google": "Instrument Serif",
+    "confidence": "low-medium (original ~26 % narrower than Playfair)"
+   },
+   "case": "sentence",
+   "tracking": "0em",
+   "color": "#FFDF00",
+   "stroke": "none",
+   "shadow": "none",
+   "box": "none",
+   "layout": {
+    "align": "centre",
+    "lines": [
+     {
+      "line": 1,
+      "top_pct": 49.6,
+      "bottom_pct": 54.4,
+      "center_y_pct": 52.0,
+      "x_pct": [
+       13.1,
+       87.6
+      ],
+      "width_pct_of_W": 74.6,
+      "ink_pct_of_H": 4.8,
+      "chars": "~24"
+     },
+     {
+      "line": 2,
+      "top_pct": 54.8,
+      "bottom_pct": 60.5,
+      "center_y_pct": 57.7,
+      "x_pct": [
+       20.3,
+       81.5
+      ],
+      "width_pct_of_W": 61.2,
+      "ink_pct_of_H": 5.82,
+      "chars": "~17"
+     }
+    ],
+    "line_pitch_pct_of_H": 5.7,
+    "note": "line 2 ~1.2x larger than line 1; line 1 descenders nearly touch line 2 ascenders"
+   },
+   "tiers": {
+    "line1": {
+     "verified_px": 76,
+     "exact_look_px": 95,
+     "scale_x": 0.74
+    },
+    "line2": {
+     "verified_px": 88,
+     "exact_look_px": 115,
+     "scale_x": 0.74
+    }
+   },
+   "fit_note": "original is a condensed serif (width/height ratio 0.71-0.76 of Playfair): balanced Playfair sizes 76 / 88 px; exact look Playfair 95 / 115 px with scaleX(0.74), or Instrument Serif sized to the measured ink",
+   "animation": {
+    "fps": 30,
+    "entry": "on screen from frame 0, no animation",
+    "idle": "static, not tracked; fixed through the person-swap dissolves",
+    "exit": "none (to the last frame)"
+   }
+  }
+ ],
+ "style": {
+  "palette_roles": {
+   "text": "#FFDF00",
+   "accent": "#FFDF00",
+   "accent_2": null,
+   "surface": null,
+   "card_bg": null
+  },
+  "fonts": {
+   "offer_line1": {
+    "closest_local": "Playfair Display 400",
+    "verified_px": 76,
+    "tracking": "0em"
+   },
+   "offer_line2": {
+    "closest_local": "Playfair Display 400",
+    "verified_px": 88,
+    "tracking": "0em"
+   }
+  },
+  "look_intent": "mid-contrast, natural saturation, cool: daylight, one cool single-colour backdrop, true skin tones"
+ },
+ "sound": {
+  "music": "trending song only, no voice (speech_coverage 0.26 is the sung lyric); beat periodicity 0.28, ~67 bpm estimate; very steady (loudness range 0.7 LU)",
+  "sfx": [
+   "none; the single hard cut is not on an onset (measured cut_hit_share 0.0)"
+  ],
+  "loudness_lufs": -14.1
+ },
+ "measured": {
+  "grade": {
+   "black_point": 16.8,
+   "midtone": 111.8,
+   "white_point": 208.1,
+   "contrast_range": 191.3,
+   "luma_std": 49.7,
+   "saturation": 0.387,
+   "colorfulness": 68.4,
+   "warmth_r_minus_b": -32.0,
+   "tint_g": 0.7,
+   "vignette_centre_over_edge": 0.74,
+   "label": "mid-contrast, natural-saturation, cool"
+  },
+  "layout": {
+   "letterbox_share": 0.0,
+   "split_divider_share": 0.0
+  },
+  "sound": {
+   "has_audio": true,
+   "speech_coverage": 0.26,
+   "beat_periodicity": 0.28,
+   "beat_bpm_est": 67,
+   "gap_level_rel_speech_db": -0.1,
+   "music": "music bed likely",
+   "cut_hit_share": 0.0,
+   "method": "heuristic (onset-envelope beat periodicity + level in speech gaps); not a classifier"
+  }
+ },
+ "catalog_styles": [
+  {
+   "id": 24,
+   "name": "Big-Text Hook",
+   "role": "fixed offer line from frame 0"
+  },
+  {
+   "id": 210,
+   "name": "Recruitment Video",
+   "role": "use case: hiring / placement offer"
+  },
+  {
+   "id": 102,
+   "name": "Match-Cut Transitions",
+   "role": "same-mark person swaps via dissolves"
+  },
+  {
+   "id": 187,
+   "name": "Long-Take Storytelling",
+   "role": "locked-off identical framing"
+  },
+  {
+   "id": 191,
+   "name": "Music-Led Montage with Minimal Dialogue",
+   "role": "song only, no voice"
+  },
+  {
+   "id": 222,
+   "name": "Offer / Sale Announcement",
+   "role": "one-line offer as the whole message"
+  }
+ ],
+ "use_when": [
+  "the user has 4-6 team members who can each stand on the same spot for a few seconds",
+  "the message is a single short offer or invitation (apply, send CV, join, book)",
+  "no one wants to speak on camera; music only",
+  "the audience reads Roman-script Hinglish (or swap to the brand's language)"
+ ],
+ "avoid_when": [
+  "the message needs explanation or proof",
+  "only one person is available",
+  "tight close-ups where the text would cover the mouth"
+ ],
+ "match": {
+  "tags": [
+   "team-lineup",
+   "same-mark-swap",
+   "locked-off",
+   "dissolve",
+   "static-title",
+   "serif-title",
+   "hinglish-text",
+   "music-only",
+   "hiring",
+   "offer",
+   "micro"
+  ],
+  "keywords": [
+   "hiring",
+   "recruitment",
+   "jobs",
+   "team",
+   "staff",
+   "apply",
+   "resume",
+   "careers",
+   "agency",
+   "people",
+   "offer",
+   "faces",
+   "lineup",
+   "smile",
+   "office"
+  ],
+  "needs": {
+   "speaker_footage": true,
+   "screen_recordings": false,
+   "broll": false,
+   "brand_assets": false
+  }
+ },
+ "quality_score": 2,
+ "brand_prompt": "Use /video-pipeline with /video-captions on videos/<project>. Apply style blueprint B16 (video-reference-match/references/blueprints/B16.json) to this brand.\nThis blueprint has NO speech captions: one fixed 2-line offer title over a locked-off same-mark team lineup. Canvas 1080x1920, 30 fps.\n\nBRAND TOKENS (use the brand's colour for each role; keep the contrast relationship: {{TEXT}} has no stroke or box, so it must stay >= 3:1 against the clothing/backdrop behind it; add a 2 px dark outline only if it drops below)\n- {{TEXT}}: offer lines, default #FFDF00\n- {{ACCENT}}: same as {{TEXT}} (no emphasis word in the source), default #FFDF00\n- {{ACCENT_2}}: unused, default none\n- {{SURFACE}}: unused (backdrop is the real location: one strong single-colour wall/facade), default none\n- {{CARD_BG}}: unused, default none\n- {{FONT_DISPLAY}}: condensed transitional serif, default Playfair Display 400 (Instrument Serif closer)\n- {{FONT_BODY}}: same as {{FONT_DISPLAY}}\n- {{HANDLE}}: not shown in the source\n- {{LOGO}}: not shown in the source\n\nTITLE\n1. Copy: the offer in the audience's register (source: Roman-script Hinglish), 2 lines, ~5 + 3 words, sentence case, no punctuation (\"Lead words here\" / \"KEY WORD\").\n2. {{FONT_DISPLAY}} in {{TEXT}}, tracking 0, no stroke/shadow/box. Line 1 76 px, line 2 88 px (~1.2x). Exact narrow look: Playfair 95 / 115 px with transform: scaleX(0.74), or Instrument Serif sized to the measured ink.\n3. Layout: both lines centred; line 1 centre 52.0 % H (x 13-88 %, ink ~4.8 % H at ~24 characters), line 2 centre 57.7 % H (x 20-82 %, ink ~5.82 % H at ~17 characters), across the chest of a centred medium shot. Optional slight bulge warp.\n4. Timing: on from frame 0 to the last frame, static, untouched by the dissolves.\n\nEDIT\n5. Locked camera, identical medium framing, one strong single-colour backdrop. 5 people on the same mark, ~42 frames each; swaps are ~6-frame cross-dissolves, the last change a hard cut. Each person: eyes closed / looking down, then eyes open + small smile within ~24 frames. No punch-ins, no end card.\n\nSOUND: one trending/upbeat song, no voice, steady level. Master to about -14 LUFS, true peak <= -1 dBTP.\nGRADE: Grade from the user's footage (video-style / grade.py); target look: mid-contrast, natural saturation, cool daylight with true skin.\n\nVERIFY before rendering: render the two lines and measure:\n  video-reference-match/scripts/caption_probe.py <render-file> --out <dir> --at 1.0 --box 0.08,0.48,0.92,0.545 --ink \"#FFDF00:75\"\n  video-reference-match/scripts/caption_probe.py <render-file> --out <dir> --at 1.0 --box 0.08,0.548,0.92,0.61 --ink \"#FFDF00:75\"\nSwap the --ink colour to {{TEXT}}. Compute the expected ink height/width of the brand's actual lines with video-reference-match/scripts/fit_font.py (76 / 88 px, or 95 / 115 px x scaleX 0.74); if height fits but width is too wide, apply the scaleX. Line centres within +-1 % of frame height of 52.0 / 57.7 %.",
+ "caption_family": "title-only"
+}

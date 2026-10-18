@@ -1,0 +1,327 @@
+{
+ "id": "B28",
+ "schema": "blueprint/1",
+ "format": {
+  "type": "skit",
+  "aspect": "9:16",
+  "language": "Hindi",
+  "duration_class": "micro (<15s)",
+  "people_on_screen": "2+"
+ },
+ "topic_class": "comedy skit (office lip-sync to film dialogue)",
+ "signature": {
+  "one_line": "Single moody office two-shot lip-sync under a persistent text colour condensed-serif headline.",
+  "unique_devices": [
+   "Persistent 2-line headline in flat text colour #F7D312 condensed high-contrast serif, very tight leading, on the dark ceiling at 14-25 % H",
+   "Single uncut locked-off two-shot: the borrowed dramatic audio carries the whole joke",
+   "Moody low-key office grade with warm skin and a magenta/purple corner cast",
+   "Costume mismatch (sunglasses indoors) staged as a film scene"
+  ],
+  "why_it_works": "Epic film dialogue over a mundane deadline meeting is an instant mismatch; the headline tells non-speakers what the scene is."
+ },
+ "hook": {
+  "type": "In medias res (dialogue from the first frame)",
+  "first_word_s": 0.08,
+  "first_cut_s": 8.5,
+  "first_frame": "locked-off medium two-shot at an office desk, both people in sunglasses, text colour serif headline over the dark ceiling"
+ },
+ "structure": [
+  {
+   "beat": "hook",
+   "from_pct": 0,
+   "to_pct": 27,
+   "what": "dramatic question about a deadline under the headline"
+  },
+  {
+   "beat": "setup",
+   "from_pct": 27,
+   "to_pct": 63,
+   "what": "impossible promise vs doubt, exaggerated gestures"
+  },
+  {
+   "beat": "payoff",
+   "from_pct": 63,
+   "to_pct": 100,
+   "what": "finger raised for the closing heroic line"
+  }
+ ],
+ "pacing": {
+  "pace": "slow",
+  "median_shot_s": 8.5,
+  "cuts_per_min": 0,
+  "wpm": null,
+  "pauses_per_min": 0.0,
+  "visual_change_every_s": 8.5
+ },
+ "elements": {
+  "captions": [],
+  "background_text": [
+   {
+    "what": "persistent 2-line text colour serif headline",
+    "when": "0-100 %",
+    "how": "condensed high-contrast serif ~80 px (Instrument Serif; line 2 slightly bigger), flat #F7D312, tracking -0.01 em, no stroke/shadow/box; band 14.2-25.2 % H, line 1 baseline 19.4 %, line 2 baseline 25.2 %, block centre x ~46 %; static",
+    "catalog": [
+     33
+    ]
+   }
+  ],
+  "motion_graphics": [],
+  "cards_lists": [],
+  "silhouettes_cutouts": [],
+  "broll_inserts": [],
+  "layout": [
+   {
+    "what": "full-frame locked-off two-shot",
+    "when": "whole runtime",
+    "how": "subjects in the lower 70 %, empty dark ceiling/wall above for the headline",
+    "catalog": [
+     70
+    ]
+   }
+  ],
+  "camera": [
+   {
+    "what": "locked-off tripod",
+    "when": "whole runtime",
+    "how": "no moves, no cuts",
+    "catalog": [
+     70
+    ]
+   }
+  ],
+  "transitions": [],
+  "end_card": []
+ },
+ "captions_spec": null,
+ "other_text_spec": [
+  {
+   "type": "persistent headline (no captions; the only text)",
+   "spec": {
+    "script": "latin (English headline; the audio is film-style dialogue in another language, not captioned)",
+    "case": {
+     "headline": "sentence case"
+    },
+    "punctuation": "one comma mid-line 1; no full stop",
+    "emoji": "none",
+    "grouping": {
+     "words_per_caption": "~5 words over 2 lines (3 + 2)",
+     "max_lines": 2,
+     "sync": "not tied to speech; on for the whole video",
+     "break": "a short set-up phrase on line 1 / the 2-word subject on line 2"
+    },
+    "layout": {
+     "band_pct_of_H": [
+      14.2,
+      25.2
+     ],
+     "line1": {
+      "align": "centre",
+      "x_pct": [
+       16.1,
+       76.0
+      ],
+      "cap_top_pct": 15.0,
+      "baseline_pct": 19.4
+     },
+     "line2": {
+      "align": "centre",
+      "x_pct": [
+       16.1,
+       75.7
+      ],
+      "ascender_top_pct": 20.3,
+      "baseline_pct": 25.2
+     },
+     "leading": "very tight: line 1's descender touches line 2's ascenders (baseline pitch ~5.8 % of H)",
+     "note": "upper quarter, over the dark ceiling, above the standing subject's head; block centre x ~46 % (slightly left)"
+    },
+    "type": {
+     "headline": {
+      "font_class": "condensed high-contrast serif (Didone-like, tall x-height, ball terminals; native in-app editor-style serif)",
+      "closest_match": {
+       "local": "Playfair Display 500",
+       "confidence": "low",
+       "note": "Playfair Display is ~40 % wider than the original at the same height: use Instrument Serif, or Playfair at the height-matched size with transform scaleX(~0.6)",
+       "web_font": "Instrument Serif Regular (condensed high-contrast) — alt Oranienbaum"
+      },
+      "ink_height_pct_of_H": 4.45,
+      "k": 0.73,
+      "font_size_px_at_1920": 117,
+      "calibration": [
+       {
+        "word": "Another",
+        "ink_pct_of_H": 4.45,
+        "width_pct_of_W": 21.1
+       }
+      ],
+      "color": "#F7D312 (flat yellow)",
+      "stroke": "none",
+      "shadow": "none",
+      "box": "none",
+      "tracking": "-0.01em",
+      "verified_px": 80,
+      "fit": [
+       {
+        "font": "Playfair Display 500",
+        "word": "Another",
+        "tracking_em": -0.01,
+        "px_for_height": 108.2,
+        "px_for_width": 62.6,
+        "verified_px": 78,
+        "at_verified_px": {
+         "ink_pct_of_H": 3.23,
+         "width_pct_of_W": 26.2
+        },
+        "within_tolerance": false
+       }
+      ],
+      "k_note": "a 2-word line with ascenders and no descenders measured 5.0 % H / 59.6 % W (k 0.73 -> ~132 px); the serif's ascenders rise above its caps",
+      "size_note": "line 2 words are set slightly bigger than line 1 (mixed sizes)"
+     }
+    },
+    "animation": {
+     "fps": 24,
+     "entry": "on from frame 0 (no animation)",
+     "exit": "on to the last frame",
+     "idle": "none; single locked-off shot"
+    }
+   }
+  },
+  {
+   "type": "none",
+   "text": "no captions, logos, watermark or end card"
+  }
+ ],
+ "style": {
+  "palette_roles": {
+   "text": "#F7D312",
+   "accent": "#F7D312",
+   "accent_2": null,
+   "surface": null,
+   "card_bg": null
+  },
+  "fonts": {
+   "headline": {
+    "closest_local": "Playfair Display 500 with scaleX ~0.6 (install Instrument Serif instead)",
+    "verified_px": 80,
+    "tracking": "-0.01em"
+   }
+  },
+  "look_intent": "moody low-key office: mid-contrast, natural-saturation, warm skin, deep shadows, magenta/purple corner cast"
+ },
+ "sound": {
+  "music": "voice only (pre-mixed film-dialogue / trend audio, no separate bed detected)",
+  "sfx": [
+   "none (single shot)"
+  ],
+  "loudness_lufs": -14.1
+ },
+ "measured": {
+  "grade": {
+   "black_point": 2.4,
+   "midtone": 73.8,
+   "white_point": 213.4,
+   "contrast_range": 211.0,
+   "luma_std": 55.0,
+   "saturation": 0.268,
+   "colorfulness": 37.4,
+   "warmth_r_minus_b": 28.7,
+   "tint_g": -2.5,
+   "vignette_centre_over_edge": 0.88,
+   "label": "mid-contrast, natural-saturation, warm"
+  },
+  "layout": {
+   "letterbox_share": 0.0,
+   "split_divider_share": 0.0
+  },
+  "sound": {
+   "has_audio": true,
+   "speech_coverage": 0.99,
+   "beat_periodicity": 0.09,
+   "beat_bpm_est": null,
+   "gap_level_rel_speech_db": null,
+   "music": "voice only (no bed detected)",
+   "cut_hit_share": null,
+   "method": "heuristic (onset-envelope beat periodicity + level in speech gaps); not a classifier"
+  }
+ },
+ "catalog_styles": [
+  {
+   "id": 70,
+   "name": "Single-Take / One-Shot Video (Oner)",
+   "role": "one uncut locked-off shot"
+  },
+  {
+   "id": 33,
+   "name": "Oversized Editorial Headlines",
+   "role": "yellow condensed-serif headline framing the scene"
+  },
+  {
+   "id": 59,
+   "name": "Reaction Video",
+   "role": "performed reactions to borrowed dialogue"
+  },
+  {
+   "id": 198,
+   "name": "Call-and-Response Dialogue",
+   "role": "two-person exchange lip-synced"
+  },
+  {
+   "id": 106,
+   "name": "Dark Cinematic Motion Design",
+   "role": "moody low-key film look on an office set"
+  }
+ ],
+ "use_when": [
+  "a two-person office / team lip-sync to a dramatic audio clip",
+  "one static set-up, no editing budget, micro length",
+  "a headline can explain the joke for viewers who do not know the audio",
+  "team-culture or agency-life humour"
+ ],
+ "avoid_when": [
+  "original speech that needs captions",
+  "the brand cannot use borrowed / licensed trend audio",
+  "information or product content"
+ ],
+ "match": {
+  "tags": [
+   "office-skit",
+   "lip-sync",
+   "film-dialogue",
+   "single-shot",
+   "serif-headline",
+   "yellow-headline",
+   "moody-grade",
+   "workplace-humour",
+   "no-captions",
+   "two-person",
+   "micro"
+  ],
+  "keywords": [
+   "lipsync",
+   "dialogue",
+   "office",
+   "deadline",
+   "meeting",
+   "team",
+   "skit",
+   "funny",
+   "dramatic",
+   "client",
+   "agency",
+   "boss",
+   "trend",
+   "audio",
+   "relatable"
+  ],
+  "needs": {
+   "speaker_footage": true,
+   "screen_recordings": false,
+   "broll": false,
+   "brand_assets": false
+  }
+ },
+ "quality_score": 1,
+ "brand_prompt": "Use /video-pipeline with /video-captions on videos/<project>. Apply style blueprint B28 (video-reference-match/references/blueprints/B28.json) to this brand.\n\nBRAND TOKENS (use the brand's colour for each role; keep the contrast relationship — text and accent must stay >= 4.5:1 / >= 3:1 against what sits behind them on the footage):\n- {{TEXT}}      default #F7D312 (headline yellow)\n- {{ACCENT}}    default #F7D312 (same; single-colour style)\n- {{ACCENT_2}}  default none\n- {{SURFACE}}   default none (headline sits on a dark area of the footage)\n- {{CARD_BG}}   default none\n- {{FONT_DISPLAY}} default Instrument Serif Regular (condensed high-contrast serif); local fallback Playfair Display 500 at scaleX ~0.6\n- {{FONT_BODY}}    default same\n- {{HANDLE}}    default @handle\n- {{LOGO}}      default the brand's logo file (transparent PNG/SVG)\nThe headline needs a dark band of footage behind it: {{TEXT}} must stay >= 4.5:1 there; a bright brand colour works, a dark one does not.\nCanvas 1080x1920, 24 fps.\n\nCAPTIONS\n1. No captions (the audio is a dialogue / trend track).\n\nOTHER TEXT\n2. One persistent 2-line headline for the whole clip, sentence case, no full stop (placeholder 'Headline here, lead words' / 'KEY WORD here'). {{FONT_DISPLAY}} at ~80 px with line 2 slightly bigger, {{TEXT}}, tracking -0.01 em, no stroke / shadow / box.\n3. Placement: band 14.2-25.2 % H on the empty dark wall / ceiling above the heads; line 1 cap top 15.0 %, baseline 19.4 %; line 2 baseline 25.2 % (baseline pitch ~5.8 % H, descenders touching ascenders); centred block, centre x ~46 %.\n4. Animation: none — on from frame 0 to the last frame.\n5. No {{LOGO}}, watermark or end card.\n6. Edit: one locked-off two-shot, no cuts; let the audio carry the joke.\n\nGRADE\nGrade from the user's footage (video-style / grade.py); target look: moody low-key, warm skin, deep shadows, slight magenta/purple corner cast.\n\nVERIFY before rendering\na) Render the headline with 'Another' on line 1 and measure: python3 video-reference-match/scripts/caption_probe.py <test-render> --out <dir> --at <t> --box 0.1,0.14,0.85,0.26 --ink \"{{TEXT}}:60\"\n   Expected (±0.5 % H, ±2 % W): 'Another' ink 4.45 % H / 21.1 % W. Playfair cannot hit both (it is ~40 % too wide); with Instrument Serif solve the px for height, then check width.\nb) Any word / font: python3 video-reference-match/scripts/fit_font.py --font \"<font weight>\" --word \"<word>\" --ink 4.45 --width 21.1 --tracking -0.01 gives the matching px for the calibration word; for other words pass --ink only. Re-check line 2 at ~5.0 % H for a 2-word line with ascenders. (fit_font.py needs a target: --ink and/or --width; it returns the px that reproduces that ink for YOUR word plus the width it will read at that px. Requires Pillow.)\nc) Positions within ±1 % H: line 1 baseline 19.4 %, line 2 baseline 25.2 %.",
+ "caption_family": "title-only"
+}

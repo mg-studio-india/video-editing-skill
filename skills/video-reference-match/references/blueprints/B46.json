@@ -1,0 +1,415 @@
+{
+ "id": "B46",
+ "schema": "blueprint/1",
+ "format": {
+  "type": "brand-promo",
+  "aspect": "9:16",
+  "language": "none",
+  "duration_class": "micro (<15s)",
+  "people_on_screen": "0"
+ },
+ "topic_class": "event promo / teaser",
+ "signature": {
+  "one_line": "Type-only teaser: typeface swaps every 2-3 frames, accent/black inverting word cards, blurring stock reveal.",
+  "unique_devices": [
+   "Font-swap stutter: one short phrase held for the first third while its typeface hard-swaps every 2-3 frames across ~12 font categories and the text grows continuously",
+   "Escalation word cards shown twice each: accent-on-black for 10-13 frames, then the same word black-on-accent for 15-20 frames, identical size and position",
+   "First real image only at ~69 % of runtime: stock wide that blurs progressively under a white 2-line question which pops in at 116 % and zooms linearly to ~151 %"
+  ],
+  "why_it_works": "The frame changes every few frames without adding words to read; escalating one-word cards build pressure; withholding footage makes the final reveal land."
+ },
+ "hook": {
+  "type": "open loop + typographic pattern interrupt",
+  "first_word_s": null,
+  "first_cut_s": 3.533,
+  "first_frame": "Flat deep-accent card with a small white two-word phrase centred at mid-height in a transitional serif"
+ },
+ "structure": [
+  {
+   "beat": "hook",
+   "from_pct": 0,
+   "to_pct": 33,
+   "what": "Short vague teaser phrase on accent, typeface swapping every 2-3 frames while it grows ~2.5x"
+  },
+  {
+   "beat": "list",
+   "from_pct": 33,
+   "to_pct": 69,
+   "what": "Four comparative one-word cards, each shown twice with accent/black inversion (~8 cards)"
+  },
+  {
+   "beat": "cta",
+   "from_pct": 69,
+   "to_pct": 100,
+   "what": "Hard cut to a stock wide of the venue type; white 2-line question pops in and zooms while the image blurs"
+  }
+ ],
+ "pacing": {
+  "pace": "frenetic",
+  "median_shot_s": 0.5,
+  "cuts_per_min": 51,
+  "wpm": null,
+  "pauses_per_min": null,
+  "visual_change_every_s": 0.08
+ },
+ "elements": {
+  "captions": [],
+  "background_text": [
+   {
+    "what": "Font-swap teaser phrase",
+    "when": "0-33 %",
+    "how": "White, one line, centred at 49.6-50.9 % H on flat accent; starts ~40 px (ink 2.19 % H, 23 % W) and grows ~0.8 % scale per frame to ink ~5.4 % H / ~45 % W (wide faces up to 75 % W); whole phrase hard-swaps face every 2-3 frames, never the same face twice in a row",
+    "catalog": [
+     23,
+     24
+    ]
+   },
+   {
+    "what": "Escalation word cards",
+    "when": "33-69 %",
+    "how": "One ALL-CAPS word, heavy flared serif, 129 px Playfair Display 900 stand-in (ink ~5.3 % H, 46-60 % W), centred y ~50 %; each word accent #AF0000 on black 10-13 frames then black on accent 15-20 frames; text and background hard-cut together, no idle motion",
+    "catalog": [
+     23,
+     180
+    ]
+   },
+   {
+    "what": "Closing 2-line question",
+    "when": "69-100 %",
+    "how": "White, ALL CAPS with '?', same serif at 87 px, block centred at 50 % H, line gap ~1.6 % H, no box; 1-frame pop (first frame 116 % scale) then linear zoom to ~151 % by the last frame",
+    "catalog": [
+     31,
+     24
+    ]
+   }
+  ],
+  "motion_graphics": [
+   {
+    "what": "Continuous phrase growth during font swaps",
+    "when": "0-33 %",
+    "how": "Linear scale-up ~0.8 %/frame around the frame centre; face swaps are hard (no cross-fade)",
+    "catalog": [
+     23
+    ]
+   }
+  ],
+  "cards_lists": [
+   {
+    "what": "Comparative-adjective escalation run",
+    "when": "33-69 %",
+    "how": "4 words x 2 inverted cards = 8 cards in ~114 frames; median card ~16 frames",
+    "catalog": [
+     23,
+     174
+    ]
+   }
+  ],
+  "silhouettes_cutouts": [],
+  "broll_inserts": [
+   {
+    "what": "Single stock wide of the event setting",
+    "when": "69-100 % (first and only footage)",
+    "how": "Full frame, static; Gaussian blur ramps in mostly over 5-29 frames after the cut (ease-out) and keeps softening to ~80 frames after the cut",
+    "catalog": [
+     51
+    ]
+   }
+  ],
+  "layout": [
+   {
+    "what": "Centred single-axis type",
+    "when": "100 %",
+    "how": "Everything centred at ~50 % H, single words ~45-60 % of W",
+    "catalog": [
+     23
+    ]
+   }
+  ],
+  "camera": [],
+  "transitions": [
+   {
+    "what": "Hard swaps / colour inversions",
+    "when": "throughout",
+    "how": "Every change is an instant text+background swap (detector logs them as soft); no dissolves",
+    "catalog": [
+     180,
+     174
+    ]
+   },
+   {
+    "what": "Progressive blur on the final shot",
+    "when": "69-100 %",
+    "how": "Sharp at the cut, heavy blur within ~29 frames, ease-out",
+    "catalog": [
+     77
+    ]
+   }
+  ],
+  "end_card": [
+   {
+    "what": "Question over blurred stock",
+    "when": "last ~31 %",
+    "how": "No logo, handle or button in the source; brand version may add {{LOGO}} small at the bottom during the last 20 frames",
+    "catalog": [
+     147
+    ]
+   }
+  ]
+ },
+ "captions_spec": null,
+ "other_text_spec": [
+  {
+   "type": "font-swap opener",
+   "when": "0-33 % of runtime",
+   "bg": "flat maroon #6C0101",
+   "text": "short two-word teaser phrase with full stop (placeholder 'Headline here.'), #FFFFFF, one line, horizontally centred, centre y 49.6-50.9 % of H",
+   "fonts": "a different typeface every 2-3 frames, ~12 faces cycling: transitional serif, handwritten pen, light condensed sans, square techno sans, bold condensed caps, rounded marker, bold old-style serif, bold condensed sans, thin condensed small-caps, bubbly hand, wide italic techno sans, heavy humanist sans",
+   "closest_match": {
+    "local": "rotate Playfair Display 400 / 400 italic / 900, Inter 300 / 800, Anton 400, Syne 700, Poppins 500, DM Sans 700, JetBrains Mono 500",
+    "google": "add hand faces (Caveat, Permanent Marker, Kalam) and a techno face (Orbitron)",
+    "confidence": "low (category match only)"
+   },
+   "size": {
+    "start": {
+     "phrase": "a ~15-character two-word phrase",
+     "face": "transitional serif",
+     "ink_pct_of_H": 2.19,
+     "width_pct_of_W": 23.1,
+     "verified_px": 40,
+     "verified_with": "Playfair Display 400 (1.98 % H / 24.2 % W)"
+    },
+    "end": {
+     "face": "light condensed sans",
+     "ink_pct_of_H": 5.39,
+     "width_pct_of_W": 44.7
+    },
+    "growth": "each face keeps growing while held (~0.3-0.4 % W per frame, ~0.8 %/frame scale); phrase grows from 23 % to 44-75 % of W over the opener, ink 2.2 % -> 5-8 % of H"
+   },
+   "animation": {
+    "fps": 30,
+    "entry": "on at frame 0, no fade",
+    "swap": "hard swap of the whole phrase to the next face every 2-3 frames, same centre",
+    "exit": "hard cut to the first black word card"
+   }
+  },
+  {
+   "type": "escalation word card",
+   "when": "33-69 % of runtime",
+   "sequence": "4 comparative one-word adjectives, each shown twice: black card (red text) 10-13 frames, then red card (black text) 15-20 frames",
+   "colors": {
+    "on_black": "text #AF0000 on #000000",
+    "on_red": "text #000000 on #AF0000"
+   },
+   "font_class": "heavy flared/glyphic serif, all caps: wedge serifs, curled R leg, low contrast",
+   "closest_match": {
+    "local": "Playfair Display 900",
+    "google": "any flared low-contrast display serif is closer",
+    "confidence": "low (Playfair is a high-contrast didone)"
+   },
+   "tracking": "0em",
+   "case": "upper",
+   "calibration": [
+    {
+     "word": "BIGGER",
+     "ink_pct_of_H": 5.31,
+     "width_pct_of_W": 46.5
+    },
+    {
+     "word": "GRANDER",
+     "ink_pct_of_H": 5.23,
+     "width_pct_of_W": 59.6
+    }
+   ],
+   "verified_px": 129,
+   "fit": "Playfair Display 900 @129 px: BIGGER 4.95 % H / 47.8 % W, GRANDER 4.95 % H / 60.6 % W (within tolerance)",
+   "layout": "one word, horizontally centred, centre y 49.8-50.1 %",
+   "animation": {
+    "entry": "hard cut (text and background change on the same frame)",
+    "inversion": "same word at identical size/position, colours swapped",
+    "idle": "none",
+    "exit": "hard cut"
+   }
+  },
+  {
+   "type": "closing question over stock",
+   "when": "69-100 % of runtime",
+   "text": "2 centred lines, ALL CAPS, three short words with '?', #FFFFFF (sampled #FDFCF8), same flared serif, block centred at 50.0 % of H, line pitch ~1.36 x cap height (line gap ~1.6 % H), no box, no visible shadow",
+   "calibration": [
+    {
+     "line": "first line, two short words (~7 characters incl. space)",
+     "ink_pct_of_H": 3.52,
+     "width_pct_of_W": 35.4,
+     "at": "3 frames after the cut"
+    },
+    {
+     "line": "same line at the end",
+     "ink_pct_of_H": 5.31,
+     "width_pct_of_W": 53.5,
+     "at": "last frames"
+    }
+   ],
+   "verified_px": 87,
+   "fit": "Playfair Display 900 @87 px within tolerance; scale to ~131 px (x1.51) by the end",
+   "animation": {
+    "entry": "hard cut with a 1-frame pop: first frame ~116 % scale, 100 % from the next frame",
+    "idle": "continuous linear zoom, ~x1.51 over the remaining ~100 frames",
+    "exit": "video ends"
+   },
+   "background": "stock wide sharp at the cut; blur ramps in mostly over frames 5-29 after the cut (ease-out) and keeps softening to ~frame 80"
+  }
+ ],
+ "style": {
+  "palette_roles": {
+   "text": "#FFFFFF",
+   "accent": "#AF0000",
+   "accent_2": null,
+   "surface": "#6C0101",
+   "card_bg": "#000000"
+  },
+  "fonts": {
+   "display": {
+    "closest_local": "Playfair Display 900",
+    "verified_px": 129,
+    "tracking": "0em"
+   },
+   "question": {
+    "closest_local": "Playfair Display 900",
+    "verified_px": 87,
+    "tracking": "0em"
+   },
+   "opener_rotation": {
+    "closest_local": "Playfair Display 400 (start face)",
+    "verified_px": 40,
+    "tracking": "0em"
+   }
+  },
+  "look_intent": "low-contrast, saturated, warm: deep maroon / blood-red / black flat cards, warm golden stock image at the end"
+ },
+ "sound": {
+  "music": "music-only (beat periodicity 0.33, ~158 bpm estimate); dramatic, building trailer bed (loudness range 7.2 LU)",
+  "sfx": [
+   "none identified (no hard cuts measured on footage)",
+   "optional: hit/impact on each colour inversion and a riser under the final zoom"
+  ],
+  "loudness_lufs": -14.1
+ },
+ "measured": {
+  "grade": {
+   "black_point": 22.7,
+   "midtone": 36.8,
+   "white_point": 126.1,
+   "contrast_range": 103.3,
+   "luma_std": 32.1,
+   "saturation": 0.818,
+   "colorfulness": 98.4,
+   "warmth_r_minus_b": 47.3,
+   "tint_g": 7.5,
+   "vignette_centre_over_edge": 1.34,
+   "label": "low-contrast, saturated, warm"
+  },
+  "layout": {
+   "letterbox_share": 0.17,
+   "split_divider_share": 0.0
+  },
+  "sound": {
+   "has_audio": true,
+   "speech_coverage": 0.0,
+   "beat_periodicity": 0.33,
+   "beat_bpm_est": 158,
+   "gap_level_rel_speech_db": 0.0,
+   "music": "music-only",
+   "cut_hit_share": null,
+   "method": "heuristic (onset-envelope beat periodicity + level in speech gaps); not a classifier"
+  }
+ },
+ "catalog_styles": [
+  {
+   "id": 23,
+   "name": "Kinetic Typography",
+   "role": "font-swap opener and word cards"
+  },
+  {
+   "id": 24,
+   "name": "Big-Text Hook",
+   "role": "font-swap stutter in the first third"
+  },
+  {
+   "id": 147,
+   "name": "Teaser / Trailer",
+   "role": "overall format: escalate and withhold, end on a question"
+  },
+  {
+   "id": 216,
+   "name": "Conference or Event Promo",
+   "role": "use case"
+  },
+  {
+   "id": 180,
+   "name": "Flash-Cut Editing",
+   "role": "red/black inversion on every word"
+  },
+  {
+   "id": 174,
+   "name": "Rapid-Fire Cuts",
+   "role": "~50 cuts/min escalation run"
+  },
+  {
+   "id": 31,
+   "name": "Emphasis-Word Zoom",
+   "role": "pop-in and linear zoom of the closing question"
+  }
+ ],
+ "use_when": [
+  "the user wants a short hype teaser or countdown for an event, launch or drop",
+  "there is little or no footage (one stock or venue shot is enough)",
+  "the message is 'something big is coming' plus a closing question or date",
+  "the brand palette has one strong dark colour and one strong accent/accent"
+ ],
+ "avoid_when": [
+  "the video has a speaker or needs captions",
+  "the content needs explanation or proof",
+  "viewers sensitive to flashing (inversions every ~15 frames)"
+ ],
+ "match": {
+  "tags": [
+   "kinetic-typography",
+   "text-only",
+   "teaser",
+   "event-promo",
+   "font-swap",
+   "colour-inversion",
+   "rapid-fire",
+   "music-only",
+   "stock-reveal",
+   "progressive-blur",
+   "trailer"
+  ],
+  "keywords": [
+   "teaser",
+   "event",
+   "launch",
+   "coming",
+   "soon",
+   "hype",
+   "countdown",
+   "announcement",
+   "trailer",
+   "bold",
+   "typography",
+   "fonts",
+   "dramatic",
+   "reveal",
+   "conference",
+   "drop"
+  ],
+  "needs": {
+   "speaker_footage": false,
+   "screen_recordings": false,
+   "broll": true,
+   "brand_assets": false
+  }
+ },
+ "quality_score": 1,
+ "brand_prompt": "Use /video-pipeline with /video-captions on videos/<project>. Apply style blueprint B46 (video-reference-match/references/blueprints/B46.json) to this brand.\nThis blueprint has NO speech captions: it is a text-only hype teaser plus one stock/venue shot. Canvas 1080x1920, 30 fps.\n\nBRAND TOKENS (use the brand's colour for each role; keep the contrast relationship: {{ACCENT}} must stay >= 3:1 on {{CARD_BG}} and {{CARD_BG}} >= 3:1 on {{ACCENT}}; white text >= 4.5:1 on {{SURFACE}})\n- {{TEXT}}: opener phrase and closing question, default #FFFFFF\n- {{ACCENT}}: word-card colour (text on dark, background on the inverted card), default #AF0000\n- {{ACCENT_2}}: unused, default none\n- {{SURFACE}}: opener background, default #6C0101 (deep maroon)\n- {{CARD_BG}}: dark word-card background, default #000000\n- {{FONT_DISPLAY}}: heavy flared serif for the word cards and question, default Playfair Display 900 (a flared low-contrast display serif is closer)\n- {{FONT_BODY}}: start face of the opener rotation, default Playfair Display 400\n- {{HANDLE}}: not shown in the source; optional \"@handle\" small under the question\n- {{LOGO}}: not shown in the source; optional small logo for the last 20 frames\n\nTITLE CARDS\n1. Font-swap opener (first 33 % of runtime, ~106 frames): flat {{SURFACE}}; a short two-word teaser line (\"Headline here.\") in {{TEXT}}, one line, centred at 50 % H. Every 2-3 frames hard-swap the line to a different typeface category; rotate ~12: Playfair Display 400 / 400 italic / 900, Inter 300 / 800, Anton 400, Syne 700, Poppins 500, DM Sans 700, JetBrains Mono 500, plus Caveat, Permanent Marker, Kalam, Orbitron; never the same face twice in a row. Start at {{FONT_BODY}} 40 px (ink 2.19 % H, width 23.1 % W) and grow continuously (~0.8 % scale per frame) to ink ~5.4 % H / ~45 % W (wide faces up to ~75 % W). No stroke, box or fade.\n2. Escalation cards (33-69 % of runtime): 4 one-word ALL-CAPS comparative adjectives in {{FONT_DISPLAY}} at 129 px (\"BIGGER\" ink 5.31 % H / 46.5 % W; \"GRANDER\" 5.23 % / 59.6 %), centred at y 50 %. Each word twice: {{ACCENT}} text on {{CARD_BG}} for 10-13 frames, then {{CARD_BG}} text on {{ACCENT}} for 15-20 frames, identical size and position; text and background hard-cut on the same frame; no idle motion.\n3. Closing question (last ~31 %, ~100 frames): hard cut to a full-frame stock or venue wide; 2 centred lines (ALL CAPS, three short words, keep '?'), {{TEXT}}, {{FONT_DISPLAY}} 87 px (first line of ~7 characters reads 3.52 % H / 35.4 % W), block centred at 50 % H, line gap ~1.6 % H. Entry: 1-frame pop (first frame 116 % scale, then 100 %), then a linear zoom to ~151 % by the last frame. Background blurs from sharp to heavy mostly over frames 5-29 after the cut (ease-out), softening slightly further to ~frame 80.\n\nOTHER TEXT\n4. None in the source. Optional brand sign-off: {{LOGO}} at 8 % W, centred at 88 % H, fades in over 6 frames in the last 20 frames.\n\nSOUND: music only, a building trailer bed; optional impact on each inversion and a riser under the final zoom. Master to about -14 LUFS, true peak <= -1 dBTP.\nGRADE: Grade from the user's footage (video-style / grade.py); target look: low-contrast, saturated, warm (deep red / maroon / black cards, golden stock wide).\n\nVERIFY before rendering: render the calibration words and measure them:\n  video-reference-match/scripts/caption_probe.py <render-file> --out <dir> --at <t_BIGGER_black> --box 0.15,0.45,0.85,0.55 --ink \"#AF0000:90\"\n  video-reference-match/scripts/caption_probe.py <render-file> --out <dir> --at <t_GRANDER_red> --box 0.15,0.45,0.85,0.55 --ink \"#000000:60\"\n\"BIGGER\" must read ink 5.31 % +-0.5 of H and width 46.5 % +-2 of W; \"GRANDER\" 5.23 % +-0.5 / 59.6 % +-2. Closing question: measure line 1 just after the pop with --box 0.15,0.40,0.85,0.60 --ink \"#FFFFFF:45\" before the background is bright behind it. For the brand's own words compute the expected ink with video-reference-match/scripts/fit_font.py at 129 px / 87 px in {{FONT_DISPLAY}} (swap the --ink colour to {{ACCENT}} / {{CARD_BG}} when the tokens change). Positions within +-1 % of frame height.",
+ "caption_family": "title-only"
+}

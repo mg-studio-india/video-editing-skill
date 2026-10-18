@@ -1,0 +1,598 @@
+{
+ "id": "B40",
+ "schema": "blueprint/1",
+ "format": {
+  "type": "mixed",
+  "aspect": "9:16",
+  "language": "English",
+  "duration_class": "mid (60-180s)",
+  "people_on_screen": "1"
+ },
+ "topic_class": "marketing",
+ "signature": {
+  "one_line": "Keyed speaker over swapped backgrounds, zig-zag stacked captions with one gradient key line, illustrated phrase cards every few seconds.",
+  "unique_devices": [
+   "Zig-zag staircase caption stack: 1-2-word lines alternately hug left (x ~21 %) and right (x ~75 %) edges of an x 18-78 % column, 2-4 lines deep, then hard-clear",
+   "Key line filled with a vertical gradient that fades to near-white at the baseline (pink, second accent or yellow), Inter 800 among Inter 500 white lines",
+   "Background swap inside the opening shot (speaker cut-out keyed onto a glowing rising-chart graphic by frame ~12) so the hook moves before the first cut",
+   "Full-screen illustrated phrase cards (~45 % of runtime) whose stacked text IS the spoken line, with not-yet-spoken lines greyed and blurred"
+  ],
+  "why_it_works": "The picture changes every few seconds without losing the speaker; cards double as captions, so every claim is both heard and seen, and the gradient key line pins the claim."
+ },
+ "hook": {
+  "type": "bold claim / contrarian",
+  "first_word_s": 0.08,
+  "first_cut_s": 2.794,
+  "first_frame": "medium shot of the speaker against a real outdoor wall; within ~12 frames the background is replaced by a glowing second accent rising bar-chart graphic, with the first 2 words centred at ~60 % height in a second accent gradient"
+ },
+ "structure": [
+  {
+   "beat": "hook",
+   "from_pct": 0,
+   "to_pct": 4,
+   "what": "one contrarian sentence; background swap to a graphic behind the keyed speaker; hook words in big second accent gradient"
+  },
+  {
+   "beat": "setup",
+   "from_pct": 4,
+   "to_pct": 23,
+   "what": "the viewer's problem, alternating speaker and full-screen phrase cards roughly every 72 frames"
+  },
+  {
+   "beat": "claim",
+   "from_pct": 23,
+   "to_pct": 37,
+   "what": "turn to the answer, marked by a short flash to a new location and a PiP title card"
+  },
+  {
+   "beat": "list",
+   "from_pct": 37,
+   "to_pct": 66,
+   "what": "offer features, each on its own card, location or keyed background"
+  },
+  {
+   "beat": "proof",
+   "from_pct": 66,
+   "to_pct": 80,
+   "what": "client names over a motion-blurred graphic, then client logo cards above the speaker"
+  },
+  {
+   "beat": "payoff",
+   "from_pct": 80,
+   "to_pct": 89,
+   "what": "reframe of the viewer's pain as the thesis, on a money-themed card"
+  },
+  {
+   "beat": "cta",
+   "from_pct": 89,
+   "to_pct": 100,
+   "what": "spoken + on-screen CTA with a button pill and chevrons, then a silent logo end card"
+  }
+ ],
+ "pacing": {
+  "pace": "moderate",
+  "median_shot_s": 3.2,
+  "cuts_per_min": 17,
+  "wpm": 170,
+  "pauses_per_min": 0.0,
+  "visual_change_every_s": 3.0,
+  "notes": "cut-rate swings 0-36 cuts/min per 5-second window: bursts in the claim and list sections, one long hold for proof; 50 % J-lead cuts; wall-to-wall voice (96 % speech coverage)"
+ },
+ "elements": {
+  "captions": [
+   {
+    "what": "zig-zag stacked 1-2-word lines, white Inter 500 + one gradient key line Inter 800",
+    "when": "every speaker shot (~50 % of runtime)",
+    "how": "band y 52-72 %, column x 18-78 %; 89-100 px white, 100 px key; blur 8->0 px + fade + 2.5 % H slide-up over 5-6 frames, ease-out; whole stack hard-cuts at clause end",
+    "catalog": [
+     23,
+     21
+    ]
+   },
+   {
+    "what": "hook words alone in a big second accent gradient",
+    "when": "frames 1-24",
+    "how": "Inter 800 127 px, centred, centre y 60.6 %, same blur/slide entry over 6 frames, hard cut out",
+    "catalog": [
+     24
+    ]
+   }
+  ],
+  "background_text": [
+   {
+    "what": "PiP title card heading",
+    "when": "~24-29 %",
+    "how": "two-line title (small + bold) in dark green at y 13-17 % above a centred portrait window on white",
+    "catalog": [
+     4
+    ]
+   },
+   {
+    "what": "client logo card",
+    "when": "~71-79 %",
+    "how": "rounded light-grey square ~35 % W, top-centre y 2-17 %, black wordmark",
+    "catalog": [
+     209
+    ]
+   }
+  ],
+  "motion_graphics": [
+   {
+    "what": "kinetic phrase lines on cards",
+    "when": "each card",
+    "how": "lines blur + fade in over ~7 frames with ~1 % H upward drift; inactive lines grey + blurred until spoken; one accent line with a dark 3D extrusion shadow",
+    "catalog": [
+     23
+    ]
+   },
+   {
+    "what": "zoom-blur entry into a speaker shot",
+    "when": "~10 %",
+    "how": "radial zoom blur resolving over ~6 frames into the static shot",
+    "catalog": [
+     103
+    ]
+   },
+   {
+    "what": "animated 3D sweep / slow scroll on some cards",
+    "when": "setup and list cards",
+    "how": "slow camera sweep or vertical scroll across the illustrated still for the card's duration",
+    "catalog": [
+     95
+    ]
+   }
+  ],
+  "cards_lists": [
+   {
+    "what": "full-screen illustrated phrase cards",
+    "when": "8 cards, ~45 % of runtime, 36-144 frames each",
+    "how": "flat pastel or illustrated stills (lavender-grey stock person with eye bar, silhouettes on white, accent halftone collage, lavender geometric shapes, thumbnail strip, wallet with currency notes); 2-4 stacked text lines upper third or centre",
+    "catalog": [
+     135,
+     111
+    ]
+   },
+   {
+    "what": "one feature per visual",
+    "when": "list beat",
+    "how": "each feature gets its own card, location or keyed background instead of an on-screen bullet list",
+    "catalog": [
+     121
+    ]
+   }
+  ],
+  "silhouettes_cutouts": [
+   {
+    "what": "speaker cut-out keyed over graphic backgrounds",
+    "when": "hook (from frame ~12) and the start of the list beat (~37 %)",
+    "how": "full matte of the speaker, background replaced by a glowing rising-chart graphic or a board of sample-content tiles; speaker scale and position unchanged",
+    "catalog": [
+     110,
+     5
+    ]
+   },
+   {
+    "what": "black people silhouettes on white",
+    "when": "setup card",
+    "how": "illustrated silhouettes as card art behind the kinetic text",
+    "catalog": [
+     82
+    ]
+   }
+  ],
+  "broll_inserts": [
+   {
+    "what": "illustrated / stock stills used as cards",
+    "when": "~45 % of runtime",
+    "how": "replace the speaker full-screen; voice continues as VO with J-lead cuts",
+    "catalog": [
+     52
+    ]
+   }
+  ],
+  "layout": [
+   {
+    "what": "portrait PiP window on white",
+    "when": "~24-29 %",
+    "how": "speaker clip in a centred portrait window x ~25-77 %, y ~22-74 %, title above",
+    "catalog": [
+     4,
+     10
+    ]
+   }
+  ],
+  "camera": [
+   {
+    "what": "locked-off medium / medium-close talking head across ~4 locations",
+    "when": "all speaker shots",
+    "how": "no digital punch-ins; framing alternates MS/MCU between locations; new backdrop marks each section",
+    "catalog": [
+     46
+    ]
+   }
+  ],
+  "transitions": [
+   {
+    "what": "hard cuts, J-lead",
+    "when": "~83 % of cuts",
+    "how": "cut to card while the sentence continues",
+    "catalog": [
+     173
+    ]
+   },
+   {
+    "what": "location flash",
+    "when": "~23 %",
+    "how": "~7-frame shot at a new location before the PiP card, marking the turn",
+    "catalog": [
+     180
+    ]
+   },
+   {
+    "what": "soft entries (zoom-blur, dissolve)",
+    "when": "~17 % of cuts",
+    "how": "zoom-blur or short soft entry on a few speaker shots",
+    "catalog": [
+     103
+    ]
+   }
+  ],
+  "end_card": [
+   {
+    "what": "CTA pill + logo end card",
+    "when": "89-100 %",
+    "how": "white pill with italic caps in accent and a double down-chevron at y 77-89 % for ~108 frames; then ~55 silent frames of a white logo card",
+    "catalog": [
+     148
+    ]
+   }
+  ]
+ },
+ "captions_spec": {
+  "script": "latin (as spoken)",
+  "case": {
+   "line": "sentence case as spoken (capital only at sentence start)",
+   "key": "lowercase / as spoken (acronyms and proper nouns keep caps)"
+  },
+  "grouping": {
+   "words_per_line": "1-2 (max 3)",
+   "lines_on_screen": "1-4 (a stack grows line by line, then clears)",
+   "key_lines_per_stack": "0-1",
+   "sync": "line by line: each new 1-2-word line appears on its first spoken word",
+   "break": "the whole stack hard-cuts out at the end of the clause / sentence or on a picture cut; the next clause starts a new stack"
+  },
+  "layout": {
+   "band_pct_of_H": [
+    52,
+    72
+   ],
+   "column_pct_of_W": [
+    18,
+    78
+   ],
+   "stack": "zig-zag / staircase: lines alternately hug the left edge (x ~18-23 %) and the right edge (x ~68-76 %) of the column, so each line is offset from the one above. Typical 4-line stack: line 1 left-aligned x 21-59 % centre y 54.7 %; line 2 (key) x 23-76 % centre y 59.7 %; line 3 right-aligned x 41-75 % centre y 63 %; line 4 right-aligned ending ~75 % at y ~69 %. Hook-style 3-line stack: x 17-53 % (y 57 %), x 31-69 % (y 61 %), x 19-51 % (y 66 %).",
+   "line_pitch_pct_of_H": "4.3-5.0 (baseline to baseline; line-height ~0.85-0.9 of font size, lines nearly touching)",
+   "single_line": "a lone line / key line is centred horizontally (x centre 50 %, spanning ~23-77 % W), centre y 60-62 %",
+   "on_graphic_cards": "upper third (y 18-35 %) or centre (y 40-55 %) of the card, same stacking logic, dark or coloured text"
+  },
+  "type": {
+   "line": {
+    "font_class": "neo-grotesque sans, medium",
+    "closest_match": {
+     "local": "Inter 500",
+     "google": "Inter Medium"
+    },
+    "confidence": "medium",
+    "letterform_evidence": "double-storey a, single-storey g, straight-tailed y, flat-topped t with angled cut; the original face is slightly wider than Inter (closer to SF Pro Display)",
+    "color": "#FFFFFF (measured #F5F2F8 on footage)",
+    "stroke": "none",
+    "shadow": "tight dark drop shadow down-right, ~3px 4px 6px rgba(0,0,0,.65) at 1080 (estimated)",
+    "box": "none",
+    "tracking": "0em",
+    "ink_height_pct_of_H": 4.14,
+    "k": 0.99,
+    "font_size_px_at_1920": 80,
+    "calibration": [
+     {
+      "word": "They trust",
+      "ink_pct_of_H": 4.14,
+      "width_pct_of_W": 37.9,
+      "ink": "#F5F2F8:45"
+     }
+    ],
+    "size_spread": "lines in one stack are not all the same size: shorter lines solve to ~101-103 px in Inter 500 vs ~89 px for the calibration line - vary white lines between ~90 and ~100 px",
+    "verified_px": 89,
+    "fit": [
+     {
+      "font": "Inter 500",
+      "word": "They trust",
+      "tracking_em": 0.0,
+      "px_for_height": 84.6,
+      "px_for_width": 91.2,
+      "verified_px": 89,
+      "at_verified_px": {
+       "ink_pct_of_H": 4.32,
+       "width_pct_of_W": 36.9
+      },
+      "within_tolerance": true
+     }
+    ]
+   },
+   "key": {
+    "font_class": "neo-grotesque sans, extra-bold",
+    "closest_match": {
+     "local": "Inter 800",
+     "google": "Inter ExtraBold"
+    },
+    "confidence": "medium",
+    "letterform_evidence": "same skeleton as the white lines, much heavier stems; double-storey a and single-storey g",
+    "color": "vertical gradient (top -> bottom). Pink: #E65E79 -> #ED9AAE (mid) -> #F3C7D8, almost white at the baseline. Alternate key colours with the same recipe: blue #83AAE9 -> #CEDBF8, yellow #EFDE72 -> #F2E7A0",
+    "stroke": "none",
+    "shadow": "tight dark drop shadow down-right, ~3px 4px 6px rgba(0,0,0,.65) at 1080 (estimated)",
+    "box": "none",
+    "tracking": "0em",
+    "ink_height_pct_of_H": 4.45,
+    "k": 0.99,
+    "font_size_px_at_1920": 86,
+    "calibration": [
+     {
+      "word": "people who",
+      "ink_pct_of_H": 4.45,
+      "width_pct_of_W": 52.4,
+      "ink": "#ED9AAE:70"
+     }
+    ],
+    "selection_rule": "the 1-2-word phrase that carries the claim (a noun phrase, a negation, or the brand name); one per stack, never more",
+    "verified_px": 100,
+    "fit": [
+     {
+      "font": "Inter 800",
+      "word": "people who",
+      "tracking_em": 0.0,
+      "px_for_height": 90.9,
+      "px_for_width": 104.2,
+      "verified_px": 100,
+      "at_verified_px": {
+       "ink_pct_of_H": 4.9,
+       "width_pct_of_W": 50.3
+      },
+      "within_tolerance": true
+     }
+    ]
+   },
+   "hook": {
+    "font_class": "neo-grotesque sans, extra-bold",
+    "closest_match": {
+     "local": "Inter 800",
+     "google": "Inter ExtraBold"
+    },
+    "confidence": "medium",
+    "color": "blue vertical gradient #83AAE9 (top) -> #A8C4F4 (mid) -> #CEDBF8 (bottom)",
+    "stroke": "none",
+    "shadow": "tight dark drop shadow down-right, ~3px 4px 6px rgba(0,0,0,.65) at 1080 (estimated)",
+    "box": "none",
+    "tracking": "0em",
+    "ink_height_pct_of_H": 4.77,
+    "k": 0.73,
+    "font_size_px_at_1920": 125,
+    "calibration": [],
+    "use": "the first 2 words of the hook only (frames 1-24), alone and centred at y ~60.6 %; source 2-word hook measured ink 4.77 % H, width 53.6 % W - compute the expected ink for the user's words with fit_font.py",
+    "verified_px": 127
+   }
+  },
+  "animation": {
+   "fps": 23.976,
+   "entry": "per line: blur-in + fade (blur ~8 px -> 0, opacity 0 -> 1) sharp after 2-3 frames, while the line slides up ~2.5 % of H (~48 px at 1920) easing out over 5-6 frames (measured centre y 62.1 -> 61.6 -> 60.9 -> 60.4 -> 59.7 % over +0..+4 f; hook 63.2 -> 60.7 % over 6 f)",
+   "per_word_or_phrase": "per line (1-2 words); lines already on screen do not move",
+   "timing": "line first visible 0 to +6 frames after the transcript word start (typically +0 to +4 f)",
+   "highlight": "static: the key line is coloured from its entry; no karaoke sweep",
+   "exit": "hard cut: the whole stack disappears in one frame at the clause end (next clause appears 1 frame later) or with the picture cut",
+   "idle": "none while held",
+   "cards": "card text lines blur + fade in over ~7 frames with ~1 % H upward drift; not-yet-active lines on a card can sit greyed and blurred (depth-of-field look) until spoken"
+  },
+  "notes": "Positions, sizes, colours and frame timings measured on video frames; font names are closest matches (unverified); shadow values estimated."
+ },
+ "other_text_spec": [
+  {
+   "type": "kinetic phrase card (full-screen illustrated graphic)",
+   "when": "8 cards, ~45 % of runtime, 36-144 frames each, one every 72-144 frames; first at ~4 %, last (payoff) 80-89 %",
+   "bg": "flat or illustrated stills: lavender-grey #D2D2E0 with a greyscale eye-barred stock person; white with black silhouettes; maroon halftone collage; lavender #6563F9 geometric-shape card; beige content-thumbnail strip; teal card with a wallet of currency notes",
+   "text": "the spoken phrase as 2-4 stacked lines, same zig-zag stack logic and fonts as captions, upper third (y 18-35 %) or centre (y 40-55 %). Typical: 'Lead words' black #060609 medium (ink 3.36 % H, x 18-74 %), a not-yet-spoken line grey and blurred, 'KEY WORD' black extra-bold (ink 4.84 % H, 53.1 % W, ~94 px), a small right-aligned tail line; soft blurred dark drop shadow ~6 px. Accent lines: solid purple #6361F3 with a dark 3D extrusion shadow (centre y 47 %); yellow-gradient / pink-gradient key lines near the top (y 5-10 %); white line on maroon at top (y ~11 %)"
+  },
+  {
+   "type": "PiP title card",
+   "when": "24-29 % (one shot, ~80 frames)",
+   "bg": "white #F3F3FC with the speaker clip as a portrait window centred (x ~25-77 %, y ~22-74 %) (estimated)",
+   "text": "two-line title: small 'Lead words' + bold 'Headline here' below it, dark green #236721 (measured), stacked left-of-centre at y ~13-17 % (x ~25-70 %)"
+  },
+  {
+   "type": "client logo card",
+   "when": "71-79 % (proof beat)",
+   "text": "rounded light-grey square card (~35 % W) with a black serif client wordmark, top-centre at y 2-17 %, above the speaker's head"
+  },
+  {
+   "type": "CTA line + button",
+   "when": "89-96 % (~108 frames)",
+   "text": "'CTA line' white medium sans (ink 3.59 % H, 46.2 % W, centre y 60 %, x 29-75 %) + a fully-rounded white pill #F6F5FD (x 28-77 %, y 77.3-84.2 %) with italic extra-bold caps 'CTA' in crimson #B7223A (ink 2.34 % H, x 36-68 %, centre y 80.7 %) and a white double down-chevron below it (y ~86-89 %)"
+  },
+  {
+   "type": "logo end card",
+   "when": "96-100 % (~55 frames, silent)",
+   "text": "white background, black logo lockup (mark + 2-line wordmark) centred at ~50 % height, ~70 % W"
+  }
+ ],
+ "style": {
+  "palette_roles": {
+   "text": "#FFFFFF",
+   "accent": "#E65E79",
+   "accent_2": "#83AAE9",
+   "surface": "#D2D2E0",
+   "card_bg": "#F6F5FD"
+  },
+  "fonts": {
+   "caption_line": {
+    "closest_local": "Inter 500",
+    "verified_px": 89,
+    "tracking": "0em"
+   },
+   "caption_key": {
+    "closest_local": "Inter 800",
+    "verified_px": 100,
+    "tracking": "0em"
+   },
+   "hook": {
+    "closest_local": "Inter 800",
+    "verified_px": 127,
+    "tracking": "0em"
+   },
+   "card_key": {
+    "closest_local": "Inter 800",
+    "verified_px": 94,
+    "tracking": "0em"
+   },
+   "cta_button": {
+    "closest_local": "Inter 800 italic",
+    "verified_px": null,
+    "tracking": "0em"
+   }
+  },
+  "look_intent": "high-contrast, muted, warm natural daylight with natural skin; graphic cards in pastel beige, lavender, teal and maroon"
+ },
+ "sound": {
+  "music": "voice only (no bed detected); wall-to-wall voice, heavily compressed (LRA 1.8 LU)",
+  "sfx": [
+   "optional soft whoosh on zoom-blur / soft entries (~17 % of cuts)",
+   "no hits on hard cuts (measured cut_hit_share 0.2)",
+   "silence under the logo end card"
+  ],
+  "loudness_lufs": -14.1
+ },
+ "measured": {
+  "grade": {
+   "black_point": 11.8,
+   "midtone": 103.7,
+   "white_point": 247.6,
+   "contrast_range": 235.8,
+   "luma_std": 74.9,
+   "saturation": 0.232,
+   "colorfulness": 43.7,
+   "warmth_r_minus_b": 21.0,
+   "tint_g": -1.2,
+   "vignette_centre_over_edge": 0.81,
+   "label": "high-contrast, muted, warm"
+  },
+  "layout": {
+   "letterbox_share": 0.0,
+   "split_divider_share": 0.0
+  },
+  "sound": {
+   "has_audio": true,
+   "speech_coverage": 0.96,
+   "beat_periodicity": 0.1,
+   "beat_bpm_est": null,
+   "gap_level_rel_speech_db": -82.7,
+   "music": "voice only (no bed detected)",
+   "cut_hit_share": 0.2,
+   "method": "heuristic (onset-envelope beat periodicity + level in speech gaps); not a classifier"
+  }
+ },
+ "catalog_styles": [
+  {
+   "id": 110,
+   "name": "Cutout-Subject Background Replacement",
+   "role": "speaker keyed onto chart / sample-board backgrounds in hook and list"
+  },
+  {
+   "id": 23,
+   "name": "Kinetic Typography",
+   "role": "zig-zag stacked caption lines and card text"
+  },
+  {
+   "id": 135,
+   "name": "Quote-by-Quote Presentation",
+   "role": "full-screen phrase cards carrying the spoken line"
+  },
+  {
+   "id": 24,
+   "name": "Big-Text Hook",
+   "role": "hook words alone in a big gradient"
+  },
+  {
+   "id": 4,
+   "name": "Picture-in-Picture (PiP)",
+   "role": "portrait speaker window under a title"
+  },
+  {
+   "id": 209,
+   "name": "Social Proof / Testimonial Montage",
+   "role": "client logo cards above the speaker"
+  },
+  {
+   "id": 148,
+   "name": "Hook → Problem → Solution → Call to Action (HPSC)",
+   "role": "overall structure ending on a button CTA"
+  },
+  {
+   "id": 173,
+   "name": "Jump-Cut Editing",
+   "role": "J-lead hard cuts between speaker and cards"
+  }
+ ],
+ "use_when": [
+  "a single speaker pitches a service or offer and needs every claim visualised",
+  "the user has illustration / stock stills or can generate flat pastel cards",
+  "the script is a problem -> answer -> features -> proof -> CTA ad",
+  "the user can shoot or matte the speaker for background swaps",
+  "a mid-length ad needs the picture to change every 72-144 frames without more footage"
+ ],
+ "avoid_when": [
+  "the user wants maximum face time / a personal, raw creator feel",
+  "no time or assets for ~8 custom cards",
+  "long monologue without a list or offer structure"
+ ],
+ "match": {
+  "tags": [
+   "talking-head",
+   "kinetic-captions",
+   "stacked-captions",
+   "gradient-key-word",
+   "graphic-cards",
+   "background-replacement",
+   "subject-cutout",
+   "multi-location",
+   "agency-ad",
+   "cta-button",
+   "logo-end-card",
+   "pip",
+   "vertical"
+  ],
+  "keywords": [
+   "agency",
+   "ads",
+   "trust",
+   "offer",
+   "service",
+   "pitch",
+   "features",
+   "clients",
+   "proof",
+   "book",
+   "call",
+   "marketing",
+   "content",
+   "founders",
+   "conversion",
+   "illustration",
+   "cards"
+  ],
+  "needs": {
+   "speaker_footage": true,
+   "screen_recordings": false,
+   "broll": true,
+   "brand_assets": true
+  }
+ },
+ "quality_score": 4,
+ "brand_prompt": "Use /video-pipeline with /video-captions on videos/<project>. Apply style blueprint B40 (video-reference-match/references/blueprints/B40.json) to this brand.\n\nBRAND TOKENS (use the brand's colour/font for each role; keep the contrast relationship: white lines and the key gradient must stay >= 3:1 on the footage, card text >= 4.5:1 on {{SURFACE}})\n- {{TEXT}} caption lines - default #FFFFFF\n- {{ACCENT}} key-line gradient top colour - default #E65E79 (gradient tints to near-white at the baseline: #E65E79 -> #ED9AAE -> #F3C7D8)\n- {{ACCENT_2}} hook / alternate key gradient - default #83AAE9 (-> #A8C4F4 -> #CEDBF8); a third key colour may follow the same recipe (default yellow #EFDE72 -> #F2E7A0)\n- {{SURFACE}} phrase-card background - default lavender-grey #D2D2E0 (card text near-black #060609)\n- {{CARD_BG}} CTA pill / PiP-card white - default #F6F5FD; button text default crimson #B7223A\n- {{FONT_DISPLAY}} key line / hook / button - default Inter 800 (ExtraBold)\n- {{FONT_BODY}} caption lines - default Inter 500 (Medium)\n- {{HANDLE}} - @handle (not shown on screen in this blueprint; optional on the end card)\n- {{LOGO}} - logo lockup for the end card and logo-proof cards\n\nCanvas 1080x1920, 24 fps (23.976). All positions are % of frame.\n\nCAPTIONS\n1. Latin script, as spoken; sentence case for {{TEXT}} lines; key lines as spoken (lowercase; acronyms / brand names keep caps).\n2. Grouping: split each clause into 1-2-word lines (max 3). Lines STACK: each new line appears under the previous one on its first spoken word, up to 4 lines; at the clause end (or a picture cut) the whole stack hard-cuts out and the next clause starts fresh. At most ONE key line per stack - the 1-2 words that carry the claim.\n3. Lines: {{FONT_BODY}}, 89 px (stacked lines may vary 89-101 px), {{TEXT}}, tracking 0, no stroke, no box, tight dark drop shadow down-right (~3px 4px 6px rgba(0,0,0,.65), estimated).\n4. Key line: {{FONT_DISPLAY}}, 100 px, vertical gradient top->bottom {{ACCENT}} -> mid tint -> near-white at the baseline. Rotate {{ACCENT_2}} (same recipe) for variety. Same shadow, no stroke.\n5. Hook: the first 2 spoken words alone, {{FONT_DISPLAY}} 127 px, {{ACCENT_2}} gradient, centred, centre y 60.6 %, on screen for frames 1-24, then hard cut.\n6. Layout: column x 18-78 %, band y 52-72 % (torso, below the chin). Zig-zag: alternate lines hug the column's left edge (x ~21 %) and right edge (x ~75 %); typical stack: line 1 left x 21-59 % centre y 54.7 %, line 2 (key) x 23-76 % y 59.7 %, line 3 right-aligned to 75 % y 63 %, line 4 right-aligned y ~69 %. Baseline pitch 4.3-5 % H (line-height 0.85-0.9). A lone line is centred at y 60-62 %.\n7. Animation: each line blurs in (8 px -> 0, opacity 0 -> 1, sharp after 2-3 frames) while sliding up ~2.5 % H (~48 px), ease-out (power3.out) over 5-6 frames; lines already on screen stay still; line appears 0-4 frames after its first word; exit = hard cut of the whole stack; no idle motion, no karaoke.\n\nOTHER TEXT / EDIT DEVICES\n8. Opening: matte the speaker and swap the background to a glowing {{ACCENT_2}} rising-chart graphic by frame ~12 of shot 1; first cut at ~4 % of runtime.\n9. Phrase cards (~45 % of runtime, 36-144 frames each, one every 72-144 frames on VO beats): full-screen flat/illustrated still on {{SURFACE}} or other pastel tones; the spoken phrase as 2-4 stacked lines (same zig-zag) in the upper third (y 18-35 %) or centre (y 40-55 %): 'Lead words' near-black {{FONT_BODY}}, 'KEY WORD' near-black {{FONT_DISPLAY}} ~94 px; inactive lines grey + blurred until spoken; soft ~6 px dark shadow; lines blur + fade in over ~7 frames with ~1 % H upward drift. Accent variant: one solid {{ACCENT}}-family line with a dark 3D extrusion shadow.\n10. Turn marker: a ~7-frame shot at a new location, then a {{CARD_BG}} card with the speaker in a centred portrait window (x 25-77 %, y 22-74 %) under a two-line title ('Lead words' small / 'Headline here' bold) at y 13-17 %, in a dark brand colour.\n11. Logo proof: rounded light-grey square (~35 % W) with a client wordmark, top-centre y 2-17 %, above the speaker's head.\n12. CTA (last ~11 % of runtime): 'CTA line' in {{TEXT}} {{FONT_BODY}} ~100 px at centre y 60 % + a fully-rounded {{CARD_BG}} pill at x 28-77 %, y 77.3-84.2 % with italic {{FONT_DISPLAY}} caps 'CTA' (ink 2.3 % H) in the brand's dark accent and a white double down-chevron at y 86-89 %, ~108 frames; then ~55 silent frames of {{LOGO}} centred on white at ~70 % W.\n\nGRADE: Grade from the user's footage (video-style / grade.py); target look: high-contrast, muted, warm, natural skin; pastel cards.\nSOUND: voice only, compressed to about -14 LUFS; optional soft whoosh on zoom-blur entries only; silence under the end card.\n\nVERIFY before rendering (px values were render-verified with Inter; if the brand font differs, adjust px until the ink numbers match):\na) Render test frames over a dark area: \"They trust\" ({{TEXT}}, {{FONT_BODY}} 89 px), \"people who\" (key gradient, {{FONT_DISPLAY}} 100 px), \"KEY WORD\" (hook, {{FONT_DISPLAY}} 127 px).\nb) Measure: python video-reference-match/scripts/caption_probe.py <test render or snapshot> --out <dir> --at <t> --box 0.1,0.5,0.9,0.66 --ink \"{{TEXT}}:45,{{ACCENT}}:70,{{ACCENT_2}}:60\" (tighten --box to one line if lines overlap).\nc) Required: \"They trust\" ink 4.14 % +-0.5 of H and 37.9 % +-2 of W; \"people who\" 4.45 % +-0.5 and 52.4 % +-2. For the hook word (or any other word) compute the expected ink with python video-reference-match/scripts/fit_font.py --font \"<{{FONT_DISPLAY}}>\" --word \"KEY WORD\" at 127 px and compare. Positions within +-1 % of H of the numbers above.",
+ "caption_family": "stacked-kinetic"
+}

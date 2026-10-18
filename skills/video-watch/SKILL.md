@@ -29,13 +29,18 @@ Flags: `--intent "..."` (ref), `--start/--end`, `--timestamps 0:12,1:30`, `--max
 (soft dissolves; 0.35 for noisy footage), `--fresh`. URLs need yt-dlp. Over 30 min: work in chunks (the transcript is
 cached).
 
-## Step 1 of an edit
+## Step 1 of an edit (STRICTLY MANDATORY)
 
-Run `mine` per raw clip; copy `fingerprint.json`, `analysis.json`, `sheets/` from the printed cache path into
-`$W/watch/`. Read every sheet and note for the plan: framing changes, energy, where the picture goes stale, unreadable
-on-screen text, visible retakes, treatment hints (two people → split-screen; screen recording → cutaways; static head
-→ layered-head). Record status, outputs and a three-line summary in `project.json`. Its transcript is a first look; the
-cut uses `video-transcribe`'s.
+Never skip this step. Every edit MUST begin by running `mine` on the raw footage:
+```bash
+python3 "$ENG/scripts/watch.py" mine "$W/raw/<video>"
+```
+Copy `fingerprint.json`, `analysis.json`, and `sheets/` from the printed cache path into `$W/watch/`.
+Read every sheet and note for the plan:
+- **Dead Air & Pause QA Flags:** Check `mine-report.md` for dead air flags (e.g. pauses > 0.40s, head/tail dead air). These MUST be routed to `video-cut-audit` for elimination.
+- **Shot Dynamics & Pacing:** Framing changes, energy drops, where the picture goes stale.
+- **Visual Retakes & Stumbles:** Identify repeated sentences or false starts to drop.
+Record status, outputs, and a three-line summary in `project.json`. The transcript and QA flags feed directly into Gate 2 and Gate 4.
 
 ## Reference video (`ref`)
 

@@ -1,0 +1,372 @@
+{
+ "id": "B10",
+ "schema": "blueprint/1",
+ "format": {
+  "type": "skit",
+  "aspect": "9:16",
+  "language": "Hinglish",
+  "duration_class": "micro (<15s)",
+  "people_on_screen": "2+"
+ },
+ "topic_class": "comedy skit / meme ad",
+ "signature": {
+  "one_line": "Deadpan one-take office meme: boxed competitor-pain title, 'Meanwhile : us' pills, printed prop punchline.",
+  "unique_devices": [
+   "'Other X: pain / Meanwhile : us' structure: competitor pain in a big top title, the brand answer as two small white pills that hard-cut in on the right at ~30 % of runtime",
+   "Top title in black heavy italic geometric sans on merged white per-line rounded boxes, the pain phrase in accent",
+   "Punchline delivered as a physical printed one-word prop lifted to face height while both people point at it",
+   "Round brand badge top-right for the whole clip instead of an end card"
+  ],
+  "why_it_works": "Names a familiar pain in the viewer's own register in frame one; the meme contrast resolves in a single visual gag with no reading after the turn."
+ },
+ "hook": {
+  "type": "bold claim / contrarian (competitor call-out)",
+  "first_word_s": null,
+  "first_cut_s": null,
+  "first_frame": "Static office medium shot of two people, one standing and one seated at a desk, both deadpan to camera; white-boxed 2-line title at the top, round badge top-right"
+ },
+ "structure": [
+  {
+   "beat": "hook",
+   "from_pct": 0,
+   "to_pct": 30,
+   "what": "Deadpan pair under the competitor-pain title"
+  },
+  {
+   "beat": "claim",
+   "from_pct": 30,
+   "to_pct": 43,
+   "what": "'Meanwhile :' + brand-name pills hard-cut in; a printed sheet starts coming up"
+  },
+  {
+   "beat": "payoff",
+   "from_pct": 43,
+   "to_pct": 100,
+   "what": "One-word benefit sheet held at face height, both people point at it"
+  }
+ ],
+ "pacing": {
+  "pace": "single take (no cuts)",
+  "median_shot_s": null,
+  "cuts_per_min": 0,
+  "wpm": null,
+  "pauses_per_min": null,
+  "visual_change_every_s": 2.5
+ },
+ "elements": {
+  "captions": [],
+  "background_text": [
+   {
+    "what": "Meme title (2 lines)",
+    "when": "0-100 %",
+    "how": "Roman Hinglish, sentence case, ~10 words; Poppins 800 italic 58 px black, pain phrase accent; merged white per-line boxes (~10 px radius): line 1 box x 9.3-90.1 %, line 2 box x 5.6-93.9 %, together y 15.8-25.7 %; line 1 ink 16.7-19.1 %, line 2 ink 20.8-23.8 %; static from frame 0",
+    "catalog": [
+     24
+    ]
+   },
+   {
+    "what": "Turn pills",
+    "when": "30-100 %",
+    "how": "Two white pills (radius ~8 px) on the right: pill 1 x 68.8-91.2 %, y 46.1-49.1 % with 'Meanwhile :' black Poppins 800 italic 33 px; pill 2 x 66.4-93.5 %, y 50.9-53.8 % with the brand name in two brand colours; gap 1.8 % H; both hard-cut in together at frame ~69, no pop",
+    "catalog": [
+     118
+    ]
+   },
+   {
+    "what": "Round brand badge",
+    "when": "0-100 %",
+    "how": "Circular logo badge top-right, x ~78-94 %, y ~5.5-14.5 % (~16 % W); static",
+    "catalog": []
+   }
+  ],
+  "motion_graphics": [],
+  "cards_lists": [],
+  "silhouettes_cutouts": [],
+  "broll_inserts": [],
+  "layout": [
+   {
+    "what": "Locked medium two-shot",
+    "when": "100 %",
+    "how": "Subjects in the middle band (30-90 % H), clean wall/ceiling above for the title, right side kept clear at 45-55 % H for the pills",
+    "catalog": []
+   }
+  ],
+  "camera": [
+   {
+    "what": "Static single take",
+    "when": "100 %",
+    "how": "No cuts, no zooms",
+    "catalog": [
+     70
+    ]
+   }
+  ],
+  "transitions": [],
+  "end_card": []
+ },
+ "captions_spec": null,
+ "other_text_spec": [
+  {
+   "type": "meme title (2 lines)",
+   "when": "0-100 % of runtime",
+   "copy": "'Other <competitors>: <pain phrase> / <rest of line>' in Roman Hinglish, 2 lines, ~10 words, sentence case, colon after the setup; the pain phrase in red (placeholder 'Other brands: KEY WORD here / lead words here')",
+   "font_class": "heavy geometric sans, italic (extra-bold/black)",
+   "closest_match": {
+    "local": "Poppins 800 (font-style: italic -> synthetic oblique)",
+    "google": "Poppins ExtraBold Italic",
+    "confidence": "medium"
+   },
+   "case": "sentence",
+   "tracking": "0em",
+   "color": {
+    "text": "#000000",
+    "key_phrase": "#E00006"
+   },
+   "box": "#FFFFFF per-line boxes merged into one shape with rounded corners (~10 px @1920, estimated): line 1 box x 9.3-90.1 %, line 2 box x 5.6-93.9 %, total y 15.8-25.7 %",
+   "stroke": "none",
+   "shadow": "none",
+   "layout": {
+    "align": "centre",
+    "line1": {
+     "ink_pct_of_H": [
+      16.7,
+      19.1
+     ],
+     "x_pct": [
+      11.5,
+      88.1
+     ]
+    },
+    "line2": {
+     "ink_pct_of_H": [
+      20.8,
+      23.8
+     ],
+     "x_pct": [
+      7.6,
+      91.5
+     ]
+    }
+   },
+   "measured": {
+    "line1": {
+     "ink_pct_of_H": 2.42,
+     "width_pct_of_W": 76.6,
+     "chars": "~28 incl. colon and digits"
+    },
+    "line2": {
+     "ink_pct_of_H": 3.0,
+     "width_pct_of_W": 83.9,
+     "chars": "~31"
+    }
+   },
+   "verified_px": 58,
+   "fit_note": "solved upright; the italic slant adds little width",
+   "animation": {
+    "fps": 30,
+    "entry": "on from frame 0",
+    "idle": "static",
+    "exit": "none"
+   }
+  },
+  {
+   "type": "turn pills ('Meanwhile :' + brand)",
+   "when": "30-100 % of runtime (in at frame ~69)",
+   "pills": [
+    {
+     "text": "Meanwhile :",
+     "color": "#000000 bold italic",
+     "pill": "#FFFFFF, x 68.8-91.2 %, y 46.1-49.1 % (3.0 % H)",
+     "text_ink_pct_of_H": [
+      46.8,
+      48.0
+     ],
+     "text_x_pct": [
+      70.3,
+      89.6
+     ]
+    },
+    {
+     "text": "<brand name> in two colours: first word deep teal-navy #0C3248, second word maroon #60261B, bold italic",
+     "pill": "#FFFFFF, x 66.4-93.5 %, y 50.9-53.8 % (2.9 % H)",
+     "gap_between_pills_pct_of_H": 1.8
+    }
+   ],
+   "radius": "~8 px @1920 (estimated)",
+   "closest_match": {
+    "local": "Poppins 800 italic",
+    "google": "Poppins ExtraBold Italic"
+   },
+   "tracking": "0em",
+   "calibration": [
+    {
+     "word": "Meanwhile :",
+     "ink_pct_of_H": 1.33,
+     "width_pct_of_W": 19.3
+    }
+   ],
+   "verified_px": 33,
+   "animation": "both pills hard-cut in together (no pop, slide or fade), static to the end"
+  },
+  {
+   "type": "brand badge",
+   "when": "0-100 % of runtime",
+   "graphic": "round logo badge (navy #364B72 and red #873C45 ring with white lettering)",
+   "layout": {
+    "x_pct": [
+     78,
+     94
+    ],
+    "y_pct": [
+     5.5,
+     14.5
+    ],
+    "approx": "estimated"
+   },
+   "animation": "static"
+  }
+ ],
+ "style": {
+  "palette_roles": {
+   "text": "#000000",
+   "accent": "#E00006",
+   "accent_2": "#0C3248",
+   "surface": "#FFFFFF",
+   "card_bg": null
+  },
+  "fonts": {
+   "title": {
+    "closest_local": "Poppins 800 italic",
+    "verified_px": 58,
+    "tracking": "0em"
+   },
+   "pills": {
+    "closest_local": "Poppins 800 italic",
+    "verified_px": 33,
+    "tracking": "0em"
+   }
+  },
+  "look_intent": "high-contrast, muted, warm: office fluorescent with warm wood and orange accents, neutral skin, phone-native"
+ },
+ "sound": {
+  "music": "non-speech trend sound with gaps (34 % silence, loudness range ~20 LU); heuristic labels it a music bed (~182 bpm estimate); no voice",
+  "sfx": [
+   "none added; no cuts (cut_hit_share n/a)",
+   "optional: pop on the turn pills and a comedic sting on the prop reveal"
+  ],
+  "loudness_lufs": -14.2
+ },
+ "measured": {
+  "grade": {
+   "black_point": 6.8,
+   "midtone": 123.7,
+   "white_point": 254.1,
+   "contrast_range": 247.3,
+   "luma_std": 59.3,
+   "saturation": 0.237,
+   "colorfulness": 34.9,
+   "warmth_r_minus_b": 19.7,
+   "tint_g": -4.0,
+   "vignette_centre_over_edge": 0.9,
+   "label": "high-contrast, muted, warm"
+  },
+  "layout": {
+   "letterbox_share": 0.0,
+   "split_divider_share": 0.08
+  },
+  "sound": {
+   "has_audio": true,
+   "speech_coverage": 0.98,
+   "beat_periodicity": 0.33,
+   "beat_bpm_est": 182,
+   "gap_level_rel_speech_db": null,
+   "music": "music bed likely",
+   "cut_hit_share": null,
+   "method": "heuristic (onset-envelope beat periodicity + level in speech gaps); not a classifier"
+  }
+ },
+ "catalog_styles": [
+  {
+   "id": 24,
+   "name": "Big-Text Hook",
+   "role": "white-boxed competitor-pain title from frame 0"
+  },
+  {
+   "id": 118,
+   "name": "A-Versus-B Comparison",
+   "role": "'others' vs 'us' meme contrast"
+  },
+  {
+   "id": 159,
+   "name": "Contrarian Argument / Hot Take",
+   "role": "competitor call-out hook"
+  },
+  {
+   "id": 222,
+   "name": "Offer / Sale Announcement",
+   "role": "one-word benefit as the punchline"
+  },
+  {
+   "id": 70,
+   "name": "Single-Take / One-Shot Video (Oner)",
+   "role": "locked single take"
+  },
+  {
+   "id": 201,
+   "name": "Product Advertisement",
+   "role": "meme-format ad for a service"
+  }
+ ],
+ "use_when": [
+  "the brand's edge over competitors fits one word (free, faster, cheaper, instant)",
+  "two people can act a deadpan reaction in one static take",
+  "the audience responds to meme formats in Roman-script Hinglish (or the brand's language)",
+  "the piece must stay in the micro duration class"
+ ],
+ "avoid_when": [
+  "comparative claims need legal care or proof",
+  "the message needs explanation or speech",
+  "the brand voice is formal or premium"
+ ],
+ "match": {
+  "tags": [
+   "meme",
+   "skit",
+   "competitor-callout",
+   "versus",
+   "boxed-title",
+   "hinglish-text",
+   "single-take",
+   "prop-reveal",
+   "logo-badge",
+   "deadpan",
+   "turn-pills"
+  ],
+  "keywords": [
+   "meme",
+   "others",
+   "competitors",
+   "meanwhile",
+   "free",
+   "cheaper",
+   "comparison",
+   "funny",
+   "office",
+   "skit",
+   "agency",
+   "versus",
+   "joke",
+   "relatable",
+   "fees"
+  ],
+  "needs": {
+   "speaker_footage": true,
+   "screen_recordings": false,
+   "broll": false,
+   "brand_assets": true
+  }
+ },
+ "quality_score": 2,
+ "brand_prompt": "Use /video-pipeline with /video-captions on videos/<project>. Apply style blueprint B10 (video-reference-match/references/blueprints/B10.json) to this brand.\nNo speech captions: a one-take meme skit whose editing is two text layers plus a badge. Canvas 1080x1920, 30 fps.\n\nBRAND TOKENS (use the brand's colour for each role; keep the contrast relationship: {{TEXT}} and {{ACCENT}} >= 4.5:1 on {{SURFACE}} boxes; the pain phrase must stay a warning-type hue distinct from the brand colours)\n- {{TEXT}}: title and 'Meanwhile' text, default #000000\n- {{ACCENT}}: competitor pain phrase, default #E00006\n- {{ACCENT_2}}: brand name word 1 on the pill, default #0C3248 (word 2 default #60261B)\n- {{SURFACE}}: title boxes and pills, default #FFFFFF\n- {{CARD_BG}}: unused, default none\n- {{FONT_DISPLAY}}: default Poppins 800 italic\n- {{FONT_BODY}}: default Poppins 800 italic\n- {{HANDLE}}: not shown in the source\n- {{LOGO}}: round badge top-right for the whole clip\n\nTITLE\n1. Copy: \"Other <competitors>: <pain phrase> / <rest of line>\" in the audience's register (source: Roman Hinglish), 2 lines, ~10 words, sentence case; the pain phrase in {{ACCENT}} (\"Other brands: KEY WORD here / lead words here\").\n2. {{FONT_DISPLAY}} 58 px, tracking 0; text {{TEXT}}, key phrase {{ACCENT}}; no stroke or shadow.\n3. Box: {{SURFACE}} behind each line, merged into one shape with ~10 px rounded corners (line 1 box x 9.3-90.1 %, line 2 box x 5.6-93.9 %, together y 15.8-25.7 %). Lines centred: line 1 ink 16.7-19.1 %, line 2 ink 20.8-23.8 % H (a ~31-character line spans ~83.9 % W at 3.0 % H).\n4. Timing: on from frame 0 to the end, static.\n\nOTHER TEXT\n5. Turn pills at the joke's turn (~30 % of runtime), both hard-cut in together, static to the end: {{SURFACE}} pills (radius ~8 px) on the right. Pill 1 x 68.8-91.2 %, y 46.1-49.1 % with \"Meanwhile :\" in {{TEXT}} {{FONT_BODY}} 33 px; pill 2 x 66.4-93.5 %, y 50.9-53.8 % with the brand name, first word {{ACCENT_2}}, second word the brand's second colour. Gap 1.8 % H.\n6. {{LOGO}} round badge top-right (x ~78-94 %, y ~5.5-14.5 %), static, whole clip. Deliver the punchline as a physical printed one-word prop (\"KEY WORD !!\") lifted to face height while both people point at it; no typed punchline.\n\nEDIT\n7. One locked medium two-shot, deadpan to camera, no cuts or zooms; keep the right side at 45-55 % H clear for the pills.\n\nSOUND: a non-speech trend sound or comedic sting with gaps; optional pop on the pills. Master to about -14 LUFS, true peak <= -1 dBTP.\nGRADE: Grade from the user's footage (video-style / grade.py); target look: high-contrast, muted, warm office light, neutral skin.\n\nVERIFY before rendering: render the title and pills and measure:\n  video-reference-match/scripts/caption_probe.py <render-file> --out <dir> --at 1.0 --box 0.05,0.2,0.95,0.24 --ink \"#000000:90\"\n  video-reference-match/scripts/caption_probe.py <render-file> --out <dir> --at 3.0 --box 0.66,0.46,0.93,0.49 --ink \"#000000:90\"\nTitle line 2 (run the {{TEXT}} and {{ACCENT}} inks, e.g. --ink \"#E00006:90\", and combine): compute the expected ink for the brand's line with video-reference-match/scripts/fit_font.py at 58 px (a ~31-character line reads ~3.0 % H / 83.9 % W); \"Meanwhile :\" must read 1.33 % +-0.5 of H and 19.3 % +-2 of W. Box/pill positions within +-1 % of frame height.",
+ "caption_family": "title-only"
+}

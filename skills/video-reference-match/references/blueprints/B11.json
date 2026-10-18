@@ -1,0 +1,550 @@
+{
+ "id": "B11",
+ "schema": "blueprint/1",
+ "format": {
+  "type": "podcast-clip",
+  "aspect": "9:16",
+  "language": "Hinglish",
+  "duration_class": "short (15-60s)",
+  "people_on_screen": "1"
+ },
+ "topic_class": "marketing",
+ "signature": {
+  "one_line": "Interview recut with giant solid-accent key words, accent/second accent cut-out cards, and a 50/50 split montage swapping proof images every ~15 frames.",
+  "unique_devices": [
+   "One giant Inter-900 solid-accent key word (~14.5 % H, ~80-86 % W) per sentence with the small white lead line nested inside its ascender band",
+   "50/50 split montage: top-half example image swaps every 12-18 frames in sync with each 2-3-word caption chunk, speaker held in the bottom half",
+   "Greyscale subject cut-out with a second accent sticker outline on a solid accent card under a second accent lowercase headline, as a ~40-frame pattern interrupt",
+   "End card: profile circle on a accent disc + @handle + animated Like / Share pills"
+  ],
+  "why_it_works": "A two-colour system makes every beat instantly recognisable; each spoken chunk gets its own proof image, and the giant key word lets a muted viewer get the thesis in three words."
+ },
+ "hook": {
+  "type": "in medias res",
+  "first_word_s": 0.01,
+  "first_cut_s": 0.633,
+  "first_frame": "seated medium shot, 3/4 profile, on a warm coloured set; small white lead words with a giant accent key word over the chest at ~55 % height within 15 frames"
+ },
+ "structure": [
+  {
+   "beat": "hook",
+   "from_pct": 0,
+   "to_pct": 7,
+   "what": "start mid-thought; giant key word, then a accent cut-out headline card at frame ~19"
+  },
+  {
+   "beat": "claim",
+   "from_pct": 7,
+   "to_pct": 30,
+   "what": "thesis in one held shot with two giant accent key words"
+  },
+  {
+   "beat": "example",
+   "from_pct": 30,
+   "to_pct": 42,
+   "what": "example 1 as a split montage: 8 proof images, one per caption chunk"
+  },
+  {
+   "beat": "proof",
+   "from_pct": 42,
+   "to_pct": 65,
+   "what": "example 2: cut-out headline card, then a 7-image split montage"
+  },
+  {
+   "beat": "payoff",
+   "from_pct": 65,
+   "to_pct": 90,
+   "what": "principle restated on a accent statement card, then tighter crop on the speaker with the final key word"
+  },
+  {
+   "beat": "cta",
+   "from_pct": 90,
+   "to_pct": 100,
+   "what": "handle end card with animated Like button"
+  }
+ ],
+ "pacing": {
+  "pace": "frenetic",
+  "median_shot_s": 0.6,
+  "cuts_per_min": 49,
+  "wpm": 260,
+  "pauses_per_min": 0.0,
+  "visual_change_every_s": 0.6,
+  "notes": "cut curve rises 24 -> 96 cuts/min in the montages then drops to ~12 for the payoff; 62 % of cuts are montage image swaps; one long held interview shot for the claim"
+ },
+ "elements": {
+  "captions": [
+   {
+    "what": "small white lead words",
+    "when": "all interview and split shots",
+    "how": "Inter 600 69-70 px -0.01em, centred ~49.5 % (on the divider in splits); each word fades in over 2 frames with ~1 % H drift; hard cut out",
+    "catalog": [
+     21,
+     27
+    ]
+   },
+   {
+    "what": "giant accent key word",
+    "when": "one per sentence on interview shots",
+    "how": "Inter 900 ~292 px -0.03em solid accent, centred, centre y 55-59 %; lead line nested in its ascender band; fade from 40 % + scale 0.85 -> 1 over 3 frames",
+    "catalog": [
+     31,
+     24
+    ]
+   }
+  ],
+  "background_text": [
+   {
+    "what": "source credit bug",
+    "when": "throughout",
+    "how": "platform icon + '/ Source name' white ~1.3 % H top-left at y 4 %",
+    "catalog": []
+   },
+   {
+    "what": "accent statement card",
+    "when": "65-73 %",
+    "how": "second accent bold grotesque, 3 centred lines at 42-55 % height, ~3.4 % H per line",
+    "catalog": [
+     39,
+     135
+    ]
+   }
+  ],
+  "motion_graphics": [
+   {
+    "what": "animated Like button",
+    "when": "end card",
+    "how": "pill press-in then pop (scale 0.9 -> 1.05 -> 1, back.out) with icon fill",
+    "catalog": [
+     35
+    ]
+   }
+  ],
+  "cards_lists": [
+   {
+    "what": "cut-out headline cards",
+    "when": "~2 % and ~42 %",
+    "how": "solid accent card, second accent lowercase black-weight headline 3 lines top-left y 7-33 %, greyscale cut-out bottom-right with ~8 px second accent outline; ~40 frames each",
+    "catalog": [
+     5,
+     24
+    ]
+   }
+  ],
+  "silhouettes_cutouts": [
+   {
+    "what": "greyscale sticker cut-out with second accent outline",
+    "when": "headline cards",
+    "how": "subject matted, desaturated to greyscale, ~8 px second accent stroke, bottom-right overlapping the last headline line",
+    "catalog": [
+     5,
+     76
+    ]
+   }
+  ],
+  "broll_inserts": [
+   {
+    "what": "proof images in a split montage",
+    "when": "30-65 % (~15 images)",
+    "how": "top half, hard swap every 12-18 frames, one per 2-3-word caption chunk",
+    "catalog": [
+     177,
+     175
+    ]
+   }
+  ],
+  "layout": [
+   {
+    "what": "50/50 split: B-roll top, speaker bottom",
+    "when": "~30 % of runtime",
+    "how": "divider at ~50 % H; caption on the divider",
+    "catalog": [
+     3,
+     1
+    ]
+   },
+   {
+    "what": "seated interview MS/MCU",
+    "when": "~55 %",
+    "how": "static camera, 3/4 profile",
+    "catalog": [
+     58
+    ]
+   }
+  ],
+  "camera": [
+   {
+    "what": "one tighter crop on the final line",
+    "when": "~73 %",
+    "how": "~120 % digital punch-in vs the opening MS, hard cut",
+    "catalog": [
+     46
+    ]
+   }
+  ],
+  "transitions": [
+   {
+    "what": "hard cuts mid-speech + rapid montage swaps",
+    "when": "throughout",
+    "how": "no transitions effects; swaps are straight cuts on caption chunks",
+    "catalog": [
+     174
+    ]
+   }
+  ],
+  "end_card": [
+   {
+    "what": "handle end card",
+    "when": "90-100 %",
+    "how": "white with accent radial glow, profile circle on accent disc (~50 % W) at y 25-50 %, accent @handle, Like / Share pills at ~73 %",
+    "catalog": []
+   }
+  ]
+ },
+ "captions_spec": {
+  "script": "latin (Roman Hinglish for Hindi lines, English as spoken)",
+  "case": {
+   "lead": "sentence case as spoken",
+   "key": "lowercase as spoken"
+  },
+  "grouping": {
+   "lead_words_per_caption": "1-3",
+   "key_words_per_caption": "0-1 (one per sentence)",
+   "max_lines": 2,
+   "sync": "word-by-word for lead words; key word lands on its own word",
+   "break": "new caption at each new phrase; previous caption cut out"
+  },
+  "layout": {
+   "band_pct_of_H": [
+    46,
+    63
+   ],
+   "key": {
+    "align": "centre (x 50 %)",
+    "center_y_pct": "55-59",
+    "note": "fixed size, centred horizontally; a 6-7-letter word spans ~78-86 % W"
+   },
+   "lead": {
+    "lockup": "nested: the lead line sits INSIDE the key word's ascender band, over the longest run of x-height-only letters, aligned to that run's edge (right-aligned over a trailing x-height run, left-aligned over a leading one)",
+    "overlap_with_key_top_pct_of_H": 2.0,
+    "examples": {
+     "right_aligned": {
+      "lead_x_pct": [
+       51.5,
+       79.9
+      ],
+      "lead_y_pct": [
+       46.8,
+       49.4
+      ]
+     },
+     "left_aligned": {
+      "lead_x_pct": [
+       16.7,
+       48.9
+      ],
+      "lead_y_pct": [
+       50.9,
+       54.0
+      ]
+     }
+    }
+   },
+   "no_key_word": "lead line alone, centred horizontally at ~49.5 % height",
+   "split_screen": "single white line centred on the divider (~50 % height)"
+  },
+  "type": {
+   "lead": {
+    "font_class": "neo-grotesque sans, semibold",
+    "closest_match": {
+     "local": "Inter 600",
+     "google": "Inter SemiBold"
+    },
+    "size_px_at_1920": 70,
+    "color": "#FFFFFF",
+    "stroke": "none",
+    "shadow": "very soft: 0 2px 8px rgba(0,0,0,.35)",
+    "box": "none",
+    "tracking": "-0.01em",
+    "font_size_px_at_1920": 70,
+    "k_note": "verified by rendering: Inter 600 at 70 px gives 3.39 % H / 31.9 % W for the calibration line (ref 3.2 / 32.2)",
+    "calibration": [
+     {
+      "word": "a particular",
+      "ink_pct_of_H": 3.2,
+      "width_pct_of_W": 32.2
+     }
+    ],
+    "verified_px": 69,
+    "fit": [
+     {
+      "font": "Inter 600",
+      "word": "a particular",
+      "tracking_em": -0.01,
+      "px_for_height": 65.4,
+      "px_for_width": 71.1,
+      "verified_px": 69,
+      "at_verified_px": {
+       "ink_pct_of_H": 3.39,
+       "width_pct_of_W": 31.5
+      },
+      "within_tolerance": true
+     }
+    ]
+   },
+   "key": {
+    "font_class": "neo-grotesque sans, black (heaviest weight)",
+    "closest_match": {
+     "local": "Inter 900",
+     "google": "Inter Black"
+    },
+    "color": "#7404E6 (brand purple; #7D02FB on flat cards)",
+    "stroke": "none",
+    "shadow": "none",
+    "box": "none",
+    "tracking": "-0.03em",
+    "leading_to_lead_line": "tight (~0.85)",
+    "selection_rule": "the noun/verb that carries the idea of the sentence; one per sentence",
+    "font_size_px_at_1920": 291,
+    "k": 0.99,
+    "calibration": [
+     {
+      "word": "quality",
+      "ink_pct_of_H": 14.61,
+      "width_pct_of_W": 85.4
+     },
+     {
+      "word": "things",
+      "ink_pct_of_H": 14.69,
+      "width_pct_of_W": 78.2
+     }
+    ],
+    "k_note": "verified by rendering: Inter 900 at 291 px gives 'quality' 14.22 % H / 86.6 % W (ref 14.61 / 85.4); Inter runs slightly narrower-taller than the original face",
+    "verified_px": 292,
+    "fit": [
+     {
+      "font": "Inter 900",
+      "word": "quality",
+      "tracking_em": -0.03,
+      "px_for_height": 295.3,
+      "px_for_width": 289.1,
+      "verified_px": 292,
+      "at_verified_px": {
+       "ink_pct_of_H": 14.32,
+       "width_pct_of_W": 86.3
+      },
+      "within_tolerance": true
+     },
+     {
+      "font": "Inter 900",
+      "word": "things",
+      "tracking_em": -0.03,
+      "px_for_height": 296.9,
+      "px_for_width": 287.3,
+      "verified_px": 291,
+      "at_verified_px": {
+       "ink_pct_of_H": 14.43,
+       "width_pct_of_W": 79.6
+      },
+      "within_tolerance": true
+     }
+    ]
+   }
+  },
+  "animation": {
+   "fps": 30,
+   "lead_entry": "each word fades in over 2 frames as it is spoken, with ~1 % H upward drift",
+   "key_entry": "fades from ~40 % opacity and scales 0.85 -> 1.0 over 3 frames; measured ink height 10.9 % -> 14.4 % -> 14.7 % of H",
+   "key_timing": "appears ~3-5 frames after the lead line, on or slightly before the spoken key word",
+   "exit": "hard cut out (no fade) when the next caption starts",
+   "idle": "no motion while held"
+  },
+  "notes": "Positions, sizes, colours and frame timings measured on video frames and render-verified (HyperFrames snapshot) for the lead and key tiers."
+ },
+ "other_text_spec": [
+  {
+   "type": "cut-out headline card",
+   "when": "~2-7 % (first cut, ~40 frames) and again at ~42 % to introduce the second example",
+   "bg": "solid purple #7D02FB full frame",
+   "text": "lime #EFFA04, black-weight grotesque, lowercase 'headline / here / words!', 3 stacked lines top-left (x 10 %, y 7-33 %), each line ~6 % of H, tight leading",
+   "image": "speaker (or example subject) cut out in greyscale with a ~8 px lime #EFFA04 sticker outline, bottom-right, overlapping the last headline line"
+  },
+  {
+   "type": "statement card",
+   "when": "65-73 % (~60 frames)",
+   "bg": "solid purple #7D02FB",
+   "text": "yellow #F0F210, bold grotesque, Title-ish case 'Headline here', 3 centred lines at 42-55 % height, ~3.4 % of H per line"
+  },
+  {
+   "type": "source credit",
+   "when": "throughout (when footage is a re-cut)",
+   "text": "platform icon + '/ Source name', white, ~1.3 % of H, top-left at 4 % height"
+  },
+  {
+   "type": "end card",
+   "when": "90-100 % (~75 frames)",
+   "bg": "white with soft purple radial glow at the edges",
+   "text": "circular profile photo on a purple #791ADA disc (diameter ~50 % of W) at 25-50 % height, @handle purple bold below, two lavender pill buttons 'Like' / 'Share' with icons at ~73 % height; Like button animates (press + pop)"
+  }
+ ],
+ "style": {
+  "palette_roles": {
+   "text": "#FFFFFF",
+   "accent": "#7404E6",
+   "accent_2": "#EFFA04",
+   "surface": "#7D02FB",
+   "card_bg": "#FFFFFF"
+  },
+  "fonts": {
+   "lead": {
+    "closest_local": "Inter 600",
+    "verified_px": 69,
+    "tracking": "-0.01em"
+   },
+   "key": {
+    "closest_local": "Inter 900",
+    "verified_px": 292,
+    "tracking": "-0.03em"
+   },
+   "card_headline": {
+    "closest_local": "Inter 900",
+    "verified_px": null,
+    "tracking": "-0.02em"
+   }
+  },
+  "look_intent": "high-contrast, saturated, warm: natural skin on a warm coloured set, fully saturated purple and lime/yellow graphics"
+ },
+ "sound": {
+  "music": "possible low music bed (gap level -20 dB vs speech); bed or sting audible under the end card",
+  "sfx": [
+   "soft pop / tick on each montage image swap (measured cut_hit_share 0.5)",
+   "click + pop on the Like button"
+  ],
+  "loudness_lufs": -14.1
+ },
+ "measured": {
+  "grade": {
+   "black_point": 1.5,
+   "midtone": 75.4,
+   "white_point": 251.0,
+   "contrast_range": 249.5,
+   "luma_std": 70.8,
+   "saturation": 0.439,
+   "colorfulness": 102.3,
+   "warmth_r_minus_b": 37.3,
+   "tint_g": -4.8,
+   "vignette_centre_over_edge": 1.11,
+   "label": "high-contrast, saturated, warm"
+  },
+  "layout": {
+   "letterbox_share": 0.0,
+   "split_divider_share": 0.04
+  },
+  "sound": {
+   "has_audio": true,
+   "speech_coverage": 0.91,
+   "beat_periodicity": 0.08,
+   "beat_bpm_est": null,
+   "gap_level_rel_speech_db": -20.1,
+   "music": "possible music bed",
+   "cut_hit_share": 0.5,
+   "method": "heuristic (onset-envelope beat periodicity + level in speech gaps); not a classifier"
+  }
+ },
+ "catalog_styles": [
+  {
+   "id": 31,
+   "name": "Emphasis-Word Zoom",
+   "role": "giant purple key word per sentence"
+  },
+  {
+   "id": 21,
+   "name": "Caption-Edit",
+   "role": "small white lead captions"
+  },
+  {
+   "id": 3,
+   "name": "Stacked Split-Screen",
+   "role": "proof image top / speaker bottom"
+  },
+  {
+   "id": 177,
+   "name": "Montage Editing",
+   "role": "proof images swapping per caption chunk"
+  },
+  {
+   "id": 5,
+   "name": "Layered-Head (Subject Cutout)",
+   "role": "greyscale cut-out headline cards"
+  },
+  {
+   "id": 58,
+   "name": "Podcast Clip",
+   "role": "seated interview recut"
+  },
+  {
+   "id": 39,
+   "name": "Quote-Card Typography",
+   "role": "purple statement card"
+  },
+  {
+   "id": 174,
+   "name": "Rapid-Fire Cuts",
+   "role": "12-18-frame montage swaps"
+  }
+ ],
+ "use_when": [
+  "a podcast or interview clip with a clear principle plus 1-2 concrete examples",
+  "the user has (or can source) many example images for each example",
+  "the brand has a strong two-colour system",
+  "Hinglish or English speech that should read on mute",
+  "short clips where every second needs a new visual"
+ ],
+ "avoid_when": [
+  "no example imagery available - the split montage is the core device",
+  "long-form or slow reflective speech",
+  "brand colours too pale for a giant solid key word on footage"
+ ],
+ "match": {
+  "tags": [
+   "podcast-clip",
+   "interview",
+   "giant-key-word",
+   "split-screen",
+   "image-montage",
+   "subject-cutout",
+   "sticker-outline",
+   "two-colour-system",
+   "hinglish",
+   "handle-end-card",
+   "rapid-cuts",
+   "vertical"
+  ],
+  "keywords": [
+   "podcast",
+   "interview",
+   "brand",
+   "examples",
+   "consistency",
+   "principle",
+   "lesson",
+   "advertising",
+   "founder",
+   "celebrity",
+   "clip",
+   "marketing",
+   "insight",
+   "quality",
+   "strategy"
+  ],
+  "needs": {
+   "speaker_footage": true,
+   "screen_recordings": false,
+   "broll": true,
+   "brand_assets": true
+  }
+ },
+ "quality_score": 5,
+ "brand_prompt": "Use /video-pipeline with /video-captions on videos/<project>. Apply style blueprint B11 (video-reference-match/references/blueprints/B11.json) to this brand.\n\nBRAND TOKENS (use the brand's colour/font for each role; keep the contrast relationship: the solid {{ACCENT}} key word must stay >= 3:1 on the footage behind it, {{ACCENT_2}} headlines >= 4.5:1 on {{SURFACE}})\n- {{TEXT}} lead captions - default #FFFFFF\n- {{ACCENT}} giant key word - default purple #7404E6\n- {{ACCENT_2}} card headlines + cut-out sticker outline - default lime #EFFA04 (statement-card text #F0F210)\n- {{SURFACE}} flat card background - default purple #7D02FB\n- {{CARD_BG}} end card - default white with a soft {{SURFACE}} radial glow\n- {{FONT_DISPLAY}} key word + card headlines - default Inter 900 (Black)\n- {{FONT_BODY}} lead captions - default Inter 600 (SemiBold)\n- {{HANDLE}} - @handle on the end card ({{ACCENT}} bold)\n- {{LOGO}} - profile photo / logo in the end-card circle\n\nCanvas 1080x1920, 30 fps.\n\nCAPTIONS\n1. Latin script (Roman Hinglish for Hindi lines), as spoken; lead words sentence case, key word lowercase.\n2. Lead line: 1-3 words, {{FONT_BODY}} 69-70 px, -0.01em, {{TEXT}}, no stroke/box, shadow 0 2px 8px rgba(0,0,0,.35). Each word fades in over 2 frames with ~1 % H upward drift as spoken. Alone: centred at ~49.5 % H.\n3. Key word: ONE per sentence (the noun/verb that carries the idea), {{FONT_DISPLAY}} ~292 px, -0.03em, solid {{ACCENT}}, no shadow/stroke, centred, centre y 55-59 % (a 6-7-letter word fills ~78-86 % W). Entry: from ~40 % opacity and scale 0.85 -> 1.0 over 3 frames, 3-5 frames after the lead line, on or just before the spoken word. Hard cut out with the next caption.\n4. Nested lockup: the lead line sits inside the key word's ascender band (overlapping the key's top by ~2 % H), over the longest run of x-height letters, aligned to that run's edge (right-aligned over a trailing run e.g. x 51.5-79.9 %, y 46.8-49.4 %; left-aligned over a leading run e.g. x 16.7-48.9 %, y 50.9-54.0 %).\n5. Split shots: a single {{TEXT}} line centred on the divider (~50 % H), no key word.\n\nOTHER TEXT / EDIT DEVICES\n6. Hook: start mid-thought (first word within frame 1); first cut at frame ~19 to a cut-out headline card: solid {{SURFACE}} frame, {{ACCENT_2}} lowercase {{FONT_DISPLAY}} headline 'headline / here / words!' in 3 stacked lines top-left (x 10 %, y 7-33 %, ~6 % H per line, tight leading), subject cut out in greyscale with a ~8 px {{ACCENT_2}} sticker outline bottom-right overlapping the last line; ~40 frames. Reuse the card to introduce each new example.\n7. Example montage: 50/50 split, example images in the top half swapping every 12-18 frames, one per 2-3-word caption chunk, speaker held in the bottom half (~15 images over two examples).\n8. Statement card (~60 frames): solid {{SURFACE}}, {{ACCENT_2}} bold 'Headline here' in 3 centred lines at 42-55 % H, ~3.4 % H per line.\n9. Final line: ~120 % tighter crop on the speaker with the last giant key word.\n10. Source credit (if re-cutting someone's footage): platform icon + '/ Source name', white, ~1.3 % H, top-left at y 4 %.\n11. End card (~75 frames): {{CARD_BG}}, {{LOGO}} circle on an {{ACCENT}} disc (~50 % W) at y 25-50 %, {{HANDLE}} below, two lavender pill buttons 'Like' / 'Share' at ~73 % H; Like presses and pops.\n\nGRADE: Grade from the user's footage (video-style / grade.py); target look: high-contrast, saturated, warm, natural skin; graphics fully saturated.\nSOUND: voice at about -14 LUFS; soft tick/pop on montage swaps; click + pop on the Like button; low bed under the end card.\n\nVERIFY before rendering (px values were render-verified with Inter; if the brand font differs, adjust px until the numbers match):\na) Render test frames over a dark area: \"a particular\" ({{FONT_BODY}} 69 px {{TEXT}}) and \"quality\" / \"things\" ({{FONT_DISPLAY}} 292 px {{ACCENT}}).\nb) Measure: python video-reference-match/scripts/caption_probe.py <test render or snapshot> --out <dir> --at <t> --box 0.1,0.44,0.9,0.66 --ink \"{{TEXT}}:60,{{ACCENT}}:90\" (tighten --box per line).\nc) Required: \"a particular\" ink 3.2 % +-0.5 of H and 32.2 % +-2 of W; \"quality\" 14.61 % +-0.5 and 85.4 % +-2; \"things\" 14.69 % +-0.5 and 78.2 % +-2. For any other key word compute the expected ink with python video-reference-match/scripts/fit_font.py --font \"<{{FONT_DISPLAY}}>\" --word \"<word>\" at 292 px.",
+ "caption_family": "giant-keyword"
+}

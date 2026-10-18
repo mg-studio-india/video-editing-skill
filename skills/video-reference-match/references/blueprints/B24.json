@@ -1,0 +1,323 @@
+{
+ "id": "B24",
+ "schema": "blueprint/1",
+ "format": {
+  "type": "skit",
+  "aspect": "9:16",
+  "language": "Hinglish",
+  "duration_class": "micro (<15s)",
+  "people_on_screen": "2+"
+ },
+ "topic_class": "comedy skit (office / boss-employee)",
+ "signature": {
+  "one_line": "Office skit: small two-line set-up text over boss, dropped for a wordless gesture gag.",
+  "unique_devices": [
+   "Small white bold semi-condensed 2-line set-up (situation line + short question) at 17-22 % H over empty wall, only during the first shot",
+   "Text pulled off on the first cut: the payoff plays text-free",
+   "Spoken question answered by a long wordless low over-the-shoulder wide; a body crossing the lens acts as the closing wipe"
+  ],
+  "why_it_works": "Everyone recognises the boss moment from the first raised word; silence and gestures as the answer is the joke."
+ },
+ "hook": {
+  "type": "In medias res (raised-voice question + set-up text)",
+  "first_word_s": 0.08,
+  "first_cut_s": 2.267,
+  "first_frame": "boss character at an office desk mid-rant, gesturing, laptop in the foreground; small white 2-line text on the wall above the head"
+ },
+ "structure": [
+  {
+   "beat": "hook",
+   "from_pct": 0,
+   "to_pct": 22,
+   "what": "boss fires quick questions; set-up text names the situation"
+  },
+  {
+   "beat": "payoff",
+   "from_pct": 22,
+   "to_pct": 73,
+   "what": "hard cut to a low OTS wide: employees answer only with exaggerated gestures, no text"
+  },
+  {
+   "beat": "payoff",
+   "from_pct": 73,
+   "to_pct": 100,
+   "what": "boss stands and follows them out; crossing the lens closes the clip"
+  }
+ ],
+ "pacing": {
+  "pace": "slow",
+  "median_shot_s": 5.2,
+  "cuts_per_min": 6,
+  "wpm": null,
+  "pauses_per_min": 0.0,
+  "visual_change_every_s": 5.0
+ },
+ "elements": {
+  "captions": [],
+  "background_text": [
+   {
+    "what": "2-line Roman-Hinglish set-up text",
+    "when": "0-21 %",
+    "how": "bold semi-condensed sans ~41 px white, tracking -0.01 em, line 1 centre y 18.4 %, line 2 21.2 %, line pitch 2.8 % H, block centre x ~50.6 %; on from frame 0, hard off with the cut",
+    "catalog": [
+     24
+    ]
+   }
+  ],
+  "motion_graphics": [],
+  "cards_lists": [],
+  "silhouettes_cutouts": [],
+  "broll_inserts": [],
+  "layout": [
+   {
+    "what": "full-frame propped-phone footage",
+    "when": "whole runtime",
+    "how": "MS of the boss, then low over-the-shoulder wide from the desk; text only on the empty wall band",
+    "catalog": [
+     61
+    ]
+   }
+  ],
+  "camera": [
+   {
+    "what": "static propped phone, two set-ups",
+    "when": "whole runtime",
+    "how": "no moves or punch-ins; the wide holds ~78 % of runtime",
+    "catalog": [
+     178
+    ]
+   }
+  ],
+  "transitions": [
+   {
+    "what": "hard cut mid-question",
+    "when": "~22 %",
+    "how": "question asked in shot 1, answered silently in shot 2",
+    "catalog": [
+     173
+    ]
+   },
+   {
+    "what": "natural body wipe",
+    "when": "~77 %",
+    "how": "a subject crossing close to the lens closes the scene",
+    "catalog": [
+     80
+    ]
+   }
+  ],
+  "end_card": []
+ },
+ "captions_spec": null,
+ "other_text_spec": [
+  {
+   "type": "set-up meme text (no speech captions; the only text)",
+   "spec": {
+    "script": "latin (Roman Hinglish on-screen text; speech is Hindi and is NOT captioned)",
+    "case": {
+     "meme_text": "sentence case"
+    },
+    "punctuation": "spaced hyphen at the end of line 1 (a dangling connector word + ' -'), question mark at the end",
+    "emoji": "none",
+    "grouping": {
+     "words_per_caption": "~8 words over 2 lines (5 + 3)",
+     "max_lines": 2,
+     "sync": "not tied to speech; on from frame 0, off at the first shot cut",
+     "break": "set-up / punchline split: a situation line ending in a spaced hyphen / a short question"
+    },
+    "layout": {
+     "band_pct_of_H": [
+      17.5,
+      22.3
+     ],
+     "line1": {
+      "align": "centre",
+      "center_y_pct": 18.4,
+      "x_pct": [
+       32.6,
+       68.6
+      ]
+     },
+     "line2": {
+      "align": "centre",
+      "center_y_pct": 21.2,
+      "x_pct": [
+       38.1,
+       62.9
+      ]
+     },
+     "line_pitch_pct_of_H": 2.8,
+     "note": "upper fifth, on the empty wall above the subject's head, slightly left of frame centre (block centre x ~50.6 %)"
+    },
+    "type": {
+     "meme_text": {
+      "font_class": "bold semi-condensed grotesque (narrow letters, short descenders, tight spacing; native in-app text look)",
+      "closest_match": {
+       "local": "Anton 400",
+       "confidence": "low",
+       "note": "Anton matches the measured width-to-height ratio but is heavier and more condensed-display; Inter 700 is ~20 % too wide at the same height",
+       "web_font": "Roboto Condensed Bold (letterforms) / Barlow Semi Condensed SemiBold"
+      },
+      "ink_height_pct_of_H": 2.19,
+      "k": 0.99,
+      "font_size_px_at_1920": 42,
+      "color": "#FFFFFF",
+      "stroke": "none",
+      "shadow": "none visible",
+      "box": "none",
+      "tracking": "-0.01em",
+      "line_height": "~1.25 (pitch 2.8 % of H)",
+      "verified_px": 41,
+      "size_note": "reference line 2 (3 words, ~15 characters) measured ink 2.19 % H / 24.9 % W; line 1 (~24 characters) ~36 % W"
+     }
+    },
+    "animation": {
+     "fps": 30,
+     "entry": "on from frame 0 (no animation)",
+     "exit": "hard off ~4 frames before the first shot cut (~21 % of runtime); the second shot has no text",
+     "idle": "none"
+    }
+   }
+  },
+  {
+   "type": "none",
+   "text": "no captions, logos, watermark or end card (props in the set are part of the footage)"
+  }
+ ],
+ "style": {
+  "palette_roles": {
+   "text": "#FFFFFF",
+   "accent": "#FFFFFF",
+   "accent_2": null,
+   "surface": null,
+   "card_bg": null
+  },
+  "fonts": {
+   "meme_text": {
+    "closest_local": "Anton 400 (a semi-condensed bold grotesque such as Barlow Semi Condensed SemiBold is closer)",
+    "verified_px": 41,
+    "tracking": "-0.01em"
+   }
+  },
+  "look_intent": "high-contrast, muted, neutral-warm; ungraded cool fluorescent office with bright windows"
+ },
+ "sound": {
+  "music": "music bed likely (heuristic, ~103 BPM estimate) under the wordless gag; comedic bed",
+  "sfx": [
+   "none on the cut (measured cut_hit_share 0.0)"
+  ],
+  "loudness_lufs": -14.0
+ },
+ "measured": {
+  "grade": {
+   "black_point": 6.3,
+   "midtone": 130.1,
+   "white_point": 233.9,
+   "contrast_range": 227.6,
+   "luma_std": 59.9,
+   "saturation": 0.169,
+   "colorfulness": 23.2,
+   "warmth_r_minus_b": 12.0,
+   "tint_g": 1.7,
+   "vignette_centre_over_edge": 1.12,
+   "label": "high-contrast, muted, neutral-warm"
+  },
+  "layout": {
+   "letterbox_share": 0.0,
+   "split_divider_share": 0.0
+  },
+  "sound": {
+   "has_audio": true,
+   "speech_coverage": 0.29,
+   "beat_periodicity": 0.46,
+   "beat_bpm_est": 103,
+   "gap_level_rel_speech_db": 8.1,
+   "music": "music bed likely",
+   "cut_hit_share": 0.0,
+   "method": "heuristic (onset-envelope beat periodicity + level in speech gaps); not a classifier"
+  }
+ },
+ "catalog_styles": [
+  {
+   "id": 24,
+   "name": "Big-Text Hook",
+   "role": "small set-up text naming the situation"
+  },
+  {
+   "id": 198,
+   "name": "Call-and-Response Dialogue",
+   "role": "spoken question answered by gestures"
+  },
+  {
+   "id": 178,
+   "name": "Real-Time Continuous Scene",
+   "role": "long static wide where the gag plays out"
+  },
+  {
+   "id": 173,
+   "name": "Jump-Cut Editing",
+   "role": "single hard cut mid-question"
+  },
+  {
+   "id": 80,
+   "name": "Wipe and Slide Transitions",
+   "role": "body crossing the lens as a natural wipe"
+  },
+  {
+   "id": 61,
+   "name": "UGC Selfie-Style Video (User-Generated Content)",
+   "role": "propped-phone raw office look"
+  }
+ ],
+ "use_when": [
+  "an office / team skit with a visual (non-verbal) punchline",
+  "Hinglish-speaking audience and a relatable boss or client moment",
+  "two static phone set-ups and 2-3 performers",
+  "employer-branding or team-culture humour"
+ ],
+ "avoid_when": [
+  "the message must be spoken and captioned",
+  "single-person talking-head content",
+  "polished brand ads needing logos and end cards"
+ ],
+ "match": {
+  "tags": [
+   "office-skit",
+   "comedy",
+   "hinglish",
+   "roman-hinglish-text",
+   "phone-footage",
+   "ots",
+   "no-captions",
+   "relatable",
+   "visual-gag",
+   "setup-text",
+   "micro"
+  ],
+  "keywords": [
+   "boss",
+   "office",
+   "skit",
+   "funny",
+   "relatable",
+   "employee",
+   "manager",
+   "team",
+   "workplace",
+   "startup",
+   "meme",
+   "gestures",
+   "hinglish",
+   "culture"
+  ],
+  "needs": {
+   "speaker_footage": true,
+   "screen_recordings": false,
+   "broll": false,
+   "brand_assets": false
+  }
+ },
+ "quality_score": 1,
+ "brand_prompt": "Use /video-pipeline with /video-captions on videos/<project>. Apply style blueprint B24 (video-reference-match/references/blueprints/B24.json) to this brand.\n\nBRAND TOKENS (use the brand's colour for each role; keep the contrast relationship — text and accent must stay >= 4.5:1 / >= 3:1 against what sits behind them on the footage):\n- {{TEXT}}      default #FFFFFF (set-up text)\n- {{ACCENT}}    default #FFFFFF (no accent in this style)\n- {{ACCENT_2}}  default none\n- {{SURFACE}}   default none\n- {{CARD_BG}}   default none\n- {{FONT_DISPLAY}} default Anton 400 (closer: a bold semi-condensed grotesque such as Barlow Semi Condensed SemiBold)\n- {{FONT_BODY}}    default same\n- {{HANDLE}}    default @handle\n- {{LOGO}}      default the brand's logo file (transparent PNG/SVG)\nThe text is small and has no shadow: place it on a mid/dark wall area so it stays >= 4.5:1; never add a box.\nCanvas 1080x1920, 30 fps.\n\nCAPTIONS\n1. No speech captions.\n\nOTHER TEXT\n2. Set-up text, first shot only: 2 centred lines of Roman Hinglish, sentence case — line 1 a situation line ending in a spaced hyphen, line 2 a short question (placeholder 'Headline here -' / 'KEY WORD here?'). {{FONT_DISPLAY}} ~41 px (line 2 ~42 px), {{TEXT}}, tracking -0.01 em, no stroke / shadow / box. Line 1 centre 18.4 % H, line 2 centre 21.2 % H (pitch 2.8 % H), block centre x ~50.6 %, on the empty wall above the head.\n3. Timing: on from frame 0 with no animation; hard off ~4 frames before the first cut; the payoff shot has no text.\n4. No {{LOGO}}, watermark or end card.\n5. Edit: shot 1 = medium shot of the questioner (~22 % of runtime); hard cut mid-question to a static low over-the-shoulder wide held to the end; let a body crossing the lens close it.\n\nGRADE\nGrade from the user's footage (video-style / grade.py); target look: high-contrast, muted, neutral-warm; natural office light.\n\nVERIFY before rendering\na) Render both lines with the placeholders and measure: python3 video-reference-match/scripts/caption_probe.py <test-render> --out <dir> --at <t> --box 0.25,0.165,0.75,0.235 --ink \"{{TEXT}}:50\"\nb) python3 video-reference-match/scripts/fit_font.py --font \"Anton 400\" --word \"<line 2, lowercase with ascenders>\" --ink 2.19 --tracking -0.01 -> ~41-42 px (the reference 3-word line 2 read 24.9 % W; line 1 of ~24 characters ~36 % W at ~40 px). Tolerance ±0.5 % H, ±2 % W. (fit_font.py needs a target: --ink and/or --width; it returns the px that reproduces that ink for YOUR word plus the width it will read at that px. Requires Pillow.)\nc) Positions within ±1 % H: line 1 centre 18.4 %, line 2 centre 21.2 %.",
+ "caption_family": "other:meme-text"
+}

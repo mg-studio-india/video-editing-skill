@@ -1,0 +1,459 @@
+{
+ "id": "B47",
+ "schema": "blueprint/1",
+ "format": {
+  "type": "podcast-clip",
+  "aspect": "9:16",
+  "language": "English",
+  "duration_class": "short (15-60s)",
+  "people_on_screen": "2+"
+ },
+ "topic_class": "marketing",
+ "signature": {
+  "one_line": "Editorial podcast layout: top-left word build, giant accent key phrases, rounded footage card.",
+  "unique_devices": [
+   "Top-left editorial text block that accumulates 1-4 left-aligned lines; only the NEXT word is previewed in light grey and each word lands dark with a 1-frame horizontal motion blur",
+   "One key phrase per sentence in giant accent extra-bold (~2.5x body) ending in a full stop, stacked under the dark lines on the same left edge",
+   "Podcast footage shrunk into a rounded, soft-shadowed card in the lower half of an off-white canvas; spoken numbers become a big-numeral stat list that replaces the card",
+   "All transitions are layout crossfades; ends on a text-only frame that repeats the hook phrase (loop-back)"
+  ],
+  "why_it_works": "A coined term and an open loop hook, then a print-magazine layout makes a plain podcast clip feel designed; the word build supplies motion without cuts."
+ },
+ "hook": {
+  "type": "open loop (coined term + 'I'll explain')",
+  "first_word_s": 0.0,
+  "first_cut_s": 7.6,
+  "first_frame": "Off-white canvas; podcast guest in profile inside a rounded card in the lower half; first dark words building top-left with the next word in light grey"
+ },
+ "structure": [
+  {
+   "beat": "hook",
+   "from_pct": 0,
+   "to_pct": 16,
+   "what": "open loop builds top-left; the coined key phrase lands in giant accent"
+  },
+  {
+   "beat": "proof",
+   "from_pct": 16,
+   "to_pct": 24,
+   "what": "black insert of a web page under the running caption (now white)"
+  },
+  {
+   "beat": "setup",
+   "from_pct": 24,
+   "to_pct": 45,
+   "what": "mechanics explained; host reaction in the card"
+  },
+  {
+   "beat": "list",
+   "from_pct": 45,
+   "to_pct": 66,
+   "what": "big-numeral stat list replaces the card; accent one-word key phrase"
+  },
+  {
+   "beat": "proof",
+   "from_pct": 66,
+   "to_pct": 86,
+   "what": "list completes with a accent total; black insert with stat tiles; origin aside"
+  },
+  {
+   "beat": "loop",
+   "from_pct": 86,
+   "to_pct": 100,
+   "what": "closing line, then a text-only end frame repeating the hook phrase"
+  }
+ ],
+ "pacing": {
+  "pace": "moderate cuts, but the frame changes every ~0.3-0.5 s through the word build",
+  "median_shot_s": 3.9,
+  "cuts_per_min": 13,
+  "wpm": 210,
+  "pauses_per_min": 0.0,
+  "visual_change_every_s": 0.4
+ },
+ "elements": {
+  "captions": [
+   {
+    "what": "editorial build block, dark grey with next-word grey preview",
+    "when": "0-100 %",
+    "how": "left edge 7.6 % W, first line centre ~17.4 % H (hook), line pitch 5.2 % H, max width 78 % W, 2-4 words per line, up to 4 lines; Inter 600 80 px; next word appears light grey, lands dark with a 1-frame horizontal blur sliding ~2 % W from the right; block clears at layout change",
+    "catalog": [
+     45,
+     25
+    ]
+   },
+   {
+    "what": "giant accent key phrase with a full stop",
+    "when": "one per ~8-10 s",
+    "how": "Inter 800 166 px (smaller when sharing the top with the card), tracking -0.04em, stacked under the dark lines, same left edge; lands with the same 1-2 frame blur ~4 frames before its word",
+    "catalog": [
+     33,
+     31
+    ]
+   }
+  ],
+  "background_text": [
+   {
+    "what": "text-only end frame",
+    "when": "95-100 %",
+    "how": "off-white; dark lead line at 36 % H, accent two-line key phrase at 39.5-58 % H, left 8 %",
+    "catalog": [
+     39
+    ]
+   }
+  ],
+  "motion_graphics": [
+   {
+    "what": "big-numeral stat list",
+    "when": "45-49 % and 66-70 %",
+    "how": "rows of number + label: earlier rows mid-grey, the new total accent bold with a thin dark rule above; numbers ~5 % H at x 7.5 %, labels at x ~22 %; replaces the footage card for ~3 s",
+    "catalog": [
+     130,
+     111
+    ]
+   }
+  ],
+  "cards_lists": [
+   {
+    "what": "stat tiles on black web inserts",
+    "when": "16-24 % and 74-85 %",
+    "how": "black screen with a web page (serif heading with an italic accent word) and number tiles; running caption turns white at the top",
+    "catalog": [
+     208
+    ]
+   }
+  ],
+  "silhouettes_cutouts": [],
+  "broll_inserts": [
+   {
+    "what": "black web-page / stat inserts",
+    "when": "~15 % of runtime",
+    "how": "3-4 s each, crossfaded in",
+    "catalog": [
+     208
+    ]
+   }
+  ],
+  "layout": [
+   {
+    "what": "rounded footage card on off-white canvas",
+    "when": "~60 % of runtime",
+    "how": "card x 7.5-92.5 %, y 45-93 %, radius ~24 px @1080, soft drop shadow; text area top-left 10-35 % H",
+    "catalog": [
+     10,
+     105
+    ]
+   }
+  ],
+  "camera": [
+   {
+    "what": "static podcast cameras",
+    "when": "throughout",
+    "how": "guest MCU profile, occasional host reaction; no punch-ins",
+    "catalog": [
+     58
+    ]
+   }
+  ],
+  "transitions": [
+   {
+    "what": "layout crossfades",
+    "when": "100 % of cuts",
+    "how": "soft crossfade ~8-12 frames between layouts (card / list / insert / end frame)",
+    "catalog": [
+     109
+    ]
+   }
+  ],
+  "end_card": [
+   {
+    "what": "text-only loop-back frame",
+    "when": "last ~5 %",
+    "how": "repeats the hook key phrase in accent",
+    "catalog": [
+     170
+    ]
+   }
+  ]
+ },
+ "captions_spec": {
+  "script": "latin (as spoken)",
+  "case": {
+   "caption": "lowercase as spoken (sentence case after a full stop)",
+   "key": "lowercase or sentence case, always ending with a full stop"
+  },
+  "punctuation": "none in running lines; a full stop on every magenta key phrase",
+  "emoji": "none",
+  "grouping": {
+   "words_per_line": "2-4",
+   "max_lines": 4,
+   "sync": "word-by-word build; the next word is previewed in light grey and turns dark on its spoken word",
+   "break": "the block clears (crossfade/cut) when the layout changes or after ~2-4 lines"
+  },
+  "layout": {
+   "block": {
+    "align": "left",
+    "left_pct_of_W": 7.6,
+    "first_line_center_y_pct": "17.4 (hook) / ~7-8 when the card is lower (estimated)",
+    "line_pitch_pct_of_H": 5.2,
+    "max_width_pct_of_W": 78
+   },
+   "footage_card": "footage in a rounded card x 7.5-92.5 %, y 45-93 % (radius ~24 px @1080, soft drop shadow) under the text",
+   "key_phrase": "magenta lines stack directly under the dark lines, same left edge",
+   "end_frame": "text only: lead line at 36 % H, two-line key phrase at 39.5-58 % H, left 8 %",
+   "1080x1920_mapping": "same percentages (9:16)"
+  },
+  "type": {
+   "caption": {
+    "font_class": "neo-grotesque sans, semibold",
+    "closest_match": {
+     "local": "Inter 600",
+     "google": "Inter SemiBold"
+    },
+    "confidence": "high",
+    "letterform_evidence": "Inter: double-storey a, flat-topped t, single-storey g with open hook, straight-tailed y, tight apertures",
+    "ink_height_pct_of_H": 3.2,
+    "k": 0.73,
+    "font_size_px_at_1920": 80,
+    "calibration": [
+     {
+      "word": "it's always been",
+      "ink_pct_of_H": 3.91,
+      "width_pct_of_W": 50.0
+     }
+    ],
+    "calibration_note": "dark text on off-white (clean); a second 3-word lowercase line without ascender-descender extremes measured 3.2 % H / 63.5 % W at the same size",
+    "color": "spoken #2F2E2C (dark grey); upcoming word #CECBC7 (light grey); on black inserts the running line is white",
+    "stroke": "none",
+    "shadow": "none",
+    "box": "none",
+    "tracking": "-0.02em (estimated)",
+    "verified_px": 80,
+    "fit": [
+     {
+      "font": "Inter 600",
+      "word": "it's always been",
+      "tracking_em": -0.02,
+      "px_for_height": 79.9,
+      "px_for_width": 79.1,
+      "verified_px": 79,
+      "at_verified_px": {
+       "ink_pct_of_H": 3.85,
+       "width_pct_of_W": 49.8
+      },
+      "within_tolerance": true
+     }
+    ],
+    "k_formula_px_at_1920": 84
+   },
+   "key": {
+    "font_class": "neo-grotesque sans, bold/extra-bold",
+    "closest_match": {
+     "local": "Inter 800",
+     "google": "Inter ExtraBold"
+    },
+    "confidence": "high (family) / medium (weight)",
+    "letterform_evidence": "same Inter shapes at a heavy weight, tight tracking",
+    "ink_height_pct_of_H": 6.88,
+    "k": 0.73,
+    "font_size_px_at_1920": 166,
+    "calibration": [],
+    "calibration_note": "a 9-letter lowercase word on the end frame measured 6.88 % H / 65.7 % W (clean; word withheld). In the hook the key phrase is smaller (~44 % W for the same word, estimated) because it shares the top with the footage card.",
+    "color": "#C34479 (magenta / raspberry)",
+    "stroke": "none",
+    "shadow": "none",
+    "box": "none",
+    "tracking": "-0.04em (estimated)",
+    "verified_px": 166,
+    "k_formula_px_at_1920": 181
+   }
+  },
+  "animation": {
+   "fps": 30,
+   "word_build": "the next word appears early in light grey #CECBC7 (preview), then on its spoken word it lands in dark grey with a 1-frame horizontal motion blur (slides ~2 % W from the right), within ~1 frame of the word start",
+   "key_entry": "magenta line lands with the same 1-2 frame blur-in, ~4 frames before its word",
+   "line_wrap": "new line starts under the previous at a ~5.2 % H pitch",
+   "exit": "soft crossfade to the next layout (all transitions are crossfades)",
+   "idle": "none"
+  }
+ },
+ "other_text_spec": [
+  {
+   "type": "stat list",
+   "when": "45-49 % and 66-70 % of runtime",
+   "text": "rows of a big number + label: earlier rows mid-grey (~#9A9A9A), the new total in magenta #C34479 bold with a dark label 'Label in total.', a thin dark rule above the total; numbers ~5 % H at x 7.5 %, labels at x ~22 % (estimated)"
+  },
+  {
+   "type": "black web inserts",
+   "when": "16-24 % and 74-85 % of runtime",
+   "text": "black screen with a web page (serif heading with an orange / teal italic accent word, stat tiles with large numbers); the running caption turns white at the top"
+  },
+  {
+   "type": "footage card",
+   "when": "most of the runtime",
+   "text": "no text; rounded card with soft shadow"
+  },
+  {
+   "type": "end frame",
+   "when": "last ~5 % of runtime",
+   "text": "text only on off-white: dark 'lead words' + magenta two-line 'KEY / WORD.'"
+  }
+ ],
+ "style": {
+  "palette_roles": {
+   "text": "#2F2E2C",
+   "accent": "#C34479",
+   "accent_2": "#CECBC7",
+   "surface": "#F3F1ED",
+   "card_bg": "#000000"
+  },
+  "fonts": {
+   "caption": {
+    "closest_local": "Inter 600",
+    "verified_px": 80,
+    "tracking": "-0.02em"
+   },
+   "key": {
+    "closest_local": "Inter 800",
+    "verified_px": 166,
+    "tracking": "-0.04em"
+   },
+   "insert_heading": {
+    "closest_local": "Playfair Display 400 (italic accent word)",
+    "verified_px": null,
+    "tracking": "0em"
+   }
+  },
+  "look_intent": "off-white editorial canvas, high-contrast dark type, muted warm beige studio footage with natural skin, one raspberry accent"
+ },
+ "sound": {
+  "music": "possible very low music bed (gaps ~21 dB below speech); voice-led compressed mix",
+  "sfx": [
+   "none needed: no hard cuts (single take)",
+   "optional soft tick on each magenta key phrase (inferred)"
+  ],
+  "loudness_lufs": -14.1
+ },
+ "measured": {
+  "grade": {
+   "black_point": 13.8,
+   "midtone": 239.0,
+   "white_point": 239.0,
+   "contrast_range": 225.2,
+   "luma_std": 74.5,
+   "saturation": 0.116,
+   "colorfulness": 28.2,
+   "warmth_r_minus_b": 49.6,
+   "tint_g": 0.8,
+   "vignette_centre_over_edge": 0.77,
+   "label": "high-contrast, muted, warm"
+  },
+  "layout": {
+   "letterbox_share": 0.21,
+   "split_divider_share": 0.04
+  },
+  "sound": {
+   "has_audio": true,
+   "speech_coverage": 0.97,
+   "beat_periodicity": 0.07,
+   "beat_bpm_est": null,
+   "gap_level_rel_speech_db": -20.6,
+   "music": "possible music bed",
+   "cut_hit_share": null,
+   "method": "heuristic (onset-envelope beat periodicity + level in speech gaps); not a classifier"
+  }
+ },
+ "catalog_styles": [
+  {
+   "id": 45,
+   "name": "Transcript-Following Highlight",
+   "role": "top-left word build with next-word grey preview"
+  },
+  {
+   "id": 33,
+   "name": "Oversized Editorial Headlines",
+   "role": "giant magenta key phrase with full stop"
+  },
+  {
+   "id": 109,
+   "name": "Paper-Texture / Editorial Animation",
+   "role": "off-white print-like layout with crossfades"
+  },
+  {
+   "id": 10,
+   "name": "Picture-Frame",
+   "role": "footage in a rounded shadowed card"
+  },
+  {
+   "id": 58,
+   "name": "Podcast Clip",
+   "role": "source footage"
+  },
+  {
+   "id": 130,
+   "name": "Stat-of-the-Day",
+   "role": "big-numeral list replacing the card"
+  },
+  {
+   "id": 208,
+   "name": "Website-to-Video Showcase",
+   "role": "black web-page proof inserts"
+  },
+  {
+   "id": 170,
+   "name": "Circular Storytelling (Looping Narrative)",
+   "role": "text-only end frame repeating the hook phrase"
+  }
+ ],
+ "use_when": [
+  "Podcast or interview footage that looks plain and needs a designed, editorial feel",
+  "The argument centres on one coined term or key phrase that can recur",
+  "The speech contains several numbers that can become a stat list",
+  "The brand wants a calm, premium, print-magazine aesthetic instead of loud captions"
+ ],
+ "avoid_when": [
+  "Solo talking-head where the face should fill the frame (the card shrinks the speaker)",
+  "Fast hype edits that need hard cuts and punch-ins"
+ ],
+ "match": {
+  "tags": [
+   "podcast-clip",
+   "editorial-layout",
+   "off-white-canvas",
+   "word-build",
+   "grey-preview",
+   "magenta-key-phrase",
+   "rounded-footage-card",
+   "stat-list",
+   "crossfades",
+   "loop-ending",
+   "web-inserts",
+   "design-led"
+  ],
+  "keywords": [
+   "podcast",
+   "interview",
+   "media",
+   "distribution",
+   "network",
+   "audience",
+   "reach",
+   "strategy",
+   "insight",
+   "concept",
+   "explain",
+   "numbers",
+   "influence",
+   "content"
+  ],
+  "needs": {
+   "speaker_footage": true,
+   "screen_recordings": true,
+   "broll": false,
+   "brand_assets": true
+  }
+ },
+ "quality_score": 4,
+ "brand_prompt": "Use /video-pipeline with /video-captions on videos/<project>. Apply style blueprint B47 (video-reference-match/references/blueprints/B47.json) to this brand.\nCanvas 1080x1920, 30 fps. Off-white editorial canvas; footage lives in a card.\n\nBRAND TOKENS (use the brand's colour/font for each role; keep the contrast relationship: {{TEXT}} >= 7:1 on {{SURFACE}}; {{ACCENT}} >= 4.5:1 on {{SURFACE}}; the preview grey {{ACCENT_2}} must read clearly lighter than {{TEXT}})\n- {{TEXT}}: default #2F2E2C (running lines)\n- {{ACCENT}}: default #C34479 (giant key phrases, list totals)\n- {{ACCENT_2}}: default #CECBC7 (next-word preview grey)\n- {{SURFACE}}: default #F3F1ED (off-white canvas)\n- {{CARD_BG}}: default #000000 (proof inserts; running line turns white there)\n- {{FONT_DISPLAY}}: default Inter 800 (key phrases)\n- {{FONT_BODY}}: default Inter 600 (running lines)\n- {{HANDLE}}: not on screen\n- {{LOGO}}: optional, only inside the web-page proof inserts\n\nCAPTIONS (editorial build)\n1. Latin, as spoken, lowercase (sentence case after a full stop); no punctuation in running lines; no emoji.\n2. Left-aligned block, left edge 7.6 % W, first line centre ~17.4 % H, line pitch 5.2 % H, max width 78 % W; 2-4 words per line, up to 4 lines; the block clears at each layout change.\n3. {{FONT_BODY}} at 80 px, tracking -0.02em, no stroke/shadow/box. The NEXT word appears early in {{ACCENT_2}}; on its spoken word it turns {{TEXT}} and lands with a 1-frame horizontal motion blur sliding ~2 % W from the right.\n4. One key phrase per ~8-10 s in {{FONT_DISPLAY}} at 166 px (smaller when sharing the top with the card), {{ACCENT}}, tracking -0.04em, always ending with a full stop, stacked directly under the dark lines on the same left edge; lands ~4 frames before its word with the same blur.\n5. On {{CARD_BG}} inserts the running line turns white.\n\nLAYOUT AND EDIT DEVICES\n6. Footage in a rounded card x 7.5-92.5 %, y 45-93 %, radius ~24 px, soft drop shadow, on {{SURFACE}}.\n7. Spoken numbers -> stat list replacing the card for ~3 s: rows of a big number (~5 % H) at x 7.5 % + label at x ~22 %; earlier rows mid-grey, the new total in {{ACCENT}} bold with a thin dark rule above it.\n8. Proof inserts (~3-4 s): {{CARD_BG}} screen with the brand's web page / stat tiles under the running caption.\n9. Every transition is a soft layout crossfade (~8-12 frames); no hard cuts, no punch-ins.\n10. End on a text-only frame on {{SURFACE}}: lead line at 36 % H, the hook's KEY WORD phrase in {{ACCENT}} at 39.5-58 % H, left 8 %.\n\nGRADE: Grade from the user's footage (video-style / grade.py); target look: muted warm studio footage with natural skin under a clean off-white, high-contrast editorial frame.\nSOUND: voice-led and compressed; any bed at least ~20 dB under speech; -14 LUFS.\n\nVERIFY\na) Render the running line \"it's always been\" at 80 px on {{SURFACE}} and measure:\n   python video-reference-match/scripts/caption_probe.py <test_render> --out <dir> --at <t> --box 0.05,0.14,0.9,0.21 --ink \"{{TEXT}}:60\"   (default ink #2F2E2C)\n   Required: 3.91 % ±0.5 of H, 50.0 % ±2 of W.\nb) Key phrase: render \"KEY WORD.\" in {{FONT_DISPLAY}} at 166 px with --ink \"{{ACCENT}}:70\"; expected ink from video-reference-match/scripts/fit_font.py --font \"{{FONT_DISPLAY}}\" --word <word> (a 9-letter lowercase word should be ~6.9 % H, ~66 % W).\nc) If {{FONT_BODY}} is not Inter 600, re-solve with fit_font.py --font \"{{FONT_BODY}}\" --word \"it's always been\" --ink 3.91 --width 50.0 --tracking -0.02.",
+ "caption_family": "other:editorial-build"
+}

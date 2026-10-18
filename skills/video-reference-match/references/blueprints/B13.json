@@ -1,0 +1,531 @@
+{
+ "id": "B13",
+ "schema": "blueprint/1",
+ "format": {
+  "type": "podcast-clip",
+  "aspect": "9:16",
+  "language": "English",
+  "duration_class": "short (15-60s)",
+  "people_on_screen": "2+"
+ },
+ "topic_class": "marketing",
+ "signature": {
+  "one_line": "Frenetic name-drop podcast: accent divider pills, second accent name titles, one shot per word.",
+  "unique_devices": [
+   "One-visual-per-word list montage: ~10-frame shots (0.4 s), one per spoken noun or word, peaking at ~130 cuts/min, then straight back to the speaker",
+   "Solid accent rounded pill behind 2-4 word white bold phrases at ~67 % H; on 50/50 splits the pill sits exactly on the divider line",
+   "second accent bold-italic serif name title with a dark outline appears on the cut to each named person in the hook, ~2x caption size at ~54-60 % H",
+   "Stacked split (b-roll top, speaker bottom) holds a long uncut answer while the top image swaps every ~4 s"
+  ],
+  "why_it_works": "Recognisable faces land on the exact word, a money question opens the loop, and wildly uneven pacing (bursts vs long split holds) keeps attention shifting."
+ },
+ "hook": {
+  "type": "social proof / name-drop + open loop question",
+  "first_word_s": 0.04,
+  "first_cut_s": 1.12,
+  "first_frame": "Extreme close-up of a jewellery detail pulling out into a 50/50 split (guest top, host bottom) with the first caption on the divider"
+ },
+ "structure": [
+  {
+   "beat": "hook",
+   "from_pct": 0,
+   "to_pct": 11,
+   "what": "name-drops with second accent name titles and archive/still b-roll, 7 cuts"
+  },
+  {
+   "beat": "setup",
+   "from_pct": 11,
+   "to_pct": 15,
+   "what": "host asks the money question (open loop)"
+  },
+  {
+   "beat": "proof",
+   "from_pct": 15,
+   "to_pct": 46,
+   "what": "long answer on a stacked split: b-roll top swapping every ~4 s, guest bottom; translucent name label"
+  },
+  {
+   "beat": "claim",
+   "from_pct": 46,
+   "to_pct": 57,
+   "what": "the real money comes from brand deals; press b-roll"
+  },
+  {
+   "beat": "list",
+   "from_pct": 57,
+   "to_pct": 71,
+   "what": "montage of ~14 brand-ad shots at ~10 frames each, one per word"
+  },
+  {
+   "beat": "payoff",
+   "from_pct": 71,
+   "to_pct": 96,
+   "what": "one clip per named person; ironic closing line"
+  },
+  {
+   "beat": "cta",
+   "from_pct": 96,
+   "to_pct": 100,
+   "what": "black end card: watch the full episode + thumbnail + link in bio"
+  }
+ ],
+ "pacing": {
+  "pace": "frenetic and very uneven (~72 cuts/min hook, 0 during a long split hold, ~130 in the montage)",
+  "median_shot_s": 0.6,
+  "cuts_per_min": 46,
+  "wpm": 200,
+  "pauses_per_min": 1.2,
+  "visual_change_every_s": 0.64
+ },
+ "elements": {
+  "captions": [
+   {
+    "what": "white bold phrase on a solid accent rounded pill",
+    "when": "11-96 %",
+    "how": "2-4 words, one line, centred at 66.8 % H (pill 64.7-68.8 %); on 50/50 splits centred at 49.8 % on the divider; Inter 700 58 px, thin dark outline; pill 80 px tall, 18 px side padding, radius ~20 px; hard swap on the phrase's first word (+3 to +7 frames)",
+    "catalog": [
+     26,
+     21
+    ]
+   },
+   {
+    "what": "plain white karaoke-opacity line over hook b-roll",
+    "when": "~5-7 %",
+    "how": "whole line at ~40 % opacity, each word steps to full white on its word; Inter 500 74 px, tracking 0.04em, centred at 59.6 % H, ~79 % W",
+    "catalog": [
+     22
+    ]
+   },
+   {
+    "what": "opening variant on a translucent amber box",
+    "when": "first ~2 %",
+    "how": "white words with a thin black outline on a soft-edged amber box (~70 %), words fading in, ~85 px",
+    "catalog": [
+     27
+    ]
+   }
+  ],
+  "background_text": [
+   {
+    "what": "second accent italic name titles",
+    "when": "2-5 % and 7-10 %",
+    "how": "full name in bold italic semi-serif, second accent with slight vertical gradient to deeper orange, thin dark outline; centred at 54-60 % H, ~85 % W, ~91 px; optional second word in white serif fading in under it over ~10 frames",
+    "catalog": [
+     21,
+     39
+    ]
+   },
+   {
+    "what": "translucent large name label in the top split panel",
+    "when": "15-24 %",
+    "how": "large bold sans, white at ~55-60 % opacity, x 16-77 %, y 34.5-40 %",
+    "catalog": [
+     44
+    ]
+   }
+  ],
+  "motion_graphics": [],
+  "cards_lists": [],
+  "silhouettes_cutouts": [],
+  "broll_inserts": [
+   {
+    "what": "one-visual-per-word montage",
+    "when": "57-71 % and 71-96 %",
+    "how": "~10-frame shots, one per spoken noun, mid-sentence cuts; ads keep their own looks",
+    "catalog": [
+     174,
+     177
+    ]
+   },
+   {
+    "what": "archive / still b-roll on each name and reference",
+    "when": "0-11 %",
+    "how": "cut on the exact word the person or thing is named",
+    "catalog": [
+     72
+    ]
+   }
+  ],
+  "layout": [
+   {
+    "what": "stacked 50/50 split",
+    "when": "~30 % of runtime (hook and long answer)",
+    "how": "b-roll or guest top, speaker/host bottom, thin white divider; caption pill on the divider",
+    "catalog": [
+     3
+    ]
+   }
+  ],
+  "camera": [
+   {
+    "what": "static podcast cameras, no punch-ins",
+    "when": "throughout",
+    "how": "MCU heads; motion comes from cuts",
+    "catalog": [
+     58
+    ]
+   },
+   {
+    "what": "opening ECU pull-out",
+    "when": "0 %",
+    "how": "zoom out from a detail ECU into the split over ~1 s",
+    "catalog": [
+     103
+    ]
+   }
+  ],
+  "transitions": [
+   {
+    "what": "hard cuts mid-sentence on the noun",
+    "when": "~82 % of cuts (30 of 38 mid-speech)",
+    "how": "snap to the word being said",
+    "catalog": [
+     174
+    ]
+   },
+   {
+    "what": "soft / fast-motion cuts inside b-roll runs",
+    "when": "~18 % of cuts",
+    "how": "short speed-ramped transitions",
+    "catalog": [
+     100
+    ]
+   }
+  ],
+  "end_card": [
+   {
+    "what": "black watch-full-episode card",
+    "when": "last ~4 %",
+    "how": "white bold caps 2 lines at centre y 24.6 %, ~64 % W; episode thumbnail with white border and rounded corners x 15.5-84.5 %, y 37-60 %, platform icon in a white circle on its bottom edge; 'LINK IN BIO' caps at 73.1 % H",
+    "catalog": [
+     224
+    ]
+   }
+  ]
+ },
+ "captions_spec": {
+  "script": "latin (as spoken)",
+  "case": {
+   "pill": "sentence case as spoken (capital only at sentence start / names)",
+   "plain": "lowercase continuation as spoken"
+  },
+  "punctuation": "kept (commas, full stops, question marks)",
+  "emoji": "none",
+  "grouping": {
+   "words_per_caption": "2-4",
+   "max_lines": 1,
+   "sync": "phrase-level: the whole phrase swaps in on its first word",
+   "break": "at natural 2-4 word chunks and every comma"
+  },
+  "layout": {
+   "pill_on_single_shot": {
+    "align": "centre (x 50 %)",
+    "center_y_pct": 66.8,
+    "pill_top_bottom_pct": [
+     64.7,
+     68.8
+    ]
+   },
+   "pill_on_50_50_split": {
+    "align": "centre",
+    "center_y_pct": 49.8,
+    "note": "pill sits exactly on the divider line between the two panels"
+   },
+   "plain_on_broll": {
+    "align": "centre",
+    "center_y_pct": 59.6,
+    "width_pct_of_W": 78.8
+   },
+   "max_line_width_pct_of_W": 79,
+   "margins": "symmetric; pill width = text + ~1.7 % W padding each side"
+  },
+  "type": {
+   "pill": {
+    "font_class": "neo-grotesque sans, bold",
+    "closest_match": {
+     "local": "Inter 700",
+     "google": "Inter Bold",
+     "confidence": "medium"
+    },
+    "ink_height_pct_of_H": 2.19,
+    "k": 0.73,
+    "font_size_px_at_1920": 58,
+    "calibration": [
+     {
+      "word": "and she would be",
+      "ink_pct_of_H": 2.19,
+      "width_pct_of_W": 42.5
+     },
+     {
+      "word": "The movies",
+      "ink_pct_of_H": 2.11,
+      "width_pct_of_W": 27.8
+     }
+    ],
+    "probe": {
+     "and she would be": "--box 0.28,0.479,0.72,0.517 --ink #FFFFFF:70 (pill on the split divider)",
+     "The movies": "--box 0.355,0.651,0.645,0.685 --ink #FFFFFF:70 (pill at 66.8 %)"
+    },
+    "color": "#FFFFFF",
+    "stroke": "thin dark outline ~1.5 px at 1080 (#0B2A3A-ish, estimated)",
+    "shadow": "none",
+    "box": {
+     "color": "#1590C5 (solid, 100 % opacity)",
+     "height_pct_of_H": 4.14,
+     "height_px_at_1920": 80,
+     "padding_x_pct_of_W": 1.7,
+     "padding_x_px_at_1080": 18,
+     "radius_px_at_1920": "~20 (estimated, ~25 % of pill height)",
+     "calibration": {
+      "phrase": "and she would be",
+      "pill_width_pct_of_W": 46.0,
+      "pill_height_pct_of_H": 4.14,
+      "probe": "--box 0.2,0.47,0.8,0.535 --ink #1590C5:60"
+     }
+    },
+    "tracking": "-0.01em",
+    "verified_px": 58,
+    "fit": [
+     {
+      "font": "Inter 700",
+      "word": "and she would be",
+      "tracking_em": -0.01,
+      "px_for_height": 56.8,
+      "px_for_width": 58.6,
+      "verified_px": 58,
+      "at_verified_px": {
+       "ink_pct_of_H": 2.24,
+       "width_pct_of_W": 42.0
+      },
+      "within_tolerance": true
+     },
+     {
+      "font": "Inter 700",
+      "word": "The movies",
+      "tracking_em": -0.01,
+      "px_for_height": 54.7,
+      "px_for_width": 58.0,
+      "verified_px": 57,
+      "at_verified_px": {
+       "ink_pct_of_H": 2.14,
+       "width_pct_of_W": 27.5
+      },
+      "within_tolerance": true
+     }
+    ]
+   },
+   "plain": {
+    "font_class": "neo-grotesque sans, medium, slightly open spacing",
+    "closest_match": {
+     "local": "Inter 500",
+     "google": "Inter Medium",
+     "confidence": "low"
+    },
+    "ink_height_pct_of_H": 3.28,
+    "k": 0.99,
+    "font_size_px_at_1920": 64,
+    "calibration": [],
+    "calibration_note": "a 5-word lowercase line measured 3.28 % H / 78.8 % W over dark b-roll (words withheld)",
+    "color": "#FFFFFF (unspoken words ~40 % opacity)",
+    "stroke": "none",
+    "shadow": "soft dark shadow (estimated)",
+    "box": "none",
+    "tracking": "0.04em",
+    "use": "hook b-roll only (~5-7 % of runtime)",
+    "verified_px": 74
+   }
+  },
+  "animation": {
+   "fps": 25,
+   "pill_entry": "hard cut: pill and text swap in one frame, width jumps to the new phrase with no scale, fade or slide",
+   "pill_timing": "on the phrase's first word: typically +3 frames, up to ~+7 frames",
+   "plain_entry": "whole line visible at ~40 % opacity, each word steps to full white on its spoken word (karaoke opacity sweep, ~1 frame)",
+   "hook_variant": "first ~2 % on the split: lead words in white with a thin black outline on a translucent amber soft-edged box (~#C88A2A at ~70 %, estimated), words fading in; larger (~85 px, estimated)",
+   "exit": "hard cut on the next phrase or shot",
+   "idle": "none"
+  }
+ },
+ "other_text_spec": [
+  {
+   "type": "name title (gold italic serif)",
+   "when": "2-5 % and 7-10 % of runtime, each named person on the cut",
+   "text": "'Name Surname' in bold italic semi-serif (wedge serifs), gold #EFA816 with a slight vertical gradient to deeper orange, thin dark outline; centred, centre y 54-60 %, a 3-word name = ink 4.69 % H, 85 % W (k 0.99 -> ~91 px, estimated; closest match Playfair Display Italic 700, low confidence); an optional second word in white serif with dark shadow fades in under it over ~10 frames"
+  },
+  {
+   "type": "translucent name label",
+   "when": "15-24 % of runtime (split, top panel)",
+   "text": "'Name' in large bold sans, white at ~55-60 % opacity, x 16-77 %, y 34.5-40 % (cap height ~5.5 % H, estimated)"
+  },
+  {
+   "type": "CTA end card",
+   "when": "last ~4 % of runtime",
+   "bg": "solid black #000000",
+   "text": "'WATCH FULL VIDEO / ON [PLATFORM]' white bold caps, 2 centred lines, cap height 2.73 % H each (k 0.73 -> ~72 px), block width 63.9 % W, centre y 24.6 %; episode thumbnail with white border + rounded corners x 15.5-84.5 %, y 37-60 % and a platform icon in a white circle on its bottom edge; 'LINK IN BIO' white bold caps, 2.66 % H (~70 px), 35 % W, centre y 73.1 %"
+  }
+ ],
+ "style": {
+  "palette_roles": {
+   "text": "#FFFFFF",
+   "accent": "#1590C5",
+   "accent_2": "#EFA816",
+   "surface": null,
+   "card_bg": "#000000"
+  },
+  "fonts": {
+   "pill": {
+    "closest_local": "Inter 700",
+    "verified_px": 58,
+    "tracking": "-0.01em"
+   },
+   "plain": {
+    "closest_local": "Inter 500",
+    "verified_px": 74,
+    "tracking": "0.04em"
+   },
+   "name_title": {
+    "closest_local": "Playfair Display 700 italic",
+    "verified_px": null,
+    "approx_px": 91,
+    "tracking": "0em"
+   },
+   "end_card": {
+    "closest_local": "Inter 800 caps",
+    "verified_px": null,
+    "approx_px": 72,
+    "tracking": "0em"
+   }
+  },
+  "look_intent": "warm amber/tungsten studio, dark backgrounds, natural skin, mid contrast; inserted b-roll keeps its own bright looks"
+ },
+ "sound": {
+  "music": "music bed likely (gaps ~6 dB below speech), low and continuous under the voice",
+  "sfx": [
+   "occasional hits on cuts (measured cut_hit_share 0.16)",
+   "optional fast tick/whoosh per montage shot (inferred)"
+  ],
+  "loudness_lufs": -14.3
+ },
+ "measured": {
+  "grade": {
+   "black_point": 0.0,
+   "midtone": 69.8,
+   "white_point": 207.3,
+   "contrast_range": 207.3,
+   "luma_std": 60.1,
+   "saturation": 0.399,
+   "colorfulness": 49.2,
+   "warmth_r_minus_b": 40.3,
+   "tint_g": -5.2,
+   "vignette_centre_over_edge": 1.02,
+   "label": "mid-contrast, natural-saturation, warm"
+  },
+  "layout": {
+   "letterbox_share": 0.04,
+   "split_divider_share": 0.0
+  },
+  "sound": {
+   "has_audio": true,
+   "speech_coverage": 0.97,
+   "beat_periodicity": 0.09,
+   "beat_bpm_est": null,
+   "gap_level_rel_speech_db": -6.1,
+   "music": "music bed likely",
+   "cut_hit_share": 0.2,
+   "method": "heuristic (onset-envelope beat periodicity + level in speech gaps); not a classifier"
+  }
+ },
+ "catalog_styles": [
+  {
+   "id": 3,
+   "name": "Stacked Split-Screen",
+   "role": "b-roll top / speaker bottom with the pill on the divider"
+  },
+  {
+   "id": 174,
+   "name": "Rapid-Fire Cuts",
+   "role": "one-visual-per-word montage"
+  },
+  {
+   "id": 26,
+   "name": "Sentence-by-Sentence Captions",
+   "role": "2-4 word phrases in a cyan pill"
+  },
+  {
+   "id": 21,
+   "name": "Caption-Edit",
+   "role": "gold italic name titles"
+  },
+  {
+   "id": 58,
+   "name": "Podcast Clip",
+   "role": "source footage"
+  },
+  {
+   "id": 177,
+   "name": "Montage Editing",
+   "role": "brand-ad montage"
+  },
+  {
+   "id": 224,
+   "name": "Trailer for a Longer Video",
+   "role": "watch-full-episode end card"
+  },
+  {
+   "id": 72,
+   "name": "Archival-Footage Documentary",
+   "role": "stills/archive cut on each name"
+  }
+ ],
+ "use_when": [
+  "A podcast or interview clip that names many people, brands or examples",
+  "There is (or can be sourced) b-roll for each noun to cut one shot per word",
+  "Two-camera footage that can run as a stacked split during long answers",
+  "The clip promotes a longer episode"
+ ],
+ "avoid_when": [
+  "No licensable b-roll for the named examples",
+  "A calm, single-idea talk where frenetic cutting would distract"
+ ],
+ "match": {
+  "tags": [
+   "podcast-clip",
+   "name-drop",
+   "pill-captions",
+   "cyan-pill",
+   "split-screen",
+   "divider-captions",
+   "gold-name-titles",
+   "one-shot-per-word",
+   "rapid-montage",
+   "uneven-pacing",
+   "episode-cta",
+   "celebrity-broll"
+  ],
+  "keywords": [
+   "podcast",
+   "celebrity",
+   "brands",
+   "endorsement",
+   "money",
+   "earnings",
+   "deals",
+   "famous",
+   "names",
+   "entertainment",
+   "business",
+   "episode",
+   "interview",
+   "guest",
+   "montage"
+  ],
+  "needs": {
+   "speaker_footage": true,
+   "screen_recordings": false,
+   "broll": true,
+   "brand_assets": true
+  }
+ },
+ "quality_score": 4,
+ "brand_prompt": "Use /video-pipeline with /video-captions on videos/<project>. Apply style blueprint B13 (video-reference-match/references/blueprints/B13.json) to this brand.\nCanvas 1080x1920, 25 fps. Two-camera podcast footage plus b-roll for every named example.\n\nBRAND TOKENS (use the brand's colour/font for each role; keep the contrast relationship: white {{TEXT}} >= 4.5:1 on the {{ACCENT}} pill; {{ACCENT_2}} name titles >= 3:1 on the footage with their dark outline)\n- {{TEXT}}: default #FFFFFF\n- {{ACCENT}}: default #1590C5 (solid caption pill)\n- {{ACCENT_2}}: default #EFA816 (name titles, gradient to a deeper orange)\n- {{SURFACE}}: none (footage)\n- {{CARD_BG}}: default #000000 (end card)\n- {{FONT_DISPLAY}}: default Playfair Display 700 italic (name titles)\n- {{FONT_BODY}}: default Inter 700 (pill captions)\n- {{HANDLE}}: default @handle (end card)\n- {{LOGO}}: optional on the mics/set; platform icon on the end card\n\nCAPTIONS\n1. Latin, as spoken, sentence case; keep commas, full stops, question marks; no emoji.\n2. 2-4 words per phrase, one line; break at commas.\n3. {{FONT_BODY}} at 58 px, {{TEXT}}, tracking -0.01em, thin dark outline ~1.5 px, on a solid {{ACCENT}} rounded pill 80 px tall, 18 px side padding, radius ~20 px; pill hugs the text.\n4. Single shots: centred, centre y 66.8 % H (pill 64.7-68.8 %). 50/50 splits: centre y 49.8 %, exactly on the divider.\n5. Hard swap of pill + text in one frame on the phrase's first word (+0 to +3 frames); no scale/fade/slide; hard cut out.\n6. Hook b-roll variant (~5-7 % of runtime): plain {{TEXT}} line, Inter 500 74 px, tracking 0.04em, centred at 59.6 % H, unspoken words at 40 % opacity stepping to full on their word. Very first ~2 %: lead words on a translucent soft-edged warm box (~70 %), ~85 px.\n\nOTHER TEXT AND EDIT DEVICES\n7. Name titles (hook only): on the cut to each named person, 'Name Surname' in {{FONT_DISPLAY}} ~91 px, {{ACCENT_2}} with a slight vertical gradient to a deeper orange, thin dark outline, centred at 54-60 % H, up to ~85 % W.\n8. Long answers: stacked 50/50 split (b-roll top, speaker bottom), swap the top image every ~4 s; optional translucent large white 'Name' label (55-60 % opacity) at y 34.5-40 % in the top panel.\n9. Lists of examples: one b-roll shot per spoken word, ~10 frames each, cut mid-sentence on the noun, then back to the speaker. Pacing deliberately uneven: bursts vs long split holds.\n10. Open with a ~1 s pull-out from a detail ECU into the split; first word within ~1 frame.\n11. End card (last ~4 % of runtime, ~50 frames): {{CARD_BG}}, 'WATCH FULL VIDEO / ON [PLATFORM]' white bold caps ~72 px at centre y 24.6 %, episode thumbnail with white border x 15.5-84.5 %, y 37-60 % with the platform icon on its bottom edge, 'LINK IN BIO' ~70 px at 73.1 % H.\n\nGRADE: Grade from the user's footage (video-style / grade.py); target look: warm tungsten studio, dark backgrounds, natural skin; leave inserted b-roll in its own look.\nSOUND: low music bed (~6 dB under speech gaps), zero silence, -14.3 LUFS; occasional hits on cuts.\n\nVERIFY\na) Render the pill caption \"and she would be\" on a split divider and measure:\n   python video-reference-match/scripts/caption_probe.py <test_render> --out <dir> --at <t> --box 0.28,0.479,0.72,0.517 --ink \"{{TEXT}}:70\"   (default ink #FFFFFF)\n   Required: 2.19 % ±0.5 of H, 42.5 % ±2 of W; pill (--box 0.2,0.47,0.8,0.535 --ink \"{{ACCENT}}:60\") 46.0 % W x 4.14 % H.\nb) \"The movies\" at 66.8 %: --box 0.355,0.651,0.645,0.685 -> 2.11 % H, 27.8 % W.\nc) Name title: render \"KEY WORD\" in {{FONT_DISPLAY}} ~91 px; expected ink for a real name from video-reference-match/scripts/fit_font.py --font \"{{FONT_DISPLAY}}\" --word <name>.",
+ "caption_family": "boxed-pill"
+}

@@ -40,33 +40,48 @@ Phrase grouping is **calculated dynamically from speech velocity (WPM), acoustic
 
 ---
 
-## 2. Dynamic Typographical Scale & Responsive Sizing
+## 2. Typography Standards & Font-Coloring Hierarchy
 
-Caption sizing and scale hierarchy are **calculated dynamically from video dimensions, phrase character density, and speech pace with no arbitrary restrictions**:
+Typography and coloring are **strictly selected from verified modern typefaces and high-contrast color tokens**:
+
+- **Approved Font Families Catalog:**
+  Captions and kinetic titles must strictly pair from the verified 5 typefaces:
+  - **`DM Sans`**: Modern, friendly, high-legibility geometric sans; exceptional for tech, creator, and lifestyle.
+  - **`Inter`**: Highly articulate grotesque sans designed for screens; perfect for finance, engineering, and documentary authority.
+  - **`Poppins`**: Wide geometric display sans; punchy, authoritative, and viral-tested for high-energy reels.
+  - **`Google Sans` / `Open Sans`**: Clean, human-centered product typography; ideal for walkthroughs and education.
+  - **`Roboto`**: Balanced industrial sans; neutral, crystal-clear across all screen densities.
+
+- **Systematic Typographical Weight Hierarchy:**
+  - **Regular (400) / Medium (500):** Inactive spoken words, conversational connectors, body clauses.
+  - **SemiBold (600) / Bold (700):** Active spoken word, card headers, section labels.
+  - **ExtraBold (800) / Black (900):** High-impact punch words, key metrics, numbers, and emphatic assertions.
+
+- **Calibrated Font-Coloring Hierarchy:**
+  - **Inactive Words:** Muted legibility (`rgba(255, 255, 255, 0.70)` or slate `#94a3b8`) keeping focus on the speaker.
+  - **Active Spoken Word:** Dynamic accent highlight (`#ffd700` gold, `#00c3ff` cyan, `#00e676` emerald, or `#f43f5e` coral).
+  - **Punch Words:** High-contrast badge pills (`#ffd700` background with `#000000` text, `#00c3ff` background with `#000000` text) or negative badge pills with heavy weight (800/900).
+  - **Razor-Sharp Vector Contrast (Zero Shadow & Zero Blur Rule):** Captions and badge pills must strictly render with **zero text-shadow, zero box-shadow, and zero artificial blur**. No defaults should ever add shadow, glow, or blur. Legibility is achieved through pure high contrast: 70-80% opacity white text for inactive words, crisp saturated accents on spoken words, and solid opaque pills for punch words.
 
 - **Dynamic Font Size Calculation:**
   - Font size scales responsively with canvas dimensions (`W` x `H`) and line character length:
     - Punchy, short 2-3 word phrases scale up dynamically to fill the visual focal area with high impact.
     - Longer conversational phrases scale dynamically so the clause breathes comfortably on a single line without awkward line breaks.
   - Creators and styles have **complete freedom over font size and weight hierarchy**—no rigid multiplier clamps (e.g. 1.35x vs 1.60x) are enforced by the engine.
-- **Visual Weight Hierarchy:**
-  - **Punch / Power Words:** Emphasized via heavier font weight (Bold/Black 900), brand accent colors, or dynamic background pill badges.
-  - **Body / Action Clauses:** Clean sans/display font carrying narrative clarity.
-  - **Connectors & Prepositions:** Muted opacity (~70-80%) to maintain clear visual hierarchy without distraction.
 
 ---
 
 ## 3. Kinetic Caption Presets
 
-1. **Natural Phrase Glow (Default):**
-   - Multi-word phrase fades in smoothly, secondary words at 70% opacity white, active word highlights in vibrant brand accent with soft glow shadow (`text-shadow: 0 4px 18px rgba(0,0,0,0.6)`).
+1. **Natural Clean Phrase (Default Standard):**
+   - Multi-word phrase fades in smoothly, secondary words at 70% opacity white, active word highlights in vibrant brand accent with clean, crisp, unblurred edges (zero shadow).
 2. **Hormozi Pop & Badge:**
-   - Punch words wrapped in a high-contrast pill backdrop (`background: #ffd700; color: #000; border-radius: 12px; transform: rotate(-2deg);`).
+   - Punch words wrapped in a flat, crisp high-contrast pill backdrop (`background: #ffd700; color: #000; border-radius: 14px; transform: rotate(-2deg); box-shadow: none;`).
    - Micro scale-pop entrance: scales from `0.90` to `1.06` to `1.00` in 0.16s.
 3. **Editorial Dual-Font:**
    - Pairs a modern grotesque sans (e.g. Poppins / Inter) with an expressive display accent or italic serif for punch words.
 4. **Clean Minimalist:**
-   - Clean heavy sans with a subtle animated highlight bar underneath the active keyword.
+   - Clean heavy sans with a crisp solid highlight bar or pill underneath the active keyword.
 
 ---
 
@@ -103,12 +118,20 @@ The editor proactively orchestrates this standard automatically, with zero user 
 
 ---
 
-## 6. Interactive User Verification Gate (Gate 5)
+## 6. Interactive User Verification Gate (Gate 5: Typography & Motion Review)
 
-Before batch-generating captions across the entire video:
-1. Present a **live visual sample phrase** (e.g., a 5-word sentence) demonstrating:
-   - Primary and punch font pairings (e.g. Poppins Black 900 / Inter Bold)
-   - Color hierarchy (inactive text, active highlight, punch badge pill)
-   - Flow mode (`weight-shift` or `caption-highlight`)
-2. Confirm with user before proceeding to Gate 6:
-   > *"Here is how your captions will flow naturally across the video: [sample preview]. Does this weight-shift / highlight flow and pace look great, or would you like to adjust font weight or badge accents?"*
+**Mandatory Pre-Render Review:** Before rendering the master video:
+1. Present an explicit **typography and color review**:
+   - **Font Family Selection:** Verified pairing from the catalog (`DM Sans`, `Inter`, `Poppins`, `Google Sans`, `Roboto`).
+   - **Weight Distribution:** Inactive text weight (400/500), active word weight (600/700), punch word weight (800/900).
+   - **Font-Coloring Hierarchy:** Inactive text color, active highlight color, badge pill background & text colors.
+2. Present a **live visual sample phrase** demonstrating:
+   - Real words from the creator's transcript showing the weight shift or highlight sweep.
+   - Badge pill encasing a power punch word.
+3. Confirm with user before proceeding to Gate 6:
+   > *"Here is your typography and kinetic caption specification:*
+   > *- Font Family: [e.g. Poppins Display + Inter Body]*
+   > *- Weights: 400 (Inactive) -> 700 (Spoken) -> 900 (Punch Word)*
+   > *- Colors: 70% White Body, #ffd700 Highlight, #ffd700 Pill Badge with #000000 text*
+   > *[Live Sample Preview: to agar [tumhare] pas]*
+   > *Does this typography pairing and coloring look great, or would you like to adjust font family, weights, or accent colors?"*

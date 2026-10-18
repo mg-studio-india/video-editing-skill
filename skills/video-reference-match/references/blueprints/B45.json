@@ -1,0 +1,532 @@
+{
+ "id": "B45",
+ "schema": "blueprint/1",
+ "format": {
+  "type": "mixed",
+  "aspect": "9:16",
+  "language": "English",
+  "duration_class": "mid (60-180s)",
+  "people_on_screen": "1"
+ },
+ "topic_class": "marketing",
+ "signature": {
+  "one_line": "Split-panel framework explainer: UI-mock proof for every claim, accent counting badges, numbered chapter card, chunk captions, accent-underlined italic-serif titles.",
+  "unique_devices": [
+   "accent rectangular counter badges that count up on profile cards, video-player mocks and a funnel (frame-1 counter climbs ~10x in ~84 frames)",
+   "Recurring numbered 3-step chapter card at each step change, the active step in a solid accent bar",
+   "Two-line Title Case header with a thin dark-accent underline under the larger line 2, last word in italic serif",
+   "1-3-word meaning-chunk captions at 64.4 % H with a coined term swapped to an italic serif callout once"
+  ],
+  "why_it_works": "Each claim gets visible proof (numbers moving on a recognisable UI), the chapter card resets attention at every step, and fast face/panel alternation keeps a long explainer moving."
+ },
+ "hook": {
+  "type": "open loop / how-to promise with rising counter",
+  "first_word_s": 0.09,
+  "first_cut_s": 3.708,
+  "first_frame": "split: black grid panel with a 2-line title, an orbit of avatars and a accent follower badge counting up, a rocket launching the centre avatar; speaker in a rounded card at the bottom, 1-3-word caption between"
+ },
+ "structure": [
+  {
+   "beat": "hook",
+   "from_pct": 0,
+   "to_pct": 8,
+   "what": "how-to promise over a climbing counter; full-face cut naming the coined method in italic serif; profile cards of known practitioners"
+  },
+  {
+   "beat": "setup",
+   "from_pct": 8,
+   "to_pct": 24,
+   "what": "the core mechanism with simple diagrams (rings, icon tree, calendar) and one multiplier stat"
+  },
+  {
+   "beat": "list",
+   "from_pct": 24,
+   "to_pct": 52,
+   "what": "step 1 with UI-mock proofs (profile, video players, accent labels); burst of face/panel alternation every 24-72 frames mid-step"
+  },
+  {
+   "beat": "list",
+   "from_pct": 52,
+   "to_pct": 72,
+   "what": "step 2 opened by the chapter card; team tree and per-channel thumbnail grids"
+  },
+  {
+   "beat": "list",
+   "from_pct": 72,
+   "to_pct": 88,
+   "what": "step 3 opened by the chapter card; funnel with a climbing counter, revenue loop diagram"
+  },
+  {
+   "beat": "payoff",
+   "from_pct": 88,
+   "to_pct": 94,
+   "what": "honest 'not easy' face shot, recap bar chart with the viewer's bar ('YOU') tallest"
+  },
+  {
+   "beat": "cta",
+   "from_pct": 94,
+   "to_pct": 100,
+   "what": "light CTA card: comment keyword to get a deeper video, over a video-player mock"
+  }
+ ],
+ "pacing": {
+  "pace": "moderate",
+  "median_shot_s": 2.8,
+  "cuts_per_min": 15,
+  "wpm": 220,
+  "pauses_per_min": 0.9,
+  "visual_change_every_s": 2.0,
+  "notes": "69 % soft cuts (panel / layout transitions); 19 of 35 cuts on pauses; busiest stretch ~40-48 % of runtime at ~33 cuts/min alternating face and panel"
+ },
+ "elements": {
+  "captions": [
+   {
+    "what": "1-3-word chunk captions",
+    "when": "every shot",
+    "how": "Inter 800 -0.02em, 54 px on splits / 68 px on full-face, centred at y 64.4 %; white (near-black on light panels); hard-cut swap ~2 frames after the first word",
+    "catalog": [
+     26,
+     21
+    ]
+   },
+   {
+    "what": "coined-term italic serif callout",
+    "when": "once, right after the hook",
+    "how": "italic serif ~56-69 px replacing the caption chunk on a full-face shot at y 64.4 %",
+    "catalog": [
+     33,
+     31
+    ]
+   }
+  ],
+  "background_text": [
+   {
+    "what": "2-line section title with accent underline",
+    "when": "every split shot",
+    "how": "Inter 800 58 px -0.02em, line 1 y 10 %, line 2 ~15 % larger at y 12-15.5 %, thin dark-accent underline at y ~15.6 %, last word italic serif",
+    "catalog": [
+     33
+    ]
+   }
+  ],
+  "motion_graphics": [
+   {
+    "what": "counting badges",
+    "when": "hook and proof shots",
+    "how": "accent badges with white bold numbers counting up (power2.out over ~60-84 frames)",
+    "catalog": [
+     40
+    ]
+   },
+   {
+    "what": "orbit + launch, rings, icon tree, funnel loop, bar chart",
+    "when": "throughout the panel",
+    "how": "simple flat diagrams that build and animate continuously on black or off-white dot grids",
+    "catalog": [
+     89,
+     125,
+     131
+    ]
+   }
+  ],
+  "cards_lists": [
+   {
+    "what": "numbered 3-step chapter card",
+    "when": "each step change",
+    "how": "01/02/03 list, active step in a solid accent bar; ~40-65 frames",
+    "catalog": [
+     114,
+     111
+    ]
+   },
+   {
+    "what": "UI-mock proof cards",
+    "when": "every claim",
+    "how": "profile cards with follower counts, video-player mocks with view counts, phone mock, thumbnail grids per channel",
+    "catalog": [
+     93,
+     209
+    ]
+   }
+  ],
+  "silhouettes_cutouts": [],
+  "broll_inserts": [
+   {
+    "what": "example thumbnails and set stills inside the panel",
+    "when": "steps",
+    "how": "never full-screen; stacked or gridded in the panel",
+    "catalog": [
+     13
+    ]
+   }
+  ],
+  "layout": [
+   {
+    "what": "split: graphic panel over rounded face card",
+    "when": "~77 % of runtime",
+    "how": "panel y 0-70 %; face card x 5.5-94.5 %, y ~70.5-100 %, radius ~3 % W; black grid panels with occasional light-grey dotted panels",
+    "catalog": [
+     3
+    ]
+   },
+   {
+    "what": "full-face MCU",
+    "when": "~23 % (15 shots, 14-113 frames)",
+    "how": "opinions, transitions, single-line claims",
+    "catalog": [
+     46
+    ]
+   }
+  ],
+  "camera": [
+   {
+    "what": "static camera, crop varies between full-face shots",
+    "when": "full-face shots",
+    "how": "no digital punch-ins; crop changes act as reframes",
+    "catalog": [
+     46
+    ]
+   }
+  ],
+  "transitions": [
+   {
+    "what": "soft layout / panel transitions",
+    "when": "~69 % of cuts",
+    "how": "cut on pauses where possible; panel elements transition rather than hard flashes",
+    "catalog": [
+     173
+    ]
+   }
+  ],
+  "end_card": [
+   {
+    "what": "light CTA card",
+    "when": "last ~6 %",
+    "how": "'Comment \"KEYWORD\" / To Get This Video' with italic serif keyword at y 11-19 % over a video-player mock",
+    "catalog": [
+     148,
+     224
+    ]
+   }
+  ]
+ },
+ "captions_spec": {
+  "script": "latin (as spoken)",
+  "case": {
+   "caption": "as spoken (lowercase mid-sentence, capital at sentence start), punctuation kept; numbers as digits"
+  },
+  "grouping": {
+   "words_per_caption": "1-3 (meaning chunks, e.g. article + noun phrase kept together)",
+   "max_lines": 1,
+   "sync": "chunk by chunk on the first word",
+   "break": "hard-cut swap to the next chunk, no gap"
+  },
+  "layout": {
+   "split_layout": "graphic panel on black with a faint grid (y 0-70 %), rounded face card x 5.5-94.5 %, y ~70.5-100 % (radius ~3 % W); caption centred, centre y 64.4 %",
+   "full_face": "same centre y 64.4 %, larger size",
+   "light_panels": "on light-grey dotted panels the caption is near-black at the same position",
+   "align": "centre"
+  },
+  "type": {
+   "caption_split": {
+    "font_class": "neo-grotesque sans, extra-bold, tight",
+    "closest_match": {
+     "local": "Inter 800",
+     "google": "Inter ExtraBold"
+    },
+    "confidence": "medium-high",
+    "letterform_evidence": "double-storey a, single-storey g, flag-serifed 1, straight-tailed y, tight spacing; matches Inter 800 proportions within 2-4 %",
+    "color": "#FFFFFF on dark; near-black #0A0A0A on light panels",
+    "stroke": "none",
+    "shadow": "very soft dark shadow (estimated 0 2px 6px rgba(0,0,0,.5))",
+    "box": "none",
+    "tracking": "-0.02em",
+    "ink_height_pct_of_H": 2.58,
+    "k": 0.99,
+    "font_size_px_at_1920": 50,
+    "calibration": [
+     {
+      "word": "a personal brand",
+      "ink_pct_of_H": 2.58,
+      "width_pct_of_W": 37.9,
+      "ink": "#FFFFFF:60"
+     }
+    ],
+    "verified_px": 54,
+    "fit": [
+     {
+      "font": "Inter 800",
+      "word": "a personal brand",
+      "tracking_em": -0.02,
+      "px_for_height": 52.7,
+      "px_for_width": 53.8,
+      "verified_px": 54,
+      "at_verified_px": {
+       "ink_pct_of_H": 2.66,
+       "width_pct_of_W": 37.9
+      },
+      "within_tolerance": true
+     }
+    ]
+   },
+   "caption_full": {
+    "font_class": "same face, larger on full-face shots",
+    "closest_match": {
+     "local": "Inter 800",
+     "google": "Inter ExtraBold"
+    },
+    "confidence": "medium-high",
+    "color": "#FFFFFF",
+    "stroke": "none",
+    "shadow": "very soft (estimated)",
+    "box": "none",
+    "tracking": "-0.02em",
+    "ink_height_pct_of_H": 3.36,
+    "k": 0.99,
+    "font_size_px_at_1920": 65,
+    "calibration": [],
+    "calibration_note": "a short 3-token chunk measured ink 3.36 % H (cap + descender); compute expected ink for the user's chunk with fit_font.py",
+    "verified_px": 68
+   },
+   "title": {
+    "font_class": "neo-grotesque sans, extra-bold, Title Case, 2 centred lines (line 2 larger)",
+    "closest_match": {
+     "local": "Inter 800",
+     "google": "Inter ExtraBold"
+    },
+    "confidence": "medium",
+    "color": "#FFFFFF on black (#0A0A0A on light panels); thin dark-red underline (#B20F14-ish; sampled darker on the thin line) under line 2",
+    "stroke": "none",
+    "shadow": "none",
+    "box": "none",
+    "tracking": "-0.02em",
+    "ink_height_pct_of_H": 2.66,
+    "k": 0.99,
+    "font_size_px_at_1920": 52,
+    "calibration": [],
+    "calibration_note": "a 4-word Title Case line 1 measured ink 2.66 % H, ~56 % W; compute expected ink with fit_font.py",
+    "position": "top centre: line 1 centre y 10.0 % (x ~22-78 %), line 2 (~15 % larger) y ~12-15.5 % (x ~17-84 %), underline at y ~15.6 % spanning line 2",
+    "emphasis": "last word of line 2 in a thin italic serif",
+    "verified_px": 58
+   },
+   "serif": {
+    "font_class": "italic serif, regular/light, old-style (Garamond-like)",
+    "closest_match": {
+     "local": "Playfair Display 400 (italic)",
+     "google": "EB Garamond Italic / Instrument Serif Italic"
+    },
+    "confidence": "low-medium",
+    "letterform_evidence": "calligraphic italic, thin hairlines, swash-like y and g, long descenders",
+    "color": "#FFFFFF",
+    "stroke": "none",
+    "shadow": "none",
+    "box": "none",
+    "tracking": "0em",
+    "ink_height_pct_of_H": 3.44,
+    "k": 0.99,
+    "font_size_px_at_1920": 67,
+    "calibration": [],
+    "calibration_note": "a 3-word coined name with a full stop measured ink 3.44 % H, 51.2 % W; local Playfair cannot match both (height wants ~69 px, width ~53 px) - install Instrument Serif Italic and re-fit",
+    "use": "the named concept replaces the caption chunk on a full-face shot, centred at y 64.4 %",
+    "verified_px": 56
+   }
+  },
+  "animation": {
+   "fps": 24,
+   "entry": "hard cut, whole chunk at once, no fade/scale/slide",
+   "timing": "~+2 frames after the chunk's first word",
+   "exit": "hard cut on the next chunk, no gap",
+   "idle": "none on captions; graphics animate constantly (orbits, counters, launches)"
+  },
+  "notes": "Positions, sizes, colours and frame timings measured on video frames; font names closest matches (unverified); shadow estimated."
+ },
+ "other_text_spec": [
+  {
+   "type": "section title",
+   "when": "every split shot; changes per section",
+   "text": "2-line Title Case header 'Headline here / Second line here' with one italic serif word and a thin red underline under line 2 (see captions_spec.type.title)"
+  },
+  {
+   "type": "counter badges and labels",
+   "when": "throughout",
+   "text": "red #B20F14 rectangular badges with white bold numbers ('123.4K', '1.2M followers') that count up; lime #C9DC32 avatar-ring highlight; red labels for key steps ('Key step label'); green ring for the core mechanism"
+  },
+  {
+   "type": "numbered chapter card",
+   "when": "at each step change (~52 % and ~72 %)",
+   "text": "card titled 'Framework name' listing 01 / 02 / 03 with short step names; the active step sits in a solid red bar, others white on black"
+  },
+  {
+   "type": "CTA card",
+   "when": "last ~6 % (94-100 %)",
+   "bg": "light grey dotted panel",
+   "text": "black extra-bold 'Comment' + italic serif '“KEYWORD”' / 'To Get This Video' (2 centred lines, y ~11-19 %, x 15-84 %) above a video-player mock with a channel row; caption continues in near-black at 64.4 %"
+  }
+ ],
+ "style": {
+  "palette_roles": {
+   "text": "#FFFFFF",
+   "accent": "#B20F14",
+   "accent_2": "#C9DC32",
+   "surface": "#020202",
+   "card_bg": "#DDDCD9"
+  },
+  "fonts": {
+   "caption_split": {
+    "closest_local": "Inter 800",
+    "verified_px": 54,
+    "tracking": "-0.02em"
+   },
+   "caption_full": {
+    "closest_local": "Inter 800",
+    "verified_px": 68,
+    "tracking": "-0.02em"
+   },
+   "title": {
+    "closest_local": "Inter 800",
+    "verified_px": 58,
+    "tracking": "-0.02em"
+   },
+   "serif_accent": {
+    "closest_local": "Playfair Display 400 italic (prefer Instrument Serif Italic / EB Garamond Italic)",
+    "verified_px": 56,
+    "tracking": "0em"
+   }
+  },
+  "look_intent": "dark low-key studio, high-contrast, muted, warm practical bokeh with cool desaturated shadows; black and off-white grid panels with red accent"
+ },
+ "sound": {
+  "music": "possible low music bed (gap level -16 dB vs speech); dense voice",
+  "sfx": [
+   "tick / counter roll under counting badges",
+   "soft whoosh on panel transitions",
+   "optional pop when the chapter card's red bar moves (measured cut_hit_share 0.18)"
+  ],
+  "loudness_lufs": -14.2
+ },
+ "measured": {
+  "grade": {
+   "black_point": 0.0,
+   "midtone": 20.0,
+   "white_point": 224.0,
+   "contrast_range": 224.0,
+   "luma_std": 70.0,
+   "saturation": 0.147,
+   "colorfulness": 23.7,
+   "warmth_r_minus_b": 31.6,
+   "tint_g": -4.3,
+   "vignette_centre_over_edge": 1.43,
+   "label": "high-contrast, muted, warm"
+  },
+  "layout": {
+   "letterbox_share": 0.54,
+   "split_divider_share": 0.12
+  },
+  "sound": {
+   "has_audio": true,
+   "speech_coverage": 0.95,
+   "beat_periodicity": 0.04,
+   "beat_bpm_est": null,
+   "gap_level_rel_speech_db": -16.3,
+   "music": "possible music bed",
+   "cut_hit_share": 0.2,
+   "method": "heuristic (onset-envelope beat periodicity + level in speech gaps); not a classifier"
+  }
+ },
+ "catalog_styles": [
+  {
+   "id": 3,
+   "name": "Stacked Split-Screen",
+   "role": "graphic panel over rounded face card"
+  },
+  {
+   "id": 114,
+   "name": "Step-by-Step Tutorial",
+   "role": "3-step framework"
+  },
+  {
+   "id": 111,
+   "name": "Card-List",
+   "role": "numbered chapter card with active red bar"
+  },
+  {
+   "id": 40,
+   "name": "Number-Counter Typography",
+   "role": "red counting badges"
+  },
+  {
+   "id": 93,
+   "name": "UI / Website Animation",
+   "role": "profile / player / funnel mock-ups"
+  },
+  {
+   "id": 33,
+   "name": "Oversized Editorial Headlines",
+   "role": "underlined title with italic serif word"
+  },
+  {
+   "id": 131,
+   "name": "Data Point / Chart Reveal",
+   "role": "recap bar chart"
+  },
+  {
+   "id": 224,
+   "name": "Trailer for a Longer Video",
+   "role": "CTA to a deeper video"
+  }
+ ],
+ "use_when": [
+  "a multi-step framework or growth strategy explained by one speaker",
+  "claims can be proven with numbers on recognisable UI (profiles, players, dashboards)",
+  "longer explainers (mid duration class) that need chapter resets",
+  "CTA is a comment keyword for a deeper resource"
+ ],
+ "avoid_when": [
+  "micro / short clips (the system needs room)",
+  "no numbers or UI to show",
+  "bright casual footage that clashes with the dark grid panels"
+ ],
+ "match": {
+  "tags": [
+   "talking-head",
+   "split-screen",
+   "face-card",
+   "framework",
+   "numbered-steps",
+   "chapter-card",
+   "counter-animation",
+   "ui-mockups",
+   "chunk-captions",
+   "italic-serif-title",
+   "dark-studio",
+   "comment-keyword-cta",
+   "vertical"
+  ],
+  "keywords": [
+   "framework",
+   "steps",
+   "growth",
+   "strategy",
+   "personal",
+   "brand",
+   "followers",
+   "audience",
+   "funnel",
+   "system",
+   "engine",
+   "scale",
+   "creators",
+   "views",
+   "revenue"
+  ],
+  "needs": {
+   "speaker_footage": true,
+   "screen_recordings": true,
+   "broll": true,
+   "brand_assets": false
+  }
+ },
+ "quality_score": 4,
+ "brand_prompt": "Use /video-pipeline with /video-captions on videos/<project>. Apply style blueprint B45 (video-reference-match/references/blueprints/B45.json) to this brand.\n\nBRAND TOKENS (use the brand's colour/font for each role; keep the contrast relationship: {{TEXT}} on {{SURFACE}} >= 7:1, white numbers on {{ACCENT}} badges >= 4.5:1, {{ACCENT}} underline >= 3:1 on {{SURFACE}})\n- {{TEXT}} captions + titles - default #FFFFFF (near-black #0A0A0A on {{CARD_BG}} panels)\n- {{ACCENT}} counter badges, step labels, active chapter bar, title underline - default red #B20F14\n- {{ACCENT_2}} highlight ring / mechanism ring - default lime #C9DC32 (a green ring is fine)\n- {{SURFACE}} graphic panel - default near-black #020202 with a faint grid\n- {{CARD_BG}} alternate light panel + CTA card - default light grey #DDDCD9 with a dot grid\n- {{FONT_DISPLAY}} italic accent word / coined term - default italic old-style serif (Instrument Serif Italic or EB Garamond Italic; local stand-in Playfair Display 400 italic)\n- {{FONT_BODY}} captions, titles, labels - default Inter 800 (ExtraBold)\n- {{HANDLE}} - @handle (profile-card mocks, optional)\n- {{LOGO}} - optional, on the video-player mock in the CTA\n\nCanvas 1080x1920, 24 fps.\n\nLAYOUT\n1. Split for ~77 % of runtime: animated graphic panel y 0-70 % on {{SURFACE}} (a few panels on {{CARD_BG}} for variety); speaker in a rounded face card x 5.5-94.5 %, y ~70.5-100 %, radius ~3 % W. Full-face MCU for ~23 % (14-113 frames each) for opinions and transitions; alternate faster (every 24-72 frames) in the middle of the longest step.\n2. Proof for every claim as a UI mock-up in the panel: profile cards, video-player mocks with view counts, phone mock, thumbnail grids, funnel. Numbers sit in {{ACCENT}} rectangular badges with white bold digits that count up (power2.out over ~60-84 frames).\n3. Chapter card at each step change: 'Framework name' with 01 / 02 / 03; the active step in a solid {{ACCENT}} bar.\n4. Hook frame 1: title + avatar orbit with an {{ACCENT}} counter badge climbing ~10x in ~84 frames and a launch move; first full-face cut at ~3 % of runtime naming the method in {{FONT_DISPLAY}}.\n\nCAPTIONS\n5. Latin script, as spoken, punctuation kept, numbers as digits; 1-3-word meaning chunks, one line.\n6. {{FONT_BODY}}, -0.02em, {{TEXT}}, no stroke/box, very soft shadow 0 2px 6px rgba(0,0,0,.5); centred at y 64.4 %; 54 px on splits, 68 px on full-face; near-black on {{CARD_BG}} panels.\n7. Hard-cut chunk swaps ~2 frames after the chunk's first word, no gap, no emphasis colour.\n8. Once, the coined term replaces the caption on a full-face shot in {{FONT_DISPLAY}} (~56-69 px, verify), centred at y 64.4 %.\n\nOTHER TEXT\n9. Section title on every split: 'Headline here' (line 1, {{FONT_BODY}} 58 px, centre y 10 %, x ~22-78 %) / 'Second line here' (line 2, ~15 % larger, y ~12-15.5 %, x ~17-84 %), last word of line 2 in {{FONT_DISPLAY}}, thin {{ACCENT}} underline at y ~15.6 % spanning line 2.\n10. Recap: bar chart with the viewer's bar ('YOU') tallest.\n11. CTA (last ~6 %): {{CARD_BG}} card, black 'Comment' + {{FONT_DISPLAY}} '\"KEYWORD\"' / 'To Get This Video' (2 centred lines, y ~11-19 %, x 15-84 %) above a video-player mock with {{LOGO}}/{{HANDLE}} in the channel row; caption continues in near-black.\n\nGRADE: Grade from the user's footage (video-style / grade.py); target look: dark low-key studio, high-contrast, muted, warm bokeh, cool desaturated shadows.\nSOUND: dense voice at about -14 LUFS; counter tick/roll under badges, soft whoosh on panel transitions.\n\nVERIFY before rendering (px values were render-verified with Inter; if the brand font differs, adjust px until the numbers match):\na) Render test frames over {{SURFACE}}: \"a personal brand\" ({{FONT_BODY}} 54 px), \"KEY WORD\" as a full-face caption (68 px), a title line \"Headline here\" (58 px), and \"KEY WORD\" in {{FONT_DISPLAY}} (~56-69 px).\nb) Measure: python video-reference-match/scripts/caption_probe.py <test render or snapshot> --out <dir> --at <t> --box 0.2,0.62,0.8,0.67 --ink \"{{TEXT}}:60\" (caption); --box 0.15,0.088,0.85,0.118 --ink \"{{TEXT}}:70\" (title line 1); --box 0.15,0.615,0.85,0.672 --ink \"{{TEXT}}:70\" (serif callout).\nc) Required: \"a personal brand\" ink 2.58 % +-0.5 of H and 37.9 % +-2 of W. For the full-face caption, title and serif callout compute expected ink with python video-reference-match/scripts/fit_font.py --font \"<font>\" --word \"<text>\" at the px above (targets: full-face caption cap+descender ~3.4 % H, title line ~2.7 % H, serif ~3.4 % H).",
+ "caption_family": "phrase-plain"
+}

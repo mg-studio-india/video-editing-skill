@@ -39,6 +39,25 @@ def load_blueprints():
     return out
 
 
+SPEAKER_FORMATS = {"talking-head", "podcast-clip", "mixed", "street-interview"}
+FORMAT_WORDS = [("podcast", "podcast-clip"), ("interview", "podcast-clip"), ("skit", "skit"), ("comedy", "skit"),
+                ("meme", "skit"), ("selfie", "talking-head"), ("talking", "talking-head"), ("explainer", "explainer-graphics"),
+                ("animation", "explainer-graphics"), ("demo", "screen-demo"), ("tutorial", "screen-demo"),
+                ("screen", "screen-demo"), ("ugc", "ugc-ad"), ("ad", "ugc-ad"), ("promo", "brand-promo"),
+                ("launch", "brand-promo"), ("broll", "b-roll-voiceover"), ("voiceover", "b-roll-voiceover")]
+IDF = {}
+
+
+def build_idf(bps):
+    import math
+    docs = [bp_text(b) for b in bps]
+    df = {}
+    for d in docs:
+        for w in d:
+            df[w] = df.get(w, 0) + 1
+    IDF.update({w: math.log((1 + len(docs)) / (1 + c)) + 0.2 for w, c in df.items()})
+
+
 def words(t):
     return [w for w in re.findall(r"[a-z0-9]+", (t or "").lower()) if w not in STOP and len(w) > 1]
 
@@ -134,6 +153,11 @@ def analyse(a):
         except Exception:
             pass
         f.setdefault("people_on_screen", faces(im, False, 0))
+    if "format_type" not in f:
+        txt = " ".join(sorted(f["text"]))
+        guess = next((ft for kw, ft in FORMAT_WORDS if re.search(r"\b%s\b" % kw, (a.concept or "").lower())), None)
+        if guess:
+            f["format_type"] = guess
     if a.transcript and os.path.isfile(a.transcript):
         t = json.load(open(a.transcript))
         ws = t.get("words", t if isinstance(t, list) else [])
@@ -144,6 +168,10 @@ def analyse(a):
             f["language"] = "Hinglish" if ("hi" in lang or "hinglish" in lang) else ("English" if lang.startswith("en") else None)
         if ws and f.get("duration_s"):
             f["wpm"] = 60 * len(ws) / max(1, f["duration_s"])
+            spoken = sum(max(0.0, float(w.get("end", 0)) - float(w.get("start", 0))) for w in ws) / f["duration_s"]
+            if "format_type" not in f and f.get("people_on_screen") in ("1", "2+") and spoken > 0.4:
+                f["format_type"] = "talking-head" if f["people_on_screen"] == "1" else "podcast-clip"
+                f["format_inferred"] = True
     return f
 
 
@@ -152,11 +180,15 @@ def col_scores(f, b):
     s = {}
     fm = b.get("format", {})
     if "format_type" in f:
-        s["format_type"] = 1.0 if f["format_type"] == fm.get("type") else (0.5 if fm.get("type") == "mixed" else 0.0)
-    if f.get("text"):
+        bt_ = fm.get("type")
+        same = f["format_type"] == bt_
+        close = {f["format_type"], bt_} <= SPEAKER_FORMATS or bt_ == "mixed"
+        s["format_type"] = 1.0 if same else (0.6 if close else 0.0)
+    if f.get("text") and IDF:
         bt = bp_text(b)
-        inter = len(f["text"] & bt)
-        s["concept_text"] = min(1.0, inter / max(3.0, 0.25 * len(f["text"])))
+        q = {w for w in f["text"] if w in IDF}                  # words no blueprint uses carry no signal
+        if q:
+            s["concept_text"] = round(sum(IDF[w] for w in q & bt) / sum(IDF[w] for w in q), 3)
     if f.get("tags"):
         bt = set(b.get("match", {}).get("tags", []))
         s["tags"] = len(f["tags"] & bt) / len(f["tags"])
@@ -248,6 +280,7 @@ def main():
         sys.exit("give at least one of --video, --image, --concept, --transcript, --tags, --format")
     W = json.load(open(a.weights))
     bps = load_blueprints()
+    build_idf(bps)
     f = analyse(a)
     ranked = sorted(((score(f, b, W), b) for b in bps), key=lambda x: -x[0][0])
     top = a.top or W.get("top_k", 5)

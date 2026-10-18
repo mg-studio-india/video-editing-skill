@@ -35,14 +35,32 @@ W="videos/<project>"
 
 ---
 
-## 2. Gate 2: Interactive Cut Review
+## 2. Audio Waveform Dead-Air & Silence Scanning (Mandatory)
+
+> [!WARNING]
+> **ASR Stretching Trap:** Speech-to-text models (Whisper/ASR) automatically stretch word ending timestamps to swallow silences. Gaps between Whisper words will often appear as `0.0s` even when 1.5 seconds of dead air exist in the room tone!
+> **Rule:** ALWAYS detect pauses via the **real audio waveform RMS energy** (`dead-air.py` or ffmpeg `silencedetect`), NEVER by word timestamp math alone.
+
+1. **Audio Waveform Dead-Air Scan:**
+   Run `dead-air.py` or ffmpeg `silencedetect=noise=-30dB:d=0.35` across the audio track:
+   - Identify all pauses > 0.40s between sentences and clauses.
+   - Propose dropping the quiet core of each pause to tighten spacing to 0.25s - 0.30s.
+   - Strip leading dead air before the first word (> 0.12s) and trailing dead air after the final word (> 0.15s).
+
+---
+
+## 3. Gate 4: Interactive Cut & Dead-Air Review
 
 Before applying the permanent cut or encoding video:
 1. Generate `PAPER-CUT.md` listing:
-   - Total original duration vs. proposed cut duration.
-   - Exact timestamps of kept segments.
-   - Clean transcript of what the cut video will actually say.
-   - Non-speaking action segments identified for B-roll or try-ons.
+   - **Total Original Duration vs. Proposed Cut Duration** (e.g. 80.2s raw -> 66.8s tight cut, dropping 13.4s of dead air).
+   - **Dropped Pauses & Dead Air Table:**
+     | Pause Start | Pause End | Duration | Context Before | Context After | Dropped |
+     |---|---|---|---|---|---|
+     | 0.00s | 1.27s | 1.27s | (clip start) | "to" | 1.15s dropped |
+     | 3.24s | 4.84s | 1.60s | "tumhare" | "pas" | 1.30s dropped |
+   - **Exact Timestamps of Kept Segments:** Kept range list with lead-in and trailing breath padding.
+   - **Clean Transcript:** What the cut video will actually say.
 2. Present `PAPER-CUT.md` to the user:
-   > *"Here is the exact cut map. Intro dialogue: 0.0s - 19.1s. Dress 1 try-on: 6.0s. Dress 2 try-on: 6.0s. Dress 3 try-on: 6.0s. Outro: 1.4s. Total duration: 38.5s. Does this pacing work for you?"*
-3. Apply the cut only after user approval.
+   > *"Here is the precision cut map eliminating all dead air. Original duration: 80.2s. Cut duration: 66.8s (13.4s of dead air eliminated across 12 pauses). Pacing is tightened to 165 WPM. Does this cut map look great?"*
+3. Apply the cut with `apply-cut.py` only after user approval.

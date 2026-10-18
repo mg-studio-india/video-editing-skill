@@ -1,0 +1,455 @@
+{
+ "id": "B01",
+ "schema": "blueprint/1",
+ "format": {
+  "type": "brand-promo",
+  "aspect": "9:16",
+  "language": "none",
+  "duration_class": "micro (<15s)",
+  "people_on_screen": "0"
+ },
+ "topic_class": "marketing",
+ "signature": {
+  "one_line": "Footage-free one-word kinetic cards on flat colours: fill/outline stutter stack, mock follow-click end card.",
+  "unique_devices": [
+   "Hook word repeated in a 5-row stack that grows outward from the centre, rows alternating solid fill and outline-only, one row every 8-10 frames @30",
+   "Key-noun exit: the word hard-cuts into a full-height column of ~11 copies that scrolls up out of frame in ~6 frames",
+   "Mock social-app profile row with a 'Follow' pill that an animated hand cursor clicks, hard-switching to a filled 'Following' state while the background flashes",
+   "Background colour change on every beat (surface colour, near-black, second accent, white) stands in for picture cuts"
+  ],
+  "why_it_works": "Beat-locked one-word cards carry zero reading load, the stutter is a pure pattern interrupt, and the end card literally demonstrates the action asked for."
+ },
+ "hook": {
+  "type": "pattern interrupt (text stutter) + direct-address command",
+  "first_word_s": null,
+  "first_cut_s": 3.386,
+  "first_frame": "Empty flat surface colour-surface colour card; the first filled hook word lands at frame centre within 2-3 frames"
+ },
+ "structure": [
+  {
+   "beat": "hook",
+   "from_pct": 0,
+   "to_pct": 24,
+   "what": "One short hook word repeated into a 5-row fill/outline stack on a light card"
+  },
+  {
+   "beat": "claim",
+   "from_pct": 24,
+   "to_pct": 33,
+   "what": "Two-word imperative on two fixed lines, black on the same light card"
+  },
+  {
+   "beat": "setup",
+   "from_pct": 33,
+   "to_pct": 55,
+   "what": "Wipe to a near-black card; function words as outline stacks, the verb in white fill, the key noun in accent, then the key noun multiplies and scrolls out"
+  },
+  {
+   "beat": "cta",
+   "from_pct": 55,
+   "to_pct": 63,
+   "what": "One-word CTA verb on a second accent card"
+  },
+  {
+   "beat": "payoff",
+   "from_pct": 63,
+   "to_pct": 100,
+   "what": "Wordmark + mock social profile row; cursor clicks Follow, button flips to Following; background flashes second accent/white"
+  }
+ ],
+ "pacing": {
+  "pace": "moderate (cards), but text steps every 8-10 frames",
+  "median_shot_s": 2.7,
+  "cuts_per_min": 18,
+  "wpm": null,
+  "pauses_per_min": null,
+  "visual_change_every_s": 0.3
+ },
+ "elements": {
+  "captions": [],
+  "background_text": [
+   {
+    "what": "Beat word (kinetic title), one word per beat, ALL CAPS condensed grotesque",
+    "when": "1-62 % of runtime (hook, claim, setup, CTA verb)",
+    "how": "Horizontally centred, block centre 49.4-50.2 % H; filled words 166 px Anton 400 at 1080x1920 (ink ~7.2-7.6 % H); each word hard-cuts in place of the previous one every 9-10 frames @30; no fade, scale or idle motion; 2-line blocks on fixed slots 44.6 % / 55 % H, line 2 lands +8 frames",
+    "catalog": [
+     23,
+     24
+    ]
+   },
+   {
+    "what": "Outline rows of the word stack",
+    "when": "hook (0-13 % build) and setup function words",
+    "how": "Same 166 px size, transparent fill, ~7-8 px stroke drawn outside the glyph; white stroke on both card colours",
+    "catalog": [
+     23
+    ]
+   },
+   {
+    "what": "Wordmark",
+    "when": "63-100 %",
+    "how": "CTA tier 138 px Anton 400, black, centred at 49.4 % H, hard cut in",
+    "catalog": [
+     24
+    ]
+   }
+  ],
+  "motion_graphics": [
+   {
+    "what": "Fill/outline stutter stack",
+    "when": "hook, rows land at ~1/4/7/10/13 % of runtime",
+    "how": "5 rows, pitch 9.93 % H (gap 2.7 % H), centres 29.7/39.6/49.5/59.5/69.4 % H; order centre fill -> outline above -> outline below -> fill above -> fill below; each row hard-cuts in, one every 8-10 frames @30",
+    "catalog": [
+     23,
+     175
+    ]
+   },
+   {
+    "what": "Key-noun multiply-and-scroll exit",
+    "when": "~51 % of runtime, end of setup",
+    "how": "Key noun hard-cuts into a full-height column of ~11 copies (pitch ~3.4 % H) that scrolls upward out of frame in ~6 frames @30 (power2.in), leaving the empty dark card",
+    "catalog": [
+     23,
+     80
+    ]
+   },
+   {
+    "what": "Cursor click on mock follow button",
+    "when": "66-80 % of runtime",
+    "how": "Hand cursor enters below the button and glides up onto it in ~9 frames (power2.out), rests ~33 frames, clicks: pill hard-switches from white outlined 'Follow' to filled dark 'Following'",
+    "catalog": [
+     93
+    ]
+   }
+  ],
+  "cards_lists": [
+   {
+    "what": "Flat colour cards as the whole canvas",
+    "when": "100 %",
+    "how": "Light cards surface colour / second accent / white with black text; dark card near-black with white text and one accent key noun; one colour per beat",
+    "catalog": [
+     105
+    ]
+   }
+  ],
+  "silhouettes_cutouts": [],
+  "broll_inserts": [],
+  "layout": [
+   {
+    "what": "Single centred text column, no footage",
+    "when": "100 %",
+    "how": "All type centred on the vertical axis at ~50 % H; nothing in the top/bottom 25 % except stack rows",
+    "catalog": [
+     23
+    ]
+   }
+  ],
+  "camera": [],
+  "transitions": [
+   {
+    "what": "Light -> dark card wipe",
+    "when": "~32-34 % of runtime",
+    "how": "Dark card wipes in from the left edge over ~6 frames @30 (linear), text static under it",
+    "catalog": [
+     80
+    ]
+   },
+   {
+    "what": "Hard cut to CTA card",
+    "when": "~54.5 %",
+    "how": "Hard cut to second accent; CTA word lands +6 frames after the background",
+    "catalog": [
+     174
+    ]
+   },
+   {
+    "what": "Background flashes",
+    "when": "61-80 % (end card)",
+    "how": "Background white, flashing second accent for ~7 frames @30 twice before the click, white from the click to the end",
+    "catalog": [
+     180
+    ]
+   }
+  ],
+  "end_card": [
+   {
+    "what": "Mock social profile + follow CTA",
+    "when": "63-100 % of runtime (~36 % of the piece)",
+    "how": "Wordmark centred at 49.4 % H; profile row revealed from below in 2-3 frames: app-style gradient avatar circle (diameter 6.3 % W, x 25.5-31.8 %, centre y 56.8 %), account name in small bold grey sans (Inter 700, cap height ~1.1 % H, x 33.8-48.8 %), white 'Follow' pill with 1 px light-grey outline (x 60.3-74.4 %, y 55.8-57.7 %, small radius)",
+    "catalog": [
+     93,
+     24
+    ]
+   }
+  ]
+ },
+ "captions_spec": null,
+ "other_text_spec": [
+  {
+   "type": "beat word (kinetic title)",
+   "when": "1-62 % of runtime",
+   "font_class": "condensed all-caps grotesque, bold, uniform stroke, rounded-rectangle O/C bowls",
+   "closest_match": {
+    "local": "Anton 400",
+    "google": "Bebas Neue",
+    "note": "original stems are lighter (stem ~1/7 of cap height vs Anton ~1/4.5); Anton matches height/width proportions and is the size-verified local face"
+   },
+   "layout": "single word, horizontally centred, block centre y 49.4-50.2 % of H; 2-line blocks keep fixed slots (line 1 centre 44.6 %, line 2 centre 55 %, block centre 49.7 %), no reflow",
+   "tiers": {
+    "fill": {
+     "verified_px": 166,
+     "ink_height_pct_of_H": 7.19,
+     "calibration": [
+      {
+       "word": "HEY",
+       "ink_pct_of_H": 7.19,
+       "width_pct_of_W": 21.2
+      },
+      {
+       "word": "SCROLLING",
+       "ink_pct_of_H": 7.34,
+       "width_pct_of_W": 59.7
+      },
+      {
+       "word": "PROMOTE",
+       "ink_pct_of_H": 7.58,
+       "width_pct_of_W": 53.5
+      }
+     ],
+     "color": "#000000 on light cards; #FFFFFF on the dark card; the one key noun #F7D328 on the dark card",
+     "stroke": "none",
+     "shadow": "none",
+     "box": "none",
+     "tracking": "0em",
+     "case": "upper"
+    },
+    "outline": {
+     "font_size_px": 166,
+     "ink_height_pct_of_H": 7.97,
+     "calibration": [
+      {
+       "word": "HEY",
+       "ink_pct_of_H": 7.97,
+       "width_pct_of_W": 22.6
+      }
+     ],
+     "color": "transparent fill, #FFFFFF stroke",
+     "stroke": "~7-8 px @1920, outside the glyph edge (outline word is 0.78 % H taller and 1.4 % W wider than the filled word at the same size)",
+     "note": "a fit of 181 px includes the outside stroke; it is not the font size: use 166 px plus the stroke"
+    },
+    "cta": {
+     "verified_px": 138,
+     "ink_height_pct_of_H": 6.17,
+     "calibration": [
+      {
+       "word": "FOLLOW",
+       "ink_pct_of_H": 6.17,
+       "width_pct_of_W": 36.9
+      }
+     ],
+     "wordmark_reference": "a ~12-character wordmark measured 6.17 % H x 58.5 % W at the same size",
+     "color": "#000000",
+     "note": "CTA word and wordmark are ~15 % smaller than hook/setup words",
+     "case": "upper",
+     "tracking": "0em"
+    }
+   },
+   "stack": {
+    "rows": 5,
+    "row_pitch_pct_of_H": 9.93,
+    "row_gap_pct_of_H": 2.7,
+    "row_centres_pct_of_H": [
+     29.7,
+     39.7,
+     49.6,
+     59.6,
+     69.4
+    ],
+    "pattern": "fill / outline / fill / outline / fill (fill rows black on mint; on the dark card the centre row is white fill and the rows above/below white outline)",
+    "build_order": "centre fill row first, then outline above, outline below, fill above, fill below (grows outward from the centre)"
+   },
+   "animation": {
+    "fps_note": "frame counts given at 30 fps",
+    "entry": "hard cut, no fade/scale/slide: each word or stack row appears complete in one frame",
+    "stack_timing": "one new row every 8-10 frames; rows land at ~1, 4, 7, 10, 13 % of runtime",
+    "word_timing": "words change every 9-10 frames on the dark card; 2-line claim: line 2 lands +8 frames after line 1",
+    "replace": "each new word hard-cuts in place of the previous one (no cross-fade)",
+    "key_noun_exit": "key noun hard-cuts into a full-height column of 11 copies, which scrolls up out of frame in ~6 frames, leaving the empty dark card",
+    "idle": "none"
+   }
+  },
+  {
+   "type": "card transitions",
+   "when": "~32-34 %, ~54.5 %, end card",
+   "text": "light -> dark: the dark card wipes in from the left edge over ~6 frames (25/50/75/100 % covered at even steps), text static on both cards; dark -> lime: hard cut, CTA word lands +6 frames later",
+   "bg_colors": {
+    "mint": "#B2F4B5",
+    "dark": "#161616",
+    "lime": "#E4FEA3",
+    "white": "#FFFFFF"
+   }
+  },
+  {
+   "type": "end card (mock social-app follow)",
+   "when": "63-100 % of runtime",
+   "text": "wordmark (cta tier, black, centre y 49.4 %, 46.3-52.5 %) hard-cuts in; 1 frame later a profile row reveals from below over 2-3 frames: app-style gradient avatar circle (diameter 6.3 % of W, x 25.5-31.8 %, centre y 56.8 %), account name in a bold neo-grotesque (closest local Inter 700) #343434, cap height ~1.1 % of H, x 33.8-48.8 %; 'Follow' button: white pill with #BBBBBB 1 px outline, x 60.3-74.4 % (14.1 % of W), y 55.8-57.7 % (1.9 % of H), radius ~3 px @1920",
+   "motion": "hand cursor appears below the button ~9 frames after the card lands and glides onto it in ~9 frames; click ~33 frames later (~80 % of runtime): button hard-switches to filled #343434 with white 'Following'",
+   "bg_flashes": "white from ~61 %; lime #E4FEA3 for ~7 frames at ~72 % and again at ~78 %; white from the click to the end"
+  }
+ ],
+ "style": {
+  "palette_roles": {
+   "text": "#000000",
+   "accent": "#F7D328",
+   "accent_2": "#E4FEA3",
+   "surface": "#B2F4B5",
+   "card_bg": "#161616"
+  },
+  "fonts": {
+   "display": {
+    "closest_local": "Anton 400",
+    "verified_px": 166,
+    "tracking": "0em"
+   },
+   "cta": {
+    "closest_local": "Anton 400",
+    "verified_px": 138,
+    "tracking": "0em"
+   },
+   "ui_label": {
+    "closest_local": "Inter 700",
+    "verified_px": null,
+    "tracking": "0em"
+   }
+  },
+  "look_intent": "flat graphic colour fields, high contrast, muted pastel light cards against near-black, slightly warm; no footage to grade"
+ },
+ "sound": {
+  "music": "music-only (beat periodicity 0.49, ~67 bpm estimate); upbeat, beat-driven bed carrying every text step",
+  "sfx": [
+   "none identified; half of the hard cuts land on a music onset (measured cut_hit_share 0.5)",
+   "optional: soft click on the cursor click of the follow button"
+  ],
+  "loudness_lufs": -14.1
+ },
+ "measured": {
+  "grade": {
+   "black_point": 20.0,
+   "midtone": 224.9,
+   "white_point": 253.0,
+   "contrast_range": 233.0,
+   "luma_std": 90.7,
+   "saturation": 0.144,
+   "colorfulness": 51.3,
+   "warmth_r_minus_b": 34.9,
+   "tint_g": 19.3,
+   "vignette_centre_over_edge": 0.96,
+   "label": "high-contrast, muted, warm"
+  },
+  "layout": {
+   "letterbox_share": 0.0,
+   "split_divider_share": 0.0
+  },
+  "sound": {
+   "has_audio": true,
+   "speech_coverage": 0.0,
+   "beat_periodicity": 0.49,
+   "beat_bpm_est": 67,
+   "gap_level_rel_speech_db": 0.0,
+   "music": "music-only",
+   "cut_hit_share": 0.5,
+   "method": "heuristic (onset-envelope beat periodicity + level in speech gaps); not a classifier"
+  }
+ },
+ "catalog_styles": [
+  {
+   "id": 23,
+   "name": "Kinetic Typography",
+   "role": "the whole piece: one word per beat on flat cards"
+  },
+  {
+   "id": 24,
+   "name": "Big-Text Hook",
+   "role": "fill/outline word-stack stutter in the opening quarter"
+  },
+  {
+   "id": 175,
+   "name": "Beat-Synced Editing",
+   "role": "word and row steps every 8-10 frames on the music"
+  },
+  {
+   "id": 80,
+   "name": "Wipe and Slide Transitions",
+   "role": "left-edge card wipe and the key-noun scroll-up exit"
+  },
+  {
+   "id": 93,
+   "name": "UI / Website Animation",
+   "role": "mock follow button with cursor click"
+  },
+  {
+   "id": 180,
+   "name": "Flash-Cut Editing",
+   "role": "background colour flashes on the end card"
+  },
+  {
+   "id": 204,
+   "name": "Brand Sizzle Reel",
+   "role": "short footage-free account / page promo"
+  }
+ ],
+ "use_when": [
+  "the user has no footage and wants a short text-only promo or follow/subscribe CTA",
+  "the concept is a punchy 2-4 beat message (hook, offer, CTA) set to music",
+  "a CTA end card or text-only cold open is needed to bolt onto another edit",
+  "the brand has 2-4 bold flat colours and a condensed display face"
+ ],
+ "avoid_when": [
+  "the video is a talking head or interview that needs speech captions",
+  "the message needs more than ~10 words or any explanation",
+  "the brand look is premium/editorial where flashing colour cards feel cheap"
+ ],
+ "match": {
+  "tags": [
+   "kinetic-typography",
+   "text-only",
+   "no-footage",
+   "music-only",
+   "follow-cta",
+   "flat-colour-cards",
+   "word-stack-stutter",
+   "outline-text",
+   "beat-synced",
+   "mock-ui",
+   "end-card",
+   "micro-promo"
+  ],
+  "keywords": [
+   "follow",
+   "subscribe",
+   "promo",
+   "announcement",
+   "page",
+   "account",
+   "typography",
+   "text",
+   "beat",
+   "music",
+   "cta",
+   "teaser",
+   "words",
+   "colourful",
+   "punchy",
+   "graphic"
+  ],
+  "needs": {
+   "speaker_footage": false,
+   "screen_recordings": false,
+   "broll": false,
+   "brand_assets": true
+  }
+ },
+ "quality_score": 1,
+ "brand_prompt": "Use /video-pipeline with /video-captions on videos/<project>. Apply style blueprint B01 (video-reference-match/references/blueprints/B01.json) to this brand.\nThis blueprint has NO speech captions: it is a footage-free kinetic title / follow-CTA sequence. If the edit has speech, caption it with its own spec; use this for the title cards and end card. Canvas 1080x1920, 30 fps.\n\nBRAND TOKENS (use the brand's colour for each role; keep the contrast relationship: text vs card >= 7:1, {{ACCENT}} >= 3:1 on {{CARD_BG}}, light cards stay light and the dark card stays dark)\n- {{TEXT}}: text on light cards, default #000000 (white #FFFFFF on the dark card)\n- {{ACCENT}}: the one key noun on the dark card, default #F7D328\n- {{ACCENT_2}}: second light card (CTA card, end-card flashes), default #E4FEA3\n- {{SURFACE}}: first light card (hook), default #B2F4B5\n- {{CARD_BG}}: dark card, default #161616\n- {{FONT_DISPLAY}}: default Anton 400 (look: Bebas Neue-like condensed caps)\n- {{FONT_BODY}}: default Inter 700 (profile-row account name)\n- {{HANDLE}}: account name on the mock profile row, default \"@handle\"\n- {{LOGO}}: wordmark text or logo on the end card and the avatar circle image\n\nTITLE CARDS\n1. {{FONT_DISPLAY}}, ALL CAPS, one word per beat, no punctuation/emoji, tracking 0, no stroke/shadow/box on filled words.\n2. Size: beat words 166 px (calibration \"HEY\" ink 7.19 % H x 21.2 % W; \"SCROLLING\" 7.34 % / 59.7 %; \"PROMOTE\" 7.58 % / 53.5 %). CTA word and wordmark 138 px (\"FOLLOW\" 6.17 % H / 36.9 % W). If {{FONT_DISPLAY}} is not Anton, re-solve px with VERIFY.\n3. Position: every word horizontally centred, block centre 49.5-50 % H. Two-line blocks use fixed slots (line 1 centre 44.6 %, line 2 centre 55 %); line 1 does not move when line 2 lands (+8 frames).\n4. Hook stack (first ~24 % of runtime): repeat the hook word in a 5-row stack, pitch 9.93 % H (gap 2.7 % H), row centres 29.7 / 39.6 / 49.5 / 59.5 / 69.4 %. Rows alternate FILL / OUTLINE / FILL / OUTLINE / FILL on {{SURFACE}}: fill rows {{TEXT}}, outline rows transparent with a white ~7-8 px stroke outside the glyph (same 166 px size). Build order: centre fill, outline above, outline below, fill above, fill below; each row hard-cuts in, one every 8-10 frames. Then hard-cut to a two-word imperative on the 2-line slots.\n5. Dark card: {{CARD_BG}} with white text; function words as white outline stacks, the verb in white fill, the ONE key noun in {{ACCENT}}. One word every 9-10 frames, each hard-cutting in place of the previous; no fades, scale or idle motion.\n6. Transitions: light -> dark is a left-to-right wipe of the new card over ~6 frames, text static under it. Key-noun exit: the word hard-cuts into a full-height column of ~11 copies (pitch ~3.4 % H) that scrolls up out of frame in ~6 frames (power2.in). Then hard cut to the {{ACCENT_2}} CTA card; the CTA verb lands 6 frames after the background.\n\nOTHER TEXT / END CARD (last ~36 % of runtime)\n7. {{LOGO}} wordmark (138 px, {{TEXT}}, centre 49.4 % H) on white; 1 frame later a profile row reveals from below in 2-3 frames: gradient avatar circle with {{LOGO}} (diameter 6.3 % W, x 25.5-31.8 %, centre y 56.8 %), {{HANDLE}} in {{FONT_BODY}} #343434 (cap height ~1.1 % H, x 33.8-48.8 %), white \"Follow\" pill with 1 px #BBBBBB outline (14.1 % W x 1.9 % H at x 60.3-74.4 %, y 55.8-57.7 %, radius ~3 px).\n8. A hand cursor appears below the pill ~9 frames after the card, glides onto it in ~9 frames (power2.out), clicks ~33 frames later: the pill hard-switches to filled #343434 with white \"Following\". Background flashes {{ACCENT_2}} for ~7 frames twice before the click, then stays white to the end.\n\nSOUND: music only, beat-driven; place word and row steps on beats; optional soft click on the cursor click. Master to about -14 LUFS, true peak <= -1 dBTP.\nGRADE: Grade from the user's footage (video-style / grade.py); target look: flat graphic colour fields, high contrast, muted pastels against near-black (no footage in this blueprint, so only inserted footage would be graded).\n\nVERIFY before rendering: render the calibration words and measure them:\n  video-reference-match/scripts/caption_probe.py <render-file> --out <dir> --at <t_hook_stack> --box 0.1,0.2,0.9,0.8 --ink \"#000000:30\"\n  video-reference-match/scripts/caption_probe.py <render-file> --out <dir> --at <t_cta_word> --box 0.1,0.2,0.9,0.8 --ink \"#000000:30\"\nFilled \"HEY\" must read ink 7.19 % +-0.5 of H and width 21.2 % +-2 of W; \"FOLLOW\" 6.17 % +-0.5 / 36.9 % +-2. For the brand's own words, compute the expected ink with video-reference-match/scripts/fit_font.py at 166 px / 138 px in {{FONT_DISPLAY}}. Positions within +-1 % of frame height of the values above.",
+ "caption_family": "title-only"
+}

@@ -1,0 +1,316 @@
+{
+ "id": "B21",
+ "schema": "blueprint/1",
+ "format": {
+  "type": "skit",
+  "aspect": "9:16",
+  "language": "English",
+  "duration_class": "short (15-60s)",
+  "people_on_screen": "2+"
+ },
+ "topic_class": "comedy skit",
+ "signature": {
+  "one_line": "Handheld skit: text colour boxed film subtitles, whip-pan character handoffs, silent captionless punchline.",
+  "unique_devices": [
+   "Plain film subtitles only: small bold text colour Arial-style phrases with full punctuation on a faint translucent dark box at a fixed 66 % H; zero titles, graphics or b-roll",
+   "Whip-pan character handoffs: ~half of all cuts are whip pans and most cuts are J-leads, so the next line starts before the picture changes",
+   "Running gag: one short 2-word question repeated by every character, escalating toward a reveal",
+   "Silent payoff: the last ~17 % plays with no captions and no dialogue, and the grade shifts from warm beige to cool grey for the reveal"
+  ],
+  "why_it_works": "Starts mid-scene with a name and a number, repetition builds the joke, and the wordless reveal lets the picture deliver the punchline."
+ },
+ "hook": {
+  "type": "in medias res (name + concrete number)",
+  "first_word_s": 0.14,
+  "first_cut_s": 4.2,
+  "first_frame": "Handheld medium shot of a seated person holding a phone in front of light-wood office shelves, mid-conversation; small text colour subtitle on a faint dark box at two-thirds height"
+ },
+ "structure": [
+  {
+   "beat": "hook",
+   "from_pct": 0,
+   "to_pct": 7,
+   "what": "mid-conversation line naming a colleague and a big task with a number"
+  },
+  {
+   "beat": "setup",
+   "from_pct": 7,
+   "to_pct": 21,
+   "what": "first question and uncertain answer introduce the gag line; whip pan to the next person"
+  },
+  {
+   "beat": "example",
+   "from_pct": 21,
+   "to_pct": 51,
+   "what": "escalation: next colleague repeats the uncertain answer; shot/reverse-shot"
+  },
+  {
+   "beat": "example",
+   "from_pct": 51,
+   "to_pct": 72,
+   "what": "escalation 2: the responsible person is called in; whip pans between everyone"
+  },
+  {
+   "beat": "claim",
+   "from_pct": 72,
+   "to_pct": 83,
+   "what": "deflating one-word answer, decision to go and look"
+  },
+  {
+   "beat": "payoff",
+   "from_pct": 83,
+   "to_pct": 100,
+   "what": "silent reveal of the unfinished space, deadpan reaction, captions off"
+  }
+ ],
+ "pacing": {
+  "pace": "moderate (dialogue holds, fast handoffs)",
+  "median_shot_s": 3.0,
+  "cuts_per_min": 17,
+  "wpm": 170,
+  "pauses_per_min": 6.1,
+  "visual_change_every_s": 3.0
+ },
+ "elements": {
+  "captions": [
+   {
+    "what": "film-style subtitle phrases",
+    "when": "0-83 %",
+    "how": "1-5 words, one line, centred at 66 % H fixed for every shot; Inter 700 48 px text colour with a tight dark edge on a faint translucent black box; hard cut on the first word of each phrase",
+    "catalog": [
+     29,
+     26
+    ]
+   }
+  ],
+  "background_text": [],
+  "motion_graphics": [],
+  "cards_lists": [],
+  "silhouettes_cutouts": [],
+  "broll_inserts": [],
+  "layout": [],
+  "camera": [
+   {
+    "what": "handheld documentary coverage of each character",
+    "when": "throughout",
+    "how": "medium shots, no punch-ins; shot/reverse-shot",
+    "catalog": [
+     46
+    ]
+   },
+   {
+    "what": "wide reveal shots",
+    "when": "83-100 %",
+    "how": "slow handheld wides of the space, one deadpan close reaction",
+    "catalog": [
+     151
+    ]
+   }
+  ],
+  "transitions": [
+   {
+    "what": "whip pans between characters",
+    "when": "~53 % of cuts",
+    "how": "horizontal motion-blur whip ~6-8 frames; next line leads the cut (J-cut on most cuts)",
+    "catalog": [
+     101
+    ]
+   }
+  ],
+  "end_card": []
+ },
+ "captions_spec": {
+  "script": "latin (as spoken)",
+  "case": {
+   "caption": "sentence case as written dialogue (capital on sentence starts and names)"
+  },
+  "punctuation": "full: commas, full stops and question marks kept",
+  "emoji": "none",
+  "grouping": {
+   "words_per_caption": "1-5 (a clause or sentence fragment)",
+   "max_lines": 1,
+   "sync": "phrase-level, cut on the first word of each phrase",
+   "break": "at punctuation / natural pauses; previous phrase hard-cuts to the next"
+  },
+  "layout": {
+   "align": "centre (x 50 %)",
+   "center_y_pct": 66.0,
+   "line_width_pct_of_W": "15-30",
+   "rule": "fixed position for every shot (does not follow the speaker)",
+   "1080x1920_mapping": "same percentages (9:16)"
+  },
+  "type": {
+   "caption": {
+    "font_class": "neo-grotesque sans, bold (Arial/Helvetica Bold style)",
+    "closest_match": {
+     "local": "Inter 700",
+     "google": "Inter Bold (or Arimo Bold for a closer Arial look)"
+    },
+    "confidence": "medium",
+    "letterform_evidence": "Arial-like: double-storey a, angled terminals on t and ?, tall I without serifs, compact widths",
+    "ink_height_pct_of_H": 2.27,
+    "k": 0.99,
+    "font_size_px_at_1920": 48,
+    "calibration": [],
+    "calibration_note": "measured phrases (source text withheld): a 2-word phrase with digits at 2.27 % H / 22.4 % W over a dark T-shirt; a 2-word question with a capital I at 1.8 % H / 15.1 % W over a light wall (yellow-only ink)",
+    "color": "#F2C911 (measured median)",
+    "stroke": "thin dark outline / tight shadow ~1.5 px @1080, e.g. text-shadow 0 0 2px rgba(0,0,0,.8) (estimated)",
+    "shadow": "see stroke",
+    "box": "translucent black rectangle behind the line: rgba(0,0,0,.25), radius ~4 px @1080 (estimated), padding ~13 px left/right and ~12 px top/bottom @1080; a short phrase box spans ~x 41-59 %, y 64.4-67.5 % (3.0 % H)",
+    "tracking": "0em",
+    "verified_px": 48,
+    "k_formula_px_at_1920": 44
+   }
+  },
+  "animation": {
+   "fps": 30,
+   "entry": "hard cut on the first word of the phrase (within ~1 frame)",
+   "exit": "hard cut when the next phrase starts (or stays until the shot changes)",
+   "idle": "none"
+  }
+ },
+ "other_text_spec": [
+  {
+   "type": "titles / lower-thirds / stickers / end card",
+   "when": "none",
+   "text": "none; the payoff (last ~17 % of runtime) plays with no captions"
+  }
+ ],
+ "style": {
+  "palette_roles": {
+   "text": "#F2C911",
+   "accent": "#F2C911",
+   "accent_2": null,
+   "surface": "#000000",
+   "card_bg": null
+  },
+  "fonts": {
+   "caption": {
+    "closest_local": "Inter 700 (Arimo Bold closer)",
+    "verified_px": 48,
+    "tracking": "0em"
+   }
+  },
+  "look_intent": "soft, low-to-mid contrast, muted warm beige office; the reveal switches to cooler, darker grey"
+ },
+ "sound": {
+  "music": "music bed likely (low under dialogue, gaps ~8 dB below speech); light ambience carries the silent reveal",
+  "sfx": [
+   "no hits on cuts (measured cut_hit_share 0.0)",
+   "optional whoosh on whip pans (inferred)"
+  ],
+  "loudness_lufs": -14.1
+ },
+ "measured": {
+  "grade": {
+   "black_point": 14.2,
+   "midtone": 128.6,
+   "white_point": 189.4,
+   "contrast_range": 175.2,
+   "luma_std": 56.6,
+   "saturation": 0.224,
+   "colorfulness": 30.5,
+   "warmth_r_minus_b": 18.3,
+   "tint_g": 1.0,
+   "vignette_centre_over_edge": 0.81,
+   "label": "mid-contrast, muted, warm"
+  },
+  "layout": {
+   "letterbox_share": 0.0,
+   "split_divider_share": 0.0
+  },
+  "sound": {
+   "has_audio": true,
+   "speech_coverage": 0.69,
+   "beat_periodicity": 0.11,
+   "beat_bpm_est": null,
+   "gap_level_rel_speech_db": -7.9,
+   "music": "music bed likely",
+   "cut_hit_share": 0.0,
+   "method": "heuristic (onset-envelope beat periodicity + level in speech gaps); not a classifier"
+  }
+ },
+ "catalog_styles": [
+  {
+   "id": 29,
+   "name": "Minimal Subtitle Style",
+   "role": "yellow film subtitles on a faint box"
+  },
+  {
+   "id": 101,
+   "name": "Whip-Pan Transitions",
+   "role": "character handoffs"
+  },
+  {
+   "id": 198,
+   "name": "Call-and-Response Dialogue",
+   "role": "repeated question/answer gag"
+  },
+  {
+   "id": 150,
+   "name": "Story Arc: Setup → Conflict → Resolution",
+   "role": "escalating skit structure"
+  },
+  {
+   "id": 151,
+   "name": "Mystery / Reveal",
+   "role": "silent visual punchline"
+  },
+  {
+   "id": 195,
+   "name": "Dialogue-First Interview Edit",
+   "role": "J-leads: next line starts before the cut"
+  }
+ ],
+ "use_when": [
+  "A scripted multi-person skit or scene shot handheld in a real location",
+  "The joke builds on a repeated line handed from character to character",
+  "The ending can be shown rather than said (a visual reveal)",
+  "The brand wants a native, unpolished look with captions only for accessibility"
+ ],
+ "avoid_when": [
+  "Single-speaker talking-head or educational content that needs emphasis captions and graphics",
+  "No room for a silent ending (the payoff needs the last ~15-20 % of runtime as pure picture)"
+ ],
+ "match": {
+  "tags": [
+   "skit",
+   "comedy",
+   "workplace",
+   "multi-character",
+   "subtitles",
+   "yellow-subtitle-box",
+   "whip-pans",
+   "j-cuts",
+   "handheld",
+   "running-gag",
+   "silent-payoff",
+   "no-graphics"
+  ],
+  "keywords": [
+   "skit",
+   "office",
+   "team",
+   "boss",
+   "colleague",
+   "funny",
+   "hiring",
+   "deadline",
+   "manager",
+   "relatable",
+   "workplace",
+   "comedy",
+   "scene",
+   "reveal"
+  ],
+  "needs": {
+   "speaker_footage": true,
+   "screen_recordings": false,
+   "broll": false,
+   "brand_assets": false
+  }
+ },
+ "quality_score": 2,
+ "brand_prompt": "Use /video-pipeline with /video-captions on videos/<project>. Apply style blueprint B21 (video-reference-match/references/blueprints/B21.json) to this brand.\nCanvas 1080x1920, 30 fps. Multi-character handheld scene.\n\nBRAND TOKENS (use the brand's colour/font for each role; keep the contrast relationship: subtitle {{TEXT}} must stay >= 4.5:1 against its box over both light walls and dark clothing)\n- {{TEXT}}: default #F2C911 (subtitle yellow)\n- {{ACCENT}}: default #F2C911 (same as text; no separate emphasis)\n- {{ACCENT_2}}: none\n- {{SURFACE}}: default rgba(0,0,0,.25) (subtitle box)\n- {{CARD_BG}}: none\n- {{FONT_DISPLAY}}: none (no titles)\n- {{FONT_BODY}}: default Inter 700 (Arimo Bold for an Arial look)\n- {{HANDLE}}: not on screen\n- {{LOGO}}: none (the skit carries no branding on screen)\n\nCAPTIONS\n1. Latin, as spoken, sentence case like written dialogue; keep commas, full stops and question marks; no emoji.\n2. 1-5 words per subtitle (a clause), one line, break at punctuation or natural pauses.\n3. {{FONT_BODY}} at 48 px, {{TEXT}}, tracking 0, tight dark edge (text-shadow 0 0 2px rgba(0,0,0,.8)), on a {{SURFACE}} rectangle, radius ~4 px, padding ~13 px left/right and ~12 px top/bottom; the box hugs the line (~3 % H tall).\n4. Centred, centre y 66 % H, the same position on every shot (does not follow the speaker).\n5. Hard cut in on the first word of each phrase (within ~1 frame), hard cut out on the next phrase; no idle motion.\n6. Turn captions OFF for the silent payoff (last ~17 % of runtime).\n\nEDIT DEVICES\n7. Open mid-conversation: first word inside ~4 frames, a name/role and a concrete number in the first line; no title card.\n8. Handoffs between characters: ~half the cuts are horizontal whip pans (~6-8 frames motion blur); on most cuts start the next line before the picture changes (J-cut).\n9. Median shot ~3 s; no punch-ins, no titles, no graphics, no b-roll.\n10. Payoff: the last ~17 % of runtime as wordless wide reveal shots plus one deadpan reaction; grade the reveal cooler and darker than the rest.\n\nGRADE: Grade from the user's footage (video-style / grade.py); target look: soft, muted warm beige interiors, then a cooler grey reveal.\nSOUND: quiet bed or room tone under dialogue (gaps ~8 dB below speech), ambience through the reveal; -14 LUFS, true peak <= -1 dBTP.\n\nVERIFY\na) Render \"KEY WORD\" as a subtitle at 48 px on its box at 66 % H and measure:\n   python video-reference-match/scripts/caption_probe.py <test_render> --out <dir> --at <t> --box 0.3,0.63,0.7,0.69 --ink \"{{TEXT}}:60\"   (default ink #F2C911)\n   Expected ink for it (and any other word) from video-reference-match/scripts/fit_font.py --font \"{{FONT_BODY}}\" --word \"KEY WORD\"; a short mixed-case phrase should land near 1.8-2.3 % H.\nb) Box height ~3.0 % H, centred on 66 % H.",
+ "caption_family": "other:subtitle-box"
+}

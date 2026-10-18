@@ -1,0 +1,543 @@
+{
+ "id": "B03",
+ "schema": "blueprint/1",
+ "format": {
+  "type": "podcast-clip",
+  "aspect": "9:16",
+  "language": "Hinglish",
+  "duration_class": "mid (60-180s)",
+  "people_on_screen": "2+"
+ },
+ "topic_class": "sales",
+ "signature": {
+  "one_line": "Podcast trailer: money-claim hook with punch-ins, white lead + bold accent Title-Case numbers staggered left, black-frame chapter breaks, pill captions on screens.",
+  "unique_devices": [
+   "Two-tier staggered caption: white Poppins-500 lead line with wide word gaps + bold accent Title-Case key line(s), every number and money amount always key, second key line indented ~11 % W",
+   "Caption system switches to small white text in a dark rounded pill at ~80 % H over screen recordings, B-roll and black frames",
+   "15-40-frame pure-black frames with audio continuing (J-cut) as chapter breaks",
+   "Punch-in (~115-130 %) or angle switch every ~38-75 frames in the hook, shot / reverse-shot every 25-40 frames in the climax"
+  ],
+  "why_it_works": "A checkable money claim with every number in accent hooks in seconds; black-frame breaks reset attention between the hook, the social-proof montage and the episode, and the open-loop payoff sells the full episode."
+ },
+ "hook": {
+  "type": "bold claim / contrarian money claim with maths",
+  "first_word_s": 0.03,
+  "first_cut_s": 2.04,
+  "first_frame": "guest medium close-up at a podcast desk with warm amber practical lamps, mic in the foreground; 2-line caption on the chest with the money words in bold accent; sponsor bug bottom-right"
+ },
+ "structure": [
+  {
+   "beat": "hook",
+   "from_pct": 0,
+   "to_pct": 17,
+   "what": "money claim + simple checkable maths, numbers in accent; punch-ins / angle switches every ~38-75 frames"
+  },
+  {
+   "beat": "setup",
+   "from_pct": 17,
+   "to_pct": 20,
+   "what": "host reaction, then a black frame with audio over announcing a part two"
+  },
+  {
+   "beat": "proof",
+   "from_pct": 20,
+   "to_pct": 54,
+   "what": "social proof montage: screen recordings of the previous episode and comments asking for more, laptop / TV B-roll, black countdown frame"
+  },
+  {
+   "beat": "setup",
+   "from_pct": 54,
+   "to_pct": 58,
+   "what": "host resets the context and asks the question"
+  },
+  {
+   "beat": "claim",
+   "from_pct": 58,
+   "to_pct": 66,
+   "what": "guest's bold restatement of the thesis"
+  },
+  {
+   "beat": "proof",
+   "from_pct": 66,
+   "to_pct": 85,
+   "what": "fast shot / reverse-shot with stacked numbers as accent callouts"
+  },
+  {
+   "beat": "payoff",
+   "from_pct": 85,
+   "to_pct": 97,
+   "what": "promise of a game-changing method without revealing it (open loop)"
+  },
+  {
+   "beat": "cta",
+   "from_pct": 97,
+   "to_pct": 100,
+   "what": "solid-colour collab end card: show logo x partner"
+  }
+ ],
+ "pacing": {
+  "pace": "fast",
+  "median_shot_s": 1.8,
+  "cuts_per_min": 22,
+  "wpm": 180,
+  "pauses_per_min": 8.4,
+  "visual_change_every_s": 1.8,
+  "notes": "front-loaded hook and fast tail; the middle montage relaxes (long screen holds); 42 % soft cuts; pauses mostly in the montage"
+ },
+ "elements": {
+  "captions": [
+   {
+    "what": "white lead line + accent Title-Case key line(s), staggered left",
+    "when": "all speaker shots",
+    "how": "lead Poppins 500 83 px, word-spacing +0.3em; key Poppins 700 122 px #F8FF0D; block left edge x 7-22 %, centre y 61-73 %, key line pitch ~5.9 % H, 2nd key line indented ~11 % W; hard cut per word 2-3 frames early; block re-placed on angle changes",
+    "catalog": [
+     21,
+     31
+    ]
+   },
+   {
+    "what": "pill captions over screens",
+    "when": "screen recordings, B-roll, black frames",
+    "how": "Poppins 500 47 px white in a near-black rounded pill (r ~18 px), centred at y ~80 %",
+    "catalog": [
+     29
+    ]
+   }
+  ],
+  "background_text": [
+   {
+    "what": "sponsor bug",
+    "when": "throughout",
+    "how": "'POWERED BY' small caps + partner wordmark, bottom-right x 50-90 %, y ~89 %",
+    "catalog": []
+   }
+  ],
+  "motion_graphics": [],
+  "cards_lists": [],
+  "silhouettes_cutouts": [],
+  "broll_inserts": [
+   {
+    "what": "screen recordings of a previous video, its description and comments",
+    "when": "20-54 %",
+    "how": "full-screen UI with slow screen zoom / scroll; keep to under ~250 frames for a standalone reel",
+    "catalog": [
+     62,
+     209
+    ]
+   },
+   {
+    "what": "handheld B-roll of the video playing on a laptop / office TV",
+    "when": "inside the montage",
+    "how": "over-the-shoulder, handheld",
+    "catalog": [
+     18
+    ]
+   }
+  ],
+  "layout": [
+   {
+    "what": "multi-cam two-person podcast",
+    "when": "~60 % of runtime",
+    "how": "front and side angles, guest-heavy",
+    "catalog": [
+     58
+    ]
+   }
+  ],
+  "camera": [
+   {
+    "what": "punch-ins and angle switches",
+    "when": "hook",
+    "how": "~115-130 % crop or switch to side angle every ~38-75 frames, hard or soft cut",
+    "catalog": [
+     173
+    ]
+   }
+  ],
+  "transitions": [
+   {
+    "what": "black frame with audio over",
+    "when": "~17 % and ~53 %",
+    "how": "15-40 frames of pure black, J-cut audio continues, pill caption on black",
+    "catalog": [
+     180
+    ]
+   },
+   {
+    "what": "shot / reverse-shot",
+    "when": "66-85 %",
+    "how": "alternate speaker and listener every 25-40 frames",
+    "catalog": [
+     198
+    ]
+   }
+  ],
+  "end_card": [
+   {
+    "what": "collab end card",
+    "when": "97-100 %",
+    "how": "solid mauve-card colour, white show logo / 'x' / partner wordmark stacked centred",
+    "catalog": []
+   }
+  ]
+ },
+ "captions_spec": {
+  "script": "latin (English + Roman Hinglish as spoken)",
+  "case": {
+   "lead": "sentence case as spoken (first word capitalised)",
+   "key": "Title Case on the key word(s) (e.g. 'Key Word', 'Big Number')"
+  },
+  "punctuation": "mostly dropped; currency sign and thousands comma kept in money, '?' kept on questions",
+  "emoji": "none",
+  "grouping": {
+   "lead_words_per_caption": "1-4",
+   "key_words_per_caption": "0-2 (numbers, money and the claim word are always key)",
+   "max_lines": 3,
+   "sync": "word-by-word: each word appears on its spoken word; the key line appears on its word",
+   "break": "new caption at each phrase; previous caption hard-cuts out, often with 1-2 empty frames between"
+  },
+  "layout": {
+   "band_pct_of_H": [
+    58,
+    76
+   ],
+   "block": {
+    "align": "left, staggered",
+    "left_pct_of_W": "7-22 (varies per shot, keeps the block on the chest beside the mic)",
+    "center_y_pct": "61-73 (varies per shot)",
+    "max_width_pct_of_W": 75
+   },
+   "stagger": "a second key line is indented ~11 % W to the right of the first (e.g. line 1 at x 22 %, line 2 at x 33 %)",
+   "lead_line": {
+    "example": "a 4-word lead line at x ~22-70 %, centre y 61.3 %"
+   },
+   "key_line": {
+    "example": "key line 1 centre y 67.0 %, key line 2 centre y 72.9 % (line pitch ~5.9 % H)"
+   },
+   "1080x1920_mapping": "same percentages (reference is 9:16)"
+  },
+  "type": {
+   "lead": {
+    "font_class": "geometric sans, medium",
+    "closest_match": {
+     "local": "Poppins 500",
+     "google": "Poppins Medium 500"
+    },
+    "confidence": "high",
+    "letterform_evidence": "single-storey a, round o/e, Poppins' flat-topped t and straight-tailed y, single-storey g with open tail",
+    "ink_height_pct_of_H": 3.59,
+    "k": 0.73,
+    "font_size_px_at_1920": 83,
+    "calibration": [
+     {
+      "word": "To",
+      "ink_pct_of_H": 3.59,
+      "width_pct_of_W": 8.8
+     },
+     {
+      "word": "get",
+      "ink_pct_of_H": 3.44,
+      "width_pct_of_W": 12.1
+     }
+    ],
+    "calibration_note": "single words measured over a dark shirt (clean). A 4-word line = 4.14 % H, 48.2 % W: the original sets WIDE word gaps (~0.63 em), so match single words, then add word-spacing",
+    "color": "#FFFFFF",
+    "stroke": "none",
+    "shadow": "soft dark drop shadow, e.g. 0 2px 6px rgba(0,0,0,.5) (estimated)",
+    "box": "none",
+    "tracking": "0em",
+    "word_spacing": "+0.3em over the font's normal space (measured gap between words ~0.63 em)",
+    "verified_px": 83,
+    "fit": [
+     {
+      "font": "Poppins 500",
+      "word": "To",
+      "tracking_em": 0.0,
+      "px_for_height": 98.5,
+      "px_for_width": 84.1,
+      "verified_px": 92,
+      "at_verified_px": {
+       "ink_pct_of_H": 3.39,
+       "width_pct_of_W": 9.6
+      },
+      "within_tolerance": true
+     },
+     {
+      "font": "Poppins 500",
+      "word": "get",
+      "tracking_em": 0.0,
+      "px_for_height": 68.8,
+      "px_for_width": 82.2,
+      "verified_px": 74,
+      "at_verified_px": {
+       "ink_pct_of_H": 3.7,
+       "width_pct_of_W": 10.9
+      },
+      "within_tolerance": true
+     }
+    ],
+    "k_formula_px_at_1920": 94
+   },
+   "key": {
+    "font_class": "geometric sans, semibold",
+    "closest_match": {
+     "local": "Poppins 700",
+     "google": "Poppins SemiBold 600"
+    },
+    "confidence": "high (family) / medium (weight)",
+    "letterform_evidence": "same Poppins shapes as the lead, heavier stroke (SemiBold-Bold); M with vertical sides, round i dots",
+    "ink_height_pct_of_H": 4.84,
+    "k": 0.73,
+    "font_size_px_at_1920": 122,
+    "calibration": [],
+    "calibration_note": "a 7-letter Title Case key word measured ink 4.84 % H, 40.1 % W (another, with i-dots, 5.23 % H, 37.4 % W); compute expected ink for the user's key word with fit_font.py at 122 px",
+    "color": "#F8FF0D (measured median; up to #FBFE0B)",
+    "stroke": "none",
+    "shadow": "same soft drop shadow as lead (estimated)",
+    "box": "none",
+    "tracking": "0em",
+    "selection_rule": "every number / money amount and the one word or short phrase that carries the claim",
+    "verified_px": 122,
+    "k_formula_px_at_1920": 127
+   },
+   "pill": {
+    "font_class": "geometric sans, regular/medium",
+    "closest_match": {
+     "local": "Poppins 500",
+     "google": "Poppins Regular 400"
+    },
+    "confidence": "medium",
+    "ink_height_pct_of_H": 2.5,
+    "k": 0.99,
+    "font_size_px_at_1920": 47,
+    "calibration": [
+     {
+      "word": "walk you through",
+      "ink_pct_of_H": 2.5,
+      "width_pct_of_W": 37.6
+     }
+    ],
+    "calibration_note": "white on the dark pill (clean)",
+    "used_for": "captions over screen recordings, B-roll and black frames",
+    "color": "#FFFFFF",
+    "stroke": "none",
+    "shadow": "none",
+    "box": "rounded rectangle hugging the text: near-black (~rgba(20,20,20,.9), estimated), radius ~18 px at 1080 (estimated), padding ~4 % W left/right and ~2 % H top/bottom; a 3-word pill spans x ~27-72.5 %, y 76.7-83.8 %",
+    "position": "centred horizontally, centre y ~80 % H",
+    "tracking": "0em",
+    "verified_px": 47,
+    "fit": [
+     {
+      "font": "Poppins 500",
+      "word": "walk you through",
+      "tracking_em": 0.0,
+      "px_for_height": 47.5,
+      "px_for_width": 46.9,
+      "verified_px": 47,
+      "at_verified_px": {
+       "ink_pct_of_H": 2.4,
+       "width_pct_of_W": 37.9
+      },
+      "within_tolerance": true
+     }
+    ],
+    "k_formula_px_at_1920": 48
+   }
+  },
+  "animation": {
+   "fps": 25,
+   "lead_entry": "hard cut per word (full opacity in 1 frame, no scale, no slide), 2-3 frames BEFORE the spoken word start",
+   "key_entry": "hard cut, no pop/scale, ~3 frames before the word",
+   "exit": "hard cut; often 1-2 empty frames before the next caption",
+   "position_on_cut": "when the camera angle changes the next caption block is re-placed for the new framing (e.g. y 60 % -> 66 %)",
+   "idle": "none"
+  },
+  "notes": "Positions, sizes, colours and frame timings measured on video frames (25 fps); font names closest matches (unverified); items marked estimated were not isolated."
+ },
+ "other_text_spec": [
+  {
+   "type": "sponsor bug",
+   "when": "throughout",
+   "text": "'POWERED BY' small white caps (~1.3 % H) + sponsor wordmark (~4 % H) bottom-right, x 50-90 %, centre y ~89 %"
+  },
+  {
+   "type": "screen-recording UI",
+   "when": "20-54 %",
+   "text": "real recordings of the previous episode's video player, description and comment section (not designed text), with pill captions over them"
+  },
+  {
+   "type": "black frames",
+   "when": "~17-20 % and ~53-54 % (15-40 frames each)",
+   "text": "pure black with only the pill caption and the sponsor bug; audio continues (J-cut)"
+  },
+  {
+   "type": "end card",
+   "when": "97-100 % (~45 frames)",
+   "bg": "solid mauve-purple #6F4465",
+   "text": "white line-art show logo (~20 % W) at ~33 % H, white 'x' at ~50 % H, white partner wordmark (~25 % W) at ~65 % H, all centred"
+  }
+ ],
+ "style": {
+  "palette_roles": {
+   "text": "#FFFFFF",
+   "accent": "#F8FF0D",
+   "accent_2": null,
+   "surface": "#000000",
+   "card_bg": "#6F4465"
+  },
+  "fonts": {
+   "lead": {
+    "closest_local": "Poppins 500",
+    "verified_px": 83,
+    "tracking": "0em"
+   },
+   "key": {
+    "closest_local": "Poppins 700",
+    "verified_px": 122,
+    "tracking": "0em"
+   },
+   "pill": {
+    "closest_local": "Poppins 500",
+    "verified_px": 47,
+    "tracking": "0em"
+   }
+  },
+  "look_intent": "high-contrast, natural-saturation, warm: amber practical lamps, dark background, natural skin"
+ },
+ "sound": {
+  "music": "music bed likely (gap level -6 dB vs speech), fills the montage gaps",
+  "sfx": [
+   "hits / whooshes on some hard cuts (measured cut_hit_share 0.36)",
+   "bleep over the expletive",
+   "audio continues over black frames"
+  ],
+  "loudness_lufs": -14.1
+ },
+ "measured": {
+  "grade": {
+   "black_point": 3.0,
+   "midtone": 54.2,
+   "white_point": 231.1,
+   "contrast_range": 228.1,
+   "luma_std": 66.0,
+   "saturation": 0.298,
+   "colorfulness": 41.4,
+   "warmth_r_minus_b": 45.2,
+   "tint_g": -3.5,
+   "vignette_centre_over_edge": 0.98,
+   "label": "high-contrast, natural-saturation, warm"
+  },
+  "layout": {
+   "letterbox_share": 0.0,
+   "split_divider_share": 0.08
+  },
+  "sound": {
+   "has_audio": true,
+   "speech_coverage": 0.79,
+   "beat_periodicity": 0.12,
+   "beat_bpm_est": null,
+   "gap_level_rel_speech_db": -5.7,
+   "music": "music bed likely",
+   "cut_hit_share": 0.4,
+   "method": "heuristic (onset-envelope beat periodicity + level in speech gaps); not a classifier"
+  }
+ },
+ "catalog_styles": [
+  {
+   "id": 58,
+   "name": "Podcast Clip",
+   "role": "multi-cam podcast recut"
+  },
+  {
+   "id": 224,
+   "name": "Trailer for a Longer Video",
+   "role": "part-two trailer with open-loop payoff"
+  },
+  {
+   "id": 31,
+   "name": "Emphasis-Word Zoom",
+   "role": "yellow Title-Case numbers and claim words"
+  },
+  {
+   "id": 21,
+   "name": "Caption-Edit",
+   "role": "white lead captions"
+  },
+  {
+   "id": 180,
+   "name": "Flash-Cut Editing",
+   "role": "black-frame chapter breaks"
+  },
+  {
+   "id": 209,
+   "name": "Social Proof / Testimonial Montage",
+   "role": "comments / previous-episode montage"
+  },
+  {
+   "id": 198,
+   "name": "Call-and-Response Dialogue",
+   "role": "shot / reverse-shot climax"
+  },
+  {
+   "id": 173,
+   "name": "Jump-Cut Editing",
+   "role": "punch-ins in the hook"
+  }
+ ],
+ "use_when": [
+  "a podcast clip or trailer for a longer episode",
+  "the speaker makes money / number claims that should pop",
+  "Hinglish or English two-person conversation with multi-cam footage",
+  "there is social proof (comments, previous video) to show",
+  "a sponsor or collab needs a persistent bug and end card"
+ ],
+ "avoid_when": [
+  "single-camera monologue with no listener",
+  "no numbers or concrete claims",
+  "the user wants a calm, editorial look"
+ ],
+ "match": {
+  "tags": [
+   "podcast-clip",
+   "trailer",
+   "two-person",
+   "multi-cam",
+   "two-tier-captions",
+   "yellow-key-words",
+   "numbers-highlight",
+   "pill-captions",
+   "black-frame-breaks",
+   "social-proof",
+   "sponsor-bug",
+   "collab-end-card",
+   "hinglish",
+   "vertical"
+  ],
+  "keywords": [
+   "podcast",
+   "episode",
+   "trailer",
+   "sales",
+   "money",
+   "revenue",
+   "numbers",
+   "guest",
+   "host",
+   "sponsor",
+   "comments",
+   "claim",
+   "growth",
+   "clients",
+   "business"
+  ],
+  "needs": {
+   "speaker_footage": true,
+   "screen_recordings": true,
+   "broll": true,
+   "brand_assets": true
+  }
+ },
+ "quality_score": 4,
+ "brand_prompt": "Use /video-pipeline with /video-captions on videos/<project>. Apply style blueprint B03 (video-reference-match/references/blueprints/B03.json) to this brand.\n\nBRAND TOKENS (use the brand's colour/font for each role; keep the contrast relationship: the {{ACCENT}} key line must stay >= 3:1 on the footage (a light, high-luminance accent works best on dark sets); white pill text >= 7:1 on its box)\n- {{TEXT}} lead captions + pill text - default #FFFFFF\n- {{ACCENT}} key words / every number and money amount - default yellow #F8FF0D\n- {{ACCENT_2}} - none\n- {{SURFACE}} black chapter frames + pill box - default #000000 (pill ~rgba(20,20,20,.9))\n- {{CARD_BG}} end card - default mauve-purple #6F4465\n- {{FONT_DISPLAY}} key line - default Poppins 700\n- {{FONT_BODY}} lead line + pill - default Poppins 500\n- {{HANDLE}} - @handle (optional on the end card)\n- {{LOGO}} - show logo on the end card; partner wordmark for the sponsor bug if any\n\nCanvas 1080x1920, 25 fps.\n\nEDIT\n1. Hook (first ~17 %): the biggest money / number claim with checkable maths; first word within frame 1; punch-in (~115-130 %) or angle switch every ~38-75 frames.\n2. Chapter breaks: 15-40 frames of pure {{SURFACE}} with audio continuing (J-cut) and only a pill caption on it.\n3. Social proof (optional, keep under ~250 frames standalone): screen recordings of a previous video and its comments, laptop / TV B-roll, slow screen zoom/scroll.\n4. Climax: shot / reverse-shot every 25-40 frames with numbers stacked as {{ACCENT}} callouts; end on an open-loop promise.\n5. End card (~45 frames): solid {{CARD_BG}}, white {{LOGO}} (~20 % W) at ~33 % H, white 'x' at ~50 %, partner wordmark (~25 % W) at ~65 %, centred.\n6. Sponsor bug (if any): 'POWERED BY' small white caps (~1.3 % H) + partner wordmark (~4 % H), bottom-right x 50-90 %, centre y ~89 %, throughout.\n\nCAPTIONS\n7. Latin script (Roman Hinglish where speech is Hindi); lead sentence case, key words Title Case; drop most punctuation, keep currency signs, thousands commas and '?'.\n8. Lead line: 1-4 words, {{FONT_BODY}} 83 px, {{TEXT}}, word-spacing +0.3em (wide gaps), soft shadow 0 2px 6px rgba(0,0,0,.5), no box.\n9. Key line(s): every number / money amount and the claim word, {{FONT_DISPLAY}} 122 px, {{ACCENT}}, same shadow; key line 1 centre ~67 %, key line 2 centre ~72.9 % (pitch ~5.9 % H) indented ~11 % W right of line 1.\n10. Block: left-aligned, left edge x 7-22 % (keep it on the chest beside the mic), centre y 61-73 %, band y 58-76 %, max width 75 %; re-place the block when the camera angle changes.\n11. Timing: every word hard-cuts on (1 frame, no scale/slide) 2-3 frames BEFORE it is spoken; the block hard-cuts out with 1-2 empty frames before the next.\n12. Over screens, B-roll and black frames switch to pill captions: {{FONT_BODY}} 47 px {{TEXT}} in a near-black rounded pill (r ~18 px, padding ~4 % W / ~2 % H), centred at y ~80 %.\n\nGRADE: Grade from the user's footage (video-style / grade.py); target look: high-contrast, natural-saturation, warm amber practicals on a dark background, natural skin.\nSOUND: voice at about -14 LUFS over a bed that fills the montage; hits/whooshes on some hard cuts; bleep expletives.\n\nVERIFY before rendering (px values were render-verified with Poppins; if the brand font differs, adjust px until the numbers match):\na) Render test frames over a dark area: \"To\" and \"get\" ({{FONT_BODY}} 83 px), \"KEY WORD\" ({{FONT_DISPLAY}} 122 px {{ACCENT}}), and \"walk you through\" in the pill (47 px).\nb) Measure: python video-reference-match/scripts/caption_probe.py <test render or snapshot> --out <dir> --at <t> --box 0.05,0.58,0.95,0.76 --ink \"{{TEXT}}:60,{{ACCENT}}:80\" (tighten --box per word); --box 0.25,0.76,0.75,0.84 --ink \"{{TEXT}}:60\" (pill).\nc) Required: \"To\" ink 3.59 % +-0.5 of H and 8.8 % +-2 of W; \"get\" 3.44 % +-0.5 and 12.1 % +-2; \"walk you through\" 2.5 % +-0.5 and 37.6 % +-2. For the key line compute expected ink with python video-reference-match/scripts/fit_font.py --font \"<{{FONT_DISPLAY}}>\" --word \"KEY WORD\" at 122 px (a 7-letter key word targets ~4.8 % H).",
+ "caption_family": "other:two-tier-highlight"
+}

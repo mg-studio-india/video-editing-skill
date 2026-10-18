@@ -1,0 +1,550 @@
+{
+ "id": "B04",
+ "schema": "blueprint/1",
+ "format": {
+  "type": "mixed",
+  "aspect": "16:9",
+  "language": "Hinglish",
+  "duration_class": "long (>180s)",
+  "people_on_screen": "1"
+ },
+ "topic_class": "education",
+ "signature": {
+  "one_line": "Landscape course-launch pitch alternating moody low-key talking head with clean white-canvas motion graphics, ending in a struck-through price ladder and comment CTA.",
+  "unique_devices": [
+   "Struck-through price ladder: one white pill per spoken wrong guess (~30 frames apart) across the lower band, each crossed by an overshooting red diagonal strike; then the real price pops in as one larger white pill with sparkle particles",
+   "Fear-claim hook shown as UI: pixel-glitch reveal from the talking head into a tool collage, then three logo tiles on white with a small label over a progress bar filling over ~45 frames",
+   "Curriculum split: speaker in a rounded card on the left ~35 % W, thin vertical timeline with dot markers and 'Chapter 0X' labels, screen-recording windows sliding in on the right every ~120 frames",
+   "Contrast system: dark low-key warm-bokeh talking-head set vs bright white / light-grey graphic canvases with soft drop shadows"
+  ],
+  "why_it_works": "A fear stated in the first sentence becomes a filling progress bar, then an opportunity; the value stack and price anchoring make the real price feel small."
+ },
+ "hook": {
+  "type": "bold claim (fear claim with a twist) + pattern interrupt (glitch to graphics)",
+  "first_word_s": 0.0,
+  "first_cut_s": 5.267,
+  "first_frame": "landscape medium close-up of the speaker in a dark low-key set with warm red/gold bokeh, no text"
+ },
+ "structure": [
+  {
+   "beat": "hook",
+   "from_pct": 0,
+   "to_pct": 4,
+   "what": "fear claim about the viewer's job; glitch collage and progress-bar graphic"
+  },
+  {
+   "beat": "claim",
+   "from_pct": 4,
+   "to_pct": 10,
+   "what": "twist: the threat is an opportunity for those who learn it; tool screen recording"
+  },
+  {
+   "beat": "proof",
+   "from_pct": 10,
+   "to_pct": 14,
+   "what": "social proof as stacking profile cards"
+  },
+  {
+   "beat": "claim",
+   "from_pct": 14,
+   "to_pct": 28,
+   "what": "product reveal: title on an image collage, quick tool demos, long pitch hold"
+  },
+  {
+   "beat": "proof",
+   "from_pct": 28,
+   "to_pct": 41,
+   "what": "credentials: photo cards over a sky background, an earnings callout pill"
+  },
+  {
+   "beat": "list",
+   "from_pct": 41,
+   "to_pct": 79,
+   "what": "curriculum by level: speaker card + chapter labels + screen recordings"
+  },
+  {
+   "beat": "cta",
+   "from_pct": 79,
+   "to_pct": 100,
+   "what": "price anchoring ladder, real price pill, comment-keyword CTA for a DM link"
+  }
+ ],
+ "pacing": {
+  "pace": "moderate",
+  "median_shot_s": 4.8,
+  "cuts_per_min": 6,
+  "wpm": 210,
+  "pauses_per_min": 0.0,
+  "visual_change_every_s": 4.8,
+  "note": "very uneven: graphic segments change every ~15-120 frames inside one detected shot, while talking-head holds run up to ~21 % of runtime"
+ },
+ "elements": {
+  "captions": [],
+  "background_text": [
+   {
+    "what": "centred product title over a collage",
+    "when": "~14-15 % and again ~39-41 %",
+    "how": "medium neo-grotesque 104 px (1920x1080; same px on vertical), #111111, centred at 50 %, over a 2x3 grid of rounded image cards with a soft white radial glow; cuts in with the collage",
+    "catalog": [
+     24
+    ]
+   }
+  ],
+  "motion_graphics": [
+   {
+    "what": "progress-bar fear graphic",
+    "when": "~3-4 %",
+    "how": "three logo tiles on white, small label above a grey bar that fills black over ~45 frames, power2.inOut",
+    "catalog": [
+     93,
+     105
+    ]
+   },
+   {
+    "what": "real-price pill pop",
+    "when": "~94-96 %",
+    "how": "white #F8F9FC rounded pill x 40-60 %, y 78-92 % (16:9), price in accent 86 px; pops in (back.out) with small sparkle particles",
+    "catalog": [
+     192
+    ]
+   }
+  ],
+  "cards_lists": [
+   {
+    "what": "stacking social-profile cards",
+    "when": "~10-14 %",
+    "how": "3 cards slide/stack in one after another over ~180 frames on a white grid, soft shadows",
+    "catalog": [
+     17
+    ]
+   },
+   {
+    "what": "chapter timeline beside a speaker card",
+    "when": "~41-79 %",
+    "how": "thin vertical line with dot markers, small grey 'Chapter 0X' labels; a new chapter + window slides in every ~120 frames",
+    "catalog": [
+     127,
+     114
+    ]
+   },
+   {
+    "what": "struck-through price ladder",
+    "when": "~89-94 %",
+    "how": "5 white pills evenly across x 6-93 %, y 81-90 % on a translucent dark band; one per spoken guess ~30 frames apart, red diagonal strike overshooting each pill",
+    "catalog": [
+     222
+    ]
+   },
+   {
+    "what": "credential photo cards",
+    "when": "~28-33 %",
+    "how": "rounded photo cards slide/flip in over a sky background with a small title",
+    "catalog": [
+     17
+    ]
+   }
+  ],
+  "silhouettes_cutouts": [],
+  "broll_inserts": [
+   {
+    "what": "tool screen recordings in floating rounded windows on white",
+    "when": "~4-5 %, ~16-17 % and throughout 41-79 %",
+    "how": "window slides in with soft drop shadow; 15-25-frame soft cuts between demos",
+    "catalog": [
+     62
+    ]
+   }
+  ],
+  "layout": [
+   {
+    "what": "split: speaker in rounded card left, screen recording right",
+    "when": "~41-79 %",
+    "how": "speaker card ~35 % W on the left of a white canvas, screen window on the right; logo badge in a corner",
+    "catalog": [
+     7
+    ]
+   },
+   {
+    "what": "full-frame 16:9 talking head",
+    "when": "~44 % of frames",
+    "how": "centred MCU, dark set; no text except callouts",
+    "catalog": [
+     46
+    ]
+   }
+  ],
+  "camera": [
+   {
+    "what": "static locked-off MCU",
+    "when": "talking-head blocks",
+    "how": "no punch-ins; long holds",
+    "catalog": [
+     46
+    ]
+   }
+  ],
+  "transitions": [
+   {
+    "what": "pixel-glitch reveal",
+    "when": "~45 frames in",
+    "how": "blocky pixel-sort glitch from talking head into the graphic collage, ~10 frames",
+    "catalog": [
+     96
+    ]
+   },
+   {
+    "what": "slide-ins and soft cuts in graphic segments",
+    "when": "graphic blocks (37 % of cuts soft)",
+    "how": "elements slide in power3.out; hard cuts back to the talking head",
+    "catalog": [
+     80
+    ]
+   }
+  ],
+  "end_card": [
+   {
+    "what": "comment-keyword CTA over the final talking-head shot",
+    "when": "last ~150 frames",
+    "how": "'Comment \"KEYWORD\"' medium sans 83 px white on a faint frosted dark panel, centred, ~87 % height (16:9) / ~85 % on vertical",
+    "catalog": [
+     222
+    ]
+   }
+  ]
+ },
+ "captions_spec": null,
+ "other_text_spec": [
+  {
+   "type": {
+    "title": {
+     "font_class": "neo-grotesque sans, medium",
+     "closest_match": {
+      "local": "Inter 500",
+      "google": "Inter Medium",
+      "confidence": "medium"
+     },
+     "ink_height_pct_of_H": 7.36,
+     "k": 0.73,
+     "font_size_px_at_1920x1080": 109,
+     "font_size_px_at_1920": 109,
+     "calibration": [],
+     "color": "#111111",
+     "stroke": "none",
+     "shadow": "none (white glow behind)",
+     "box": "none",
+     "tracking": "0em",
+     "verified_px": 104,
+     "fit": [
+      {
+       "font": "Inter 500",
+       "tracking_em": 0.0,
+       "verified_px": 104
+      }
+     ],
+     "font_size_note": "16:9 reference: px on a 1920x1080 canvas (ink % of the 16:9 height x 10.8 / k); on 1080x1920 use the same px (short-side rule) — see canvas_note"
+    },
+    "price": {
+     "font_class": "neo-grotesque sans, medium",
+     "closest_match": {
+      "local": "Inter 500",
+      "google": "Inter Medium",
+      "confidence": "medium"
+     },
+     "ink_height_pct_of_H": 5.83,
+     "k": 0.73,
+     "font_size_px_at_1920x1080": 86,
+     "font_size_px_at_1920": 86,
+     "calibration": [],
+     "color": "#1D6E96 (teal-blue)",
+     "stroke": "none",
+     "shadow": "none",
+     "box": "white #F8F9FC rounded pill x 40-60 %, y 78.1-92.5 % (14.4 % H), radius ~2 % W (estimated); sparkle particles around it on entry (estimated)",
+     "tracking": "0em",
+     "verified_px": 86,
+     "fit": [
+      {
+       "font": "Inter 500",
+       "tracking_em": 0.0,
+       "verified_px": 86
+      }
+     ],
+     "font_size_note": "16:9 reference: px on a 1920x1080 canvas (ink % of the 16:9 height x 10.8 / k); on 1080x1920 use the same px (short-side rule) — see canvas_note"
+    },
+    "cta_text": {
+     "font_class": "neo-grotesque sans, medium",
+     "closest_match": {
+      "local": "Inter 500",
+      "google": "Inter Medium",
+      "confidence": "medium"
+     },
+     "ink_height_pct_of_H": 5.83,
+     "k": 0.73,
+     "font_size_px_at_1920x1080": 86,
+     "font_size_px_at_1920": 86,
+     "calibration": [],
+     "color": "#FFFFFF",
+     "stroke": "none",
+     "shadow": "none",
+     "box": "faint frosted dark panel (estimated)",
+     "tracking": "0em",
+     "verified_px": 83,
+     "fit": [
+      {
+       "font": "Inter 500",
+       "tracking_em": 0.0,
+       "verified_px": 83
+      }
+     ],
+     "font_size_note": "16:9 reference: px on a 1920x1080 canvas (ink % of the 16:9 height x 10.8 / k); on 1080x1920 use the same px (short-side rule) — see canvas_note"
+    }
+   },
+   "canvas_note": "16:9 landscape reference. Sizes are given on a 1920x1080 canvas (solver uses 1920x1080). Mapping onto 1080x1920: (a) recommended — vertical edit: keep the same px (short-side rule), keep x centring, and put the lower-band callouts at ~80-85 % height (above the bottom UI safe zone), the title at ~50 %; (b) literal — 16:9 frame as a full-width band (1080x608, y 656-1264): px x0.5625, y_1920 = 34.2 % + y_ref x 0.317.",
+   "note": "no running speech captions; these tiers describe the authored callout text (product title, real-price pill, comment CTA)",
+   "script": "latin (English callouts) + currency symbol",
+   "case": {
+    "callouts": "Title-ish case as written (e.g. 'Product Name', 'Comment \"KEYWORD\"')"
+   },
+   "layout": {
+    "title": {
+     "align": "centre",
+     "center_y_pct": 50.0,
+     "x_pct": [
+      28.7,
+      71.2
+     ],
+     "backing": "soft white radial glow over a 2x3 collage of rounded image cards"
+    },
+    "price_ladder": {
+     "pills": 5,
+     "y_pct": [
+      81,
+      90
+     ],
+     "x_span_pct": [
+      6,
+      93
+     ],
+     "pill_width_pct_of_W": "~14.5",
+     "spacing": "even",
+     "backing": "translucent dark band y ~80-91 %"
+    },
+    "price_pill": {
+     "x_pct": [
+      40.0,
+      60.0
+     ],
+     "y_pct": [
+      78.1,
+      92.5
+     ],
+     "text_center_y_pct": 85.5
+    },
+    "cta_text": {
+     "x_pct": [
+      32.0,
+      67.9
+     ],
+     "center_y_pct": 87.2,
+     "backing": "faint frosted dark panel x ~30-70 %, y ~81-93 %"
+    }
+   },
+   "animation": {
+    "fps": 30,
+    "ladder": "one struck-through pill appears per spoken price guess, ~30 frames apart, left to right (estimated)",
+    "price_pill": "pops in centred with sparkle particles (estimated)",
+    "cta": "appears for the last ~150 frames (estimated)",
+    "idle": "static"
+   }
+  },
+  {
+   "type": "struck-through price ladder",
+   "when": "~89-94 % of runtime",
+   "text": "5 white rounded pills (descending wrong-guess prices, e.g. '<currency><price>') in dark #2A2A2A medium sans, each crossed by a red diagonal strike line (top-left to bottom-right, overshooting the pill), evenly spaced across x 6-93 %, y 81-90 % of the 16:9 frame"
+  },
+  {
+   "type": "hook graphic",
+   "when": "~3-4 % of runtime",
+   "text": "three tool-logo tiles on white with a small label ('Label here') and a grey progress bar that fills black over ~45 frames"
+  },
+  {
+   "type": "profile cards",
+   "when": "~10-14 % of runtime",
+   "text": "social-app-style profile cards (avatar ring, name | role, posts / followers / following counts) stacking in one after another on a white grid background"
+  },
+  {
+   "type": "curriculum labels",
+   "when": "~41-79 % of runtime",
+   "text": "speaker in a rounded card on the left + small grey 'Chapter 0X: Label' labels on a thin vertical timeline with dot markers, screen-recording windows sliding in on the right; small logo badge from ~42 % of runtime"
+  }
+ ],
+ "style": {
+  "palette_roles": {
+   "text": "#111111",
+   "accent": "#1D6E96",
+   "accent_2": null,
+   "surface": "#F8F6F9",
+   "card_bg": "#F8F9FC"
+  },
+  "fonts": {
+   "title": {
+    "closest_local": "Inter 500",
+    "verified_px": 104,
+    "tracking": "0em"
+   },
+   "price": {
+    "closest_local": "Inter 500",
+    "verified_px": 86,
+    "tracking": "0em"
+   },
+   "cta": {
+    "closest_local": "Inter 500",
+    "verified_px": 83,
+    "tracking": "0em"
+   }
+  },
+  "look_intent": "high-contrast, muted, neutral-warm: dark low-key talking head with warm red/gold bokeh and natural skin, against clean white graphic canvases"
+ },
+ "sound": {
+  "music": "voice only (no bed detected); continuous fast delivery with no pauses",
+  "sfx": [
+   "soft whoosh / tick on graphic slide-ins (measured cut_hit_share 0.33)",
+   "small sparkle on the real-price pill pop",
+   "optional tick per struck-through price pill"
+  ],
+  "loudness_lufs": -14.4
+ },
+ "measured": {
+  "grade": {
+   "black_point": 6.3,
+   "midtone": 139.3,
+   "white_point": 249.6,
+   "contrast_range": 243.4,
+   "luma_std": 95.5,
+   "saturation": 0.192,
+   "colorfulness": 37.4,
+   "warmth_r_minus_b": 13.3,
+   "tint_g": 6.0,
+   "vignette_centre_over_edge": 0.74,
+   "label": "high-contrast, muted, neutral-warm"
+  },
+  "layout": {
+   "letterbox_share": 0.0,
+   "split_divider_share": 0.0
+  },
+  "sound": {
+   "has_audio": true,
+   "speech_coverage": 1.0,
+   "beat_periodicity": 0.15,
+   "beat_bpm_est": null,
+   "gap_level_rel_speech_db": null,
+   "music": "voice only (no bed detected)",
+   "cut_hit_share": 0.3,
+   "method": "heuristic (onset-envelope beat periodicity + level in speech gaps); not a classifier"
+  }
+ },
+ "catalog_styles": [
+  {
+   "id": 105,
+   "name": "White-Background Minimalist Motion Design",
+   "role": "all graphic segments: white canvas, soft shadows, rounded windows"
+  },
+  {
+   "id": 7,
+   "name": "Screen-Plus-Facecam",
+   "role": "curriculum split with speaker card and screen recording"
+  },
+  {
+   "id": 127,
+   "name": "Roadmap / Milestone Progression",
+   "role": "chapter timeline with dot markers"
+  },
+  {
+   "id": 17,
+   "name": "Floating Cards",
+   "role": "stacking profile cards and credential photo cards"
+  },
+  {
+   "id": 222,
+   "name": "Offer / Sale Announcement",
+   "role": "struck-through price ladder, real-price pill, comment CTA"
+  },
+  {
+   "id": 96,
+   "name": "Glitch / Digital-Distortion Aesthetic",
+   "role": "one pixel-glitch reveal in the hook"
+  },
+  {
+   "id": 149,
+   "name": "Problem → Agitation → Solution (PAS)",
+   "role": "job-loss fear -> reframe -> course offer"
+  },
+  {
+   "id": 62,
+   "name": "Screen-Recording Tutorial",
+   "role": "tool demos in floating windows"
+  },
+  {
+   "id": 46,
+   "name": "Talking-Head",
+   "role": "low-key pitch blocks between graphics"
+  }
+ ],
+ "use_when": [
+  "launching a course, cohort, program or other info-product with levels/modules and a price reveal",
+  "the user has screen recordings of tools plus talking-head pitch footage",
+  "delivering landscape (16:9), or a vertical cut that keeps the graphic system",
+  "price anchoring and a comment-keyword / DM CTA are part of the offer"
+ ],
+ "avoid_when": [
+  "a pure vertical short with running captions is required (this has none)",
+  "there is no offer, price or curriculum to show",
+  "the brand look is dark-mode only (graphics rely on bright white canvases)"
+ ],
+ "match": {
+  "tags": [
+   "course-launch",
+   "landscape-16x9",
+   "white-canvas-graphics",
+   "price-anchoring",
+   "struck-through-prices",
+   "comment-cta",
+   "screen-plus-facecam",
+   "chapter-timeline",
+   "profile-cards",
+   "progress-bar",
+   "glitch-reveal",
+   "low-key-talking-head",
+   "no-captions",
+   "info-product"
+  ],
+  "keywords": [
+   "course",
+   "program",
+   "launch",
+   "levels",
+   "modules",
+   "curriculum",
+   "price",
+   "offer",
+   "discount",
+   "comment",
+   "design",
+   "tools",
+   "learn",
+   "skills",
+   "replace",
+   "career",
+   "enroll",
+   "chapters"
+  ],
+  "needs": {
+   "speaker_footage": true,
+   "screen_recordings": true,
+   "broll": false,
+   "brand_assets": true
+  }
+ },
+ "quality_score": 3,
+ "brand_prompt": "Use /video-pipeline with /video-captions on videos/<project>. Apply style blueprint B04 (video-reference-match/references/blueprints/B04.json) to this brand.\nCanvas: the blueprint is native 16:9 (1920x1080, 30 fps). For a vertical 1080x1920 cut use the short-side rule: keep the same px, keep x centring, put lower-band callouts at ~80-85 % height and the title at ~50 %. All positions below are % of frame.\n\nBRAND TOKENS (use the brand's colour/font for each role; keep the contrast relationship: {{TEXT}} and {{ACCENT}} must stay >= 4.5:1 on {{SURFACE}} / {{CARD_BG}}; graphics stay light while the talking head stays dark)\n- {{TEXT}}      text on white graphics, product title     default #111111\n- {{ACCENT}}    real-price text                           default #1D6E96 (teal-blue)\n- {{ACCENT_2}}  strike line on wrong prices               default saturated red (not measured)\n- {{SURFACE}}   graphic canvas                            default #F8F6F9 (near-white)\n- {{CARD_BG}}   price pills, cards, windows               default #F8F9FC\n- {{FONT_DISPLAY}} title, price, CTA                      default Inter 500 (medium neo-grotesque)\n- {{FONT_BODY}}    labels, pills, cards                   default Inter 500\n- {{HANDLE}}    shown inside profile-style proof cards (\"@handle\")\n- {{LOGO}}      small logo badge in a corner of the curriculum split, and logo tiles in the hook graphic\n\nCAPTIONS\n1. Add NO running speech captions. All on-screen text is short callouts in {{FONT_DISPLAY}}, tracking 0.\n\nOTHER TEXT (only where the script has a matching beat)\n2. Product title over a collage: 2x3 grid of rounded image/product cards with a soft white radial glow in the middle; title in {{FONT_DISPLAY}} at 104 px, {{TEXT}}, centred at 50 % height (x ~28.7-71.2 % on 16:9).\n3. Price ladder (one pill per spoken wrong guess, ~30 frames apart, left to right): {{CARD_BG}} rounded pills ~14.5 % W each, evenly across x 6-93 %, y 81-90 % (16:9) on a translucent dark band; on vertical stack 2-3 per row at ~80-86 %. Text dark #2A2A2A {{FONT_BODY}}; each pill crossed by a {{ACCENT_2}} diagonal strike from top-left to bottom-right that overshoots the pill.\n4. Real price: one larger {{CARD_BG}} rounded pill (x 40-60 %, y 78.1-92.5 % on 16:9; centred at ~82 % on vertical), price in {{FONT_DISPLAY}} at 86 px, {{ACCENT}}; pops in (back.out(1.4), ~8 frames) with small sparkle particles.\n5. CTA for the last ~150 frames: 'Comment \"KEYWORD\"' in {{FONT_DISPLAY}} at 83 px, #FFFFFF, centred at ~87 % (16:9) / ~85 % (vertical) on a faint frosted dark panel (x ~30-70 %, y ~81-93 %).\n6. Hook graphic (~3-4 % of runtime): three logo tiles on {{SURFACE}} with a small label (\"Label here\") above a grey progress bar that fills over ~45 frames.\n\nEDIT DEVICES\n7. Pixel-glitch reveal (~10 frames) from the talking head into a collage ~45 frames in.\n8. Social proof: 3 profile-style cards ({{HANDLE}}, counts) stack in on a white grid over ~180 frames.\n9. Curriculum (~41-79 % of runtime): speaker in a rounded card on the left ~35 % W of a {{SURFACE}} canvas; thin vertical timeline with dot markers and grey 'Chapter 0X: Label' labels; a new chapter label + screen-recording window slides in on the right every ~120 frames (power3.out); {{LOGO}} badge in a corner.\n10. Talking-head blocks: static MCU, dark low-key set; hard cuts back from graphics. In a short cut, punch in or add a callout at least every ~120-180 frames.\n\nGRADE\n11. Grade from the user's footage (video-style / grade.py); target look: high-contrast, muted, neutral-warm talking head (low-key, warm bokeh, natural skin) against clean bright graphics.\n\nAUDIO\n12. Voice only, no music bed. Soft whoosh/tick on graphic slide-ins (about a third of cuts), a small sparkle on the price pop. Master to about -14.4 LUFS, true peak <= -1 dBTP.\n\nVERIFY before rendering (on 1080x1920; on 16:9 scale the box y-ranges with the canvas)\na) Render a test frame with 'Comment \"KEY WORD\"' over a dark area and a real-price pill with \"KEY WORD\", then measure:\n   python video-reference-match/scripts/caption_probe.py <test.mp4> --out <dir> --at <t> --box 0.05,0.82,0.95,0.88 --ink \"#FFFFFF:40\"\n   python video-reference-match/scripts/caption_probe.py <test.mp4> --out <dir> --at <t> --box 0.3,0.79,0.7,0.85 --ink \"{{ACCENT}}:60\"\nb) Expected ink for any word: video-reference-match/scripts/fit_font.py with {{FONT_DISPLAY}} at the px above (reference ink heights on 1080x1920: CTA and price 3.28 % H, title 4.14 % H). Required: within ±0.5 % H of the fit_font.py value; positions within ±1 %; colours equal to the tokens.\n",
+ "caption_family": "title-only"
+}

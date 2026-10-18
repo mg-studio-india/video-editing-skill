@@ -1,0 +1,378 @@
+{
+ "id": "B33",
+ "schema": "blueprint/1",
+ "format": {
+  "type": "talking-head",
+  "aspect": "9:16",
+  "language": "Hinglish",
+  "duration_class": "short (15-60s)",
+  "people_on_screen": "1"
+ },
+ "topic_class": "business advice (creator-economy / business-model breakdown)",
+ "signature": {
+  "one_line": "Selfie breakdown: top proof window over accent divider, plain captions, accelerating screenshot montage.",
+  "unique_devices": [
+   "Persistent split: proof window in the top 35 %, 8 px accent #FDF677 divider, face in the bottom 65 %; the top window swaps every ~25-50 frames while the face holds",
+   "Proof screenshots in accent-bordered cards on a light-grey panel instead of full-frame B-roll",
+   "Late proof montage of rounded full-screen post captures on light grey, accelerating to ~60 cuts/min before a full-face payoff",
+   "Plain white semibold captions with no emphasis, locked at 80.3 % H on every layout"
+  ],
+  "why_it_works": "The face keeps the explanation personal while the top window delivers fast visual proof; the accelerating montage makes the claim feel overwhelming before the question CTA."
+ },
+ "hook": {
+  "type": "Bold claim / contrarian (surprising money claim)",
+  "first_word_s": 0.1,
+  "first_cut_s": 10.24,
+  "first_frame": "full-frame front-camera close-up of the speaker against warm practical lights, splitting within ~25 frames into proof window over face"
+ },
+ "structure": [
+  {
+   "beat": "hook",
+   "from_pct": 0,
+   "to_pct": 10,
+   "what": "surprising money claim + promise to explain how; split screen with the top window swapping every ~30 frames"
+  },
+  {
+   "beat": "setup",
+   "from_pct": 10,
+   "to_pct": 19,
+   "what": "reframe: what everyone thinks vs what is really going on"
+  },
+  {
+   "beat": "proof",
+   "from_pct": 19,
+   "to_pct": 41,
+   "what": "screenshot cards of profiles as evidence; full-face line introducing the 3-step model"
+  },
+  {
+   "beat": "list",
+   "from_pct": 41,
+   "to_pct": 65,
+   "what": "step 1 / step 2 of the framework with thumbnail cards and stage clips in the top window"
+  },
+  {
+   "beat": "proof",
+   "from_pct": 65,
+   "to_pct": 91,
+   "what": "full-screen post-capture montage at 8-75 frames per card, revenue-share numbers spoken"
+  },
+  {
+   "beat": "cta",
+   "from_pct": 91,
+   "to_pct": 100,
+   "what": "full-face one-line takeaway + comment question"
+  }
+ ],
+ "pacing": {
+  "pace": "fast",
+  "median_shot_s": 1.3,
+  "cuts_per_min": 21,
+  "wpm": 240,
+  "pauses_per_min": 0.0,
+  "visual_change_every_s": 1.2
+ },
+ "elements": {
+  "captions": [
+   {
+    "what": "plain one-line phrase captions",
+    "when": "all speech, every layout",
+    "how": "2-4 words, Inter 600 65 px white, +0.02 em, soft shadow 0 2px 6px rgba(0,0,0,.5), centred at 80.3 % H, max ~66 % W; hard cut on/off, 4-5 empty frames between sentences",
+    "catalog": [
+     26
+    ]
+   }
+  ],
+  "background_text": [],
+  "motion_graphics": [],
+  "cards_lists": [
+   {
+    "what": "accent-bordered screenshot proof cards",
+    "when": "~19-31 % and ~46-50 %",
+    "how": "light-grey #EAEADE top panel, screenshot x 7-95 % / y 6-27 % with ~6 px accent border; face continues below",
+    "catalog": [
+     17
+    ]
+   },
+   {
+    "what": "full-screen rounded post captures",
+    "when": "~65-91 %",
+    "how": "light-grey #DADEE4 ground, rounded card x 7-93 % / y 7-90 %, original UI kept; 8-75 frames each, accelerating; 44 % soft swaps",
+    "catalog": [
+     209
+    ]
+   }
+  ],
+  "silhouettes_cutouts": [],
+  "broll_inserts": [
+   {
+    "what": "top-window clips",
+    "when": "split segments",
+    "how": "short clips / stills fill the top 35 %, swapped every ~25-50 frames (the swaps are not counted as cuts)",
+    "catalog": [
+     51
+    ]
+   }
+  ],
+  "layout": [
+   {
+    "what": "stacked split screen with accent divider",
+    "when": "~54 % of runtime",
+    "how": "B-roll 0-35 % H, 8 px accent bar at 35.1-35.5 %, selfie CU 35.5-100 %",
+    "catalog": [
+     3
+    ]
+   },
+   {
+    "what": "full-frame selfie close-up",
+    "when": "~21 % of runtime (reframe lines, payoff)",
+    "how": "static reframes ~100-110 % between segments",
+    "catalog": [
+     46
+    ]
+   }
+  ],
+  "camera": [
+   {
+    "what": "static front camera with jump-cut reframes",
+    "when": "whole runtime",
+    "how": "no animated punch-ins; every breath cut (0 pauses)",
+    "catalog": [
+     173
+    ]
+   }
+  ],
+  "transitions": [
+   {
+    "what": "hard cuts + soft swaps between proof cards",
+    "when": "montage",
+    "how": "44 % soft swaps (short dissolves) between cards; hard cuts elsewhere, half of them on audio hits",
+    "catalog": [
+     174
+    ]
+   }
+  ],
+  "end_card": []
+ },
+ "captions_spec": {
+  "script": "latin (Roman Hinglish / English as spoken)",
+  "case": {
+   "caption": "sentence case as spoken (capital at sentence start and for proper names)"
+  },
+  "punctuation": "full stop kept at sentence ends; numbers as digits with % when spoken as figures",
+  "emoji": "none",
+  "grouping": {
+   "words_per_caption": "2-4",
+   "max_lines": 1,
+   "sync": "per phrase; the caption appears whole",
+   "break": "at phrase/sentence boundaries; a 4-5 frame empty gap between sentences"
+  },
+  "layout": {
+   "band_pct_of_H": [
+    78.8,
+    81.8
+   ],
+   "caption": {
+    "align": "centre (x 50 %)",
+    "center_y_pct": 80.3,
+    "max_line_width_pct_of_W": 66
+   },
+   "note": "identical position on the split-screen talking head, on the yellow-bordered screenshot layout and on full-screen rounded reel captures"
+  },
+  "type": {
+   "caption": {
+    "font_class": "neo-grotesque sans, semibold (single-storey g, flat-topped t, phone-system-UI-like)",
+    "closest_match": {
+     "local": "Inter 600",
+     "confidence": "medium",
+     "web_font": "Inter SemiBold"
+    },
+    "ink_height_pct_of_H": 3.12,
+    "k": 0.99,
+    "font_size_px_at_1920": 61,
+    "color": "#FFFFFF",
+    "stroke": "none",
+    "shadow": "soft dark drop shadow ~0 2px 6px rgba(0,0,0,.5) (estimated)",
+    "box": "none",
+    "tracking": "0.02em",
+    "verified_px": 65,
+    "size_note": "reference 4-word line (~23 characters) measured ink 3.12 % H / ~62 % W at 65 px; a 4-word sentence with a full stop ~56 % W"
+   }
+  },
+  "animation": {
+   "fps": 25,
+   "entry": "hard cut on (0 -> full ink in one frame), no fade / scale / slide",
+   "timing": "per phrase; at sentence starts the caption comes ~8 frames after the spoken word start; mid-sentence chunks follow each other directly",
+   "exit": "hard cut off; 4-5 empty frames before the next sentence's caption",
+   "idle": "none"
+  }
+ },
+ "other_text_spec": [
+  {
+   "type": "split-screen layout (no text)",
+   "when": "~0-19 % and ~40-65 % of runtime",
+   "text": "top B-roll window 0-35 % of H, separated from the talking head by a solid yellow #FDF677 bar at 35.1-35.5 % (~8 px at 1920)"
+  },
+  {
+   "type": "screenshot card",
+   "when": "~19-31 % and ~46-50 % of runtime",
+   "bg": "light grey #EAEADE (upper panel)",
+   "text": "social-profile / video-thumbnail screenshot with a ~6 px yellow #EBE97E border, x 7-95 %, y 6-27 % (estimated); text inside is the captured UI"
+  },
+  {
+   "type": "full-screen post capture",
+   "when": "~65-91 % of runtime",
+   "bg": "light grey #DADEE4",
+   "text": "rounded-corner (radius ~3 % W) short-video capture x 7-93 %, y 7-90 % keeping its original handles, stickers and timer; captions stay at 80.3 %"
+  }
+ ],
+ "style": {
+  "palette_roles": {
+   "text": "#FFFFFF",
+   "accent": "#FDF677",
+   "accent_2": "#EBE97E",
+   "surface": "#EAEADE",
+   "card_bg": "#DADEE4"
+  },
+  "fonts": {
+   "caption": {
+    "closest_local": "Inter 600",
+    "verified_px": 65,
+    "tracking": "0.02em"
+   }
+  },
+  "look_intent": "high-contrast, natural-saturation, warm; front-camera look with warm practical lights, soft contrast on skin"
+ },
+ "sound": {
+  "music": "voice only (no bed detected)",
+  "sfx": [
+   "no music; half of the hard cuts land on audio hits (measured cut_hit_share 0.5) - optional soft swipe on card swaps"
+  ],
+  "loudness_lufs": -14.6
+ },
+ "measured": {
+  "grade": {
+   "black_point": 0.2,
+   "midtone": 92.4,
+   "white_point": 232.0,
+   "contrast_range": 231.8,
+   "luma_std": 75.6,
+   "saturation": 0.3,
+   "colorfulness": 36.0,
+   "warmth_r_minus_b": 30.9,
+   "tint_g": -2.4,
+   "vignette_centre_over_edge": 0.99,
+   "label": "high-contrast, natural-saturation, warm"
+  },
+  "layout": {
+   "letterbox_share": 0.21,
+   "split_divider_share": 0.54
+  },
+  "sound": {
+   "has_audio": true,
+   "speech_coverage": 1.0,
+   "beat_periodicity": 0.09,
+   "beat_bpm_est": null,
+   "gap_level_rel_speech_db": null,
+   "music": "voice only (no bed detected)",
+   "cut_hit_share": 0.5,
+   "method": "heuristic (onset-envelope beat periodicity + level in speech gaps); not a classifier"
+  }
+ },
+ "catalog_styles": [
+  {
+   "id": 3,
+   "name": "Stacked Split-Screen",
+   "role": "proof window over the talking head"
+  },
+  {
+   "id": 46,
+   "name": "Talking-Head",
+   "role": "selfie close-up carrying the argument"
+  },
+  {
+   "id": 26,
+   "name": "Sentence-by-Sentence Captions",
+   "role": "plain phrase captions at 80 % H"
+  },
+  {
+   "id": 17,
+   "name": "Floating Cards",
+   "role": "yellow-bordered screenshot cards"
+  },
+  {
+   "id": 209,
+   "name": "Social Proof / Testimonial Montage",
+   "role": "accelerating post-capture montage"
+  },
+  {
+   "id": 136,
+   "name": "Case-Study Breakdown",
+   "role": "explaining one company's business model"
+  },
+  {
+   "id": 174,
+   "name": "Rapid-Fire Cuts",
+   "role": "montage accelerating to ~60 cuts/min"
+  },
+  {
+   "id": 173,
+   "name": "Jump-Cut Editing",
+   "role": "every breath removed"
+  }
+ ],
+ "use_when": [
+  "a creator explains how a company, creator or trend actually makes money",
+  "lots of screenshots / clips are available as proof and the face should stay on screen",
+  "selfie-camera footage with fast continuous delivery",
+  "Hinglish or English business commentary ending in a comment question"
+ ],
+ "avoid_when": [
+  "no proof material (screenshots, clips) exists for the top window",
+  "the brand cannot use third-party clips (rights risk)",
+  "calm, premium or cinematic tone is required"
+ ],
+ "match": {
+  "tags": [
+   "talking-head",
+   "hinglish",
+   "roman-hinglish-captions",
+   "split-screen",
+   "yellow-divider",
+   "screenshot-cards",
+   "proof-montage",
+   "business-breakdown",
+   "selfie-cam",
+   "plain-captions",
+   "question-cta",
+   "fast-pace"
+  ],
+  "keywords": [
+   "business",
+   "model",
+   "breakdown",
+   "creator",
+   "economy",
+   "agency",
+   "revenue",
+   "explain",
+   "how",
+   "money",
+   "distribution",
+   "platform",
+   "strategy",
+   "case",
+   "study",
+   "screenshots",
+   "proof"
+  ],
+  "needs": {
+   "speaker_footage": true,
+   "screen_recordings": true,
+   "broll": true,
+   "brand_assets": false
+  }
+ },
+ "quality_score": 4,
+ "brand_prompt": "Use /video-pipeline with /video-captions on videos/<project>. Apply style blueprint B33 (video-reference-match/references/blueprints/B33.json) to this brand.\n\nBRAND TOKENS (use the brand's colour for each role; keep the contrast relationship — text and accent must stay >= 4.5:1 / >= 3:1 against what sits behind them on the footage):\n- {{TEXT}}      default #FFFFFF (captions)\n- {{ACCENT}}    default #FDF677 (split divider bar)\n- {{ACCENT_2}}  default #EBE97E (screenshot card border)\n- {{SURFACE}}   default #EAEADE (light-grey panel behind screenshot cards)\n- {{CARD_BG}}   default #DADEE4 (light-grey ground behind full-screen post captures)\n- {{FONT_DISPLAY}} default Inter 600\n- {{FONT_BODY}}    default Inter 600\n- {{HANDLE}}    default @handle\n- {{LOGO}}      default the brand's logo file (transparent PNG/SVG)\nDivider and border are chrome, not text: keep them clearly visible (>= 3:1) against both the B-roll and the face below.\nCanvas 1080x1920, 25 fps (scale frame counts if the project fps differs).\n\nCAPTIONS\n1. Roman script / English as spoken, sentence case (capitals at sentence starts and for names); full stops at sentence ends; numbers as digits. No emoji, no key-word colour.\n2. One line of 2-4 words per caption, whole phrase at once; break at phrase / sentence boundaries.\n3. Type: {{FONT_BODY}} at 65 px, {{TEXT}}, tracking +0.02 em, no stroke / box, soft drop shadow 0 2px 6px rgba(0,0,0,.5). Centred, ink centre at 80.3 % H, max ~66 % W. Same position on every layout.\n4. Animation: none — hard cut on, hard cut off. Mid-sentence chunks replace each other directly; 4-5 empty frames between sentences; sentence-start captions may land ~8 frames after the spoken word.\n\nOTHER TEXT / LAYOUT\n5. Split screen while talking (~54 % of runtime): B-roll window 0-35 % H, talking head below, separated by a solid {{ACCENT}} bar 8 px tall at 35.1-35.5 % H. Swap the top visual every ~25-50 frames in the hook.\n6. Screenshot proof: {{SURFACE}} panel in the top third with the screenshot framed by a ~6 px {{ACCENT_2}} border, x 7-95 %, y 6-27 %.\n7. Post-capture montage (~65-91 % of runtime): full-screen {{CARD_BG}} with each capture in a rounded card (radius ~3 % W), x 7-93 %, y 7-90 %, original UI kept; 8-75 frames per card, accelerating; ~44 % short soft swaps. Captions stay on top at 80.3 %.\n8. Payoff: back to full-frame face for the last ~9 % with a comment question. No {{LOGO}} or end card ({{HANDLE}} optional).\n\nGRADE\nGrade from the user's footage (video-style / grade.py); target look: high-contrast, natural-saturation, warm front-camera look.\n\nVERIFY before rendering\na) Render a test caption 'KEY WORD here now' and measure: python3 video-reference-match/scripts/caption_probe.py <test-render> --out <dir> --at <t> --box 0.08,0.765,0.92,0.835 --ink \"{{TEXT}}:50\"\nb) python3 video-reference-match/scripts/fit_font.py --font \"Inter 600\" --word \"<line with ascenders and descenders>\" --ink 3.12 --tracking 0.02 -> ~64-65 px; a ~23-character 4-word line reads ~62 % W. Tolerance ±0.5 % H, ±2 % W; measure over dark clothing. (fit_font.py needs a target: --ink and/or --width; it returns the px that reproduces that ink for YOUR word plus the width it will read at that px. Requires Pillow.)\nc) Positions within ±1 % H: caption centre 80.3 %, divider 35.1-35.5 %.",
+ "caption_family": "phrase-plain"
+}

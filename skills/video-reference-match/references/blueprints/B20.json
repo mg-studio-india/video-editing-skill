@@ -1,0 +1,418 @@
+{
+ "id": "B20",
+ "schema": "blueprint/1",
+ "format": {
+  "type": "podcast-clip",
+  "aspect": "9:16",
+  "language": "English",
+  "duration_class": "short (15-60s)",
+  "people_on_screen": "2+"
+ },
+ "topic_class": "mindset",
+ "signature": {
+  "one_line": "Two-person podcast clip cut on speaker changes, with stacked word-by-word captions: small white lead words over one giant glowing accent UPPERCASE keyword on the chest.",
+  "unique_devices": [
+   "Stacked keyword build: 1-3 small white bold lead words (54 px, +0.05em) left-aligned directly on top of one ~2.1x UPPERCASE black-weight keyword (114 px, +0.03em) in accent #9EC43A with a lighter diagonal sheen band and a soft accent glow; 0-2 trailing words indented below; every word hard-cuts in as spoken",
+   "Keyword centre fixed at 63.7 % height, block nudged over the speaker's chest (x 42-50 %) so it never covers the face; one keyword every ~60-90 frames, reaction shots left uncaptioned",
+   "Speaker-change-only cutting: wider MS for the first shot then tighter MCUs (punch-in feel from framing alone), a laughing reaction cut early, the quotable payoff held in the longest shot (~40 % of runtime), no CTA so it loops",
+   "Crushed-black set with teal rim light; picture fills the top ~83 % of the canvas with plain black below"
+  ],
+  "why_it_works": "A context-free question plus a real laugh opens a loop; the glowing keyword carries meaning muted, and the held payoff line gives a quotable, loopable ending."
+ },
+ "hook": {
+  "type": "open loop (question) + in medias res",
+  "first_word_s": 0.04,
+  "first_cut_s": 1.6,
+  "first_frame": "medium shot of the host at a podcast desk mic, mid-laugh on a crushed-black set; small white lead words over a big glowing accent keyword at ~64 % height"
+ },
+ "structure": [
+  {
+   "beat": "hook",
+   "from_pct": 0,
+   "to_pct": 17,
+   "what": "mid-conversation question from the host, cut to the guest's laughing reaction"
+  },
+  {
+   "beat": "setup",
+   "from_pct": 17,
+   "to_pct": 45,
+   "what": "the familiar paradox stated, then voiced by the guest from experience"
+  },
+  {
+   "beat": "claim",
+   "from_pct": 45,
+   "to_pct": 61,
+   "what": "host's quick confirmation beat; camera drifts closer"
+  },
+  {
+   "beat": "payoff",
+   "from_pct": 61,
+   "to_pct": 100,
+   "what": "guest's quotable line in one long hold; ends without CTA (loops)"
+  }
+ ],
+ "pacing": {
+  "pace": "fast",
+  "median_shot_s": 2.3,
+  "cuts_per_min": 17,
+  "wpm": 210,
+  "pauses_per_min": 3.4,
+  "visual_change_every_s": 2.3,
+  "note": "front-loaded (~24 cuts/min in the first half), then one long payoff hold; cuts only on speaker change or reaction, 40 % on pauses, 60 % J-leads, none mid-sentence"
+ },
+ "elements": {
+  "captions": [
+   {
+    "what": "stacked keyword captions (small lead / BIG keyword / small trail)",
+    "when": "0-100 % except reaction shots",
+    "how": "lead/trail: bold neo-grotesque 54 px white, +0.05em, faint glow; keyword: black-weight UPPERCASE 114 px, +0.03em, accent with diagonal sheen band, glow 0 0 40px rgba(158,196,58,.35); keyword centre y 63.7 %, block x 42-50 % over the chest; lead line left-aligned on the keyword's cap height; per-word hard cut as spoken; whole stack hard-cuts out on the next phrase or speaker cut",
+    "catalog": [
+     21,
+     31
+    ]
+   }
+  ],
+  "background_text": [],
+  "motion_graphics": [],
+  "cards_lists": [],
+  "silhouettes_cutouts": [],
+  "broll_inserts": [],
+  "layout": [
+   {
+    "what": "picture in the top ~83 % with a black band below",
+    "when": "100 %",
+    "how": "podcast frame fills the upper ~83 % of 9:16; bottom ~17 % plain black (or fill it when footage allows)",
+    "catalog": []
+   }
+  ],
+  "camera": [
+   {
+    "what": "two static podcast cams",
+    "when": "100 %",
+    "how": "first shot a wider MS, all later shots tighter MCUs; one slow push-in during the confirmation beat",
+    "catalog": [
+     58,
+     56
+    ]
+   }
+  ],
+  "transitions": [
+   {
+    "what": "hard cuts on speaker change / reaction only",
+    "when": "throughout",
+    "how": "never mid-sentence; J-leads into the next speaker",
+    "catalog": [
+     195
+    ]
+   }
+  ],
+  "end_card": []
+ },
+ "captions_spec": {
+  "script": "latin (English as spoken)",
+  "case": {
+   "lead": "sentence case as spoken",
+   "key": "UPPERCASE"
+  },
+  "punctuation": "dropped (no commas, question marks or quotes on screen); apostrophes kept (I'm, it's)",
+  "numbers": "as transcribed",
+  "emoji": "none",
+  "grouping": {
+   "lead_words_per_caption": "1-3 above the keyword, 0-2 below",
+   "key_words_per_caption": "1 (the topic word of the phrase: a strong noun or verb, ~1 every 60-90 frames)",
+   "max_lines": 3,
+   "sync": "word-by-word build: each word (lead or key) hard-cuts in as spoken and stays until the phrase clears",
+   "break": "new phrase every ~60-90 frames; phrases with no strong keyword show the small white line alone",
+   "gaps": "no caption on pure reaction shots (e.g. the other person laughing)"
+  },
+  "layout": {
+   "band_pct_of_H": [
+    58.6,
+    69.3
+   ],
+   "lead": {
+    "above_key": "left-aligned with the keyword's left edge, directly above it",
+    "below_key": "indented under the keyword (right-aligned to it when it fits, otherwise a ~5 % W indent)"
+   },
+   "key": {
+    "center_y_pct": 63.7,
+    "left_pct_of_W": "25-36 (varies per shot)"
+   },
+   "block_center_x_pct_of_W": "42-50: roughly centred, nudged over the speaker's chest",
+   "no_key_word": "small white line alone at ~60-62 % height",
+   "on_1080x1920": "same 9:16 canvas: keyword centre y ≈ 1223 px; picture fills the top ~83 %, bottom ~17 % is black"
+  },
+  "type": {
+   "lead": {
+    "font_class": "neo-grotesque sans, bold (Inter-like: straight-tailed y, flat-topped t)",
+    "closest_match": {
+     "local": "Inter 700",
+     "google": "Inter Bold",
+     "confidence": "medium"
+    },
+    "case": "sentence case",
+    "ink_height_pct_of_H": 2.58,
+    "k": 0.99,
+    "font_size_px_at_1920": 54,
+    "k_note": "two-word lead lines with ascenders + descenders -> k 0.99: 2.58 x 19.2 / 0.99 = 50 px; render-verified with Inter 700: 54 px",
+    "calibration": [
+     {
+      "word": "with you",
+      "ink_pct_of_H": 2.66,
+      "width_pct_of_W": 20.8
+     }
+    ],
+    "calibration_note": "measured over dark clothing; a second two-word lead line read 2.50 % H; one under-detected line was discarded",
+    "color": "#FFFFFF",
+    "stroke": "none",
+    "shadow": "faint soft glow (estimated)",
+    "box": "none",
+    "tracking": "0.05em",
+    "verified_px": 54,
+    "fit": [
+     {
+      "font": "Inter 700",
+      "word": "with you",
+      "tracking_em": 0.05,
+      "px_for_height": 54.3,
+      "px_for_width": 53.1,
+      "verified_px": 54,
+      "at_verified_px": {
+       "ink_pct_of_H": 2.66,
+       "width_pct_of_W": 21.5
+      },
+      "within_tolerance": true
+     }
+    ]
+   },
+   "key": {
+    "font_class": "neo-grotesque sans, black weight, wide caps",
+    "closest_match": {
+     "local": "Inter 900",
+     "google": "Inter Black",
+     "confidence": "medium"
+    },
+    "case": "UPPERCASE",
+    "ink_height_pct_of_H": 4.45,
+    "k": 0.73,
+    "font_size_px_at_1920": 114,
+    "k_note": "all caps, no descenders -> k 0.73: 4.45 x 19.2 / 0.73 = 117 px (about 2.1x the lead size); render-verified with Inter 900: 114 px",
+    "calibration": [
+     {
+      "word": "MEET",
+      "ink_pct_of_H": 4.38,
+      "width_pct_of_W": 30.6
+     },
+     {
+      "word": "LOVE",
+      "ink_pct_of_H": 4.53,
+      "width_pct_of_W": 28.5
+     }
+    ],
+    "calibration_note": "measured with --ink #AACA51:25 (glow excluded); a third keyword read 4.45 % H",
+    "color": "lime #9EC43A base with a lighter diagonal sheen band #B6D372 across the middle letters (measured column means #9EC43A -> #B6D372 -> #9EC63A)",
+    "stroke": "none",
+    "shadow": "soft lime glow behind the word, fading to black over ~50 px at 720p: ~0 0 40px rgba(158,196,58,.35) at 1920 (estimated)",
+    "box": "none",
+    "tracking": "0.03em",
+    "leading_to_lead_line": "tight: lead line sits directly on the keyword's cap height",
+    "verified_px": 114,
+    "fit": [
+     {
+      "font": "Inter 900",
+      "word": "MEET",
+      "tracking_em": 0.03,
+      "px_for_height": 115.2,
+      "px_for_width": 114.8,
+      "verified_px": 115,
+      "at_verified_px": {
+       "ink_pct_of_H": 4.38,
+       "width_pct_of_W": 30.5
+      },
+      "within_tolerance": true
+     },
+     {
+      "font": "Inter 900",
+      "word": "LOVE",
+      "tracking_em": 0.03,
+      "px_for_height": 114.4,
+      "px_for_width": 113.2,
+      "verified_px": 114,
+      "at_verified_px": {
+       "ink_pct_of_H": 4.43,
+       "width_pct_of_W": 28.6
+      },
+      "within_tolerance": true
+     }
+    ]
+   }
+  },
+  "animation": {
+   "fps": 30,
+   "lead_entry": "hard cut per word, full size and opacity on its first frame; words already placed never move",
+   "key_entry": "hard cut, full size on its first frame (ink height constant from that frame: no pop, no scale, no fade)",
+   "timing": "~10-11 frames after the transcript word start on the measured words (transcript timings in this clip read early, so align to the audible word)",
+   "highlight": "only the keyword is coloured; no colour sweep",
+   "exit": "the whole stack hard-cuts out when the next phrase starts or on the speaker cut",
+   "idle": "no motion while held"
+  }
+ },
+ "other_text_spec": [
+  {
+   "type": "frame layout",
+   "when": "throughout",
+   "text": "no text; the podcast picture occupies the top ~83 % of the 9:16 canvas and the bottom ~17 % is plain black"
+  },
+  {
+   "type": "titles / name lower-thirds / logo bug / end card",
+   "when": "none",
+   "text": "none (a branded prop in the scene is footage, not a graphic)"
+  }
+ ],
+ "style": {
+  "palette_roles": {
+   "text": "#FFFFFF",
+   "accent": "#9EC43A",
+   "accent_2": "#B6D372",
+   "surface": "#000000",
+   "card_bg": null
+  },
+  "fonts": {
+   "lead": {
+    "closest_local": "Inter 700",
+    "verified_px": 54,
+    "tracking": "0.05em"
+   },
+   "keyword": {
+    "closest_local": "Inter 900",
+    "verified_px": 114,
+    "tracking": "0.03em"
+   }
+  },
+  "look_intent": "crushed-black set where faces pop: deep blacks, cool teal rim light, warm skin, punchy but muted overall (measured mid-contrast, muted, warm); do not copy heavy sharpening"
+ },
+ "sound": {
+  "music": "music bed likely (heuristic, speech-gap level -3.3 dB); low, unobtrusive under the conversation",
+  "sfx": [
+   "none (cuts are on speaker changes, not hits)"
+  ],
+  "loudness_lufs": -14.1
+ },
+ "measured": {
+  "grade": {
+   "black_point": 0.0,
+   "midtone": 9.0,
+   "white_point": 207.7,
+   "contrast_range": 207.7,
+   "luma_std": 50.3,
+   "saturation": 0.179,
+   "colorfulness": 29.6,
+   "warmth_r_minus_b": 22.4,
+   "tint_g": -8.9,
+   "vignette_centre_over_edge": 4.31,
+   "label": "mid-contrast, muted, warm"
+  },
+  "layout": {
+   "letterbox_share": 1.0,
+   "split_divider_share": 0.0
+  },
+  "sound": {
+   "has_audio": true,
+   "speech_coverage": 0.91,
+   "beat_periodicity": 0.11,
+   "beat_bpm_est": null,
+   "gap_level_rel_speech_db": -3.3,
+   "music": "music bed likely",
+   "cut_hit_share": null,
+   "method": "heuristic (onset-envelope beat periodicity + level in speech gaps); not a classifier"
+  }
+ },
+ "catalog_styles": [
+  {
+   "id": 58,
+   "name": "Podcast Clip",
+   "role": "single quotable exchange cut from a longer conversation"
+  },
+  {
+   "id": 195,
+   "name": "Dialogue-First Interview Edit",
+   "role": "cuts only on speaker change or reaction"
+  },
+  {
+   "id": 21,
+   "name": "Caption-Edit",
+   "role": "stacked word-by-word captions"
+  },
+  {
+   "id": 31,
+   "name": "Emphasis-Word Zoom",
+   "role": "one ~2x glowing lime keyword per phrase (size emphasis, no zoom motion)"
+  },
+  {
+   "id": 56,
+   "name": "Interview Format",
+   "role": "host / guest two-camera set"
+  },
+  {
+   "id": 170,
+   "name": "Circular Storytelling (Looping Narrative)",
+   "role": "ends on the quotable line with no CTA so it loops"
+  }
+ ],
+ "use_when": [
+  "cutting a short clip from a two-person podcast or interview",
+  "the exchange has a clear quotable payoff line",
+  "the set is dark so a bright keyword colour and glow pop",
+  "muted viewing matters and one topic word per phrase can carry meaning"
+ ],
+ "avoid_when": [
+  "a single-speaker monologue with no reactions to cut to",
+  "a bright, white or busy background where the glow reads muddy",
+  "long-form explainers needing lists, screens or b-roll"
+ ],
+ "match": {
+  "tags": [
+   "podcast-clip",
+   "two-person",
+   "interview",
+   "keyword-captions",
+   "giant-keyword",
+   "glow-text",
+   "lime-accent",
+   "stacked-captions",
+   "word-by-word-captions",
+   "dark-studio",
+   "crushed-blacks",
+   "reaction-cut",
+   "no-cta",
+   "loop"
+  ],
+  "keywords": [
+   "podcast",
+   "interview",
+   "guest",
+   "host",
+   "conversation",
+   "clip",
+   "quote",
+   "mindset",
+   "sports",
+   "competition",
+   "failure",
+   "performance",
+   "motivation",
+   "story",
+   "lesson",
+   "talk"
+  ],
+  "needs": {
+   "speaker_footage": true,
+   "screen_recordings": false,
+   "broll": false,
+   "brand_assets": false
+  }
+ },
+ "quality_score": 4,
+ "brand_prompt": "Use /video-pipeline with /video-captions on videos/<project>. Apply style blueprint B20 (video-reference-match/references/blueprints/B20.json) to this brand.\nCanvas 1080x1920, 30 fps. All positions are % of frame; px are at 1080x1920.\n\nBRAND TOKENS (use the brand's colour/font for each role; keep the contrast relationship: {{ACCENT}} must stay >= 3:1 on the dark set and visibly brighter than skin; {{ACCENT_2}} is a lighter tint of {{ACCENT}} for the sheen)\n- {{TEXT}}      lead / trailing words                    default #FFFFFF\n- {{ACCENT}}    keyword fill and glow                    default #9EC43A (lime)\n- {{ACCENT_2}}  diagonal sheen band across the keyword   default #B6D372\n- {{SURFACE}}   black band below the picture / set       default #000000\n- {{CARD_BG}}   none                                     default none\n- {{FONT_DISPLAY}} keyword                               default Inter 900 (black-weight neo-grotesque, wide caps)\n- {{FONT_BODY}}    lead / trailing words                 default Inter 700\n- {{HANDLE}}    not shown (optional: add a guest name lower third only if the brand needs it)\n- {{LOGO}}      not shown\n\nCAPTIONS\n1. English as spoken. Lead words in sentence case; the keyword in UPPERCASE. Drop commas, question marks and quotes; keep apostrophes.\n2. Per phrase: 1-3 small lead words, then ONE keyword (the topic word: a strong noun or verb, about one every 60-90 frames), then 0-2 small trailing words. Max 3 lines. Phrases without a strong keyword show only the small white line (at ~60-62 % height).\n3. Lead/trailing words: {{FONT_BODY}} at 54 px, tracking +0.05em, {{TEXT}}, no stroke, no box, faint soft glow.\n4. Keyword: {{FONT_DISPLAY}} at 114 px (~2.1x the lead), tracking +0.03em, {{ACCENT}} with a lighter diagonal {{ACCENT_2}} sheen band across the middle letters, soft glow 0 0 40px of {{ACCENT}} at 35 % opacity, no stroke, no box.\n5. Layout: stack tightly. The lead line sits directly on the keyword's cap height, left-aligned with its left edge; the trailing line goes under the keyword, indented (right-aligned to it when it fits). Keyword centre at 63.7 % of height (y ~1223 px); block roughly centred (x 42-50 %), nudged over the speaker's chest so it never covers the face.\n6. Animation: build word by word; each word (small or keyword) hard-cuts in at full size and opacity on the audible word; placed words never move. No pop, scale, fade or colour sweep. The whole stack hard-cuts out when the next phrase starts or on a speaker cut. Leave pure reaction shots uncaptioned.\n\nOTHER TEXT\n7. None: no title, name lower thirds or logo bug. If the source is not 9:16, place the picture in the top ~83 % with {{SURFACE}} below.\n\nEDIT DEVICES\n8. Open mid-conversation on a question (first word in the first ~2 frames) and cut to the other person's laughing reaction within ~50 frames. Cut only on speaker change or reaction (median shot ~70 frames, J-leads, never mid-sentence). First shot a wider MS, later shots tighter MCUs; hold the quotable payoff in the longest shot; no CTA so it loops.\n\nGRADE\n9. Grade from the user's footage (video-style / grade.py); target look: crushed-black set, faces pop, cool teal rim light, warm skin; no heavy sharpening.\n\nAUDIO\n10. Low music bed under the conversation (optional); no SFX. Master to about -14.1 LUFS, true peak <= -1 dBTP.\n\nVERIFY before rendering\na) Render a test frame with the stack \"KEY WORD / MEET / with you\" and one with \"LOVE\" as the keyword, over a dark area, and measure:\n   python video-reference-match/scripts/caption_probe.py <test.mp4> --out <dir> --at <t> --box 0.05,0.55,0.95,0.72 --ink \"{{ACCENT}}:30,{{TEXT}}:60\"\n   Required at the default fonts: \"MEET\" ink 4.38 % ±0.5 of height and 30.6 % ±2 of width; \"LOVE\" 4.53 % and 28.5 % ±2; \"with you\" 2.66 % ±0.5 and 20.8 % ±2; keyword centre y 63.7 % ±0.5. With brand fonts, compute the expected ink with video-reference-match/scripts/fit_font.py ({{FONT_DISPLAY}} 114 px +0.03em; {{FONT_BODY}} 54 px +0.05em) and match within ±0.5 % H.\n",
+ "caption_family": "giant-keyword"
+}
