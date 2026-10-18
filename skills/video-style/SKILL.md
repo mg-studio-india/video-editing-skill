@@ -16,6 +16,10 @@ W="videos/<project>"
 
 ## 1. Unified Style Architecture (`style.json`)
 
+> [!IMPORTANT]
+> **Brand Memory Integration (`brand/MEMO.md`):**
+> Before generating `style.json`, always inspect `brand/MEMO.md` (or `$PROJECT/brand/MEMO.md`). If present, its colors, typography, handles, logo assets, layout preferences, and thinking process must seed `style.json`. User brand memory strictly overrides generic defaults.
+
 A production-grade `style.json` governs five interdependent visual pillars:
 
 ```json
@@ -106,10 +110,10 @@ python3 "$ENG/scripts/grade.py" preview --input "$W/raw/<clip>.mp4" --out "$W/gr
 ## 3. Formatting & Overlay Placement Rules
 
 1. **Clean Headroom (Anti-Pattern: Forehead Clutter):**
-   - **Never** place sticky headline banners or floating checklist cards over the creator's forehead/hairline (`y: 0.08 – 0.25` in portrait).
+   - **Never** place sticky headline banners or floating checklist cards over the creator's forehead/hairline (`y: 0.08 - 0.25` in portrait).
    - This looks awkward and suffocating (as seen in bad amateur edits).
 2. **Safe Lower Third & Side Zones:**
-   - On-screen cards, checklists, and specs must live in the lower half (`y: 0.58 – 0.75`), side panels, or dedicated cutaway scenes.
+   - On-screen cards, checklists, and specs must live in the lower half (`y: 0.58 - 0.75`), side panels, or dedicated cutaway scenes.
    - When lower panels appear, captions gracefully step aside to `low_y: 0.86`.
 3. **Format Layout Consistency:**
    - The selected format from the 225-Style Taxonomy dictates container borders, background gradient/texture, and aspect ratio padding.

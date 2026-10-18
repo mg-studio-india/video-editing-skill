@@ -26,21 +26,22 @@ INPUT="/path/to/input"
 
 Never apply hardcoded frequencies, blind mic extraction, or static noise sample timestamps. Dialogue audio varies across devices, speakers, and acoustic spaces. 
 
-Run the dynamic acoustic analysis on the input file before applying filters:
+> [!IMPORTANT]
+> **Virtual Environment (STRICT)**: ALWAYS execute scripts using the project's virtual environment (`"$PROJECT/.venv/bin/python3"`). Never invoke system python.
 
 ```bash
-python3 "$ENG/scripts/audio-analyze.py" "$INPUT" --json > acoustic_profile.json
+"$PROJECT/.venv/bin/python3" "$ENG/scripts/audio-analyze.py" "$INPUT" --json > acoustic_profile.json
 ```
 
 The analyzer inspects the raw signal and dynamically identifies:
 
 | Acoustic Variable | Measurement Method | How It Derives Settings |
 |---|---|---|
-| **Channel Routing** (`CH_FILTER`) | Compares Channel 0 vs 1 RMS & speech band (300–3500 Hz) energy. | If asymmetric (e.g. phone with mouth mic vs room mic): selects dominant speech mic (`pan=mono\|c0=c0` or `pan=mono\|c0=c1`). If symmetric: downmixes `pan=mono\|c0=0.5*c0+0.5*c1`. If already mono: `anull`. |
+| **Channel Routing** (`CH_FILTER`) | Compares Channel 0 vs 1 RMS & speech band (300-3500 Hz) energy. | If asymmetric (e.g. phone with mouth mic vs room mic): selects dominant speech mic (`pan=mono\|c0=c0` or `pan=mono\|c0=c1`). If symmetric: downmixes `pan=mono\|c0=0.5*c0+0.5*c1`. If already mono: `anull`. |
 | **Room-Tone Noise Window** (`NOISE_START`, `NOISE_DUR`) | 400ms sliding window scan across pauses to locate the quietest inter-phrase room tone floor (above digital silence). | Gives the exact timestamp to sample room hiss for SoX without clipping speech onsets or vocal tails. |
 | **Voice Fundamental ($F_0$) & Highpass** (`HIGHPASS_HZ`) | Autocorrelation on voiced speech frames to detect the speaker's true pitch fundamental $F_0$. | Sets high-pass cutoff dynamically to $\max(75, F_0 - 25\text{ Hz})$ to kill sub-rumble without thinning male or female vocal fundamentals. |
-| **Proximity Warmth** (`WARMTH_HZ`) | Centers warmth boost directly at detected $F_0$ ($100–150\text{ Hz}$ male, $180–240\text{ Hz}$ female). | Boosts the speaker's natural vocal chest resonance (+1.0 to +1.5 dB) rather than a blind arbitrary frequency. |
-| **Room Standing Modes** (`NOTCH_FILTERS`) | High-resolution spectral scan across the $120–750\text{ Hz}$ room reverberation range to detect narrow stationary spikes ($\ge 2.8\text{ dB}$ above moving spectral envelope). | If standing modes exist: generates targeted surgical notches (`equalizer=f=$F:t=q:w=3.5:g=-$G`). If the acoustic space is clean: generates **no notches** to preserve phase integrity. |
+| **Proximity Warmth** (`WARMTH_HZ`) | Centers warmth boost directly at detected $F_0$ ($100-150\text{ Hz}$ male, $180-240\text{ Hz}$ female). | Boosts the speaker's natural vocal chest resonance (+1.0 to +1.5 dB) rather than a blind arbitrary frequency. |
+| **Room Standing Modes** (`NOTCH_FILTERS`) | High-resolution spectral scan across the $120-750\text{ Hz}$ room reverberation range to detect narrow stationary spikes ($\ge 2.8\text{ dB}$ above moving spectral envelope). | If standing modes exist: generates targeted surgical notches (`equalizer=f=$F:t=q:w=3.5:g=-$G`). If the acoustic space is clean: generates **no notches** to preserve phase integrity. |
 | **Speech Level & Dynamics** (`COMP_THRESH`) | Measures 90th percentile voiced speech RMS. | Dynamically calibrates leveling compressor threshold to `speech_rms - 4 dB` to even out phrasing without over-squashing dynamics. |
 
 ---
@@ -102,7 +103,7 @@ ffmpeg -hide_banner -y -i stage1_clean_base.wav \
 
 **Never apply aggressive fast-attack gates (`attack < 10ms`, `release < 80ms`) to dialogue.** 
 
-Speech fundamentals ($F_0 \approx 100–250\text{ Hz}$) have acoustic wave periods of 4–10ms. When an amplitude gate opens and closes rapidly, it modulates the waveform within individual pitch cycles, producing a harsh buzz, edge flutter, or vowel sputtering at word boundaries. 
+Speech fundamentals ($F_0 \approx 100-250\text{ Hz}$) have acoustic wave periods of 4-10ms. When an amplitude gate opens and closes rapidly, it modulates the waveform within individual pitch cycles, producing a harsh buzz, edge flutter, or vowel sputtering at word boundaries. 
 
 **Process rules:**
 1. Rely on continuous frequency-domain neural masking (RNNoise `arnndn`) and SoX spectral subtraction (`noisered`) for noise/reverb decay suppression.
@@ -124,3 +125,20 @@ Must satisfy:
 - True Peak: `<= -1.0 dBTP`
 - Zero word buzzing / gate chatter
 - 100% speech transcription accuracy preserved with zero lost word endings
+
+---
+
+## Echo & white-noise cleanup tool (`tools/voice-clean.py`)
+
+For rooms with audible echo, run this before `audio-chain.py clean` (it replaces the clean pass) and before transcription:
+
+```bash
+"$PY" "$SKILL/tools/voice-clean.py" "$W/raw/<clip>.MOV" --video "$W/raw/<clip>-sdr.mp4" --out "$W/raw/<clip>-clean.mp4" [--keep <tmpdir> --reuse]
+```
+
+`$SKILL` is this skill's folder; `$PY` the project `.venv/bin/python` (needs `nara_wpe soundfile scipy`, installed by `install.sh`).
+Chain: WPE multi-mic dereverb (uses both phone mics) → statistical late-reverb suppression (`tools/late-reverb.py`,
+RT60 0.5 s, −10 dB floor) → DeepFilterNet3 (`deep-filter`, downloaded by `install.sh` to `~/.config/video-skills/bin`,
+or `$VIDEO_DEEPFILTER`) → 80 Hz high-pass, −3 dBFS peak, muxed onto the picture. Measured on an iPhone office take:
+noise floor −70 → −82.6 dBFS, SNR 49.6 → 63.4 dB, reverb tail ~7 dB lower at 200 ms. Report echo as *reduced*, never
+removed; check timing with a cross-correlation (it stays sample-aligned) and spectral balance before mastering.

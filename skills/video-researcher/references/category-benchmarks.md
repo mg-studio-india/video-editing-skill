@@ -8,11 +8,11 @@ This reference document provides production-tested playbooks for 8 major content
 *Ideal for: AI tools, SaaS launches, framework releases, product updates, tech commentary.*
 
 * **Audience:** Developers, technical founders, tech-curious creators, product managers.
-* **Winning Hook Formula (0.0s – 3.0s):**
+* **Winning Hook Formula (0.0s - 3.0s):**
   - Confrontational or disruptive outcome: *"OpenAI just killed 50 startups with one update."* / *"Stop building backends in 2026."*
   - Synchronized visual: High-contrast headline banner (`lt-headline-banner`) + fast zoom-in on software UI + punchy whoosh SFX.
 * **Visual Rhythm & Pacing:**
-  - Cut Frequency: **1.4s – 2.0s** per visual change.
+  - Cut Frequency: **1.4s - 2.0s** per visual change.
   - Alternating pattern: Talking head (fast punch-in) → Terminal / UI screen recording → Floating tech stack logo cloud → Animated code block.
 * **Layout & Composition Styles:**
   - `Style 07: Screen-Plus-Facecam` or `Style 03: Stacked Split-Screen` (Speaker top 44%, clean screen demo bottom 56%).
@@ -36,11 +36,11 @@ This reference document provides production-tested playbooks for 8 major content
 *Ideal for: Startup case studies, marketing breakdowns, revenue analyses, D2C stories (Raj Shamani, Nitin Joshi, Bypreneurs).*
 
 * **Audience:** Entrepreneurs, investors, business students, ambitious professionals.
-* **Winning Hook Formula (0.0s – 3.0s):**
+* **Winning Hook Formula (0.0s - 3.0s):**
   - The Hidden Number / Revenue Paradox: *"This 24-year-old made ₹12 Crore selling plain water."* / *"Why Zomato actually wanted Swiggy to win."*
   - Synchronized visual: Full-width black headline band with red emphasis word + animated ₹/$ revenue counter ticker + crisp cash-register or tape-stop sound.
 * **Visual Rhythm & Pacing:**
-  - Cut Frequency: **1.8s – 2.5s** per visual shift.
+  - Cut Frequency: **1.8s - 2.5s** per visual shift.
   - Rhythm: Face statement → Branded evidence document/tweet → Financial chart growth curve → Storefront/product footage.
 * **Layout & Composition Styles:**
   - `Style 03: Stacked Split-Screen` (Speaker in top half, evidence receipts/graphs in bottom half).
@@ -66,11 +66,11 @@ This reference document provides production-tested playbooks for 8 major content
 *Ideal for: Code walkthroughs, bug debugging, architecture explanations, Git workflows.*
 
 * **Audience:** Junior to senior software engineers, bootcamp students.
-* **Winning Hook Formula (0.0s – 3.0s):**
+* **Winning Hook Formula (0.0s - 3.0s):**
   - The Error or Elegant Fix: *"You've been using async/await completely wrong."* / *"How 3 lines of code replaced a 500-line microservice."*
   - Synchronized visual: Red error banner switching instantly to green checkmark + subtle keyboard clatter SFX.
 * **Visual Rhythm & Pacing:**
-  - Cut Frequency: **2.0s – 3.2s** (code needs slightly longer cognitive dwell time).
+  - Cut Frequency: **2.0s - 3.2s** (code needs slightly longer cognitive dwell time).
   - Rhythm: Problem statement → Red-highlighted buggy syntax → Side-by-side refactor → Verified benchmark output.
 * **Layout & Composition Styles:**
   - `Style 07: Screen-Plus-Facecam` with zoomed code viewport (140% scale on active function).
@@ -92,11 +92,11 @@ This reference document provides production-tested playbooks for 8 major content
 *Ideal for: Physics, psychology, history, mathematics, deep concept breakdowns (Veritasium, Cleo Abram, 3Blue1Brown).*
 
 * **Audience:** Curious generalists, students, lifelong learners.
-* **Winning Hook Formula (0.0s – 3.0s):**
+* **Winning Hook Formula (0.0s - 3.0s):**
   - Counter-Intuitive Truth: *"Light doesn't actually travel in a straight line."* / *"The math behind why you feel like you have no friends."*
   - Synchronized visual: Dynamic 3D simulation or abstract graphic + speaker looking up at the formula + mysterious ambient riser.
 * **Visual Rhythm & Pacing:**
-  - Cut Frequency: **2.2s – 3.5s**.
+  - Cut Frequency: **2.2s - 3.5s**.
   - Pacing: Concept statement → Full-screen animated diagram (speaker voiceover) → Real-world historical photograph/B-roll → Return to speaker with hand-drawn marker callout.
 * **Layout & Composition Styles:**
   - `Style 05: Layered-Head` with celestial/atomic animation floating behind speaker.
@@ -118,11 +118,11 @@ This reference document provides production-tested playbooks for 8 major content
 *Ideal for: Time management, second brain systems, reading habits, discipline frameworks (Ali Abdaal style).*
 
 * **Audience:** High-achieving knowledge workers, college students, founders.
-* **Winning Hook Formula (0.0s – 3.0s):**
+* **Winning Hook Formula (0.0s - 3.0s):**
   - The System Revelation: *"I read 100 books a year without actually reading."* / *"The 2-minute rule that cured my ADHD paralysis."*
   - Synchronized visual: Clean desk aesthetic + paper-tear sticker popping on screen + soft typewriter click sound.
 * **Visual Rhythm & Pacing:**
-  - Cut Frequency: **2.0s – 2.8s**.
+  - Cut Frequency: **2.0s - 2.8s**.
   - Rhythm: Warm desk to-camera talk → Minimal Notion/app window → Checklist tick-off animation → 3-step numbered card.
 * **Layout & Composition Styles:**
   - `Style 45: Paper-Drawer / Sticky-Note Reveal`.
@@ -144,11 +144,11 @@ This reference document provides production-tested playbooks for 8 major content
 *Ideal for: Product unboxings, fashion hauls, gadget reviews, amazon finds.*
 
 * **Audience:** Shoppers, lifestyle trend followers, Gen-Z / Millennials.
-* **Winning Hook Formula (0.0s – 3.0s):**
+* **Winning Hook Formula (0.0s - 3.0s):**
   - Price-to-Value Shock: *"Everything in this luxury box was under ₹499."* / *"Never buy the Apple AirPods Max until you see this."*
   - Synchronized visual: Fast snap-scale pop on the product + price badge sticker + camera punch zoom + camera shutter SFX.
 * **Visual Rhythm & Pacing:**
-  - Cut Frequency: **1.2s – 1.8s** (ultra fast-paced, high retention).
+  - Cut Frequency: **1.2s - 1.8s** (ultra fast-paced, high retention).
   - Rhythm: Fast product try-on → Macro texture close-up → Price pill badge → Comparison wipe.
 * **Layout & Composition Styles:**
   - `Style 01: Split-Screen` (Wearing item on left, price & specs card on right).

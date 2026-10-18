@@ -31,15 +31,17 @@ import glob
 import json
 import os
 import re
+import shutil
 import subprocess
 import sys
 import tempfile
 from pathlib import Path
 
-import numpy as np
-
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from runtime import ToolError, run  # noqa: E402
+from runtime import ToolError, ensure_project_venv, run  # noqa: E402
+ensure_project_venv()
+
+import numpy as np
 
 PRESETS = {
     # integrated LUFS, true-peak ceiling dBTP
@@ -156,20 +158,53 @@ def afftdn_floor(floor_db: float, speech_db: float) -> float:
 def denoise_filters(level: str, rnn_model: str | None, floor_db: float, speech_db: float) -> list[str]:
     """afftdn only works when told where the noise sits. Measured on test material: a fixed nf of -50 removed 1 dB of
     a -44 dB hiss; nf at floor+12 removed the full nr (6/10/14 dB) on white and pink noise, speech level unchanged."""
-    if level == "off":
+    if level in ("off", "none"):
         return []
     out = []
-    if level == "strong" and rnn_model:
+    if level in ("strong", "neural") and rnn_model:
         out.append(f"arnndn=m='{rnn_model}':mix=0.85")
     nf = afftdn_floor(floor_db, speech_db)
-    out.append(f"afftdn=nr={DENOISE_NR[level]}:nf={nf}")
+    nr = DENOISE_NR.get(level, 14)
+    out.append(f"afftdn=nr={nr}:nf={nf}")
     return out
+
+
+def find_deep_filter() -> str | None:
+    for c in (
+        os.environ.get("VIDEO_DEEPFILTER"),
+        os.path.expanduser("~/.config/video-skills/bin/deep-filter"),
+        os.path.expanduser("~/.local/bin/deep-filter"),
+    ):
+        if c and os.path.isfile(c) and os.access(c, os.X_OK):
+            return c
+    return None
+
+
+def apply_deep_filter(src_media: str, tmp_dir: Path, atten_db: float = 32.0) -> str:
+    df = find_deep_filter()
+    if not df:
+        raise ToolError("deep-filter binary not found in ~/.config/video-skills/bin/deep-filter or $VIDEO_DEEPFILTER")
+    raw_wav = tmp_dir / "df_in.wav"
+    out_dir = tmp_dir / "df_out"
+    out_dir.mkdir(parents=True, exist_ok=True)
+    run(["ffmpeg", "-y", "-hide_banner", "-loglevel", "error", "-i", str(src_media), "-vn", "-ar", "48000",
+         "-c:a", "pcm_s16le", str(raw_wav)])
+    cmd = [df, "-D", "-a", str(atten_db), "-o", str(out_dir), str(raw_wav)]
+    res = subprocess.run(cmd, capture_output=True, text=True)
+    if res.returncode != 0:
+        raise ToolError(f"deep-filter failed: {res.stderr}")
+    return str(out_dir / "df_in.wav")
 
 
 def find_rnn_model(explicit: str | None) -> str | None:
     if explicit:
-        return explicit if os.path.isfile(explicit) else None
-    found = sorted(glob.glob(os.path.expanduser("~/.config/video-skills/rnnoise/*.rnnn")))
+        return explicit if (os.path.isfile(explicit) and os.path.getsize(explicit) > 1024) else None
+    for cand in ("sh.rnnn", "cb.rnnn", "mp.rnnn", "bd.rnnn"):
+        p = os.path.expanduser(f"~/.config/video-skills/rnnoise/{cand}")
+        if os.path.isfile(p) and os.path.getsize(p) > 1024:
+            return p
+    found = [f for f in sorted(glob.glob(os.path.expanduser("~/.config/video-skills/rnnoise/*.rnnn")))
+             if os.path.getsize(f) > 1024]
     return found[0] if found else None
 
 
@@ -214,29 +249,58 @@ def render(media: str, out: str, chain: list[str], music: str | None = None, duc
 
 
 def clean(media: str, out: str, args) -> dict:
+    # Caching check: Never re-clean if output already exists and is newer than source, unless --force
+    if not getattr(args, "force", False) and os.path.isfile(out) and os.path.getsize(out) > 1024:
+        if not os.path.exists(media) or os.path.getmtime(media) <= os.path.getmtime(out):
+            print(f"✓ Reusing existing clean audio: {out} (use --force to re-clean)")
+            m = measure(out)
+            level = args.denoise if (args.denoise and args.denoise != "auto") else denoise_level(m["noise_floor_dbfs"])
+            return {"mode": "clean", "denoise": level, "chain": ["cached"], "before": m, "after": m}
+
     before = measure(media)
-    level = args.denoise or denoise_level(before["noise_floor_dbfs"])
+    level = args.denoise if (args.denoise and args.denoise != "auto") else denoise_level(before["noise_floor_dbfs"])
+    src = media
+    tmp_clean = None
+    if level == "neural" and find_deep_filter():
+        tmp_clean = Path(tempfile.mkdtemp(prefix="audio-clean-df-"))
+        src = apply_deep_filter(media, tmp_clean)
+        active_level = "off"
+    else:
+        active_level = "strong" if level == "neural" else level
     g = gain_to(PEAK_TARGET, before["sample_peak_dbfs"])
     chain = [f"volume={g}dB", highpass(args.highpass),
-             *denoise_filters(level, find_rnn_model(args.rnn_model), before["noise_floor_dbfs"] + g,
+             *denoise_filters(active_level, find_rnn_model(args.rnn_model), before["noise_floor_dbfs"] + g,
                               before["speech_dbfs"] + g)]
-    render(media, out, chain)
+    render(src, out, chain)
+    if tmp_clean and tmp_clean.exists():
+        shutil.rmtree(tmp_clean, ignore_errors=True)
     return {"mode": "clean", "denoise": level, "chain": chain, "before": before, "after": measure(out)}
 
 
 def master(media: str, out: str, args) -> dict:
     p = PRESETS[args.preset]
     before = measure(media)
-    level = args.denoise or "off"          # the clean pass already denoised; opt in here only for unclean sources
+    if args.denoise and args.denoise != "auto":
+        level = args.denoise
+    elif args.denoise == "auto" or before["noise_floor_dbfs"] >= -50.0:
+        level = denoise_level(before["noise_floor_dbfs"])
+    else:
+        level = "off"
+    tmp = Path(tempfile.mkdtemp(prefix="audio-chain-"))
+    src = media
+    if level == "neural" and find_deep_filter():
+        src = apply_deep_filter(media, tmp)
+        active_level = "off"
+    else:
+        active_level = "strong" if level == "neural" else level
     g = gain_to(PEAK_TARGET, before["sample_peak_dbfs"])
     pre = [f"volume={g}dB", highpass(args.highpass),
-           *denoise_filters(level, find_rnn_model(args.rnn_model), before["noise_floor_dbfs"] + g,
+           *denoise_filters(active_level, find_rnn_model(args.rnn_model), before["noise_floor_dbfs"] + g,
                              before["speech_dbfs"] + g),
            expander(before["noise_floor_dbfs"] + g, before["speech_dbfs"] + g), deesser(args.deess),
            compressor(args.comp_threshold, args.comp_ratio, args.comp_release), TONES[args.tone]]
-    tmp = Path(tempfile.mkdtemp(prefix="audio-chain-"))
     stage = str(tmp / "stage.wav")
-    render(media, stage, pre, music=args.music, duck_db=args.duck_db, music_db=args.music_db)
+    render(src, stage, pre, music=args.music, duck_db=args.duck_db, music_db=args.music_db)
     # loudness: linear gain to target, then a limiter under the ceiling; verify the true peak, tighten once if over
     lufs = loudness(stage)["integrated_lufs"]
     ceiling = p["tp"] - 0.5
@@ -265,8 +329,11 @@ def master(media: str, out: str, args) -> dict:
     after = measure(out)
     ok = (after["integrated_lufs"] is not None and abs(after["integrated_lufs"] - p["lufs"]) <= 1.0
           and after["true_peak_dbtp"] is not None and after["true_peak_dbtp"] <= p["tp"] + 0.1)
-    return {"mode": "master", "preset": args.preset, "target": p, "tone": args.tone, "denoise": level,
-            "music": args.music, "chain": pre + tail, "before": before, "after": after, "pass": ok}
+    rep = {"mode": "master", "preset": args.preset, "target": p, "tone": args.tone, "denoise": level,
+           "music": args.music, "chain": pre + tail, "before": before, "after": after, "pass": ok}
+    if tmp and tmp.exists():
+        shutil.rmtree(tmp, ignore_errors=True)
+    return rep
 
 
 def show(rep: dict) -> None:
@@ -287,7 +354,7 @@ def main() -> None:
     ap.add_argument("--out")
     ap.add_argument("--preset", choices=sorted(PRESETS), default="youtube")
     ap.add_argument("--tone", choices=sorted(TONES), default="neutral")
-    ap.add_argument("--denoise", choices=["off", "light", "medium", "strong"])
+    ap.add_argument("--denoise", choices=["auto", "off", "light", "medium", "strong", "neural"])
     ap.add_argument("--rnn-model", help="RNNoise .rnnn model for strong denoising")
     ap.add_argument("--music", help="music bed to duck under the voice (master only)")
     ap.add_argument("--duck-db", type=float, default=18.0, help="how far the bed drops under speech")
@@ -298,6 +365,7 @@ def main() -> None:
     ap.add_argument("--comp-ratio", type=float, default=3.0, help="compressor ratio")
     ap.add_argument("--comp-release", type=float, default=180.0, help="compressor release ms (longer = less pumping)")
     ap.add_argument("--report", help="write the numbers as JSON here")
+    ap.add_argument("--force", action="store_true", help="force re-processing even if output already exists")
     a = ap.parse_args()
     if a.mode != "measure" and not a.out:
         ap.error("--out is required for clean and master")

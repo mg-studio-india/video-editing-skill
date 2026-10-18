@@ -32,7 +32,8 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import config  # noqa: E402
-from runtime import run  # noqa: E402
+import hinglish  # noqa: E402
+from runtime import ensure_project_venv, run  # noqa: E402
 from transcribe_cpp import collapse_loops, transcribe, words_to_segments  # noqa: E402
 
 FILLER_PROMPT = "Um, uh, you know, I mean, like."
@@ -77,10 +78,11 @@ def merge(parts: list[dict]) -> tuple[list[dict], list[dict], str | None]:
 
 
 def to_engine_shape(words: list[dict]) -> list[dict]:
-    return [{"text": w["w"], "w": w["w"], "start": w["start"], "end": w["end"]} for w in words]
+    return [{"text": hinglish.to_hinglish(w["w"]), "w": hinglish.to_hinglish(w["w"]), "start": w["start"], "end": w["end"]} for w in words]
 
 
 def main() -> None:
+    ensure_project_venv()
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     ap.add_argument("media")
     ap.add_argument("--out", required=True, help="transcript.json to write")
@@ -89,7 +91,21 @@ def main() -> None:
     ap.add_argument("--prompt", help="initial prompt: names, jargon (fillers prompt is added unless --no-fillers)")
     ap.add_argument("--no-fillers", action="store_true", help="do not ask whisper to keep um/uh")
     ap.add_argument("--fix", help="corrections.json to apply (default: corrections.json next to --out, when present)")
+    ap.add_argument("--force", action="store_true", help="force re-transcription even if transcript already exists")
     a = ap.parse_args()
+
+    # Caching check: Never re-transcribe if transcript already exists and is newer than source, unless --force
+    if not a.force and os.path.isfile(a.out) and os.path.getsize(a.out) > 100:
+        if not os.path.exists(a.media) or os.path.getmtime(a.media) <= os.path.getmtime(a.out):
+            try:
+                cached = json.load(open(a.out))
+                if "words" in cached and len(cached["words"]) > 0:
+                    print(f"✓ Reusing existing transcript ({len(cached['words'])} words): {a.out} (use --force to re-transcribe)")
+                    for w in cached["words"][:6]:
+                        print(f"  {w.get('start', 0.0):8.2f}  {w.get('w') or w.get('text')}")
+                    return
+            except Exception:
+                pass
 
     cfg = config.load()
     import importlib.util
@@ -99,6 +115,10 @@ def main() -> None:
     corrections = FW.load_corrections(fix_path)
     if a.lang:
         cfg["WATCH_WHISPER_LANG"] = a.lang
+    raw_lang = (cfg.get("WATCH_WHISPER_LANG") or "").strip().lower()
+    is_hi = raw_lang in ("hi", "hindi", "hinglish", "hi-latn")
+    if is_hi:
+        cfg["WATCH_WHISPER_LANG"] = "hi"
     prompt = a.prompt or cfg.get("WATCH_WHISPER_PROMPT") or ""
     names = [v for v in dict.fromkeys(corrections.values()) if v.lower() not in prompt.lower()][:20]
     if names:                                  # the correct spellings as hints, so whisper gets them right more often
@@ -116,12 +136,15 @@ def main() -> None:
             print(f"window {i + 1}/{len(wins)}  {s:.2f}-{e:.2f}", file=sys.stderr)
         parts.append(transcribe(a.media, work, s if len(wins) > 1 else None, e if len(wins) > 1 else None, cfg))
     words, cues, lang = merge(parts)
+    if is_hi or lang == "hi":
+        lang = "hi-Latn"
     words, removed = collapse_loops(words)
     shaped, changes = FW.apply(to_engine_shape(words), corrections) if corrections else (to_engine_shape(words), [])
     out = {"engine": "whisper.cpp", "model": parts[0].get("model"), "language": lang, "duration": round(dur, 3),
            "words": shaped, "corrections_applied": len(changes), "segments": words_to_segments(words), "sound_cues": cues,
            "loops_collapsed": removed + sum(p.get("loops_collapsed", 0) for p in parts),
            "windows": [list(w) for w in wins]}
+    out = hinglish.clean_transcript(out)
     Path(a.out).parent.mkdir(parents=True, exist_ok=True)
     Path(a.out).write_text(json.dumps(out, indent=1))
     print(f"{a.out}: {len(shaped)} words, language={lang}, windows={len(wins)}, loops_collapsed={out['loops_collapsed']}"

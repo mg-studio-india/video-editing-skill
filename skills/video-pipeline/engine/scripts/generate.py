@@ -35,6 +35,12 @@ import subprocess
 import sys
 import time
 import urllib.request
+from pathlib import Path
+
+HERE = Path(__file__).resolve().parent
+sys.path.insert(0, str(HERE))
+import runtime
+runtime.ensure_project_venv()
 
 DEFAULTS = {
     "VEO_MODEL": "veo-3.1-generate-preview",

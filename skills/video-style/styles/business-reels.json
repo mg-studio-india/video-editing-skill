@@ -40,9 +40,9 @@
       }
     },
     "scripts": [
-      "latin",
-      "devanagari"
-    ]
+      "latin"
+    ],
+    "caption_script": "roman-hinglish"
   },
   "text_stroke": 0.03,
   "captions": {

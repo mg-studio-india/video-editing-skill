@@ -59,8 +59,8 @@ def tok(style: dict, *path, default=None):
 
 
 def family_stack(style: dict) -> str:
-    """The display family plus an optional fallback family (a second script), written to sit inside one pair of
-    quotes in the builders' "font-family:'%s',sans-serif": Inter then Noto Sans Devanagari renders Hindi in Noto."""
+    """The display family plus an optional fallback family, written to sit inside one pair of
+    quotes in the builders' "font-family:'%s',sans-serif": Hindi is always rendered in Roman Hinglish."""
     fams = [tok(style, "fonts", "display", "family")]
     fb = ((style.get("fonts") or {}).get("fallback") or {}).get("family")
     if fb:
@@ -95,6 +95,8 @@ def outline(style: dict, size_px: int) -> str:
 
 
 def words_html(text: str, em: list[int], cls: str, bid: str, attrs: str = "") -> str:
+    import hinglish
+    text = hinglish.to_hinglish(text)
     out = []
     for i, w in enumerate(text.split(" ")):
         out.append('<span class="%s%s" id="%s-w%d"%s>%s</span>' % (cls, " em" if i in em else "", bid, i, attrs, esc(w)))
@@ -176,11 +178,12 @@ def b_cards(b, ctx):
            % (bid, left, top, cw, int(fs * 0.35), bid, fam, int(fs * 0.7), tok(st, "cards", "title_color") or accent, outline(st, int(fs * 0.7)), bid, int(fs * 0.5), int(fs * 0.45),
               int(fs * 0.6), bg, brd, rad, bid, int(fs * 1.2), int(fs * 1.2), accent, fam, int(fs * 0.62), bid, fam, fs,
               tok(st, "cards", "text")))
+    import hinglish
     rows = []
     for i, it in enumerate(b["items"]):
         mk = str(i + 1) if marker == "num" else ("&#10003;" if marker == "check" else "")
-        rows.append('<div class="card" id="%s-c%d"><div class="mk">%s</div><div class="tx">%s</div></div>' % (bid, i, mk, esc(it[0])))
-    title = '<div class="ttl" id="%s-t">%s</div>' % (bid, esc(b["title"])) if b.get("title") else ""
+        rows.append('<div class="card" id="%s-c%d"><div class="mk">%s</div><div class="tx">%s</div></div>' % (bid, i, mk, esc(hinglish.to_hinglish(it[0]))))
+    title = '<div class="ttl" id="%s-t">%s</div>' % (bid, esc(hinglish.to_hinglish(b["title"]))) if b.get("title") else ""
     inner = '<div class="cards-%s" id="%s">%s%s</div>' % (bid, bid, title, "".join(rows))
     js = []
     if title:
@@ -359,7 +362,7 @@ def resolve_font(path: str, style_dir: str) -> str:
 # Idea adapted from HyperFrames' talking-head-recut (itself adapted from vtake-skills, MIT): the speaker's own video moves
 # to make room - stacked above a card, a picture-in-picture corner window, hidden for a pure-graphic moment - instead of
 # graphics only ever covering it. Moved with x / y / width / height / opacity, HyperFrames' seek-safe properties.
-LAYOUT_MODES = ("full", "stack", "pip", "hide")
+LAYOUT_MODES = ("full", "stack", "split", "pip", "hide")
 LAYOUT_DUR = 0.6
 
 
@@ -369,7 +372,7 @@ def layout_box(mode: str, W: int, H: int, corner: str | None = None, size: float
     portrait = H > W
     if mode in ("full", "hide"):
         return 0, 0, W, H
-    if mode == "stack":
+    if mode in ("stack", "split"):
         return 0, 0, W, int(round(H * (0.44 if portrait else 0.52)))
     if mode == "pip":
         w = int(round(W * (size or (0.32 if portrait else 0.22))))

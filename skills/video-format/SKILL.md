@@ -5,7 +5,9 @@ description: Lays out visual scenes with HyperFrames Catalog as the first-class 
 
 # Format & Layout (HyperFrames Catalog-First & Composition Architecture)
 
-Never write arbitrary custom CSS boxes or amateur developer containers. **The HyperFrames Catalog (~450 production-grade blocks and components) combined with the 225-Style Taxonomy (`video-editing-styles-master.md`) forms the first-class spatial foundation for all on-screen graphics.**
+> **Styles:** Layout styles #1-20 (`references/styles-layout-composition.md`) and card / list styles #111-144 (`references/styles-cards-lists.md`) of the 225-style catalog.
+
+Never write arbitrary custom CSS boxes or amateur developer containers. **The HyperFrames Catalog (~450 production-grade blocks and components) combined with the 225-Style Taxonomy (`video-plan-storyboard/references/style-catalog.md`) forms the first-class spatial foundation for all on-screen graphics.**
 
 Formatting is not just dumping random cards onto raw footage. It is the deliberate spatial architecture of canvas framing, background containers, typography hierarchies, safe-zone margins, and motion graphics.
 
@@ -16,21 +18,43 @@ W="videos/<project>"
 
 ---
 
-## 1. Context-Driven Layout Formats (No Generic Defaults)
+## 1. Context-Driven Layout Formats & Multi-Layout Shifts
 
-The layout must match the video format selected by the user at Gate 0.5:
+The default editing style must be **creative, innovative, and trendy** (Vox, MagnatesMedia, top-tier creator caliber). Do not lock the entire video into a static full-screen talking head. Instead, dynamically shift A-roll layouts across narrative beats:
 
-| Layout Format | Composition Architecture | Safe Zones & Placement |
+| Layout Format | Composition Architecture | Best-Fit Content & Empty Space Role |
 |---|---|---|
-| **Clean Authority Talking-Head** | Full-bleed creator footage (resolution probed dynamically from raw video), subtle cinematic grade, dynamic lower-third tags. | Headroom kept clean of clutter. Captions positioned dynamically below the speaker's detected chin line. |
-| **Stacked Split-Screen** | Split seam dynamically calculated to frame speaker head/torso comfortably while giving demo/b-roll optimal area. 2–3px clean divider seam. | Speaker pane centered on detected face. Demo pane houses product walkthrough or try-on visuals. |
-| **Framed Branded Container** | Creator footage inside rounded container floating over textured or animated branded backdrop. | Proportional margins (~4–6% of canvas width). Side progress rail or adaptive lower card drawer. |
-| **Picture-in-Picture (PiP)** | Full-frame b-roll/screen recording with presenter facecam squircle in corner. | Inset window dynamically placed to dodge active UI regions in the background recording. |
-| **Step-by-Step Breakdown** | Full-bleed footage with animated chapter cards entering in clear visual zones, accompanied by an animated progress counter. | Captions dynamically shift to clear active graphic cards. No cards on speaker's forehead. |
+| **Full-Bleed Presenter** | Full camera shot with subtle cinematic grade and responsive captions. | Opening emotional hook, bold statements, punchy sign-offs. |
+| **Corner Picture-in-Picture (PiP)** | Presenter video minimizes to an elegant squircle or circle in a corner (~28-34% width), clearing platform UI. | **Opens 70% of canvas** for researcher articles, 3D mockups, animated financial charts, and evidence cards. |
+| **Stacked / Side Split-Screen** | Presenter occupies 35-45% of canvas (top or side); clean 2-3px styled divider. | Dedicated data/media pane displaying comparison metrics, website tours, news highlights, or charts. |
+| **Speaker Cutout / Matte on Styled Canvas** | Speaker cutout/silhouette extracted and placed over a dynamic graphical, neutral dark (#0f172a, #111116), clean white, or cinematic gradient backdrop. | Premium documentary feel: text, animated charts, and 3D icons float behind and around the speaker with physical depth. |
+| **Full Graphic & Research Canvas** | A-roll momentarily hides or tucks away; full graphic canvas takes center stage. | High-impact data reveals, document leaks, animated map routes, or complex infographic comparisons. |
 
 ---
 
-## 2. Dynamic Headroom & Spatial Guardrails
+## 2. Empty Space Utilization & Canvas Elements
+
+When the A-roll is minimized or shifted into split/PiP view, the newly opened canvas space must be actively and creatively populated:
+
+1. **Researcher Articles & News Clippings:**
+   - Real or simulated newspaper/publication articles with authentic mastheads.
+   - An animated fluorescent yellow, cyan, or gold marker pen sweeps across the headline or key quote (`width: 0% -> 100%`, `duration: 0.4s`).
+   - Slight 3D rotation (`rotateZ: -1.5deg`, `perspective: 1000px`) and realistic drop shadow.
+2. **Kinetic Data Charts & Visualizations:**
+   - Animated SVG / HTML bar charts comparing figures (e.g. BYD 40 Lakh vs Mahindra 50,000).
+   - Animated line growth curves showing GDP expansion, revenue jumps, or subscriber trajectories.
+   - Live counting metric pills (`+1.7%`, `27 LAKH JOBS`, `₹10,000 CR`) with spring pop entrances.
+3. **3D Objects, Device Mockups & Depth Cards:**
+   - Isometric cards tilted in 3D space (`transform: perspective(1000px) rotateY(-18deg) rotateX(8deg)`).
+   - Floating smartphone or laptop frames displaying tweets, web pages, or social media handles.
+   - Layered depth with blurred ambient glows and directional lighting.
+4. **Natural Physics in Motion Graphics:**
+   - Elements enter with momentum and settle with damped harmonic springs (`power3.out`, `back.out(1.4)`).
+   - Zero rigid or cartoonish linear motion.
+
+---
+
+## 3. Dynamic Headroom & Spatial Guardrails
 
 1. **Strict Clean Headroom Rule:**
    - **Never** place headline bars, floating checklist pills, or topic badges directly over the creator's forehead, hair, or ceiling space.
@@ -46,7 +70,7 @@ The layout must match the video format selected by the user at Gate 0.5:
 
 ---
 
-## 3. Catalog First Execution Protocol
+## 4. Catalog First Execution Protocol
 
 Before writing any HTML or CSS:
 1. **Search the Catalog:**
@@ -64,15 +88,17 @@ Before writing any HTML or CSS:
 
 ---
 
-## 4. Catalog Mapping by Use Case
+## 5. Catalog Mapping by Use Case
 
 | Visual Intent | HyperFrames Catalog Query | Verified Catalog Components |
 |---|---|---|
+| **Researcher Articles & News** | `query "newspaper article headline clip"` | `article-highlight-zoom`, `newspaper-headline-rip`, `tweet-card-pop`, `browser-mockup-scroll` |
+| **Kinetic Data Charts & Stats** | `query "bar chart animated stat counter"` | `bar-chart-animated`, `growth-curve-draw`, `stat-callout-counter`, `counter-flip` |
+| **3D & Isometric Depth Cards** | `query "isometric 3d card tilt mockup"` | `isometric-card-3d`, `floating-mockup-tilt`, `coin-spin-3d`, `split-tilt-cards` |
+| **Split-Screen & Comparison** | `query "split screen comparison"` | `comparison-split`, `before-after-wipe`, `split-tilt-cards` |
 | **Clean Lower Third & Header** | `query "lower third headline banner"` | `lt-minimal-glow`, `lt-headline-banner`, `headline-ticker` |
 | **Product / Feature Specs Card** | `query "product card feature showcase"` | `mk-specs-list`, `feature-pill-card`, `grid-card-assemble` |
-| **Metric Badge & Stat Counter** | `query "metric badge callout pill"` | `stat-callout-counter`, `badge-pill-pill`, `counter-flip` |
 | **Optical Transition & Light Leak**| `query "flash transition light leak"` | `flash-through-white`, `transitions-light`, `editorial-flash-overlay` |
-| **Split-Screen & Comparison** | `query "split screen comparison"` | `comparison-split`, `before-after-wipe`, `split-tilt-cards` |
 | **Paper / Texture Accents** | `query "paper rip collage texture"` | `torn-paper-rip`, `paper-collage-reveal`, `marker-checklist-card` |
 
 ---

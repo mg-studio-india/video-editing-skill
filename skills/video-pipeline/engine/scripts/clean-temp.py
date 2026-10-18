@@ -6,16 +6,18 @@ preserving essential deliverables, master compositions, and project state.
 Usage:
   python3 clean-temp.py videos/<project> [--dry-run] [--verbose]
 """
-import argparse, os, glob, shutil
+import argparse, os, glob, shutil, sys
+
+HERE = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, HERE)
+import runtime
+runtime.ensure_project_venv()
 
 TRANSIENT_PATTERNS = [
-    # Transient audio files
+    # Transient scratch files (scratch audio, intermediate auto-editor, unfinished renders)
     "audio-raw.wav",
-    "audio.wav",
-    "audio-clean.wav",
     "tmp_*.wav",
     "raw/*_temp.*",
-    "raw/*_enhanced.m4a",
     "raw/*_muted.mp4",
     "raw/*_combined.mp4",
     # Auto-editor and candidate dumps

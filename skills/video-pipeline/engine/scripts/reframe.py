@@ -27,8 +27,12 @@ import argparse
 import glob
 import json
 import os
-import subprocess
 import sys
+
+HERE = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, HERE)
+import runtime
+runtime.ensure_project_venv()
 
 import numpy as np
 

@@ -22,7 +22,12 @@ import subprocess
 import sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, HERE)
+import runtime
+runtime.ensure_project_venv()
+
 LEAD, TAIL = 0.08, 0.15
+
 
 
 def _words_mod():
@@ -80,7 +85,7 @@ def main() -> None:
     cl = os.path.join(a.out_dir, "cut-list.json")
     json.dump({"source": os.path.abspath(a.flat), "source_duration": dur, "kept_seconds": total, "kept": kept},
               open(cl, "w"), indent=1)
-    r = subprocess.run([sys.executable, os.path.join(HERE, "apply-cut.py"), "--input", a.flat, "--cut-list", cl,
+    r = subprocess.run([runtime.get_project_venv_python(), os.path.join(HERE, "apply-cut.py"), "--input", a.flat, "--cut-list", cl,
                         "--out", os.path.join(a.out_dir, "public", "input-video.mp4")], capture_output=True, text=True)
     print(r.stdout.strip())
     if r.returncode != 0:

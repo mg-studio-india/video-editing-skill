@@ -28,6 +28,12 @@ import os
 import re
 import sys
 
+HERE = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, HERE)
+import runtime
+runtime.ensure_project_venv()
+import hinglish
+
 FILLERS = {"um", "uh", "uhm", "umm", "uhh", "er", "erm", "ah", "hmm", "mm", "mhm"}
 SENTENCE_END = re.compile(r"[.!?…।]$")          # includes the Devanagari danda
 PAUSE_BREAK = 0.30
@@ -45,7 +51,7 @@ def clean(text: str, keep_punct: bool = False) -> str:
 def load_words(transcript: str) -> list[dict]:
     t = json.load(open(transcript))
     words = t["words"] if isinstance(t, dict) else t
-    return [{"text": (w.get("text") or w.get("w") or "").strip(), "start": float(w["start"]), "end": float(w["end"])}
+    return [{"text": hinglish.to_hinglish((w.get("text") or w.get("w") or "").strip()), "start": float(w["start"]), "end": float(w["end"])}
             for w in words if (w.get("text") or w.get("w") or "").strip()]
 
 

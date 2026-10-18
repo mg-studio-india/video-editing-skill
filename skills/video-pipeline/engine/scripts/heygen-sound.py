@@ -31,6 +31,10 @@ import sys
 import tempfile
 
 HERE = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, HERE)
+import runtime
+runtime.ensure_project_venv()
+
 
 
 def find_sound_palette() -> str | None:
@@ -40,8 +44,8 @@ def find_sound_palette() -> str | None:
         os.path.join(os.getcwd(), "sound-palette"),
         os.path.join(os.environ.get("VIDEO_SKILLS", ""), "sound-palette") if os.environ.get("VIDEO_SKILLS") else "",
         os.path.abspath(os.path.join(HERE, "../../../..", "sound-palette")),
-        os.path.abspath(os.path.join(HERE, "../../..", "sound-palette")),
-        os.path.expanduser("~/lmc/video-editing-skill/sound-palette"),
+        os.path.expanduser("~/.config/video-skills/sound-palette"),
+        os.path.expanduser("~/.video-skills/engine/sound-palette"),
         os.path.expanduser("~/.agents/skills/sound-palette")
     ]
     for c in cands:
@@ -132,7 +136,7 @@ def resolve_from_palette(sfx_list: list[dict], public_dir: str) -> tuple[list[di
             if os.path.isfile(src_audio):
                 dst_rel = "sfx/%s.wav" % slug(req_name)
                 dst_path = os.path.join(public_dir, dst_rel)
-                p = subprocess.run([sys.executable, os.path.join(HERE, "sfx-prep.py"), src_audio, dst_path, "--max", "3.0"],
+                p = subprocess.run([runtime.get_project_venv_python(), os.path.join(HERE, "sfx-prep.py"), src_audio, dst_path, "--max", "3.0"],
                                    capture_output=True, text=True)
                 if p.returncode == 0:
                     dur = round(duration(dst_path), 3)
@@ -252,7 +256,7 @@ def main() -> None:
     for s in meta.get("sfx", []):
         src = os.path.join(work, s["file"])
         dst_rel = "sfx/%s.wav" % slug(s["name"])
-        p = subprocess.run([sys.executable, os.path.join(HERE, "sfx-prep.py"), src, os.path.join(a.public, dst_rel), "--max", "2.5"],
+        p = subprocess.run([runtime.get_project_venv_python(), os.path.join(HERE, "sfx-prep.py"), src, os.path.join(a.public, dst_rel), "--max", "2.5"],
                            capture_output=True, text=True)
         if p.returncode != 0:
             print("  %s: could not prepare (%s); skipped" % (s["name"], p.stderr.strip()[-200:]))

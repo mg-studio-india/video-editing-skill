@@ -39,15 +39,15 @@ This is a proposed production preset informed by publicly visible speaker-led sa
 
 Use these as reusable *content structures*, not as claims that any account always uses them.
 
-### Template A — founder/podcast moment (15–45 seconds)
+### Template A — founder/podcast moment (15-45 seconds)
 
-1. Hook (0–2s): strongest complete statement, not an out-of-context fragment.
-2. Context (2–6s): identify the speaker/topic if unclear.
+1. Hook (0-2s): strongest complete statement, not an out-of-context fragment.
+2. Context (2-6s): identify the speaker/topic if unclear.
 3. Story/argument: retain the cause-and-effect chain; remove dead time, not essential nuance.
 4. Support: one or two relevant captions or real supporting visuals.
 5. Resolution: preserve the full point; avoid an arbitrary end-card interrupting the sentence.
 
-### Template B — business/market case study (30–90 seconds, or longer if needed)
+### Template B — business/market case study (30-90 seconds, or longer if needed)
 
 1. Claim/question.
 2. Entity + timeframe.
@@ -58,7 +58,7 @@ Use these as reusable *content structures*, not as claims that any account alway
 
 Do not force a 90-second maximum if the information requires longer and the user has not specified a runtime. The accessible Markets with Jayant example was 144.4 seconds, so longer explanation is possible in this reference set.
 
-### Template C — D2C/marketing education (15–45 seconds)
+### Template C — D2C/marketing education (15-45 seconds)
 
 1. Name the problem/outcome.
 2. State the relevant framework in plain language.

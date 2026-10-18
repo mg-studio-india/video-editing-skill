@@ -99,8 +99,14 @@ Icons (pipeline, world, deck, pills): doc browser bolt chat money check user cod
 Camera ops: set t scale | creep t0 t1 scale (power1.inOut) | punch t scale (0.32 s power2.out) | release t dur (to 1.0) | reveal t (1.10 to 1.00 as a card enters).
 Positions: tl = left:70 top:96 (desk framing, clears the mic), tr = right:70 top:96.
 """
-import argparse, json, os, shutil, glob, math, struct
+import argparse, json, os, shutil, glob, math, struct, sys
 from html import escape as _esc
+
+HERE = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, HERE)
+import runtime
+runtime.ensure_project_venv()
+import hinglish
 
 hesc = lambda s: _esc(s, quote=False)
 

@@ -228,7 +228,7 @@ All brands and tools identified in the transcript with vector assets saved to `$
 ---
 
 ## 4. Recommended Visual Layout & Master Style Direction
-Directly mapped to the 225-Style Taxonomy in `video-editing-styles-master.md`:
+Directly mapped to the 225-Style Taxonomy in `video-plan-storyboard/references/style-catalog.md`:
 
 - **Primary Layout:** **Style <ID>: <Style Name>** (e.g. *Style 03: Stacked Split-Screen*)
   - *Canvas Framing:* <Framing details>

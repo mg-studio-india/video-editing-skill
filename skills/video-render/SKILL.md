@@ -5,6 +5,8 @@ description: Renders a checked composition to the delivery file - HyperFrames re
 
 # render
 
+> **Styles:** Canvas sizes and safe zones: `video-take-geometry/references/canvas-safe-zones.md`.
+
 Rendering is the slow, expensive step, so nothing reaches it unchecked, and nothing leaves it unverified.
 
 ```bash
@@ -20,15 +22,19 @@ ENG="${VIDEO_ENGINE:-$HOME/.agents/skills/video-pipeline/engine}"; S="$ENG/scrip
 
 ## One command
 
+> [!IMPORTANT]
+> **Virtual Environment (STRICT)**: ALWAYS run `render.py` using the project's virtual environment (`"$PROJECT/.venv/bin/python3"`). Never invoke system python.
+
 ```bash
-python3 "$S/render.py" --public "$W/hyperframes" --out "$W/processed/<project>-v<N>.mp4" \
-  --resolution portrait --audio-preset shorts [--music "$W/music/bed.wav"] [--gpu]
+"$PROJECT/.venv/bin/python3" "$S/render.py" --public "$W/hyperframes" --out "$W/processed/<project>-v<N>.mp4" \
+  --resolution portrait --audio-preset shorts [--denoise auto|strong|neural|off] [--music "$W/music/bed.wav"] [--gpu]
 ```
 
 It renders with HyperFrames, adds the BT.709 tags losslessly, masters the audio (`audio-chain.py`: loudness to the
-preset, true-peak limit, ducked music), and runs `verify-render.py` (resolution, tags, bitrate, duration against the
+preset, true-peak limit, adaptive/neural noise filtering, ducked music), and runs `verify-render.py` (resolution, tags, bitrate, duration against the
 composition, A/V offset, black frames and one-frame flashes) into `$W/processed/<project>-v<N>-VERIFY.md`. Exit 1 means do not
-deliver. `--raw FILE` finishes a render made elsewhere.
+deliver. `--raw FILE` finishes a render made elsewhere. `--denoise auto` (default) automatically applies adaptive multi-band
+denoising (`afftdn` + `arnndn`) when background noise exceeds -50 dBFS; `--denoise neural` engages DeepFilterNet3 for car/road noise.
 
 | Platform | `--resolution` | Bitrate | `--audio-preset` |
 |---|---|---|---|

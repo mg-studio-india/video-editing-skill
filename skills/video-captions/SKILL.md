@@ -5,12 +5,19 @@ description: Generates high-retention kinetic captions with typographical hierar
 
 # Captions (Natural Flow & Kinetic Typographical Hierarchy)
 
+> **Styles:** Caption & typography styles #21-45 of the 225-style catalog: `references/styles-captions-typography.md`.
+
 Captions succeed when they read like natural human speech while commanding visual focus. Choppy single-word fragments (like an isolated "ya") or chaotic word-by-word bouncing distract viewers and look amateur. Professional reels utilize **natural phrase grouping, conversational cadence, zero orphan words, and smooth highlighting**.
 
 ```bash
 ENG="${VIDEO_ENGINE:-$HOME/.agents/skills/video-pipeline/engine}"
 W="videos/<project>"
 ```
+
+> [!IMPORTANT]
+> **Virtual Environment (STRICT)**: ALWAYS run caption tools using the project's virtual environment (`"$PROJECT/.venv/bin/python3"`). Never invoke system python.
+> **Zero Devanagari Rule (STRICT)**: Captions must NEVER render in Devanagari script. All Hindi and Hinglish speech must ALWAYS be rendered in Roman Hinglish script. Standard display fonts (Poppins, Inter, Anton) are used.
+
 
 ---
 
@@ -20,7 +27,7 @@ Phrase grouping is **calculated dynamically from speech velocity (WPM), acoustic
 
 1. **Adaptive Phrase Grouping:**
    - **Fast-Paced Hook / High-Tempo Reel (175+ WPM):** Dynamically groups **4 to 6 words** (**28 to 36 characters**) so captions maintain readability without strobe-like flickering.
-   - **Conversational Tempo (135–175 WPM):** Dynamically groups **3 to 5 words** (**22 to 30 characters**).
+   - **Conversational Tempo (135-175 WPM):** Dynamically groups **3 to 5 words** (**22 to 30 characters**).
    - **Deliberate / Punchy Delivery (<135 WPM):** Dynamically groups **2 to 4 words** (**14 to 22 characters**) for rhythmic punch.
    - **Dynamic Pause Detection:** Pause thresholds are computed from the natural pause distribution in the transcript rather than a fixed arbitrary number.
 2. **Zero Orphan Single Words (Strict Guardrail):**
@@ -80,12 +87,28 @@ Caption positioning is **calculated dynamically from raw video frames and speake
 
 ---
 
-## 5. Interactive User Verification Gate (Gate 4)
+---
+
+## 5. Kinetic Caption Standard (`weight-shift` or `caption-highlight` with Punch Words)
+
+The default caption style is **strictly either `weight-shift` or `caption-highlight` with punch word(s) emphasis**:
+
+| Video Pace & Energy | Default Kinetic Style | Typographical & Motion Behavior |
+|---|---|---|
+| **Conversational / Authority Pace (<170 WPM)** | **`weight-shift` + Punch Word Pop** | Inactive words remain clean at font-weight 400; as the speaker speaks each word, the active word dynamically shifts to **Black 900**, with key claims/numbers receiving a spring scale pop (`0.90 -> 1.06 -> 1.00`). |
+| **High Energy / Rapid Hook (170+ WPM)** | **`caption-highlight` + Badged Pills** | Natural 4-6 word clauses; a fluid fluorescent highlight sweep glides across the active word in real time; punch words/numbers are encased in vibrant rounded pills (`#ffd700`, `#00c3ff`, `#00e676`). |
+| **Docu-Style / Investigative Teardown** | **`weight-shift` (Editorial Dual-Font)** | Grotesque body text paired with expressive serif/display for power words; words dynamically scale and gain weight with zero awkward text reflow. |
+
+The editor proactively orchestrates this standard automatically, with zero user micromanagement required.
+
+---
+
+## 6. Interactive User Verification Gate (Gate 5)
 
 Before batch-generating captions across the entire video:
 1. Present a **live visual sample phrase** (e.g., a 5-word sentence) demonstrating:
-   - Primary and punch font pairings
-   - Color hierarchy (inactive text, active highlight, punch badge)
-   - Flow mode (`phrase`, `karaoke`, or `pop`)
-2. Ask for user confirmation:
-   > *"Here is how your captions will flow naturally across the video: [sample preview]. Does this style and pace work for you, or would you prefer a different highlight color/font pairing?"*
+   - Primary and punch font pairings (e.g. Poppins Black 900 / Inter Bold)
+   - Color hierarchy (inactive text, active highlight, punch badge pill)
+   - Flow mode (`weight-shift` or `caption-highlight`)
+2. Confirm with user before proceeding to Gate 6:
+   > *"Here is how your captions will flow naturally across the video: [sample preview]. Does this weight-shift / highlight flow and pace look great, or would you like to adjust font weight or badge accents?"*

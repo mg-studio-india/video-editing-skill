@@ -1,6 +1,6 @@
 ---
 name: video-review-gate
-description: Final quality gate on the rendered deliverable - checks structure, speech alignment, loudness, and frame sheets. Verifies CLI check report and renders, keeping composition fully editable via CLI tools, and automatically purges transient temp files. Owns Gate 5.
+description: Final quality gate on the rendered deliverable - checks structure, speech alignment, loudness, and frame sheets. Verifies CLI check report and renders, keeping composition fully editable via CLI tools, and automatically purges transient temp files. Owns Gate 6.
 ---
 
 # Review Gate & Delivery (Final Quality Assurance)
@@ -15,11 +15,12 @@ F="$W/processed/<project>-v<N>.mp4"
 
 ---
 
-## 1. Automated Verification Checks
+> [!IMPORTANT]
+> **Virtual Environment (STRICT)**: ALWAYS execute scripts using the project's virtual environment (`"$PROJECT/.venv/bin/python3"`). Never invoke system python.
 
 Run verification on the rendered MP4 file:
 ```bash
-python3 "$ENG/scripts/review.py" --final "$F" --preset shorts --res 1080x1920 \
+"$PROJECT/.venv/bin/python3" "$ENG/scripts/review.py" --final "$F" --preset shorts --res 1080x1920 \
   --storyboard "$W/storyboard.json" --transcript "$W/transcript.json"
 ```
 
@@ -49,6 +50,6 @@ Keeps the project 100% editable, composable, and verifiable via command line.
 
 Once verification and review are completed successfully and approved, purge all intermediate scratch files and temporary review reports:
 ```bash
-python3 "$ENG/scripts/clean-temp.py" "$W" --clean-reports
+"$PROJECT/.venv/bin/python3" "$ENG/scripts/clean-temp.py" "$W" --clean-reports
 ```
 Purges intermediate WAVs, un-mastered raw renders, auto-editor dumps, verification reports (`*-VERIFY.md`), acoustic audits (`*-audio.json`), review summaries (`*-REVIEW.md`), and review contact sheets (`*-review-sheet.png`), leaving strictly the clean final deliverable (`processed/<project>-v<N>.mp4`) and the editable `hyperframes/` project files.

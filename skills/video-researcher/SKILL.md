@@ -78,19 +78,19 @@ For every entity or tool mentioned, resolve a crisp vector logo:
 
 ### Step 4: Category Intelligence & Trending Video Benchmarks
 Search YouTube Shorts, Instagram Reels, and TikTok for top-performing videos in this exact category:
-- Identify 2–4 top reference videos with high view counts and verifiable audience traction.
+- Identify 2-4 top reference videos with high view counts and verifiable audience traction.
 - Analyze the winning mechanics:
-  - **Hook Structure (First 0.0s – 3.0s):** What hook formula did they use? (Direct confrontation, curiosity loop, proof-first shock).
+  - **Hook Structure (First 0.0s - 3.0s):** What hook formula did they use? (Direct confrontation, curiosity loop, proof-first shock).
   - **Cut Rhythm:** What is their visual change frequency? (e.g. 1.4s per cut in tech SaaS vs 2.2s in business reels).
   - **Sound Cues:** What audio cues sell the edits? (tape stops, whooshes, risers, cash dings).
   - **Layout Patterns:** Are they using stacked split-screen, full-bleed face with floating cards, or screen-plus-facecam?
 *(See `references/category-benchmarks.md` for ready-to-use niche playbooks).*
 
 ### Step 5: Master Style & Motion Graphics Format Strategy
-Map the gathered intelligence to the official **225-Style Taxonomy** (`video-editing-styles-master.md`):
-- **Formulate 3–4 Format Options for the User:** Never assume a default general video editing template. Present 3–4 tailored format options directly aligned with the transcription context (e.g. Clean Authority Talking-Head, Stacked Split-Screen, Fast-Paced Hook Reel, Step-by-Step Breakdown).
+Map the gathered intelligence to the official **225-Style Taxonomy** (`video-plan-storyboard/references/style-catalog.md`):
+- **Formulate 3-4 Format Options for the User:** Never assume a default general video editing template. Present 3-4 tailored format options directly aligned with the transcription context (e.g. Clean Authority Talking-Head, Stacked Split-Screen, Fast-Paced Hook Reel, Step-by-Step Breakdown).
 - **Layout & Composition Style:** e.g., `Style 03: Stacked Split-Screen` (44% speaker top / 56% demo bottom) or `Style 01: Split-Screen` or `Style 04: Picture-in-Picture`.
-- **Clean Headroom Enforcement:** Overlays, cards, and text must sit in the lower third (`y: 0.58 – 0.75`) or dedicated cutaways, NEVER floating over the speaker's forehead.
+- **Clean Headroom Enforcement:** Overlays, cards, and text must sit in the lower third (`y: 0.58 - 0.75`) or dedicated cutaways, NEVER floating over the speaker's forehead.
 - **Color Theme & Mood:** Primary background, card glass, and high-CTR accent colors matching brand standards.
 - **Color Grading Preset:** Recommend a calibrated preset from `grade.py` (`commercial-clean`, `cinematic-warm`, `modern-tech`, `moody-film`, `vibrant-pop`, `neutral-correct`).
 - **Typography Pairing:** Punch headline font (`Poppins Black 900` / `Anton`), accent display font (`Syne 800`), and supporting body.
@@ -126,7 +126,7 @@ Before proceeding to `video-plan-storyboard` (Gate 0.5 Alignment & Gate 1), pres
 1. **Verified Topic Facts:** Confirm all statistics, claims, and entity spellings are accurate.
 2. **Logo Assets:** Show table of resolved and generated logos with preview paths in `$W/assets/logos/`.
 3. **Reference Benchmarks:** Share clickable links to trending videos and review the proposed hook strategy.
-4. **Format Selection:** Present the 3–4 context-derived formats and **ask the user which format they want** (no general editing default).
+4. **Format Selection:** Present the 3-4 context-derived formats and **ask the user which format they want** (no general editing default).
 5. **Asset Inventory & Recording Suggestions:** Highlight available assets vs missing b-roll and ask if the user wants to record more footage or use graphic elements.
 
 > Once the user approves Gate 0 and selects their format, agents proceed to Gate 0.5 Pre-Storyboarding Alignment.

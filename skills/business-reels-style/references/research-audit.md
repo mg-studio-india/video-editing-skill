@@ -83,6 +83,6 @@ To produce an honestly source-verified “top videos from every profile” editi
 
 1. For each account, gather a defined candidate set of Reels and capture the exact post URL, posted date, view/play count, likes/comments if public, and capture date.
 2. State ranking scope and sort only by verified views/plays (or a clearly disclosed alternative when views are unavailable).
-3. Play the selected Reels and save short time-coded observations or screenshots for the opening, 2–3 representative middle beats, key reveal, and ending.
+3. Play the selected Reels and save short time-coded observations or screenshots for the opening, 2-3 representative middle beats, key reveal, and ending.
 4. Record actual frame dimensions, measured text location, sampled colors, typeface candidates, average shot duration, transition types, music/SFX behavior, and subtitle style. Mark exact values as approximations where video compression or font identification prevents certainty.
 5. Update the account-specific sections in `SKILL.md` only after this evidence exists. Keep this audit with the skill so future edits can distinguish new direct evidence from older assumptions.

@@ -16,6 +16,10 @@ Exit 1 when any check fails.
 import argparse, importlib.util, json, os, subprocess, sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, HERE)
+import runtime
+runtime.ensure_project_venv()
+
 TARGETS = {"youtube": (-14.0, -1.0), "shorts": (-14.0, -1.0), "longform": (-16.0, -1.5), "broadcast": (-23.0, -1.0)}
 OWNERS = [("a cut, a word lost, a pause", "video-cut-audit"), ("what appears when, missing or extra moments", "video-plan-storyboard"),
           ("framing, zoom, crop, face covered", "video-take-geometry"), ("layout, size, overlap, a treatment", "video-format"),
@@ -81,7 +85,7 @@ def main():
     a = ap.parse_args()
     stem = os.path.splitext(a.final)[0]
     rows = []
-    vcmd = [sys.executable, os.path.join(HERE, "verify-render.py"), "--render", a.final, "--out", stem + "-VERIFY.md"]
+    vcmd = [runtime.get_project_venv_python(), os.path.join(HERE, "verify-render.py"), "--render", a.final, "--out", stem + "-VERIFY.md"]
     if a.res:
         vcmd += ["--res", a.res]
     if a.transcript and a.render_words:

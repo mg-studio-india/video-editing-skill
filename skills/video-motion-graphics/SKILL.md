@@ -5,6 +5,8 @@ description: Builds animated elements and tunes physical motion dynamics (spring
 
 # Motion Graphics & Dynamics (HyperFrames Catalog & Physical Kinetics)
 
+> **Styles:** Animation, transition & VFX styles #76-110 of the 225-style catalog: `references/styles-animation-transitions-vfx.md`.
+
 Animations and motion graphics in professional video must obey physical laws: inertia, mass, damping, and momentum. **Static scenes without motion graphics feel dull, while cheap or floaty linear animations ruin perceived production value.**
 
 This skill bridges the 450+ component **HyperFrames Catalog** with custom seek-safe GSAP motion design to create animated counters, lower thirds, progress indicators, product cards, and optical transitions.
@@ -22,7 +24,10 @@ Always query the HyperFrames catalog first (`npx hyperframes catalog --query "<i
 
 | Motion Graphic Element | HyperFrames / GSAP Implementation | Physical Kinetics & Role |
 |---|---|---|
-| **Stat Counter & Metric Badge** | `stat-callout-counter`, `badge-pill-pill` | Counts up with ease `power2.out`, spring pop entrance on number claim. |
+| **Kinetic Data Charts & Graphs** | `bar-chart-animated`, `growth-curve-draw`, `stat-comparison-meter` | Bars scale upward (`scaleY: 0 -> 1`, `transform-origin: bottom`) with snappy momentum; comparison growth curves draw dynamically with SVG path length animation. |
+| **Researcher Article & Media Clippings** | `article-highlight-zoom`, `newspaper-headline-rip`, `tweet-card-pop` | Realistic newspaper/journal mastheads entering with subtle 3D tilt (`rotateZ: -1.5deg`); animated fluorescent yellow/cyan highlighter pen sweeps across the key quote (`width: 0% -> 100%`, 0.4s). |
+| **3D Isometric Depth Cards & Mockups** | `isometric-card-3d`, `floating-mockup-tilt`, `coin-spin-3d` | Floating 3D perspective (`transform: perspective(1000px) rotateY(-18deg) rotateX(8deg)`), ambient drop shadow, natural spring settle on entry. |
+| **Stat Counter & Metric Badge** | `stat-callout-counter`, `badge-pill-pill` | Counts up with ease `power2.out`, spring pop entrance on number claim (`+1.7%`, `27 LAKH`, `₹10,000 CR`). |
 | **Clean Lower Third & Topic Pill** | `lt-minimal-glow`, `lt-headline-banner` | Smooth 0.24s slide-in from left with 4px settle; anchors topic without covering face. |
 | **Specs & Feature Cards** | `mk-specs-list`, `feature-pill-card` | Staggered cascade (80ms delay) from lower third (`y: 35px -> 0px`). |
 | **Progress Indicator Bar** | Top or bottom thin progress line (2px) | Steady seek-safe timeline scrub tracking reel duration. |
@@ -38,10 +43,10 @@ Every animated element must adhere to these kinetic principles:
 ### A. Damped Harmonic Motion (Spring Physics)
 - Text and cards do not stop abruptly with linear easing or bounce like cartoon rubber balls.
 - Use **critically damped harmonic motion**:
-  - `stiffness`: `160 – 200`
-  - `damping`: `14 – 18`
+  - `stiffness`: `160 - 200`
+  - `damping`: `14 - 18`
   - `mass`: `1.0`
-- In GSAP terms: `power3.out` for snappy entrances, `back.out(1.3 – 1.4)` for subtle physical overshoot (5–8% maximum), and `power2.in` for clean exits.
+- In GSAP terms: `power3.out` for snappy entrances, `back.out(1.3 - 1.4)` for subtle physical overshoot (5-8% maximum), and `power2.in` for clean exits.
 
 ### B. Micro-Scale Pop Dynamics
 - Keyword punch cards and caption badges enter with an explosive scale pop that settles naturally:
@@ -57,11 +62,11 @@ Every animated element must adhere to these kinetic principles:
 
 ### D. Multi-Element Stagger Physics
 - When multiple items enter (e.g. 3 product cards, bullet points, feature specs):
-  - Stagger timing must be **60ms – 90ms** (`stagger: 0.08s`).
+  - Stagger timing must be **60ms - 90ms** (`stagger: 0.08s`).
   - Slower staggers (>150ms) feel sluggish; faster staggers (<40ms) blur together visually.
 
 ### E. Camera Punch-In Kinetics
-- Camera scale zooms (e.g. `1.08x` or `1.12x`) must snap instantaneously on the acoustic onset of the emphasized word (within 0.08s – 0.12s), settling with zero float.
+- Camera scale zooms (e.g. `1.08x` or `1.12x`) must snap instantaneously on the acoustic onset of the emphasized word (within 0.08s - 0.12s), settling with zero float.
 - Avoid slow, floaty zooms during fast-paced reels; punch-ins must feel like a hard lens switch or snap zoom.
 
 ---

@@ -18,13 +18,20 @@ import re
 import sys
 import tempfile
 from pathlib import Path
-
 import config
-from runtime import ToolError, fmt_time, log, parse_time, run, tail
+import hinglish
+from runtime import ToolError, ensure_project_venv, fmt_time, log, parse_time, run, tail
+
+ensure_project_venv()
 
 NON_SPEECH_RE = re.compile(r"^[\[\(\*♪].*[\]\)\*♪]$")
 IGNORED_CUES = {"blank_audio", "silence", "no speech", "inaudible"}
-OPTIONAL_FLAGS = {"-np": 0, "--dtw": 1, "-t": 1, "--prompt": 1}  # flag -> number of values
+OPTIONAL_FLAGS = {"-np": 0, "--dtw": 1, "-t": 1, "--prompt": 1, "--carry-initial-prompt": 0}  # flag -> number of values
+
+DEFAULT_HINGLISH_PROMPT = (
+    "Namaste dosto. Aaj ke is video mein hum baat karenge business, startup aur market ke baare mein. "
+    "Kya aapko lagta hai ki yeh sahi hai ya galat?"
+)
 
 
 # ---------------------------------------------------------------- audio extraction
@@ -47,14 +54,30 @@ def extract_wav(video: str, out_wav: Path, start: float | None = None,
 # ---------------------------------------------------------------- running whisper-cli
 def build_command(binary: Path, model: Path, wav: Path, out_prefix: Path,
                   cfg: dict[str, str]) -> list[str]:
+    raw_lang = (cfg.get("WATCH_WHISPER_LANG") or "auto").strip().lower()
+    # When transcribing Hindi/Hinglish speech, configuring Whisper to decode with the English token space ('-l', 'en')
+    # and a conversational Hinglish prompt natively instructs Whisper to output spoken Hindi directly
+    # in Latin alphabet (Hinglish). This eliminates Devanagari output directly at the Whisper decoder level.
+    is_hinglish = raw_lang in ("hi", "hindi", "hinglish", "hi-latn") or cfg.get("WATCH_WHISPER_SCRIPT") == "hinglish"
+    whisper_lang = "en" if is_hinglish else raw_lang
+
     cmd = [str(binary), "-m", str(model), "-f", str(wav), "-of", str(out_prefix),
-           "-oj", "-ml", "1", "-sow", "-l", cfg.get("WATCH_WHISPER_LANG") or "auto", "-np"]
+           "-oj", "-ml", "1", "-sow", "-l", whisper_lang, "-np"]
     threads = cfg.get("WATCH_WHISPER_THREADS") or str(min(8, os.cpu_count() or 4))
     cmd += ["-t", threads]
     if cfg.get("WATCH_WHISPER_DTW"):
         cmd += ["--dtw", cfg["WATCH_WHISPER_DTW"]]
-    if cfg.get("WATCH_WHISPER_PROMPT"):
-        cmd += ["--prompt", cfg["WATCH_WHISPER_PROMPT"]]
+
+    prompt = cfg.get("WATCH_WHISPER_PROMPT") or ""
+    if is_hinglish:
+        cmd += ["--carry-initial-prompt"]
+        if not prompt:
+            prompt = DEFAULT_HINGLISH_PROMPT
+        elif "namaste" not in prompt.lower() and "baat karenge" not in prompt.lower():
+            prompt = (DEFAULT_HINGLISH_PROMPT + " " + prompt).strip()
+
+    if prompt:
+        cmd += ["--prompt", prompt]
     return cmd
 
 
@@ -108,14 +131,16 @@ def parse_whisper_json(data: dict, offset: float = 0.0) -> dict:
                 cur = None
             label = text.strip("[]()*♪ ").strip()
             if label.lower() not in IGNORED_CUES and label:
-                cues.append({"text": label, "start": round(start, 3), "end": round(end, 3)})
+                label_cleaned = hinglish.to_hinglish(label)
+                cues.append({"text": label_cleaned, "start": round(start, 3), "end": round(end, 3)})
             continue
+        text_clean = hinglish.to_hinglish(text)
         if raw.startswith(" ") or cur is None:
             if cur:
                 words.append(cur)
-            cur = {"w": text, "start": start, "end": end}
+            cur = {"w": text_clean, "start": start, "end": end}
         else:                          # punctuation / word-piece continuing the previous word
-            cur["w"] += text
+            cur["w"] += text_clean
             cur["end"] = max(cur["end"], end)
     if cur:
         words.append(cur)
@@ -127,6 +152,9 @@ def parse_whisper_json(data: dict, offset: float = 0.0) -> dict:
             w["end"] = max(w["start"] + 0.02, words[i + 1]["start"])
     for w in words:
         w["start"], w["end"] = round(w["start"], 3), round(w["end"], 3)
+    words = hinglish.clean_transcript_words(words)
+    if language == "hi":
+        language = "hi-Latn"
     return {"language": language, "words": words, "sound_cues": cues}
 
 
@@ -183,10 +211,12 @@ def words_to_segments(words: list[dict], gap: float = 0.8, max_words: int = 28) 
 
 def build_transcript(parsed: dict, model_name: str, rng: tuple[float | None, float | None]) -> dict:
     words, removed = collapse_loops(parsed["words"])
+    words = hinglish.clean_transcript_words(words)
     return {
         "engine": "whisper.cpp",
         "model": model_name,
         "language": parsed.get("language"),
+        "script": "hinglish",
         "range": [rng[0], rng[1]] if rng != (None, None) else None,
         "words": words,
         "segments": words_to_segments(words),
@@ -231,6 +261,9 @@ def transcribe(video: str, work_dir: Path, start: float | None = None,
             raise ToolError("whisper-cli finished but wrote no JSON; check the build supports -oj.")
         data = json.loads(out_json.read_text(encoding="utf-8", errors="replace"))
     parsed = parse_whisper_json(data, offset=start or 0.0)
+    raw_lang = (cfg.get("WATCH_WHISPER_LANG") or "auto").strip().lower()
+    if raw_lang in ("hi", "hindi", "hinglish", "hi-latn") or parsed.get("language") == "hi":
+        parsed["language"] = "hi-Latn"
     return build_transcript(parsed, model.name, (start, end))
 
 

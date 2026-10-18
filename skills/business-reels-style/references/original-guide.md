@@ -90,7 +90,7 @@ For each requested account:
 
 Use this minimum inspection checklist per Reel:
 
-- First 0–2 seconds: hook format, first shot, on-screen text, speaker framing, sound entrance.
+- First 0-2 seconds: hook format, first shot, on-screen text, speaker framing, sound entrance.
 - Early setup: context and visual hierarchy.
 - Middle: cut rhythm, angle changes, B-roll frequency, caption behavior, callouts, charts, screenshots, and overlays.
 - Reveal or proof: how a number, claim, company, product, or source is shown.
@@ -238,8 +238,8 @@ The account sample is too limited to claim a shared palette across the six refer
 
 No exact font family was verified for the reference samples. Use these as **implementation defaults only**, and test language support:
 
-- Display: a bold sans serif with good condensed/compact options; candidate default is `Inter` 700–800 or a project-installed equivalent.
-- Captions/body: `Inter` 500–700 or the closest installed readable sans serif.
+- Display: a bold sans serif with good condensed/compact options; candidate default is `Inter` 700-800 or a project-installed equivalent.
+- Captions/body: `Inter` 500-700 or the closest installed readable sans serif.
 - Hindi/Devanagari: choose a tested Devanagari-compatible font such as `Noto Sans Devanagari`; confirm glyphs and shaping in the actual render.
 - Numbers: use lining numerals and consistent formatting; never strip units or contextual qualifiers.
 - Avoid using more than two font families within a single deliverable unless a documented brand guide requires it.
@@ -248,8 +248,8 @@ No exact font family was verified for the reference samples. Use these as **impl
 
 The values below are starting values for a 1080 × 1920 vertical canvas, not measured reference-account settings:
 
-- Primary headline: generally 1–4 concise lines; prioritize word wrapping and reading speed over a fixed pixel size.
-- Side margin: start around 80–100 px and test in the actual platform interface.
+- Primary headline: generally 1-4 concise lines; prioritize word wrapping and reading speed over a fixed pixel size.
+- Side margin: start around 80-100 px and test in the actual platform interface.
 - Keep the top 180 px and bottom 300 px relatively free of critical copy until the target platform UI has been checked.
 - Use two main information zones at most in a typical frame: speaker/footage plus captions, or chart plus data label.
 - Never cover eyes, mouth, product identifiers, chart labels, or the key passage in a source document.
@@ -283,13 +283,13 @@ Use these as an initial timing vocabulary and adjust after rendering:
 
 | Element | Starting duration | Behavior | Constraint |
 |---|---:|---|---|
-| Headline reveal | 180–280 ms | opacity plus a short vertical settle | No long title-card intro before the content hook |
-| Keyword emphasis | 100–180 ms | subtle scale/weight/accent change | One key phrase at a time |
-| Callout/label | 220–360 ms | opacity plus short directional movement | Keep the label attached to its referent |
-| Camera punch-in | 220–350 ms | modest crop/scale change | Motivate it with a meaningful assertion or reaction |
-| Chart build | 350–800 ms | sequential reveal or draw | Use only when the data order is meaningful |
-| Scene transition | 150–300 ms when not a hard cut | brief dissolve/slide | Default to a clean hard cut if an effect adds no meaning |
-| End signature | 200–400 ms | simple settle/fade | Keep it brief; do not let it delay the conclusion |
+| Headline reveal | 180-280 ms | opacity plus a short vertical settle | No long title-card intro before the content hook |
+| Keyword emphasis | 100-180 ms | subtle scale/weight/accent change | One key phrase at a time |
+| Callout/label | 220-360 ms | opacity plus short directional movement | Keep the label attached to its referent |
+| Camera punch-in | 220-350 ms | modest crop/scale change | Motivate it with a meaningful assertion or reaction |
+| Chart build | 350-800 ms | sequential reveal or draw | Use only when the data order is meaningful |
+| Scene transition | 150-300 ms when not a hard cut | brief dissolve/slide | Default to a clean hard cut if an effect adds no meaning |
+| End signature | 200-400 ms | simple settle/fade | Keep it brief; do not let it delay the conclusion |
 
 These are not hard requirements. Preserve the cadence and usability of the speech; use the shortest animation that clearly communicates the change.
 
@@ -365,15 +365,15 @@ No consistent music/SFX style could be verified across all six channels from thi
 
 Use these as reusable *content structures*, not as claims that any account always uses them.
 
-### Template A — founder/podcast moment (15–45 seconds)
+### Template A — founder/podcast moment (15-45 seconds)
 
-1. Hook (0–2s): strongest complete statement, not an out-of-context fragment.
-2. Context (2–6s): identify the speaker/topic if unclear.
+1. Hook (0-2s): strongest complete statement, not an out-of-context fragment.
+2. Context (2-6s): identify the speaker/topic if unclear.
 3. Story/argument: retain the cause-and-effect chain; remove dead time, not essential nuance.
 4. Support: one or two relevant captions or real supporting visuals.
 5. Resolution: preserve the full point; avoid an arbitrary end-card interrupting the sentence.
 
-### Template B — business/market case study (30–90 seconds, or longer if needed)
+### Template B — business/market case study (30-90 seconds, or longer if needed)
 
 1. Claim/question.
 2. Entity + timeframe.
@@ -384,7 +384,7 @@ Use these as reusable *content structures*, not as claims that any account alway
 
 Do not force a 90-second maximum if the information requires longer and the user has not specified a runtime. The accessible Markets with Jayant example was 144.4 seconds, so longer explanation is possible in this reference set.
 
-### Template C — D2C/marketing education (15–45 seconds)
+### Template C — D2C/marketing education (15-45 seconds)
 
 1. Name the problem/outcome.
 2. State the relevant framework in plain language.
@@ -424,7 +424,7 @@ Do not force a 90-second maximum if the information requires longer and the user
 
 ### Before delivery
 
-- [ ] Render inspected at 0%, 10–20%, middle, reveal, ending, and any dense text/chart moments.
+- [ ] Render inspected at 0%, 10-20%, middle, reveal, ending, and any dense text/chart moments.
 - [ ] Phone-size readability checked.
 - [ ] Safe zones validated against the target publishing surface.
 - [ ] No clipping, reflow, missing assets, frame flashes, or unsupported fonts.

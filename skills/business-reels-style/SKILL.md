@@ -7,7 +7,7 @@ description: Use when authoring or restyling short-form business, creator, inter
 Vertical reels that communicate a business idea fast, keep the speaker credible, make evidence legible, and hold one
 coherent rhythm. A **composite production style** informed by public traces of six channels (Raj Shamani, Nitin Joshi,
 Markets with Jayant, Bypreneurs, D2C by Nikhil, Marketing with Govind). It is one specific style option within the
-broader 225-Style Taxonomy (`video-editing-styles-master.md`), not a blanket default for every video. Video format and
+broader 225-Style Taxonomy (`video-plan-storyboard/references/style-catalog.md`), not a blanket default for every video. Video format and
 layout must always be determined dynamically in consultation with the user based on transcript context. It is a style
 layer on top of the HyperFrames skills, never a replacement for them.
 
@@ -71,13 +71,13 @@ motion strengthen emphasis but never make ordinary claims look like facts or hid
   cinematic footage was seen in one Bypreneurs-associated image. No neon or other "signature" hue without a brand guide
   or measured frame; replace defaults with sampled or approved colours for a specific creator or client; keep natural
   skin tones.
-- **Type (defaults):** bold sans (Inter 700-800 or installed equivalent) for display; Inter 500-700 for captions; a
-  tested Devanagari font (Noto Sans Devanagari) for Hindi, checked in the actual render; lining numerals, units and
-  qualifiers kept; at most two families.
+- **Type (defaults):** bold sans (Inter 700-800 or installed equivalent) for display; Inter 500-700 for captions; all Hindi and code-switched speech must ALWAYS be rendered in Roman script (Hinglish), never Devanagari script; lining numerals, units and qualifiers kept; at most two families.
 - **Geometry (Dynamic Frame & Face Scaling):** headline 1-4 concise lines; safe margins scale proportionally to probed canvas dimensions (sides ~7.5%, top ~9.5%, bottom ~16.5%); card placement and caption positioning adapt dynamically around the speaker's detected face and chin; at most two information zones per frame; never cover eyes, mouth, product identifiers, chart labels or the key passage of a document; check legibility at phone size.
-- **Shot hierarchy:** person-led (speaker focal, text supports) · evidence-led (document, chart or product focal;
-  speaker as voice or a readable picture-in-picture) · concept-led (diagram or number, quiet background) ·
-  contrast-led (two comparable states, aligned text, factual comparison). No B-roll just to hide a jump cut.
+- **Shot hierarchy (Multi-Layout Dynamism):**
+  - *Person-led:* Opening bold hook and conclusion (speaker focal full-frame with snap punch-in).
+  - *Evidence-led (PiP / Split View):* Speaker minimizes to a clean corner squircle or shifts into a split pane; the opened 60-70% canvas showcases researcher articles (with animated highlighter pen), kinetic bar charts, or comparison cards.
+  - *Cutout / Concept-led:* Speaker cutout framed against a stylized graphical, neutral dark, clean white, or cinematic gradient backdrop with 3D depth cards and metric callouts.
+  - *Contrast-led:* Split-screen comparison (e.g. BYD vs Mahindra, Before vs After) with aligned metrics and animated growth curves. No B-roll just to hide a jump cut.
 
 ## Motion (production defaults, not measured)
 

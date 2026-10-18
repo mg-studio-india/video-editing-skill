@@ -30,14 +30,14 @@ Amateur videos cram non-stop whooshes, meme SFX, and intrusive background music 
 
 | Narrative State / Style | Target WPM | Lead-In Padding | Trailing Tail | Crossfade | Narrative Intent |
 | :--- | :---: | :---: | :---: | :---: | :--- |
-| **Aggressive Hook** *(0–3s)* | 180+ | **35ms – 50ms** | **60ms – 80ms** | 8ms | Staccato, breathless curiosity tease. Zero dead time between sentences. |
-| **Investigative Teardown** | 140–180 | **65ms – 85ms** | **95ms – 120ms** | 12ms | Forensic, data-first cadence (Nitin Joshi style). Preserves consonants ('P', 'T', 'K') without hesitation. |
-| **Conversational Authority** | 110–140 | **100ms – 130ms** | **140ms – 175ms** | 15ms | Founder reflections and nuanced arguments. Retains natural natural breath and room tone decay. |
-| **Dramatic Verdict / Pause** | Any | **80ms – 100ms** | **250ms – 350ms** | 20ms | Post-revelation silence. Lets the audience digest a shocking financial figure or lab result. |
+| **Aggressive Hook** *(0-3s)* | 180+ | **35ms - 50ms** | **60ms - 80ms** | 8ms | Staccato, breathless curiosity tease. Zero dead time between sentences. |
+| **Investigative Teardown** | 140-180 | **65ms - 85ms** | **95ms - 120ms** | 12ms | Forensic, data-first cadence (Nitin Joshi style). Preserves consonants ('P', 'T', 'K') without hesitation. |
+| **Conversational Authority** | 110-140 | **100ms - 130ms** | **140ms - 175ms** | 15ms | Founder reflections and nuanced arguments. Retains natural natural breath and room tone decay. |
+| **Dramatic Verdict / Pause** | Any | **80ms - 100ms** | **250ms - 350ms** | 20ms | Post-revelation silence. Lets the audience digest a shocking financial figure or lab result. |
 
 ### Acoustic Safety Guardrails
-* **Vowel & Consonant Attack Protection:** Voiced stops (*b, d, g*) and voiceless stops (*p, t, k*) have an acoustic burst phase lasting 15–35ms. Snapping a cut exactly to the speech detection threshold clips this burst, making speech sound muffled or distorted.
-* **Micro-Crossfades:** Every single audio cut slice MUST have a **10ms – 15ms linear crossfade** to avoid digital DC-offset clicks and pops at transition boundaries.
+* **Vowel & Consonant Attack Protection:** Voiced stops (*b, d, g*) and voiceless stops (*p, t, k*) have an acoustic burst phase lasting 15-35ms. Snapping a cut exactly to the speech detection threshold clips this burst, making speech sound muffled or distorted.
+* **Micro-Crossfades:** Every single audio cut slice MUST have a **10ms - 15ms linear crossfade** to avoid digital DC-offset clicks and pops at transition boundaries.
 
 ---
 
@@ -47,25 +47,25 @@ All files in `./audio/` are pre-trimmed (leading silence stripped so the transie
 
 | ID | File | Category | Mix Volume | Frequency Profile | Primary Trigger |
 | :--- | :--- | :---: | :---: | :---: | :--- |
-| `click_soft` | [`click-soft.mp3`](./audio/click-soft.mp3) | UI Micro | `0.22` | High (3.5k–7k Hz) | Subtle toggle, card swipe, bullet check |
-| `click_hard` | [`click-hard.mp3`](./audio/click-hard.mp3) | UI Micro | `0.28` | Mid-High (2.8k–6.5k Hz) | Active mouse cursor click on link/button |
-| `pop_card` | [`pop.mp3`](./audio/pop.mp3) | Kinetic Pop | `0.32` | Mid (600–2.4k Hz) | Card entrance, badge pill, sticker pop |
-| `impact_sub_drop` | [`impact-sub-drop.mp3`](./audio/impact-sub-drop.mp3) | Impact | `0.24` | Sub-Bass (40–120 Hz) | Core controversy reveal, shocking allegation |
-| `impact_heavy` | [`impact-heavy.mp3`](./audio/impact-heavy.mp3) | Impact | `0.26` | Low-Mid (80–350 Hz) | Final verdict, conclusive bottom-line stat |
-| `whoosh_fast` | [`whoosh-fast.mp3`](./audio/whoosh-fast.mp3) | Transition | `0.18` | Broad (800–4.5k Hz) | Swift lateral wipe, snap zoom reframe |
+| `click_soft` | [`click-soft.mp3`](./audio/click-soft.mp3) | UI Micro | `0.22` | High (3.5k-7k Hz) | Subtle toggle, card swipe, bullet check |
+| `click_hard` | [`click-hard.mp3`](./audio/click-hard.mp3) | UI Micro | `0.28` | Mid-High (2.8k-6.5k Hz) | Active mouse cursor click on link/button |
+| `pop_card` | [`pop.mp3`](./audio/pop.mp3) | Kinetic Pop | `0.32` | Mid (600-2.4k Hz) | Card entrance, badge pill, sticker pop |
+| `impact_sub_drop` | [`impact-sub-drop.mp3`](./audio/impact-sub-drop.mp3) | Impact | `0.24` | Sub-Bass (40-120 Hz) | Core controversy reveal, shocking allegation |
+| `impact_heavy` | [`impact-heavy.mp3`](./audio/impact-heavy.mp3) | Impact | `0.26` | Low-Mid (80-350 Hz) | Final verdict, conclusive bottom-line stat |
+| `whoosh_fast` | [`whoosh-fast.mp3`](./audio/whoosh-fast.mp3) | Transition | `0.18` | Broad (800-4.5k Hz) | Swift lateral wipe, snap zoom reframe |
 | `whoosh_cinematic` | [`whoosh-cinematic.mp3`](./audio/whoosh-cinematic.mp3) | Transition | `0.15` | Full spectrum | Major act shift (e.g. from problem to expose) |
-| `riser_tension` | [`riser-tension.mp3`](./audio/riser-tension.mp3) | Riser | `0.14` | Rising (300–8k Hz) | Tension build leading into evidence proof |
-| `ping_metric` | [`ping-metric.mp3`](./audio/ping-metric.mp3) | Indicator | `0.18` | High (2.2k–5.5k Hz) | Financial stat landing (₹/$/%), percentages |
-| `chime_reveal` | [`chime-reveal.mp3`](./audio/chime-reveal.mp3) | Indicator | `0.16` | Mid-High (1.2k–4.8k Hz) | Key insight, solution, verified truth |
-| `paper_slide` | [`paper-slide.mp3`](./audio/paper-slide.mp3) | Foley | `0.24` | Organic (1.5k–3.8k Hz) | Document slide, report entry, invoice |
-| `paper_thud` | [`paper-thud.mp3`](./audio/paper-thud.mp3) | Foley | `0.28` | Low-Mid (90–500 Hz) | Evidence landing on desk, official filing |
-| `camera_shutter` | [`camera-shutter.mp3`](./audio/camera-shutter.mp3) | Foley | `0.20` | High (2.5k–6k Hz) | Screenshot freeze, proof capture snapshot |
-| `error_buzzer` | [`error-buzzer.mp3`](./audio/error-buzzer.mp3) | Indicator | `0.22` | Mid (400–1.2k Hz) | Debunked claim, failed test result flag |
-| `glitch_digital` | [`glitch-digital.mp3`](./audio/glitch-digital.mp3) | Texture | `0.16` | High (1.8k–9k Hz) | Exposing PR illusion vs reality |
-| `typing_tactile` | [`typing-tactile.mp3`](./audio/typing-tactile.mp3) | Foley | `0.18` | Tactile (2k–5k Hz) | Search bar input, code entry |
-| `key_tap` | [`key-tap.mp3`](./audio/key-tap.mp3) | Foley | `0.22` | Tactile (1.8k–4.5k Hz) | Single Enter/Return key press |
-| `notification_chime`| [`notification-chime.mp3`](./audio/notification-chime.mp3) | UI Micro | `0.18` | High (2k–6k Hz) | Chat bubble entry, message alert |
-| `shimmer_accent` | [`shimmer-accent.mp3`](./audio/shimmer-accent.mp3) | Indicator | `0.14` | Ultra-High (4k–12k Hz) | Gold standard rule, premium highlight |
+| `riser_tension` | [`riser-tension.mp3`](./audio/riser-tension.mp3) | Riser | `0.14` | Rising (300-8k Hz) | Tension build leading into evidence proof |
+| `ping_metric` | [`ping-metric.mp3`](./audio/ping-metric.mp3) | Indicator | `0.18` | High (2.2k-5.5k Hz) | Financial stat landing (₹/$/%), percentages |
+| `chime_reveal` | [`chime-reveal.mp3`](./audio/chime-reveal.mp3) | Indicator | `0.16` | Mid-High (1.2k-4.8k Hz) | Key insight, solution, verified truth |
+| `paper_slide` | [`paper-slide.mp3`](./audio/paper-slide.mp3) | Foley | `0.24` | Organic (1.5k-3.8k Hz) | Document slide, report entry, invoice |
+| `paper_thud` | [`paper-thud.mp3`](./audio/paper-thud.mp3) | Foley | `0.28` | Low-Mid (90-500 Hz) | Evidence landing on desk, official filing |
+| `camera_shutter` | [`camera-shutter.mp3`](./audio/camera-shutter.mp3) | Foley | `0.20` | High (2.5k-6k Hz) | Screenshot freeze, proof capture snapshot |
+| `error_buzzer` | [`error-buzzer.mp3`](./audio/error-buzzer.mp3) | Indicator | `0.22` | Mid (400-1.2k Hz) | Debunked claim, failed test result flag |
+| `glitch_digital` | [`glitch-digital.mp3`](./audio/glitch-digital.mp3) | Texture | `0.16` | High (1.8k-9k Hz) | Exposing PR illusion vs reality |
+| `typing_tactile` | [`typing-tactile.mp3`](./audio/typing-tactile.mp3) | Foley | `0.18` | Tactile (2k-5k Hz) | Search bar input, code entry |
+| `key_tap` | [`key-tap.mp3`](./audio/key-tap.mp3) | Foley | `0.22` | Tactile (1.8k-4.5k Hz) | Single Enter/Return key press |
+| `notification_chime`| [`notification-chime.mp3`](./audio/notification-chime.mp3) | UI Micro | `0.18` | High (2k-6k Hz) | Chat bubble entry, message alert |
+| `shimmer_accent` | [`shimmer-accent.mp3`](./audio/shimmer-accent.mp3) | Indicator | `0.14` | Ultra-High (4k-12k Hz) | Gold standard rule, premium highlight |
 
 ---
 

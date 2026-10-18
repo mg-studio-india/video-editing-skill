@@ -16,13 +16,17 @@ Usage:
   python3 fix-words.py --transcript W/transcript.json            # re-apply W/corrections.json
   python3 fix-words.py --transcript W/transcript.json --dry-run  # show what would change
 """
-from __future__ import annotations
-
 import argparse
 import json
 import os
 import re
 import sys
+
+HERE = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, HERE)
+import runtime
+runtime.ensure_project_venv()
+import hinglish
 
 TOKEN = re.compile(r"[^\w']+", re.UNICODE)
 
@@ -105,9 +109,11 @@ def main() -> None:
     if a.add:
         json.dump(corr, open(cpath, "w"), indent=1, ensure_ascii=False)
         print("corrections saved: %s (applied on every transcription pass)" % cpath)
+    new = hinglish.clean_transcript_words(new)
     if isinstance(t, dict):
         t["words"] = new
         t["corrections_applied"] = len(changes)
+        t = hinglish.clean_transcript(t)
     else:
         t = new
     json.dump(t, open(a.transcript, "w"), indent=1, ensure_ascii=False)

@@ -7,9 +7,12 @@ description: Analyzes a video locally as measurements and labelled frames (shots
 You cannot play video; this turns one into measurements (cuts, pacing, loudness, silences, word timing) and labelled
 contact sheets. Scripts measure; you interpret. Local only: nothing is uploaded.
 
+> [!IMPORTANT]
+> **Virtual Environment (STRICT)**: ALWAYS execute scripts using the project's virtual environment (`"$PROJECT/.venv/bin/python3"`). Never invoke system python.
+
 ```bash
 ENG="${VIDEO_ENGINE:-$HOME/.agents/skills/video-pipeline/engine}"
-python3 "$ENG/scripts/watch.py" <mode> ...
+"$PROJECT/.venv/bin/python3" "$ENG/scripts/watch.py" <mode> ...
 ```
 
 **Preflight** once per session: `watch.py check` (OK for ffmpeg, whisper-cli, model). No whisper: carry on without

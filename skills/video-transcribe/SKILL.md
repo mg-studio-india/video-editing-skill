@@ -7,9 +7,13 @@ description: Word-level transcription with whisper.cpp in the shape the cut, cap
 Every cut, caption and animation lands on a word, so word timing is the foundation. whisper.cpp, locally, in one shape
 every engine script reads (each word has `text`, `w`, `start`, `end`).
 
+> [!IMPORTANT]
+> **Virtual Environment (STRICT)**: ALWAYS execute scripts using the project's virtual environment (`$PROJECT/.venv/bin/python3`). Never invoke system python.
+> **Hinglish Decoding (STRICT)**: Spoken Hindi and Hinglish must NEVER emit Devanagari script. Whisper is configured to decode with `-l en --carry-initial-prompt` and a conversational Hinglish prompt primer, natively transcribing Hindi speech into Roman script (Hinglish) directly from audio with zero Devanagari tokens. Transliteration post-processing is not required.
+
 ```bash
 ENG="${VIDEO_ENGINE:-$HOME/.agents/skills/video-pipeline/engine}"; W="videos/<project>"
-python3 "$ENG/scripts/transcribe.py" <media> --out <transcript.json> [--window 25] [--lang en] [--prompt "names"] [--no-fillers]
+"$PROJECT/.venv/bin/python3" "$ENG/scripts/transcribe.py" <media> --out <transcript.json> [--window 25] [--lang en] [--prompt "names"] [--no-fillers]
 ```
 
 **Pass 1, the raw take** (on the clean clip from `video-audio clean`):
@@ -20,20 +24,19 @@ sentence and loop on silence; loops are collapsed, see `loops_collapsed`).
 **Pass 2, the flat cut**, after every `apply-cut`:
 ```bash
 ffmpeg -y -v error -i "$W/hyperframes/input-video.mp4" -vn -acodec pcm_s16le -ar 16000 -ac 1 "$W/audio.wav"
-python3 "$ENG/scripts/transcribe.py" "$W/hyperframes/input-video.mp4" --out "$W/transcript.json"
-python3 "$ENG/scripts/resolve-anchors.py" --plan "$W/storyboard.plan.json" --transcript "$W/transcript.json" \
+"$PROJECT/.venv/bin/python3" "$ENG/scripts/transcribe.py" "$W/hyperframes/input-video.mp4" --out "$W/transcript.json"
+"$PROJECT/.venv/bin/python3" "$ENG/scripts/resolve-anchors.py" --plan "$W/storyboard.plan.json" --transcript "$W/transcript.json" \
   --out "$W/storyboard.json" [--jump-frames "$W/jump-frames.json"]
 ```
 Never reuse the raw transcript after a cut or shift times by hand: a stale transcript is the top cause of captions and
 cards on the wrong word. Unresolved anchors are handled by `video-plan-storyboard`. One phrase by hand:
 `phrase-times.py --transcript "$W/transcript.json" "three tools" [--after T]` (`NOT FOUND` = cut or misheard).
 
-- **Correct misheard words, keep the timing.** After pass 1 read the transcript for names, products, jargon and
-  homophones whisper got wrong (Hindi names and mixed-language lines especially), and record each fix once:
-  `python3 "$ENG/scripts/fix-words.py" --transcript "$W/transcript-raw.json" --add "cap cut=CapCut" --add "hyper frames=HyperFrames"`.
-  Fixes go to `$W/corrections.json` and `transcribe.py` reapplies them on every later pass (the flat cut, Shorts) and
-  passes the correct spellings to whisper as hints. Merged words span the originals; split words share their span;
-  punctuation is kept. Never retype times by hand.
+- **Word Verification & Corrections (STRICT):** Immediately after transcription, verify words with:
+  `"$PROJECT/.venv/bin/python3" "$ENG/scripts/verify-words.py" --transcript "$W/transcript.json"`
+  Review flagged phonetic distortions and apply high-confidence fixes with `--auto-fix`, or add project-specific names/jargon:
+  `"$PROJECT/.venv/bin/python3" "$ENG/scripts/verify-words.py" --transcript "$W/transcript.json" --add "misheard=Correct"`
+  All fixes are recorded in `$W/corrections.json` and automatically preserved across every future transcription pass without shifting audio timings. Never retype times by hand.
 - **Fillers kept by default** (the cut tools need "um/uh" to find restarts); `--no-fillers` for a finished cut.
 - **Names and jargon:** `--prompt "Claude, HyperFrames, Veo"` spells them right for captions and phrase lookups.
 - **Language:** one per file; force with `--lang` (`en`, `hi`) for mixed speech or a wrong guess (default from

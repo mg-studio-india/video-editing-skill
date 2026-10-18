@@ -169,7 +169,7 @@ const md = [
   ...candidates.map((c) =>
     [
       `## ${c.id} · ${c.type} · ${c.confidence} · recommend: ${c.recommend}`,
-      `cut ${fmt(c.cut.start)}–${fmt(c.cut.end)} (${(c.cut.end - c.cut.start).toFixed(2)}s) — ${c.note}`,
+      `cut ${fmt(c.cut.start)}-${fmt(c.cut.end)} (${(c.cut.end - c.cut.start).toFixed(2)}s) — ${c.note}`,
       "",
       `- removes: ${c.removes}`,
       c.keeps ? `- keeps:   ${c.keeps}` : null,

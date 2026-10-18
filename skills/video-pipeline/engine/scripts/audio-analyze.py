@@ -12,9 +12,14 @@ from __future__ import annotations
 
 import argparse
 import json
-import subprocess
 import sys
 from pathlib import Path
+
+HERE = Path(__file__).resolve().parent
+sys.path.insert(0, str(HERE))
+import runtime
+runtime.ensure_project_venv()
+
 import numpy as np
 
 

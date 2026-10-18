@@ -4,6 +4,8 @@ description: Framing decisions - face-safe zones, zooms and punch-ins, camera re
 ---
 # take-geometry
 
+> **Styles:** Camera & footage styles #46-75: `references/styles-camera-footage.md` · canvas sizes and safe zones: `references/canvas-safe-zones.md`.
+
 Measures where the speaker is, once per shot, and turns it into rules: where cards may go, how the camera moves, how to
 crop for other aspects without losing the face.
 
@@ -19,7 +21,7 @@ For each framing (watch sheets or `watch.py focus`), record in `project.json` �
 1. **Dynamic Camera Transform Origin:**
    - Derived directly from the speaker's detected face centroid per shot:
      `origin_x = round((cx / W) * 100, 1)%`
-     `origin_y = round((cy / H) * 100, 1)%` (typically on eye-line ~30–38% down the head)
+     `origin_y = round((cy / H) * 100, 1)%` (typically on eye-line ~30-38% down the head)
    - Eliminates head-cropping during zoom-ins without hardcoded percentage guessing.
 
 2. **Dynamic Card & Graphic Safe Zones:**
@@ -35,11 +37,11 @@ Camera transform operations go in the plan's `"camera"` array, anchored to phras
 
 | Move | Dynamic Formulation |
 |---|---|
-| **Punch-in on emphasis** | `106% – 118%` scale, `0.28s – 0.35s`, `power2.out` (styled by `camera.punch` or video pace) |
-| **Slow creep across a thought** | `104% – 110%` over thought duration, `power1.inOut`; resets on the next cut |
+| **Punch-in on emphasis** | `106% - 118%` scale, `0.28s - 0.35s`, `power2.out` (styled by `camera.punch` or video pace) |
+| **Slow creep across a thought** | `104% - 110%` over thought duration, `power1.inOut`; resets on the next cut |
 | **Zoom-out reveal** | `110% → 100%` over `0.45s` as a lower-third card enters |
 | **Every shot change** | Resets cleanly to `100%`; never carry a zoom across a cut boundary |
-| **Dynamic Resolution Scaling** | 1080p source: max `112%` punch to avoid pixelation; 4K source: `125% – 150%` freely |
+| **Dynamic Resolution Scaling** | 1080p source: max `112%` punch to avoid pixelation; 4K source: `125% - 150%` freely |
 
 - **Dynamic Drift Compensation:** When zooming with an off-center origin `(ox, oy)`, elements drag by `drift = (scale - 1.0) * (ox - element_pos)`. Compensate dynamically in layout coordinates so overlays stay anchored.
 - Jump cuts remain clean unless narrative energy pivots: fast punch (`104% → 100%` over 0.12s) or dynamic angle snap. On long camera-only stretches, alternate subtle zoom levels between jump cuts.
@@ -49,8 +51,8 @@ Camera transform operations go in the plan's `"camera"` array, anchored to phras
 `cut-map.json` times are not frame-aligned (a reset at the listed time can show a one-frame double cut). Measure, then
 let the resolver add the resets:
 ```bash
-python3 "$S/jump-frames.py" --video "$W/hyperframes/input-video.mp4" --cut-map "$W/cut-map.json" --out "$W/jump-frames.json"
-python3 "$S/resolve-anchors.py" --plan "$W/storyboard.plan.json" --transcript "$W/transcript.json" \
+"$PROJECT/.venv/bin/python3" "$S/jump-frames.py" --video "$W/hyperframes/input-video.mp4" --cut-map "$W/cut-map.json" --out "$W/jump-frames.json"
+"$PROJECT/.venv/bin/python3" "$S/resolve-anchors.py" --plan "$W/storyboard.plan.json" --transcript "$W/transcript.json" \
   --out "$W/storyboard.json" --jump-frames "$W/jump-frames.json"
 ```
 `weak` cuts (same framing both sides): look at the frames before trusting.
@@ -64,7 +66,7 @@ hair edges, crossing hands and soft 1080p edges in a snapshot; a poor matte mean
 ## 5. Other aspects (Shorts, feed, split-screen)
 
 ```bash
-python3 "$S/reframe.py" --video <flat or Short file> --aspect 9:16 --cut-map <its cut-map.json> \
+"$PROJECT/.venv/bin/python3" "$S/reframe.py" --video <flat or Short file> --aspect 9:16 --cut-map <its cut-map.json> \
   --out <dir>/reframe-9x16.json --render <dir>/hyperframes/input-9x16.mp4
 ```
 

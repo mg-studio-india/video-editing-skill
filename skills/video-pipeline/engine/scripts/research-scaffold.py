@@ -458,7 +458,7 @@ All brands and tools identified in the transcript with vector assets saved to `a
 ---
 
 ## 4. Recommended Visual Layout & Master Style Direction
-_Awaiting video-researcher synthesis against `video-editing-styles-master.md` based on active category benchmarks._
+_Awaiting video-researcher synthesis against `video-plan-storyboard/references/style-catalog.md` based on active category benchmarks._
 
 - **Primary Layout:** _Pending agent analysis_
 - **Color Theme:** _Pending extraction from verified logo assets & brand requirements_

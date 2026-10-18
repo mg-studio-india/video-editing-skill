@@ -141,6 +141,33 @@ class AudioEndToEnd(unittest.TestCase):
                                  capture_output=True, text=True).stdout.split()
         self.assertEqual(sorted(streams), ["audio", "video"])
 
+    def test_master_auto_denoises_noisy_source(self):
+        d = scratch(self)
+        wav = self.make(d, "0.03")  # noisy background (road/room hiss)
+        clip = os.path.join(d, "noisy_clip.mp4")
+        ffmpeg("-f", "lavfi", "-i", "testsrc2=s=320x180:d=4:r=30", "-i", wav, "-c:v", "libx264", "-c:a", "aac",
+               "-shortest", clip)
+        rep = os.path.join(d, "r.json")
+        out = os.path.join(d, "master_noisy.mp4")
+        r = run("audio-chain.py", "master", clip, "--out", out, "--report", rep)
+        self.assertEqual(r.returncode, 0, r.stdout + r.stderr)
+        j = load(rep)
+        self.assertIn(j["denoise"], ("medium", "strong"))
+        self.assertTrue(j["pass"])
+
+    def test_master_denoise_explicit_off(self):
+        d = scratch(self)
+        wav = self.make(d, "0.03")
+        clip = os.path.join(d, "noisy_clip2.mp4")
+        ffmpeg("-f", "lavfi", "-i", "testsrc2=s=320x180:d=4:r=30", "-i", wav, "-c:v", "libx264", "-c:a", "aac",
+               "-shortest", clip)
+        rep = os.path.join(d, "r.json")
+        out = os.path.join(d, "master_off.mp4")
+        r = run("audio-chain.py", "master", clip, "--out", out, "--denoise", "off", "--report", rep)
+        self.assertEqual(r.returncode, 0, r.stdout + r.stderr)
+        j = load(rep)
+        self.assertEqual(j["denoise"], "off")
+
 
 if __name__ == "__main__":
     unittest.main()

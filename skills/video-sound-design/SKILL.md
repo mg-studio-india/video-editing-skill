@@ -4,6 +4,8 @@ description: Picks and places sound effects and a music bed from HeyGen's sound 
 ---
 # sound-design
 
+> **Styles:** Audio-led styles #188-200 of the 225-style catalog: `references/styles-audio-led.md`.
+
 Silence is the default: a sound earns its place when something on screen would make it, or a reveal needs it. Too many
 sounds is the most common first-cut note (eight in a 38 s hook was "way too busy").
 
