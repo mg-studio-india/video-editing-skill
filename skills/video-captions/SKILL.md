@@ -61,7 +61,7 @@ Typography and coloring are **strictly selected from verified modern typefaces a
   - **Inactive Words:** Muted legibility (`rgba(255, 255, 255, 0.70)` or slate `#94a3b8`) keeping focus on the speaker.
   - **Active Spoken Word:** Dynamic accent highlight (`#ffd700` gold, `#00c3ff` cyan, `#00e676` emerald, or `#f43f5e` coral).
   - **Punch Words:** High-contrast badge pills (`#ffd700` background with `#000000` text, `#00c3ff` background with `#000000` text) or negative badge pills with heavy weight (800/900).
-  - **Razor-Sharp Vector Contrast (Zero Shadow & Zero Blur Rule):** Captions and badge pills must strictly render with **zero text-shadow, zero box-shadow, and zero artificial blur**. No defaults should ever add shadow, glow, or blur. Legibility is achieved through pure high contrast: 70-80% opacity white text for inactive words, crisp saturated accents on spoken words, and solid opaque pills for punch words.
+  - **Razor-Sharp Vector Contrast (Zero Shadow & Zero Blur by Default):** Captions and badge pills render with **zero text-shadow, zero box-shadow, and zero artificial blur by default**. No templates or engine defaults should ever add unwanted shadow, glow, or blur. Legibility is achieved by default through pure high contrast: 70-85% opacity white text for inactive words, crisp saturated accents on spoken words, and solid opaque pills for punch words. Note that **this is a default standard, not an inflexible rule**—users can freely choose to add drop shadows, outer glows, or blurs whenever requested for their custom creative aesthetic.
 
 - **Dynamic Font Size Calculation:**
   - Font size scales responsively with canvas dimensions (`W` x `H`) and line character length:

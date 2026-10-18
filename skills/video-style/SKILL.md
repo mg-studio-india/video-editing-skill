@@ -134,7 +134,7 @@ python3 "$ENG/scripts/grade.py" preview --input "$W/raw/<clip>.mp4" --out "$W/gr
 
 Before assembling the video or generating components, present `style.json` and the color preview to the user:
 1. **Color Grade Preview:** Display `$W/grade-preview.jpg` comparing the raw footage against the proposed preset.
-2. **Typography & Font Choice:** Explicitly present font family (from `DM Sans`, `Inter`, `Poppins`, `Google Sans`, `Roboto`), weight hierarchy (400 -> 700 -> 900), and verify zero text-shadow and zero blur.
+2. **Typography & Font Choice:** Explicitly present font family (from `DM Sans`, `Inter`, `Poppins`, `Google Sans`, `Roboto`), weight hierarchy (400 -> 700 -> 900), and verify zero text-shadow and zero blur by default (confirm if creator wishes to add custom drop shadows, glows, or blurs).
 3. **Font-Coloring Hierarchy:** Inactive text color, active highlight accent, punch word badge pill background and text colors.
 4. **Color Palette & Contrast:** Background, text, accent, and card glass surfaces.
 5. **Motion Dynamics & Physics:** Easing curves, tilt angles, scale overshoot, and entrance springs.

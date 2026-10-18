@@ -78,7 +78,7 @@ The pipeline executes sequentially through 6 unified verification checkpoints, e
 | **Gate 2** | **Mandatory Video Watch & Speech Ingest** | `watch.py mine`, `whisper.cpp`, `verify-words.py`, `match.py` | **MANDATORY**: Runs `watch.py mine` as Step 1 to inspect pacing, speech velocity (WPM), silence distribution, and visual contact sheets. Dialogue isolation, speech-to-text with misspelling audit, and Roman Hinglish enforcement (strictly zero Devanagari script). **Strict Asset Caching**: transcripts and audio cleanup are cached and never regenerated unnecessarily. Emits `$W/reference-match/ROADMAP.md` matching against 50 style blueprints. |
 | **Gate 3** | **Narrative Architecture & Storyboard** | `video-plan-storyboard`, `storyboard.py` | Hook design (0-3s), retention rhythm, scene breakdown, and multi-layout choreography (when A-roll shifts to split, pip, cutout, or layered canvas). Emits `$W/storyboard.plan.json`. |
 | **Gate 4** | **Precision Cut & Dead-Air Elimination** | `dead-air.py`, `apply-cut.py`, `grade.py preview` | **Waveform Silence Elimination**: Scans real audio waveform RMS energy (`dead-air.py` / ffmpeg `silencedetect`) to catch dead air hidden by Whisper ASR stretching. Generates `PAPER-CUT.md` with explicit tables of dropped pauses (>0.40s compressed to 0.25-0.30s breath margins). 3-way color grading preview sheet comparing 10 cinema presets. |
-| **Gate 5** | **Kinetic Captions & Typography Review** | `captions.py`, `compose.py`, HyperFrames CLI | Authors kinetic captions using `weight-shift` (Black 900 active word) or `caption-highlight` (fluorescent sweep) with scale-pop punch words. Selected from 5 approved typefaces (`DM Sans`, `Inter`, `Poppins`, `Google Sans`, `Roboto`). **Zero-Shadow Rule**: Strictly zero text-shadow, zero box-shadow, and zero blur. **Mandatory visual preview** presented to user for approval before rendering. |
+| **Gate 5** | **Kinetic Captions & Typography Review** | `captions.py`, `compose.py`, HyperFrames CLI | Authors kinetic captions using `weight-shift` (Black 900 active word) or `caption-highlight` (fluorescent sweep) with scale-pop punch words. Selected from 5 approved typefaces (`DM Sans`, `Inter`, `Poppins`, `Google Sans`, `Roboto`). **Zero-Shadow by Default**: Defaults to zero text-shadow and zero blur (customizable on request). **Mandatory visual preview** presented to user for approval before rendering. |
 | **Gate 6** | **Master Render & Quality Gate** | `render.py`, `review.py`, `clean-temp.py` | Composite UHD 4K render in **Standard Dynamic Range (SDR with `--sdr` default)** with lossless BT.709 color tags (prevents HDR washouts and 30GB cache spikes), EBU R128 loudness mastering (-14 LUFS, -1.0 dBTP), structural verification (`VERIFY.md`, `REVIEW.md`), and automated temp file purge. Output in `processed/<project>-v<N>.mp4`. |
 
 ---
@@ -122,13 +122,15 @@ All on-screen titles, lower-thirds, and kinetic captions are strictly selected f
 - **SemiBold (600) / Bold (700)**: Card headers, section tags, active spoken words.
 - **ExtraBold (800) / Black (900)**: Emphatic punch words, key financial figures, statistics, and critical assertions.
 
-### 3. The Zero-Shadow & Zero-Blur Rule
-> [!IMPORTANT]
-> **No Muddy Halos**: Captions and badge pills strictly render with **`text-shadow: none`**, **`box-shadow: none`**, and **zero artificial blur**.
+### 3. Zero-Shadow & Zero-Blur by Default (Creator-Customizable)
+> [!NOTE]
+> **Clean Vectors by Default**: By default, captions and badge pills render with **`text-shadow: none`**, **`box-shadow: none`**, and **zero artificial blur** to eliminate fuzzy edges and muddy halo artifacts.
 > Contrast is achieved purely through high-contrast solid vectors:
 > - **Inactive Words**: Clean 85% opacity white text (`rgba(255, 255, 255, 0.85)`).
 > - **Active Spoken Word**: Dynamic high-contrast brand accents (`#FFD700` Gold, `#00E5FF` Cyan, `#00E676` Emerald, `#FF9100` Amber).
 > - **Punch Words**: Solid, opaque rounded badge pills with bold Black 900 typography in solid `#000000` text, slightly tilted (-1.5° to -2°) for visual dynamism.
+> 
+> *Zero-shadow is a sensible default standard, not an inflexible rule: creators can freely choose to add drop shadows, outer glows, or blurs whenever requested for their custom creative aesthetic.*
 
 ### 4. Mandatory Gate 5 Pre-Render Review
 Before any final video render, the pipeline presents a rendered snapshot comparing typography styles directly over the creator's footage, allowing creators to inspect and approve font pairings, weights, and badge pill colors before encoding.
@@ -315,7 +317,7 @@ All audio effects work completely offline without requiring cloud API credits. W
 ## 🛡️ Anti-Hallucination & Quality Contract
 
 - **Universal SDR Delivery**: Videos strictly render in **Standard Dynamic Range with lossless BT.709 color tags (`--sdr` enabled by default)**, preventing QuickTime gamma washouts, extreme tone mapping variations across platforms, and 30 GB intermediate cache spikes.
-- **Razor-Sharp Zero-Shadow Typography**: Captions and punch badge pills render with strictly zero `text-shadow`, zero `box-shadow`, and zero blur. Contrast is established through crisp, calibrated solid vectors.
+- **Zero-Shadow Typography by Default**: Captions and punch badge pills default to zero text-shadow, zero box-shadow, and zero blur, preventing muddy halos while remaining fully customizable if the creator requests shadows or glows.
 - **Audio Waveform Dead-Air Elimination**: All silence detection operates on real audio waveform RMS energy (`dead-air.py`), catching dead air hidden by Whisper ASR word stretching. Every pause > 0.40s is compressed to a natural 0.25-0.30s conversational pace.
 - **Approved 5-Typeface Catalog**: Restricted to verified, high-CTR typefaces (`DM Sans`, `Inter`, `Poppins`, `Google Sans`, `Roboto`) across 400-900 weight hierarchy with mandatory Gate 5 visual preview before rendering.
 - **Strict Hinglish Roman Transliteration**: Captions never mix Devanagari script into Latin captions (`yeh ek startup hai`, not `यह ek startup hai`).

@@ -36,7 +36,7 @@ W="videos/<project>"
    Font-Coloring Standard:
    - *Inactive Words:* Muted readability (`rgba(255, 255, 255, 0.70)` or `#94a3b8`).
    - *Active Spoken Word:* Dynamic accent highlight (`#ffd700`, `#00c3ff`, `#00e676`, `#f43f5e`, or fluorescent marker).
-   - *Card & Caption Typography:* Razor-sharp vector clarity. Strictly **zero text-shadow, zero box-shadow, and zero blur** on captions and badge pills. No defaults should ever add shadow or blur.
+   - *Card & Caption Typography:* Razor-sharp vector clarity. **Zero text-shadow, zero box-shadow, and zero blur by default** on captions and badge pills (`text-shadow: none`, `box-shadow: none`). No templates or defaults should ever inject unwanted shadow or blur. However, this is a default standard, not an inflexible rule—users can freely add drop shadows, outer glows, or blurs whenever requested for their custom creative aesthetic.
    **Mandatory Visual Review Before Render:** A live sample preview showing font family, weight pairing, and color hierarchy MUST be presented and approved by the user at Gate 5 before proceeding to Gate 6 Master Render.
    **Always Render in SDR (Maximum Compatibility):** Videos must strictly render in **Standard Dynamic Range (SDR) with lossless BT.709 color tags (`--sdr` enabled by default)**. Never render in HDR by default as it causes gamma shifts and platform playback incompatibilities.
 3. **Context-Driven Dynamic Format Selection (Nothing Hardcoded):** The recommended auto-default format **strictly depends on the video context and can be ANY format** from the 225-Style Taxonomy. The engine analyzes the transcript, topic, aspect ratio, and asset inventory:
