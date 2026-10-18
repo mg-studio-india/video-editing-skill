@@ -74,6 +74,14 @@ W="videos/<project>"
 14. **Project Virtual Environment Restriction (STRICT):** All pipeline scripts must strictly execute within the project virtual environment (`"$PROJECT/.venv/bin/python3"`). Never invoke system python. The engine automatically enforces `.venv` execution.
 15. **Hinglish Transcription & Caption Rule (STRICT):** Never use Devanagari script in transcription or captions. All Hindi and code-switched speech must ALWAYS be transcribed and rendered in clean Roman script (Hinglish). Transcriptions and captions automatically transliterate Devanagari to Hinglish.
 16. **Immutable Raw Ingest & Strict Asset Caching (STRICT):** Transcripts (`transcript.words.json`, `transcript.json`) and dialogue-isolated master audio stems (`audio-clean.wav`) represent grounded immutable facts of the raw media take. They must NEVER be repeatedly re-transcribed or re-filtered across downstream user revisions (cuts, caption restyling, graphics, color grading). All scripts (`transcribe.py`, `audio-chain.py`, `verify-words.py`) reuse existing cached outputs by default unless explicitly invoked with `--force`. `clean-temp.py` strictly protects `audio-clean.wav` and transcripts from lifecycle purging.
+17. **Single Source of Truth & Zero Temporary Data Sprawl (STRICT):** The project workspace must carry **ONLY** necessary permanent files:
+    - *Single Conformed Video:* The conformed flat cut belongs **strictly** at `$W/hyperframes/input-video.mp4` where the HyperFrames composition resolves its `<video>` assets. It must **NEVER** be duplicated or copied into the project root (`$W/input-video.mp4`). `apply-cut.py` outputs directly to `$W/hyperframes/input-video.mp4`.
+    - *No Temporary Data Folders:* Preview directories (`preview-*`, `snapshots/`, loose test compositions) must **NEVER** linger in the project directory carrying duplicate footage, copied frames, or bloated headless browser caches. All Gate 3/Gate 5 visual previews are either generated within transient scratch folders or purged immediately once approved.
+    - *Clean Project Structure:* Every project directory contains strictly:
+      `raw/` (user inputs)
+      `hyperframes/` (composition contract, containing the single `input-video.mp4`)
+      `processed/` (final master video deliverables)
+      Core specs (`style.json`, `storyboard.plan.json`, `plan.md`, `transcript.json`, `cut-list.json`, `cut-map.json`, `audio-clean.wav`). All transient files are automatically removed by `clean-temp.py`.
 
 ---
 

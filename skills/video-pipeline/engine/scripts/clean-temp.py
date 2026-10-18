@@ -20,11 +20,19 @@ TRANSIENT_PATTERNS = [
     "raw/*_temp.*",
     "raw/*_muted.mp4",
     "raw/*_combined.mp4",
+    # Temporary preview folders and scratch frames (Gate 3/Gate 5 previews)
+    "preview-*",
+    "snapshots",
+    "clean-frame.jpg",
+    "speaker-frame.png",
+    ".tmp",
     # Auto-editor and candidate dumps
     "speech.v1",
     "speech.json",
     "candidates",
     "cut-candidates",
+    "source.cut-candidates.json",
+    "source.cut-candidates.md",
     "*.log",
     # Intermediate raw video before mastering/tagging
     "processed/*-raw.mp4",
@@ -63,13 +71,29 @@ def clean_project(project_dir, dry_run=False, verbose=True, clean_reports=False)
     if dry_run:
         print("  (DRY RUN - no files will be deleted)")
 
+    # 1. Clean redundant root input-video.mp4 if hyperframes/input-video.mp4 exists
+    root_input_video = os.path.join(project_dir, "input-video.mp4")
+    hf_input_video = os.path.join(project_dir, "hyperframes", "input-video.mp4")
+    if os.path.isfile(root_input_video) and os.path.isfile(hf_input_video):
+        sz = os.path.getsize(root_input_video)
+        if not dry_run:
+            os.remove(root_input_video)
+        total_bytes_freed += sz
+        removed_count += 1
+        if verbose:
+            print(f"  - Removed redundant root input-video.mp4 ({sz / (1024*1024):.2f} MB; master resides in hyperframes/input-video.mp4)")
+
+    # 2. Clean transient file and directory patterns
     patterns = TRANSIENT_PATTERNS + (REPORT_PATTERNS if clean_reports else [])
     for pattern in patterns:
         matches = glob.glob(os.path.join(project_dir, pattern))
         for p in matches:
             # Safety checks: never delete the final deliverable or master composition
             base = os.path.basename(p)
-            if base in ["input-video.mp4", "index.html", "storyboard.json", "style.json", "project.json"]:
+            # Never delete master input-video.mp4 inside hyperframes/
+            if base == "input-video.mp4" and os.path.dirname(p) == os.path.join(project_dir, "hyperframes"):
+                continue
+            if base in ["index.html", "storyboard.json", "style.json", "project.json"]:
                 continue
             if not clean_reports and (base.endswith("-REVIEW.md") or base.endswith("-VERIFY.md") or base.endswith("-audio.json") or base.endswith("-review-sheet.png")):
                 continue

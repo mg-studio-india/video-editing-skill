@@ -135,3 +135,6 @@ The editor proactively orchestrates this standard automatically, with zero user 
    > *- Colors: 70% White Body, #ffd700 Highlight, #ffd700 Pill Badge with #000000 text*
    > *[Live Sample Preview: to agar [tumhare] pas]*
    > *Does this typography pairing and coloring look great, or would you like to adjust font family, weights, or accent colors?"*
+
+> [!IMPORTANT]
+> **Zero Temporary Data Sprawl**: Do NOT create ad-hoc temporary preview folders (e.g. `preview-single/`, `preview-typography/`) that linger in the project root carrying duplicated footage or loose frames. Generate preview snapshots in transient directories and purge them immediately with `clean-temp.py` after user confirmation.

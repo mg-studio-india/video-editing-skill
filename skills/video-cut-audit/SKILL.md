@@ -63,4 +63,11 @@ Before applying the permanent cut or encoding video:
    - **Clean Transcript:** What the cut video will actually say.
 2. Present `PAPER-CUT.md` to the user:
    > *"Here is the precision cut map eliminating all dead air. Original duration: 80.2s. Cut duration: 66.8s (13.4s of dead air eliminated across 12 pauses). Pacing is tightened to 165 WPM. Does this cut map look great?"*
-3. Apply the cut with `apply-cut.py` only after user approval.
+3. Apply the cut with `apply-cut.py` only after user approval, writing **directly** to the composition folder:
+   ```bash
+   "$PROJECT/.venv/bin/python3" "$ENG/scripts/apply-cut.py" --input "$W/raw/<video>" \
+     --cut-list "$W/cut-list.json" --out "$W/hyperframes/input-video.mp4"
+   ```
+
+> [!IMPORTANT]
+> **Single Source of Truth (Zero Duplication)**: The conformed flat cut must be written directly to `$W/hyperframes/input-video.mp4` where HyperFrames reads it. Never duplicate or copy video files to `$W/input-video.mp4` or other folders.

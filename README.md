@@ -61,7 +61,10 @@ To keep your working directory 100% spotless across all platforms (**macOS, Linu
 ```
 
 > [!IMPORTANT]
-> **Zero Workspace Pollution**: Your creative directory contains **ONLY** `brand/`, `references/`, `sound-palette/`, and `videos/`. No `node_modules`, no `package.json`, no `.venv`, and no messy config files will ever clutter your project workspace. The runtime automatically discovers the engine sandbox on any OS.
+> **Zero Workspace Pollution & Single Source of Truth**:
+> - **Workspace Cleanliness**: Your creative directory contains **ONLY** `brand/`, `references/`, `sound-palette/`, and `videos/`. No `node_modules`, no `package.json`, no `.venv`, and no messy config files will ever clutter your project workspace.
+> - **Single Conformed Video**: The cut video lives **strictly** at `videos/<project-id>/hyperframes/input-video.mp4`. It is never duplicated at the project root (`input-video.mp4`).
+> - **Zero Temporary Data Sprawl**: No temporary preview directories (`preview-*`, loose `snapshots/`, test compositions) or copied frames persist in the project. All transient preview artifacts are automatically purged by `clean-temp.py`.
 
 ---
 
