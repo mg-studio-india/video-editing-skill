@@ -58,6 +58,14 @@ expect "unedited old copy migrated to a link" 'grep -q "video-watch .*migrated" 
 video-skills prune --keep 1 >/dev/null
 expect "prune keeps versions in use" '[ -d "$VS/pkg/1.1.0" ]'
 expect "doctor all good" 'video-skills doctor | grep -q "all good"'
+mkdir -p "$T/home/.gemini/config"; ln -s "$SK" "$T/home/.gemini/config/skills"
+expect "agent folder that links to the skills folder is fine" 'video-skills doctor | grep -q "all good"'
+mkdir -p "$T/home/.claude/skills"
+expect "agent folder missing the skills is flagged" 'video-skills doctor | grep -q "FIX   agent folder .*claude/skills"'
+rm -rf "$T/home/.claude"; rm "$SK/video-watch"; ln -s ../../../.agents/skills/video-watch "$SK/video-watch"   # the link the old installer wrote
+expect "self-referencing skill link is flagged" 'video-skills doctor | grep -q "FIX   skill video-watch"'
+video-skills update --force --version 1.1.0 --skip-setup >/dev/null
+expect "update --force repairs it" 'video-skills doctor | grep -q "all good"'
 video-skills uninstall >/dev/null
 expect "uninstall removes links and command" '[ ! -L "$SK/video-audio" ] && [ ! -e "$T/bin/video-skills" ]'
 

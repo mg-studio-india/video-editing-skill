@@ -244,6 +244,18 @@ def backup(path, name):
     return dst
 
 
+AGENT_DIRS = [Path(p).expanduser() for p in ("~/.claude/skills", "~/.gemini/config/skills", "~/.gemini/antigravity-cli/skills")]
+
+
+def skill_opens(p, name):
+    """The folder an agent loads: SKILL.md present and its front-matter name matches the folder."""
+    try:
+        head = (Path(p) / "SKILL.md").read_text(encoding="utf-8")[:2000]
+    except OSError:
+        return False
+    return re.search(r"^name:\s*%s\s*$" % re.escape(name), head, re.M) is not None
+
+
 def is_link(p):
     """A symlink, or a Windows directory junction (both point into the store)."""
     p = Path(p)
@@ -292,6 +304,8 @@ def apply(version, skills_dir, names=None, force=False):
         dst = skills_dir / name
         if not os.path.lexists(dst):
             link(dst, new); report.append((name, "installed", skill_version(version, name))); continue
+        if is_link(dst) and not os.path.exists(dst):            # broken or self-referencing link: nothing to keep
+            link(dst, new); report.append((name, "repaired", "broken link -> %s" % skill_version(version, name))); continue
         if is_link(dst):
             cur = Path(os.path.realpath(dst))
             cur_v = version_of(cur)
@@ -400,7 +414,7 @@ def install_cli(version):
 
 def record(st, version, rep, full):
     for name, what, _ in rep:
-        if what in ("installed", "updated", "relinked", "replaced", "migrated to managed link", "up to date"):
+        if what in ("installed", "repaired", "updated", "relinked", "replaced", "migrated to managed link", "up to date"):
             st["skills"][name] = {"version": version}
     if full:
         if st.get("package_version") and st["package_version"] != version:
@@ -594,9 +608,20 @@ def cmd_doctor(a):
     for n in sorted(st.get("skills", {})):
         p = sd / n
         chk(is_link(p) and p.exists(), "skill %s -> %s" % (n, os.path.realpath(p) if p.exists() else "broken/missing"))
+        if p.exists():
+            chk(skill_opens(p, n), "skill %s opens (SKILL.md with name: %s)" % (n, n))
+    # every agent folder must show the same skills (a folder that is a link to the skills folder already does)
+    real_sd = os.path.realpath(sd)
+    for agent in AGENT_DIRS:
+        if not agent.is_dir() or os.path.realpath(agent) == real_sd:
+            continue
+        miss = [n for n in sorted(st.get("skills", {}))
+                if not ((agent / n).exists() and os.path.realpath(agent / n) == os.path.realpath(sd / n))]
+        chk(not miss, "agent folder %s sees all %d skills%s" % (agent, len(st.get("skills", {})),
+                                                               ("; missing/stale: " + ", ".join(miss)) if miss else ""))
     eng = Path(os.environ.get("VIDEO_ENGINE", sd / "video-pipeline" / "engine"))
     chk(eng.is_dir(), "engine %s" % eng)
-    say("doctor: %s" % ("all good" if not bad else "%d problem(s); `video-skills update --force` relinks everything" % bad))
+    say("doctor: %s" % ("all good" if not bad else "%d problem(s); `video-skills update --force` relinks everything, then `video-skills setup` re-links the agent folders" % bad))
 
 
 def cmd_uninstall(a):

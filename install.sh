@@ -440,7 +440,7 @@ for d in "$SKILLS_SRC"/*/; do
       mkdir -p "$SKILLS_DIR-backup-$STAMP"; mv "$dst" "$SKILLS_DIR-backup-$STAMP/$name"
       cp -R "$d" "$dst"; UPDATED=$((UPDATED + 1))
     else
-      [ -f "$dst/.video-skills" ] || cp "$d/.video-skills" "$dst/.video-skills"
+      [ -f "$dst/.video-skills" ] || cp "$SKILLS_SRC/video-audio/.video-skills" "$dst/.video-skills" 2>/dev/null || true
       KEPT=$((KEPT + 1))
     fi
   else
@@ -455,8 +455,12 @@ fi
 [ -d "$SKILLS_DIR/business-reels-style" ] && rm -rf "$SKILLS_DIR/business-reels-style"
 
 # Link skills to other agents (e.g. Claude Code, Antigravity)
+realdir() { (cd "$1" 2>/dev/null && pwd -P); }
 for L in ${ABS_LINKS[@]+"${ABS_LINKS[@]}"}; do
   [ "$L" = "$SKILLS_DIR" ] && continue
+  # an agent folder that is itself a link to the skills folder (e.g. ~/.gemini/config/skills -> ~/.agents/skills)
+  # already sees every skill; writing links "into" it would overwrite the real ones with links to themselves
+  if [ -d "$L" ] && [ "$(realdir "$L")" = "$(realdir "$SKILLS_DIR")" ]; then ok "$(tilde "$L") is the skills folder itself (linked); nothing to add"; continue; fi
   mkdir -p "$L"; n=0; skipped=0
   [ -e "$L/business-reels-style" ] && rm -rf "$L/business-reels-style"
   for d in "$SKILLS_SRC"/*/; do
@@ -468,6 +472,21 @@ for L in ${ABS_LINKS[@]+"${ABS_LINKS[@]}"}; do
   done
   ok "linked $n skills into $(tilde "$L")"
 done
+
+# Every skill must open as a skill, from the skills folder and from every agent folder
+BROKEN=()
+for d in "$SKILLS_SRC"/*/; do
+  name="$(basename "$d")"
+  for A in "$SKILLS_DIR" ${ABS_LINKS[@]+"${ABS_LINKS[@]}"}; do
+    f="$A/$name/SKILL.md"
+    if [ ! -f "$f" ] || ! grep -qE "^name: *$name *\$" "$f"; then BROKEN+=("$(tilde "$A")/$name"); fi
+  done
+done
+if [ ${#BROKEN[@]} -eq 0 ]; then
+  ok "all $(ls -d "$SKILLS_SRC"/*/ | wc -l | tr -d ' ') skills open correctly in $(tilde "$SKILLS_DIR")$([ ${#ABS_LINKS[@]} -gt 0 ] && printf ' and %d agent folder(s)' ${#ABS_LINKS[@]})"
+else
+  warn "skills that do not open: ${BROKEN[*]} (fix: video-skills update --force, then video-skills doctor)"
+fi
 
 # Scaffold ONLY clean user folders in PROJECT
 mkdir -p "$PROJECT/videos/_shared/sfx" "$PROJECT/videos/_shared/img" "$PROJECT/references" "$PROJECT/brand/assets"
