@@ -1,6 +1,6 @@
 """transcribe.py (whisper.cpp in the engine's transcript shape) and audio-chain.py (the ordered voice chain)."""
 import importlib.util, json, os, subprocess, sys, unittest
-from .helpers import SCRIPTS, script_path, ffmpeg, load, needs_ffmpeg, run, scratch, write
+from .helpers import SCRIPTS, script_path, fake_exe, ffmpeg, load, needs_ffmpeg, run, scratch, write
 
 
 def module(name, filename):
@@ -53,7 +53,7 @@ class Windows(unittest.TestCase):
 class TranscribeEndToEnd(unittest.TestCase):
     def test_writes_the_shape_the_cut_tools_read(self):
         d = scratch(self)
-        fake = write(os.path.join(d, "whisper-cli"), FAKE_WHISPER); os.chmod(fake, 0o755)
+        fake = fake_exe(os.path.join(d, "whisper-cli"), FAKE_WHISPER)
         model = write(os.path.join(d, "ggml-large-v3.bin"), "")
         clip = os.path.join(d, "clip.wav")
         ffmpeg("-f", "lavfi", "-i", "sine=f=200:d=4", clip)

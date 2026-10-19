@@ -27,6 +27,13 @@ Usage:
 """
 import argparse, glob, json, os, re, shutil, statistics as st, subprocess, sys, tempfile, time
 
+
+def ff_filter_path(path):
+    """(as in the engine's runtime.py) A file path for a filter option, to be wrapped in single quotes: f"file='{ff_filter_path(p)}'".
+    Forward slashes and an escaped drive colon, so C:\\Users\\... survives both levels of FFmpeg filter parsing."""
+    s = os.path.abspath(str(path)).replace("\\", "/")
+    return s.replace(":", "\\:").replace("'", "\\'")
+
 ap = argparse.ArgumentParser()
 g = ap.add_mutually_exclusive_group(required=True)
 g.add_argument("--video"); g.add_argument("--storyboard"); g.add_argument("--compare", nargs="+")
@@ -164,14 +171,14 @@ def video(path):
     tmp = tempfile.mkdtemp(prefix="teardown-")
     diff_f, luma_f, rms_f = (os.path.join(tmp, x) for x in ("diff.txt", "luma.txt", "rms.txt"))
     fc = ("[0:v]split=2[m][s];[m]scale=64:36:flags=area,format=gray,split=2[g1][g2];"
-          "[g1]tblend=all_mode=difference,signalstats,metadata=print:key=lavfi.signalstats.YAVG:file=%s[d];"
-          "[g2]signalstats,metadata=print:key=lavfi.signalstats.YAVG:file=%s[l];"
-          "[s]fps=%.6f,scale=480:270:force_original_aspect_ratio=decrease,pad=480:270:-1:-1,tile=4x4[t]") % (diff_f, luma_f, 1.0 / args.every)
+          "[g1]tblend=all_mode=difference,signalstats,metadata=print:key=lavfi.signalstats.YAVG:file='%s'[d];"
+          "[g2]signalstats,metadata=print:key=lavfi.signalstats.YAVG:file='%s'[l];"
+          "[s]fps=%.6f,scale=480:270:force_original_aspect_ratio=decrease,pad=480:270:-1:-1,tile=4x4[t]") % (ff_filter_path(diff_f), ff_filter_path(luma_f), 1.0 / args.every)
     subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", path, "-filter_complex", fc, "-map", "[d]", "-f", "null", "-",
                     "-map", "[l]", "-f", "null", "-", "-map", "[t]", "-fps_mode", "passthrough", os.path.join(args.out, "sheet_%02d.png")], check=True)
     if has_audio:
         subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", path, "-vn", "-af", "aresample=16000,aformat=channel_layouts=mono,"
-                        "asetnsamples=n=4000:p=0,astats=metadata=1:reset=1,ametadata=print:key=lavfi.astats.Overall.RMS_level:file=%s" % rms_f,
+                        "asetnsamples=n=4000:p=0,astats=metadata=1:reset=1,ametadata=print:key=lavfi.astats.Overall.RMS_level:file='%s'" % ff_filter_path(rms_f),
                         "-f", "null", "-"], check=True)
     D = meta(diff_f, r"lavfi\.signalstats\.YAVG"); L = meta(luma_f, r"lavfi\.signalstats\.YAVG")
     A = meta(rms_f, r"lavfi\.astats\.Overall\.RMS_level") if has_audio else []

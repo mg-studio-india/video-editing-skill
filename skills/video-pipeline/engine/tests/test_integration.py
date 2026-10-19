@@ -37,9 +37,8 @@ class EndToEnd(unittest.TestCase):
         from make_video import make
         cls.tmp = Path(tempfile.mkdtemp(prefix="watch-it-"))
         cls.video = make(cls.tmp / "clip.mp4")
-        fake = cls.tmp / "whisper-cli"
-        fake.write_text(FAKE_WHISPER)
-        fake.chmod(0o755)
+        from tests.helpers import fake_exe
+        fake = Path(fake_exe(str(cls.tmp / "whisper-cli"), FAKE_WHISPER))
         (cls.tmp / "ggml-large-v3.bin").write_bytes(b"")
         cls.env = {**os.environ, "WATCH_WHISPER_CPP_BIN": str(fake),
                    "WATCH_WHISPER_MODEL": str(cls.tmp / "ggml-large-v3.bin"),

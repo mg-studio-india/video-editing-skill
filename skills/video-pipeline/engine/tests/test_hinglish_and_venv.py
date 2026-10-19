@@ -80,8 +80,7 @@ class TestVirtualEnvEnforcement(unittest.TestCase):
         venv = runtime.find_project_venv()
         self.assertIsNotNone(venv, "Project .venv should be discovered")
         self.assertTrue(os.path.isdir(venv))
-        self.assertTrue(os.path.exists(os.path.join(venv, "bin", "python3")) or
-                        os.path.exists(os.path.join(venv, "bin", "python")))
+        self.assertIsNotNone(runtime._find_python_in_venv(venv), "python in bin/ (or Scripts/ on Windows)")
 
     def test_find_engine_dir(self):
         engine_dir = runtime.find_engine_dir()

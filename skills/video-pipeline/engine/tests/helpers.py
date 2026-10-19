@@ -40,6 +40,17 @@ def write(path, text):
     return path
 
 
+def fake_exe(path, source):
+    """A stand-in command written in Python. Windows does not run scripts by their #! line, so there the command is
+    a .cmd launcher next to the script (subprocess runs .cmd files directly)."""
+    write(path, source); os.chmod(path, 0o755)
+    if os.name != "nt":
+        return path
+    with open(path + ".cmd", "w", newline="") as f:
+        f.write('@"%s" "%s" %%*\r\n' % (sys.executable, path))
+    return path + ".cmd"
+
+
 def read(path):
     with open(path) as f:
         return f.read()

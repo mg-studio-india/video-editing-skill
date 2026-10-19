@@ -38,7 +38,7 @@ import tempfile
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from runtime import ToolError, ensure_project_venv, run  # noqa: E402
+from runtime import ToolError, ensure_project_venv, ff_filter_path, run  # noqa: E402
 ensure_project_venv()
 
 import numpy as np
@@ -162,7 +162,7 @@ def denoise_filters(level: str, rnn_model: str | None, floor_db: float, speech_d
         return []
     out = []
     if level in ("strong", "neural") and rnn_model:
-        out.append(f"arnndn=m='{rnn_model}':mix=0.85")
+        out.append(f"arnndn=m='{ff_filter_path(rnn_model)}':mix=0.85")
     nf = afftdn_floor(floor_db, speech_db)
     nr = DENOISE_NR.get(level, 14)
     out.append(f"afftdn=nr={nr}:nf={nf}")

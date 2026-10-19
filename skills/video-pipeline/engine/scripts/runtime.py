@@ -166,6 +166,13 @@ def load_global_env() -> None:
                 pass
 
 
+def ff_filter_path(path) -> str:
+    """A file path for a filter option, to be wrapped in single quotes: f"file='{ff_filter_path(p)}'".
+    Forward slashes and an escaped drive colon, so C:\\Users\\... survives both levels of FFmpeg filter parsing."""
+    s = os.path.abspath(str(path)).replace("\\", "/")
+    return s.replace(":", "\\:").replace("'", "\\'")
+
+
 def engine_path_dirs() -> list[str]:
     """Engine folders that belong on PATH: the HyperFrames CLI, and the private Node.js 22 that install.sh
     downloads when the system node is missing or too old (node/bin, or node/ on Windows)."""

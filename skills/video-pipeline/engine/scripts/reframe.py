@@ -207,7 +207,7 @@ def render(video: str, keys: list[dict], cw: int, ch: int, out: str, size: str, 
             f.write(f"{k['t']:.4f} crop x {k['x']}, crop y {k['y']};\n")
     w, h = size.split("x")
     os.makedirs(os.path.dirname(os.path.abspath(out)), exist_ok=True)
-    vf = f"sendcmd=f='{cmds}',crop=w={cw}:h={ch}:x={keys[0]['x']}:y={keys[0]['y']},scale={w}:{h}:flags=lanczos,setsar=1"
+    vf = f"sendcmd=f='{runtime.ff_filter_path(cmds)}',crop=w={cw}:h={ch}:x={keys[0]['x']}:y={keys[0]['y']},scale={w}:{h}:flags=lanczos,setsar=1"
     subprocess.run(["ffmpeg", "-y", "-v", "error", "-i", video, "-vf", vf, "-c:v", "libx264", "-crf", "16",
                     "-preset", "fast", "-g", "30", "-keyint_min", "30", "-pix_fmt", "yuv420p",
                     "-color_primaries", "bt709", "-color_trc", "bt709", "-colorspace", "bt709",

@@ -1,6 +1,6 @@
 """Speaker-video layouts (stack / pip / hide) and project transcript corrections (fix-words + transcribe --fix)."""
 import importlib.util, json, os, subprocess, sys, unittest
-from .helpers import SCRIPTS, script_path, ffmpeg, load, needs_ffmpeg, run, scratch, write
+from .helpers import fake_exe, SCRIPTS, script_path, ffmpeg, load, needs_ffmpeg, run, scratch, write
 
 sys.path.insert(0, SCRIPTS)
 import treatments as T  # noqa: E402
@@ -94,7 +94,7 @@ json.dump({"result": {"language": "en"}, "transcription": tr}, open(prefix + ".j
 class TranscribeAppliesCorrections(unittest.TestCase):
     def test_every_pass_applies_project_corrections(self):
         d = scratch(self)
-        fake = write(os.path.join(d, "whisper-cli"), FAKE_WHISPER); os.chmod(fake, 0o755)
+        fake = fake_exe(os.path.join(d, "whisper-cli"), FAKE_WHISPER)
         model = write(os.path.join(d, "ggml-large-v3.bin"), "")
         clip = os.path.join(d, "clip.wav"); ffmpeg("-f", "lavfi", "-i", "sine=f=200:d=2", clip)
         write(os.path.join(d, "corrections.json"), {"cap cut": "CapCut"})
