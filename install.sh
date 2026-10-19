@@ -507,15 +507,28 @@ chmod 600 "$HOME/.config/video-skills/.env" "$ENGINE_DIR/.env"
 getenv() {
   local line; line="$(grep -E "^$1=" "$HOME/.config/video-skills/.env" 2>/dev/null | tail -1 || true)"
   [ -z "$line" ] && line="$(grep -E "^$1=" "$ENGINE_DIR/.env" 2>/dev/null | tail -1 || true)"
-  line="${line#*=}"; line="${line#\"}"; line="${line%\"}"
+  line="${line#*=}"
+  case "$line" in
+    \'*\') line="${line#\'}"; line="${line%\'}"; line="$(printf '%s' "$line" | sed "s/'\\\\''/'/g")" ;;   # KEY='va'\''lue' (current format)
+    \"*\") line="${line#\"}"; line="${line%\"}" ;;                                  # KEY="value" (older installs)
+  esac
   printf '%s' "$line"; return 0
 }
-setenv() {
+setenv() {   # single-quoted, so a value may hold any character (quotes, $, `, \) and the file always parses
+  local q; q="$(printf '%s' "$2" | sed "s/'/'\\\\''/g")"
   for f in "$HOME/.config/video-skills/.env" "$ENGINE_DIR/.env"; do
     local tmp; tmp="$(mktemp)"; grep -vE "^$1=" "$f" 2>/dev/null > "$tmp" || true
-    [ -n "$2" ] && printf '%s="%s"\n' "$1" "$2" >> "$tmp"
+    [ -n "$2" ] && printf "%s='%s'\n" "$1" "$q" >> "$tmp"
     cat "$tmp" > "$f"; rm -f "$tmp"; chmod 600 "$f"
   done
+}
+api_key() {  # trimmed key from a hidden prompt; refuses anything that is not key-shaped (a stray keystroke, a paste with spaces)
+  local v; v="$(printf '%s' "$1" | sed -E 's/^[[:space:]]+//; s/[[:space:]]+$//')"   # trim the ends only
+  if [ -n "$v" ] && ! printf '%s' "$v" | grep -Eq '^[A-Za-z0-9._:+/=-]{8,}$'; then
+    warn "$2 not saved: that does not look like an API key (letters, digits and . _ : + / = - only, 8+ characters). Re-run install.sh to enter it."
+    v=""
+  fi
+  printf '%s' "$v"
 }
 
 echo "  HeyGen (the sound library for all SFX and music)"
@@ -527,7 +540,7 @@ elif (cd "$ENGINE_DIR" && npx --no-install hyperframes auth status 2>&1 | grep -
   ask "Sign in now? 1 = browser sign-in (recommended), 2 = paste an API key, 3 = later" "$HG_DEFAULT"
   case "$REPLY" in
     1) (cd "$ENGINE_DIR" && npx --no-install hyperframes auth login < /dev/tty) || warn "HeyGen sign-in incomplete" ;;
-    2) ask_secret "HeyGen API key" ""; [ -n "$REPLY" ] && setenv HEYGEN_API_KEY "$REPLY" && ok "saved" ;;
+    2) ask_secret "HeyGen API key" ""; REPLY="$(api_key "$REPLY" HEYGEN_API_KEY)"; [ -n "$REPLY" ] && setenv HEYGEN_API_KEY "$REPLY" && ok "saved" ;;
     *) warn "HeyGen skipped: SFX will use offline curated sound-palette" ;;
   esac
 else
@@ -536,12 +549,12 @@ fi
 
 echo "  Google Gemini (Veo video + Gemini Flash Image; https://aistudio.google.com/apikey)"
 G_CUR="$(getenv GEMINI_API_KEY)"; G_CUR="${G_CUR:-${GEMINI_API_KEY:-}}"
-ask_secret "GEMINI_API_KEY (Enter to skip)" "$G_CUR"; setenv GEMINI_API_KEY "$REPLY"
+ask_secret "GEMINI_API_KEY (Enter to skip)" "$G_CUR"; REPLY="$(api_key "$REPLY" GEMINI_API_KEY)"; setenv GEMINI_API_KEY "$REPLY"
 [ -n "$REPLY" ] && ok "GEMINI_API_KEY saved" || ok "GEMINI_API_KEY skipped"
 
 echo "  OpenRouter (fallback for image generation; https://openrouter.ai/keys)"
 O_CUR="$(getenv OPENROUTER_API_KEY)"; O_CUR="${O_CUR:-${OPENROUTER_API_KEY:-}}"
-ask_secret "OPENROUTER_API_KEY (Enter to skip)" "$O_CUR"; setenv OPENROUTER_API_KEY "$REPLY"
+ask_secret "OPENROUTER_API_KEY (Enter to skip)" "$O_CUR"; REPLY="$(api_key "$REPLY" OPENROUTER_API_KEY)"; setenv OPENROUTER_API_KEY "$REPLY"
 [ -n "$REPLY" ] && ok "OPENROUTER_API_KEY saved" || ok "OpenRouter key skipped"
 
 ask "Main spoken language for transcription: en, hi (Hinglish Roman captions), or auto?" "$(getenv WATCH_WHISPER_LANG)"
