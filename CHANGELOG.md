@@ -2,6 +2,13 @@
 
 Every release of video-editing-skill. Update with `video-skills update`.
 
+## [1.0.3] - 2026-10-19
+
+- README: install with the one-line installer; new Staying Up to Date section; system requirements match the installer
+- Installer and skills point to 'video-skills setup' for re-running setup
+
+Skills changed: video-audio 1.0.1 -> 1.0.3, video-pipeline 1.0.2 -> 1.0.3
+
 ## [1.0.2] - 2026-10-19
 
 - Fix: skills no longer break when an agent folder links to ~/.agents/skills; video-skills update repairs them
