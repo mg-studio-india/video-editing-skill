@@ -101,8 +101,6 @@ abspath() {
 # Determine project creative workspace
 if [ -n "$PROJECT_ARG" ]; then
   PROJECT="$(abspath "$PROJECT_ARG")"
-elif [ "$ROOT_DIR" = "$PKG" ]; then
-  PROJECT="$ROOT_DIR/workspace"
 else
   PROJECT="$ROOT_DIR"
 fi

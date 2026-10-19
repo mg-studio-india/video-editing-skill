@@ -428,7 +428,7 @@ def cmd_install(a):
     st["skills_dir"] = str(Path(a.skills_dir).expanduser() if a.skills_dir else Path(st.get("skills_dir", DEFAULT_SKILLS)))
     if a.project:
         st["project"] = str(Path(a.project).expanduser().resolve())
-    elif not st.get("project"):
+    else:
         st["project"] = os.getcwd()
     if a.rest:
         st["install_args"] = [x for x in a.rest if x != "--"]
@@ -631,7 +631,7 @@ def cmd_uninstall(a):
     for p in list(sd.iterdir()) if sd.is_dir() else []:
         if is_link(p) and version_of(os.path.realpath(p)):
             unlink_any(p); n += 1
-    for agent_dir in (Path("~/.claude/skills").expanduser(),):
+    for agent_dir in AGENT_DIRS:
         for p in list(agent_dir.iterdir()) if agent_dir.is_dir() else []:
             if p.is_symlink() and not p.exists():
                 p.unlink()
@@ -639,9 +639,36 @@ def cmd_uninstall(a):
         if os.path.lexists(exe):
             exe.unlink()
     say("removed %d skill links and the command" % n)
+
+    # Remove project .engine sandbox if present
+    project_dir = st.get("project")
+    if project_dir:
+        local_engine = Path(project_dir) / ".engine"
+        if local_engine.is_dir() or local_engine.is_symlink():
+            shutil.rmtree(local_engine, ignore_errors=True)
+            say("removed local engine sandbox: %s" % local_engine)
+
+    # Also remove current directory .engine if different from recorded project
+    cwd_engine = Path(os.getcwd()) / ".engine"
+    if (cwd_engine.is_dir() or cwd_engine.is_symlink()) and (not project_dir or cwd_engine.resolve() != Path(project_dir).resolve() / ".engine"):
+        shutil.rmtree(cwd_engine, ignore_errors=True)
+        say("removed local engine sandbox: %s" % cwd_engine)
+
+    # Remove global engine sandbox in HOME_DIR if present
+    engine_dir = HOME_DIR / "engine"
+    if engine_dir.is_dir() or engine_dir.is_symlink():
+        shutil.rmtree(engine_dir, ignore_errors=True)
+        say("removed global engine sandbox: %s" % engine_dir)
+
+    # Remove config engine sandbox (~/.config/video-skills/engine) if present
+    cfg_engine = Path("~/.config/video-skills/engine").expanduser()
+    if cfg_engine.is_dir() or cfg_engine.is_symlink():
+        shutil.rmtree(cfg_engine, ignore_errors=True)
+        say("removed engine sandbox: %s" % cfg_engine)
+
     if a.purge:
         shutil.rmtree(HOME_DIR, ignore_errors=True); say("removed %s" % HOME_DIR)
-    say("your workspace (brand/, references/, videos/) and the engine sandbox were not touched")
+    say("your creative workspace (brand/, references/, videos/) was not touched")
 
 
 def main():
