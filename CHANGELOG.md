@@ -2,6 +2,11 @@
 
 Every release of video-editing-skill. Update with `video-skills update`.
 
+## [1.0.4] - 2026-10-19
+
+- Windows: install.sh accepts C:/... paths from video-skills, so the workspace and skills folder are created in the right place
+- CI runs on pull requests only and is verified on Windows, Ubuntu and macOS
+
 ## [1.0.3] - 2026-10-19
 
 - README: install with the one-line installer; new Staying Up to Date section; system requirements match the installer
