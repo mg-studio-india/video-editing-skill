@@ -1,6 +1,6 @@
 {
  "schema": "video-skills-manifest/1",
- "version": "1.0.1",
+ "version": "1.0.2",
  "released": "2026-10-19",
  "repo": "mg-studio-india/video-editing-skill",
  "skills": {
@@ -81,8 +81,8 @@
    }
   },
   "video-pipeline": {
-   "version": "1.0.1",
-   "tree": "cdd903ab6fff0577be21798e989e940c6ad83994c64e21ce04e195b34772b4e9",
+   "version": "1.0.2",
+   "tree": "d81e6434164e20eee9b26def252453b32c986c48427e8b378c0d63374ae1ce29",
    "files": {
     ".video-skills": "3830f5731e3a76df5150309a9f27126f116cff92cd995f16af5553c30db75e12",
     "SKILL.md": "e444f31bfb163a0a5eb1d711271e0fa155aceafc644ae9ac1ff900b785a8fbee",
@@ -102,7 +102,7 @@
     "engine/formats/claude_chat.py": "5201f3b080949c4c550df1cc9ccc551ab212f4d24c0a042ef4d85acac8b5ed58",
     "engine/scripts/apply-cut.py": "b30ea7b3e65a2a6170489452e9f7a75fde9bed2fbeda6e31f8452af5ab14552d",
     "engine/scripts/assemble.py": "bb9ad4806f8131624121494fff472bf00257dd10621ba2f7cc04b827780537dc",
-    "engine/scripts/audio-chain.py": "0456cd74f1f49d93b86532f52a87213a6c15ea6dbcc08942eeb9a8d8d61414a5",
+    "engine/scripts/audio-chain.py": "b465eb071551a1bede1b38d035c1701750ac2d269e755b9a060047bcff969bc6",
     "engine/scripts/audio.py": "1e979f0dfbafc9cf8131810e5b5580a38046426118e987c82d2b0734bb3a5b3e",
     "engine/scripts/beat-check.py": "d87839ca9787dd59a93850933e6856bf9035a3f276a361af5d30b9d8be8dbc1c",
     "engine/scripts/broll-conform.py": "c937e199eb9b5c6843faa47c280b50c54d60f0e675842b8debc8c76a6a906a7d",
@@ -129,10 +129,10 @@
     "engine/scripts/paper-cut.py": "020e6d6328dc34e98801d89a396b19030bbe40955c87c55e8d7c3be9b57af42e",
     "engine/scripts/patch-cut.py": "af85f9967e3621906bf7af055ea047aeffdd0fc666610bcdaa737e766eaecc90",
     "engine/scripts/probe.py": "806d88a35efea9abcb67bad222412c5a213d8829ce612cba92c38724c1657b52",
-    "engine/scripts/reframe.py": "c5755e980104c796fb502c55fa3616f32ff1b54759d31ce719cc86fc97b3d3c9",
+    "engine/scripts/reframe.py": "1d4e2635280cbdaf2e583574512a91c96d670cab5ef0938957f9a862a5cbee66",
     "engine/scripts/render.py": "300989c7a2d64f84a46d5c1de0d228b8794770bbf50d3eb42185d2d673c9ec07",
     "engine/scripts/resolve-anchors.py": "d7e7cc0bbdbeb349a0029c91855ddeee11f5e4eb77526f15b6b95f62a08b70e0",
-    "engine/scripts/runtime.py": "900144336fc85d4adcd9fc5aa96e182e3da822036389d144f41eb9cb973947d6",
+    "engine/scripts/runtime.py": "b769aa7727bfb18eb99e9b97f9b81bd277d36a937a39e152a998886ffe1dee45",
     "engine/scripts/setup.py": "8a016aec3e7df152d87c7bbd09ba9981991a7ba12df4ab24bcb4d8081e82195b",
     "engine/scripts/sfx-prep.py": "27c8970779c8b3339bfa4f06cb77fd77bca7dab14f97980d4559cd9af25287af",
     "engine/scripts/shots.py": "c9054041f51786295b4045026f644dab3e68a064c298899b5bb1f794ebe1e78a",
@@ -149,24 +149,24 @@
     "engine/scripts/watch.py": "12dec083ad1e71d66aaabbb170032c756343eb253174c7a1ed426c950531d9d0",
     "engine/scripts/window-patch.py": "dc095aa7c295f832a9b8c5038b12c3c2a1734227f19332148b116cb3b8faf520",
     "engine/tests/__init__.py": "8fc1a0d0762a7bd09a00f1d7a795dfdfd532a63add1bbd62cfc6ace84de33181",
-    "engine/tests/helpers.py": "b86cab0548d97c0f2d0b007069462c0ec90bb8dcd8f5a4769fca24f0b4a1e1ae",
+    "engine/tests/helpers.py": "7d9ae03918f7cf937d14730cbc504e4825ecf2f0cc551473b73dfea62ec5f974",
     "engine/tests/make_video.py": "add453649a36e9606a25c68c685486b38e03a5fe1cd5f6538e01e60bfb14c65e",
     "engine/tests/test_batch2.py": "8385da92d40dfdf12118ecc4861e4c18ddee702785b574b416051590c743f541",
     "engine/tests/test_batch3.py": "511f1eb9e5f0add9c2d0b8d8d8c1cf00ca6a374ab47b3b9a5e15569d03fa1c64",
     "engine/tests/test_batch4.py": "fae88fbf63275be16c9555f96b92d58b4e8a7263af51ecaf621cfaa753a11c18",
-    "engine/tests/test_batch5.py": "1995ac750394b1a39f40901408a0b9029c7391cae26c0599bc7cc0389503b008",
+    "engine/tests/test_batch5.py": "6c389c1ca2b5411a38f3d33062c2bc5057b2e5209b6c63d5018a0c6e5a01a356",
     "engine/tests/test_beat_check.py": "928ca6b03cd71af5dadbf409ce8cfdc5d7e6d31eb000b6f6bd650adcf9a78fe3",
     "engine/tests/test_broll_conform.py": "2000947b949af13f143d42371479a3c5882a965e3d618683b39cca908a977cdd",
     "engine/tests/test_compose_drafts.py": "6d78b8065c05887b5a5ffef22c432a15ee773cb4206809087dbe1d7c7190fea1",
     "engine/tests/test_gap_scan.py": "ff943587e621e0d2f5f3f60f3ea362daa6145e172251ae24c9a1b0ad0e9cf9ae",
-    "engine/tests/test_hinglish_and_venv.py": "22920340feb43591f9cc242dbab3e7240e428b43140137d9d500daa0bb178524",
-    "engine/tests/test_integration.py": "06381ff77f168b5035e6629036c078dd043f1c99eb46cb66c4c0028fd1cca799",
+    "engine/tests/test_hinglish_and_venv.py": "05f1469eb5fd83f2a5fd8f6d9ae68da90a072147c0ca9aec26db0c4e39d62bc2",
+    "engine/tests/test_integration.py": "8aca2a6cda1c490b96d018ddcfa4302e884ea4a2e522fe12dc365465c4729b23",
     "engine/tests/test_logic.py": "2b39a216ac52450a422b960dc1196712707907a8453ea06fa3c5b7d55e61aa34",
     "engine/tests/test_media.py": "5090011b79bc0f189cd134dce5054eeffe1099ea0b40e47f7ceec59b797cb947",
     "engine/tests/test_memo.py": "0f13870387686b24961bb3b54a489dca0611e9d1501603ec863ab7b64f511c15",
     "engine/tests/test_patch_cut.py": "3633d489e1cc354c847bae90bcab65714b5282ac9a2116573d16260fa75feedb",
     "engine/tests/test_spec_resolver.py": "a392bed9abbf30781ea3dc51f9427bb1dd90ed71e9e703a9527d5022a4397c52",
-    "engine/tests/test_transcribe_audio.py": "bab9532244f129f98b2195cb90becf9a9ded9727914cde80101d9adc2286eea9",
+    "engine/tests/test_transcribe_audio.py": "fedb6e64aee02be30863c21ba0e2e5e799a458e6ebd9bf9014b0322f4800fdd2",
     "references/engine-scripts.md": "8f6b2a793356aed0fe113aeb92553dec1f22366fdd45ac5ea32f5e2577042a59",
     "references/pipeline-architecture.md": "2601867819c1d18ff559b04e1e5e29c18697ae8aada3cc05a93bc47747af5b91",
     "references/project-file.md": "f0a2dc0b1ec30575fee698da147121655e4022e8704b307dc5319798ce48f660",
@@ -190,9 +190,10 @@
    }
   },
   "video-reference-match": {
-   "version": "1.0.0",
-   "tree": "6aeee1262818bb453264eca889d3012f51f293488e909004cd415d50ed621f3b",
+   "version": "1.0.2",
+   "tree": "bc5b58ca298912adc990da6545e21057c0b4120e13773397222311692407ee15",
    "files": {
+    ".video-skills": "3830f5731e3a76df5150309a9f27126f116cff92cd995f16af5553c30db75e12",
     "SKILL.md": "96a60172ddac0a66667439d96f72ee45696cfbd66552c7affc6828b3feda7870",
     "references/INDEX.md": "b0e41f32337ebbd6417904dab275bf9da3c09930dfb1f355164f3b891e28dd30",
     "references/PROMPTS.md": "53cac293b64f99ba254d4cd64f48aa24a6c97e6dc2e594e43fde219481bfba8b",
@@ -345,8 +346,8 @@
    }
   },
   "video-watch": {
-   "version": "1.0.0",
-   "tree": "8b12ac314375b339a629889e246da371d132ca92a9e9e5d7f1d420663724fad2",
+   "version": "1.0.2",
+   "tree": "43dc2af307506292784cd49169dca2abc1e49b50340f06844a3666ba15103dc2",
    "files": {
     ".video-skills": "3830f5731e3a76df5150309a9f27126f116cff92cd995f16af5553c30db75e12",
     "SKILL.md": "8a93ec6b08c51599dedf41742335e4b5fae4fbb7750d1756c5a72b3f3ef8bb6a",
@@ -354,7 +355,7 @@
     "references/hyperframes-mapping.md": "804b94659c4932f70d0891f9d9f41ed1126dd0685cde87358c1bc9fc4fcf700c",
     "references/storyboard-schema.md": "e1bf75ef7393278b1431ee677183cce98dcd9de27f34054e313c90a5f3bbd89b",
     "scripts/screen-activity.py": "fbf8d7259824e180f15c6eff52ce019e5c3b20e568594e8e8b37daf66ef4de57",
-    "scripts/teardown.py": "9226d090968653995b6f75a321d052f129ff0bc94a2b774b428a5cc72efe9420"
+    "scripts/teardown.py": "20b93dc570099cd493ce77fbbe46ce47f734d746e0bcd925b1fd4cfbb4be2db7"
    }
   }
  }

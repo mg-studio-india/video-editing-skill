@@ -2,6 +2,15 @@
 
 Every release of video-editing-skill. Update with `video-skills update`.
 
+## [1.0.2] - 2026-10-19
+
+- Fix: skills no longer break when an agent folder links to ~/.agents/skills; video-skills update repairs them
+- Every skill is verified after install; video-skills doctor checks each skill and agent folder
+- Windows: FFmpeg filter paths fixed (RNNoise cleaning, reframing, teardown); verified in CI on Windows, Ubuntu, macOS
+- README rewritten for creators
+
+Skills changed: video-pipeline 1.0.1 -> 1.0.2, video-reference-match 1.0.0 -> 1.0.2, video-watch 1.0.0 -> 1.0.2
+
 ## [1.0.1] - 2026-10-19
 
 - Linux: private Node.js 22 and prebuilt whisper.cpp installed automatically (no sudo); clear install hints per distro
