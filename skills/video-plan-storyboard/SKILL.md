@@ -174,4 +174,9 @@ Present to the user:
 5. **Kinetics & Physics (Scale pops, spring curves, camera punch-ins)**
 6. **Asset Checklist (Confirmed b-roll, generated assets, or user-recorded additions)**
 
+**Review document:** generate `STORYBOARD.md` (time / beat / what is on screen) from the same `storyboard.json` the
+composition is built from, so the document can never drift from the edit:
+`"$PY" "${VIDEO_SKILLS:-$HOME/.agents/skills}/video-plan-storyboard/scripts/storyboard-md.py" --title "<title>" --note "<what changed>" --project "$W:<id>:<label>" --out "$W/STORYBOARD.md"`.
+Regenerate it after every storyboard change and ship it with the delivery.
+
 > **User Prompt Rule:** Ask for feedback and approval. Never cut the raw video or build components until the user approves or refines the storyboard.

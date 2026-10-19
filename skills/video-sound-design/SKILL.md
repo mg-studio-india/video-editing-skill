@@ -33,6 +33,12 @@ External source: HeyGen sound library retrieved through HyperFrames' audio engin
 `python3 "$S/heygen-sound.py" --check` (media-use installed? signed in?); sign in with `npx hyperframes auth login` (or
 `HEYGEN_API_KEY`); missing media-use: `npx hyperframes skills update media-use`. Not signed in: fallback to local Sound Palette.
 
+Last-resort offline generation (no palette match and no library access): `"${VIDEO_SKILLS:-$HOME/.agents/skills}/video-sound-design/scripts/audiocraft-gen.py"`
+`music --prompt "calm lo-fi, soft keys, 90 bpm" --seconds 45 --out "$W/music/bed.wav"` or `sfx --prompt "single soft
+click" --seconds 1.5 --out "$W/sfx/click.wav"`, plus `--non-commercial-ok` (MusicGen / AudioGen weights are CC-BY-NC:
+**ask the user first** and never use it for monetised or client work). Generated SFX then go through `"$S/sfx-prep.py"`;
+every output is logged in `ledger.json` next to it. `--dry-run` shows the plan without loading a model.
+
 ## 1. Name, 2. fetch, 3. place
 
 1. Cues in `storyboard.plan.json`, anchored to words, named concretely in English ("soft mouse click", not "sound"):

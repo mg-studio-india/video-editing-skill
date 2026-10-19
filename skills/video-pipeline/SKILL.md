@@ -111,6 +111,16 @@ Every skill in the `video-editing-skill` ecosystem adheres to this universal con
 
 ---
 
+## Intake: several clips or two cameras (before Gate 2)
+
+- **Several clips in `$W/raw/`:** `"$PROJECT/.venv/bin/python3" "$ENG/scripts/ingest.py" --raw "$W/raw" --out "$W" [--concat] [--order C0002,C0001] [--only ...]`
+  probes every clip, orders them (explicit, filename, then recording time) and writes `ingest.json`; `--concat` joins
+  the talking-head clips into `source.mp4` (stream copy when codecs match) with offsets that map any time back to
+  (clip, time). Screen recordings with a different size are skipped automatically.
+- **Camera + screen recording (or two cameras) of one take:** `"$PROJECT/.venv/bin/python3" "$ENG/scripts/sync-tracks.py" --a "$W/raw/C0001.MP4" --b "$W/raw/screen.mov" [--write-aligned "$W/aligned"]`
+  finds the offset by cross-correlating the audio (prints offset, confidence and the `-ss` to apply) and can write
+  copies that start on the same instant. Then run `video-watch` on the aligned files.
+
 ## Tool Priority
 
 1. **HyperFrames CLI Engine (Priority 1):** Catalog blocks and components (`npx hyperframes catalog`), `add`, `check`, `snapshot`, and `render` via CLI.

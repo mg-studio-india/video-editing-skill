@@ -5,7 +5,7 @@ The review page (build-edl-review.mjs, next to this script) shows kept vs cut re
 lists the largest cuts, and embeds the ORIGINAL and the EDITED video side by side so the creator can click any
 red mark and hear exactly what was removed. This is Checkpoint A for anything longer than a hook.
 
-Usage (SCRIPTS = the folder holding this script, e.g. .claude/skills/video-pipeline/engine/scripts):
+Usage (SCRIPTS = the folder holding this script: video-cut-audit/scripts, where build-edl-review.mjs also lives):
   python3 cutlist-to-edl.py --cut-list videos/<p>/cut-list.json --out videos/<p>/cut-edl.json
   node "$SCRIPTS/build-edl-review.mjs" videos/<p>/cut-edl.json \
        --original videos/<p>/raw/<clip>.MP4 --edited videos/<p>/public/input-video.mp4 \

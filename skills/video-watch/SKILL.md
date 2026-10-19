@@ -42,6 +42,11 @@ Read every sheet and note for the plan:
 - **Visual Retakes & Stumbles:** Identify repeated sentences or false starts to drop.
 Record status, outputs, and a three-line summary in `project.json`. The transcript and QA flags feed directly into Gate 2 and Gate 4.
 
+**Screen-recording projects:** `"${VIDEO_SKILLS:-$HOME/.agents/skills}/video-watch/scripts/screen-activity.py" --video "$W/raw/<screen>.mov" --out
+"$W/watch/activity.json"` gives screen change per half second. Stretches with no clicks and activity near zero are where
+the edit can cut to the full face (note them for `video-format`); typing or drawing shows as activity without clicks.
+**Multi-clip or two-camera footage:** run `ingest.py` / `sync-tracks.py` first (see `video-pipeline`, intake).
+
 ## Reference video (`ref`)
 
 1. `watch.py ref "<video>" --intent "<what the user wants>"` (infer the intent).
@@ -56,6 +61,19 @@ Record status, outputs, and a three-line summary in `project.json`. The transcri
 
 `mine --against`: read `mine-report.md`; its tight cut is a suggestion (the real cut is `video-cut-audit`'s). Turn each
 non-similar row into a plan note tied to a number ("first cut at 4.2 s vs 1.1 s").
+
+## Teardown loop: your edit vs references (`teardown.py`)
+
+Every couple of videos, measure two references you admire against your own last edits (cuts per minute, overlay
+density, camera moves, cutaway types, sound, captions):
+```bash
+T="${VIDEO_SKILLS:-$HOME/.agents/skills}/video-watch/scripts/teardown.py"
+"$PY" "$T" --video ref-1.mp4 --out teardowns/ref-1 [--transcript ref-1.json]      # sheets + report.json + TEARDOWN.md
+"$PY" "$T" --storyboard "$W/storyboard.json" --out teardowns/<p>                   # counts one of our storyboards exactly
+"$PY" "$T" --compare teardowns/ref-1/report.json teardowns/<p>/report.json --out teardowns/COMPARE.md
+```
+Turn each gap into a plan note with a number ("overlays every 13 s vs 6 s in the reference"). Use it alongside
+`watch.py compare` (pacing / speech / loudness fingerprints).
 
 ## Reading the numbers
 

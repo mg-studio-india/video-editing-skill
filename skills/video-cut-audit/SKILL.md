@@ -49,6 +49,28 @@ W="videos/<project>"
 
 ---
 
+## 2b. The cut toolchain (run in this order)
+
+```bash
+PY="$PROJECT/.venv/bin/python3"; CA="${VIDEO_SKILLS:-$HOME/.agents/skills}/video-cut-audit/scripts"; S="$ENG/scripts"
+auto-editor "$W/raw/<clip>-clean.mp4" --edit audio:threshold=-30dB --margin 0.05s --export v1 -o "$W/speech.v1" --no-open
+ffmpeg -y -v error -i "$W/raw/<clip>-clean.mp4" -vn -ac 1 -ar 16000 -c:a pcm_s16le "$W/audio-raw.wav"
+```
+
+| Step | Tool | When / what |
+|---|---|---|
+| 1 | `"$S/paper-cut.py" --transcript "$W/transcript-raw.json" --duration <s> --speech "$W/speech.v1" --out-dir "$W"` | automatic cut: restarts, retakes (keeps the last clean take), false starts, silence → `cut-list.json` + `PAPER-CUT.md` |
+| 1b | `"$S/stutter-scan.py"` | second opinion on step 1 (mechanical mistake finder) |
+| 2 | `"$CA/hand-cut.py" --transcript … --speech "$W/speech.v1" --duration <s> --out-dir "$W" --keep A-B …` | **instead of step 1** when the story needs whole lines dropped (single take over the length budget), or paper-cut misread a list / slate / merged retakes. `A`/`B` = start of first / last kept word; `A-B!` keeps internal pauses |
+| 3 | `"$CA/tighten-cut.py" --audio "$W/audio-raw.wav" --cut-list "$W/cut-list.json" --out "$W/cut-list-tight.json"` | trims lead-ins, tails and inner pauses by the waveform (ASR word starts sit up to 0.4 s early); segments with `"room_tone": true` are left alone |
+| 4 | `"$CA/sliver.py" --cut-list "$W/cut-list-tight.json" --audio "$W/audio-raw.wav" --fix` | drops breath / tail slivers and moves heads/tails that carry a neighbouring word's sound |
+| 5 | `"$S/edge-audit.py" --audio "$W/audio-raw.wav" --cut-list … --transcript "$W/transcript-raw.json" [--keeps keeps.args] --fix`, then again without `--fix` | every edge checked by RMS; must end with `0 issues`. On mid-sentence trims, inspect the 20 ms RMS around each edge yourself: Whisper word times can drift 0.3–0.6 s, so a "fixed" edge can still cut a word in half |
+| 6 | `"$S/apply-cut.py" --input "$W/raw/<clip>-clean.mp4" --cut-list … --out "$W/hyperframes/input-video.mp4"` | frame-snapped flat cut + `cut-map.json` |
+| 7 | re-transcribe the flat cut in 15 s windows (`video-transcribe`) | every kept word must be present; a missing or extra word = an edge problem, fix with `"$S/patch-cut.py"` and re-apply |
+| 8 | `"$CA/cutlist-to-edl.py" --cut-list "$W/cut-list.json" --out "$W/cut-edl.json"` then `node "$CA/build-edl-review.mjs" "$W/cut-edl.json" --original <raw clip> --edited "$W/hyperframes/input-video.mp4" --output "$W/CUT-REVIEW.html"` | the Gate 4 review page for anything longer than a hook: kept vs cut on a timeline, largest cuts listed, original and edit side by side (click a red mark to hear what was removed) |
+
+---
+
 ## 3. Gate 4: Interactive Cut & Dead-Air Review
 
 Before applying the permanent cut or encoding video:

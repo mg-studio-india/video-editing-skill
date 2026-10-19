@@ -14,59 +14,23 @@
 
 ## ⚡ Architecture: Global Engine Sandbox vs. Clean Workspace
 
-To keep your working directory 100% spotless across all platforms (**macOS, Linux, Windows**), the pipeline enforces a strict separation between **Engine Plumbing** and **Creative Workspace**:
+The pipeline enforces strict separation between isolated engine plumbing and your creative workspace:
 
 ```text
-⚙️ GLOBAL ENGINE SANDBOX (~/.video-skills/engine or ~/.config/video-skills/engine)
-├── .venv/                            # Python 3.9+ runtime & isolated dependencies
-│   ├── bin/python3 (or Scripts/python.exe on Windows)
-│   └── lib/python*/site-packages/    # numpy, opencv, pillow, auto-editor, scipy, etc.
-├── node_modules/                     # Pinned HyperFrames CLI & GSAP runtime
-├── package.json & package-lock.json  # NPM lockfiles isolated from user space
-├── LICENSES/                         # Third-party font & open-source licenses
-├── .env                              # Private API keys (chmod 600)
-└── agent-env.sh                      # Global environment bootstrap
+⚙️ GLOBAL ENGINE SANDBOX (~/.video-skills/engine)
+├── .venv/ (Python 3.9+ runtime & dependencies: numpy, opencv, scipy, auto-editor)
+├── node_modules/ (Pinned HyperFrames CLI & GSAP runtime)
+└── .env & agent-env.sh (API keys & environment bootstrap)
 
-───────────────────────────────────────────────────────────────────────────────────
-
-📂 USER CREATIVE WORKSPACE (~/VideoWorkspace or your project folder)
-├── brand/                            # [PERSISTENT BRAND MEMORY & PREFERENCES]
-│   ├── MEMO.md                       # Active memory: styling, handles, fonts, layout
-│   ├── STYLE-GUIDE.md                # Grade, palette, fonts, motion defaults: fill the "Yours" column
-│   ├── brand-style-guide.pdf         # Brand guidelines, colors, typography rules & brand deck
-│   └── assets/                       # Vector logos (.svg), avatars, monograms, badges
-│
-├── references/                       # [STYLE & BENCHMARK INSPIRATION HUB]
-│   ├── benchmark-reel.mp4            # Inspiration video to learn pacing & cuts from
-│   ├── viral-hook-example.mp4        # Competitor/creator viral hook reference
-│   └── layout-reference.png          # Target lower-third or graphic layout screenshot
-│
-├── sound-palette/                    # [OFFLINE TACTILE SOUND PALETTE]
-│   ├── audio/                        # 19 pre-trimmed, -3 dBFS peak-normalized SFX
-│   └── sound-palette.json            # Acoustic hierarchy and cue mappings
-│
-└── videos/                           # [VIDEO PRODUCTION PROJECTS]
-    ├── _shared/                      # Reusable assets across projects (logos, fonts, SFX)
-    └── <project-id>/                 # Project-specific workspace
-        ├── raw/                      # [STRICT INPUT BOUNDARY] User footage & mic audio
-        │   ├── C0001.MP4             # Raw creator talking-head footage
-        │   ├── screen-demo.mov       # Screen captures / product demos
-        │   └── mic-audio.wav         # Primary audio recording
-        │
-        ├── hyperframes/              # [CLI COMPOSITION ENGINE]
-        │   ├── index.html            # Root composition contract
-        │   ├── input-video.mp4       # Conformed flat cut
-        │   └── compositions/         # Modular catalog blocks & dynamic captions
-        │
-        └── processed/                # [DELIVERABLES]
-            └── <project-id>-v1.mp4   # Master UHD 4K render (EBU R128 mastered, BT.709)
+📂 USER CREATIVE WORKSPACE (~/VideoWorkspace)
+├── brand/            # Persistent memory: MEMO.md, STYLE-GUIDE.md, brand-style-guide.pdf, assets/
+├── references/       # Style & benchmark inspiration reels, viral hooks, layouts
+├── sound-palette/    # 19 curated offline tactile SFX & acoustic hierarchy
+└── videos/<id>/      # Production projects: raw/ footage, hyperframes/ (input-video.mp4), processed/
 ```
 
 > [!IMPORTANT]
-> **Zero Workspace Pollution & Single Source of Truth**:
-> - **Workspace Cleanliness**: Your creative directory contains **ONLY** `brand/`, `references/`, `sound-palette/`, and `videos/`. No `node_modules`, no `package.json`, no `.venv`, and no messy config files will ever clutter your project workspace.
-> - **Single Conformed Video**: The cut video lives **strictly** at `videos/<project-id>/hyperframes/input-video.mp4`. It is never duplicated at the project root (`input-video.mp4`).
-> - **Zero Temporary Data Sprawl**: No temporary preview directories (`preview-*`, loose `snapshots/`, test compositions) or copied frames persist in the project. All transient preview artifacts are automatically purged by `clean-temp.py`.
+> **Zero Pollution & Single Source of Truth**: Creative workspaces contain strictly creative folders (no `node_modules` or `.venv`). The conformed video lives solely at `videos/<id>/hyperframes/input-video.mp4` (never duplicated at root). All temporary preview artifacts (`preview-*`, snapshots) are automatically purged by `clean-temp.py`.
 
 ---
 
