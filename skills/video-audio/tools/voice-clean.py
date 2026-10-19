@@ -32,7 +32,7 @@ def find_deep_filter() -> Path:
               str(Path(__file__).resolve().parent / "deep-filter")):
         if c and os.path.isfile(c) and os.access(c, os.X_OK):
             return Path(c)
-    raise SystemExit("deep-filter not found: run install.sh (it downloads DeepFilterNet into ~/.config/video-skills/bin) "
+    raise SystemExit("deep-filter not found: run `video-skills setup` (it downloads DeepFilterNet into ~/.config/video-skills/bin) "
                      "or set VIDEO_DEEPFILTER")
 
 

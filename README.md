@@ -11,22 +11,39 @@
 ---
 
 ### ⚡ Quick Navigation
-[🚀 Quick Start](#-quick-start-3-steps) • [💬 Prompts to Try](#-prompts-to-try) • [✨ What It Does For You](#-what-it-does-for-you) • [📁 Folder Structure](#-how-your-workspace-is-organized) • [⚙️ Under the Hood](#️-under-the-hood-technical-details)
+[🚀 Quick Start](#-quick-start-3-steps) • [🔄 Updates](#-staying-up-to-date) • [💬 Prompts to Try](#-prompts-to-try) • [✨ What It Does For You](#-what-it-does-for-you) • [📁 Folder Structure](#-how-your-workspace-is-organized) • [⚙️ Under the Hood](#️-under-the-hood-technical-details)
 
 ---
 
 ## 🚀 Quick Start (3 Steps)
 
 ### Step 1: Install
-Open your terminal and run the setup script inside your video project folder:
+Open your terminal in the folder you want as your video workspace and paste one line:
 
 ```bash
-# 1. Create and enter your video workspace
+# macOS, Linux, WSL, Git Bash
 mkdir -p ~/VideoWorkspace && cd ~/VideoWorkspace
-
-# 2. Run the installer
-bash /path/to/video-editing-skill/install.sh
+curl -fsSL https://raw.githubusercontent.com/mg-studio-india/video-editing-skill/main/get.sh | bash
 ```
+```powershell
+# Windows PowerShell (checks what is missing, then installs through Git Bash)
+irm https://raw.githubusercontent.com/mg-studio-india/video-editing-skill/main/get.ps1 | iex
+```
+
+The installer downloads the latest release, sets up every skill for your agents (Claude Code, Antigravity, Cursor), and asks for your API keys (all optional). Anything your system is missing is installed for you or printed as one command to run. Check it any time with `video-skills doctor`.
+
+<details>
+<summary><b>Install options</b></summary>
+
+Add options after `bash -s --`, for example:
+`curl -fsSL .../get.sh | bash -s -- --project ~/VideoWorkspace --model large-v3-turbo --yes`
+
+- `--project DIR`: your workspace folder (default: the current folder)
+- `--model NAME`: Whisper model, `large-v3` (default, ~3 GB) or `large-v3-turbo`
+- `--version X.Y.Z`: install a specific release
+- `--yes`: no questions; keep existing keys
+- `--force`: replace skills copied by an older manual install (your copies are backed up first)
+</details>
 
 ### Step 2: Add your footage
 Put your raw recording inside `videos/<project-name>/raw/` (e.g. `videos/my-first-video/raw/take1.mp4`).
@@ -36,6 +53,24 @@ Open your coding agent (Antigravity, Claude Code, Cursor) and type:
 > *"Edit `videos/my-first-video/raw/take1.mp4` into a 9:16 vertical reel for Instagram."*
 
 Your agent will inspect the clip, clean the speech, cut the pauses, propose visual styles, and ask you to approve previews before exporting the final 4K video!
+
+---
+
+## 🔄 Staying Up to Date
+
+Your agent tells you at the start of a project when a new version is out. Nothing updates without you.
+
+| Command | What it does |
+|---|---|
+| `video-skills check` | Is a new version out? |
+| `video-skills changelog` | What changed since your version |
+| `video-skills update` | Update everything to the latest release |
+| `video-skills update video-captions` | Update just one skill |
+| `video-skills rollback` | Go back to the previous version |
+| `video-skills doctor` | Check that every skill and agent folder is set up correctly |
+| `video-skills setup` | Re-run setup (e.g. to add API keys, or after fixing a missing tool) |
+
+**Your edits are safe:** if you changed a skill and an update changes it too, your version is kept and the differences are saved to `~/.video-skills/conflicts/` for you to review.
 
 ---
 
@@ -108,12 +143,37 @@ Your creative workspace stays clean and organized:
 
 ## 💻 System Requirements
 
-| System | Recommended Tools | Engine Sandbox Location |
+The installer tells you if anything here is missing. Node.js 22 and whisper.cpp are installed for you (privately, no admin rights) where your system doesn't have them.
+
+| System | You install first | Installed for you |
 |---|---|---|
-| **macOS** | `brew install node ffmpeg sox whisper-cpp` | `~/.video-skills/engine` |
-| **Linux (Ubuntu/Debian)** | `sudo apt install nodejs npm ffmpeg sox libsox-fmt-all` | `~/.config/video-skills/engine` |
-| **Windows (WSL2)** | Ubuntu tools inside WSL2 | `~/.video-skills/engine` |
-| **Windows (Native)** | `winget install Gyan.FFmpeg OpenJS.NodeJS ChrisBagwell.SoX` | `%USERPROFILE%\.video-skills\engine` |
+| **macOS** | [Homebrew](https://brew.sh) | Node.js, FFmpeg, SoX, whisper.cpp (via Homebrew), DeepFilterNet |
+| **Ubuntu / Debian** | `sudo apt-get install -y ffmpeg sox libsox-fmt-all libgomp1 python3-venv curl git` | Node.js 22, whisper.cpp, DeepFilterNet |
+| **Fedora** | `sudo dnf install -y ffmpeg-free sox libgomp python3 git` | Node.js 22, whisper.cpp, DeepFilterNet |
+| **Windows** | `winget install --id Git.Git -e` plus `Python.Python.3.12`, `Gyan.FFmpeg`, `ChrisBagwell.SoX` | Node.js 22, whisper.cpp, DeepFilterNet |
+| **Windows (WSL2)** | the Ubuntu line, inside WSL | as Ubuntu |
+
+Everything lives in `~/.video-skills/` and `~/.config/video-skills/`; your workspace only holds your own files. Rendering uses Chrome (downloaded automatically on Intel/AMD machines; on Linux ARM, install Chromium and set `HYPERFRAMES_BROWSER_PATH`).
+
+<details>
+<summary><b>Manual install without the package manager (no updates or rollback)</b></summary>
+
+```bash
+git clone https://github.com/mg-studio-india/video-editing-skill.git ~/video-editing-skill
+cd ~/VideoWorkspace && bash ~/video-editing-skill/install.sh
+```
+</details>
+
+<details>
+<summary><b>Publishing a release (maintainers)</b></summary>
+
+Work on a `release/vX.Y.Z` branch, then:
+```bash
+bash tools/test-package-manager.sh
+python3 tools/release.py X.Y.Z --note "What users get" --push
+```
+CI (`.github/workflows/install.yml`) installs and tests on Ubuntu, macOS and Windows on every push to `main` and every tag.
+</details>
 
 ---
 

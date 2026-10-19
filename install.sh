@@ -88,6 +88,8 @@ while [ $# -gt 0 ]; do
   shift
 done
 
+RERUN="bash install.sh"; [ "$SKILLS_MANAGED" = 1 ] && RERUN="video-skills setup"   # how the user runs this again
+
 abspath() {
   local p="$1"; case "$p" in "~") p="$HOME" ;; "~/"*) p="$HOME/${p#\~/}" ;; esac
   case "$p" in /*) ;; *) p="$ROOT_DIR/${p#./}" ;; esac
@@ -247,7 +249,7 @@ if [ "$NO_SYSTEM" = 1 ]; then
   ok "skipped (--no-system)"
 elif [ "$OS" = "Darwin" ]; then
   if ! command -v brew >/dev/null 2>&1; then
-    die "Homebrew is not installed. Install it from https://brew.sh, open a new terminal, and re-run install.sh."
+    die "Homebrew is not installed. Install it from https://brew.sh, open a new terminal, and run: $RERUN"
   fi
   for f in node ffmpeg whisper-cpp sox; do
     if brew list --formula "$f" >/dev/null 2>&1; then
@@ -302,7 +304,7 @@ else
       MISSING_LIBS="$(ldd "$WHISPER_BIN" 2>/dev/null | awk '/not found/ {print $1}' | tr '\n' ' ')"
     fi
     if [ -n "$MISSING_LIBS" ]; then
-      warn "whisper-cli needs ${MISSING_LIBS% } from the system. Run: $SYS_HINT; then: video-skills setup"
+      warn "whisper-cli needs ${MISSING_LIBS% } from the system. Run: $SYS_HINT; then: $RERUN"
     elif [ "$OS" = "Darwin" ]; then
       warn "whisper-cli not found: brew install whisper-cpp"
     else
@@ -648,7 +650,7 @@ setenv() {   # single-quoted, so a value may hold any character (quotes, $, `, \
 api_key() {  # trimmed key from a hidden prompt; refuses anything that is not key-shaped (a stray keystroke, a paste with spaces)
   local v; v="$(printf '%s' "$1" | sed -E 's/^[[:space:]]+//; s/[[:space:]]+$//')"   # trim the ends only
   if [ -n "$v" ] && ! printf '%s' "$v" | grep -Eq '^[A-Za-z0-9._:+/=-]{8,}$'; then
-    warn "$2 not saved: that does not look like an API key (letters, digits and . _ : + / = - only, 8+ characters). Re-run install.sh to enter it."
+    warn "$2 not saved: that does not look like an API key (letters, digits and . _ : + / = - only, 8+ characters). Run '$RERUN' to enter it."
     v=""
   fi
   printf '%s' "$v"
