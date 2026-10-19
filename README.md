@@ -32,11 +32,12 @@ To keep your working directory 100% spotless across all platforms (**macOS, Linu
 📂 USER CREATIVE WORKSPACE (~/VideoWorkspace or your project folder)
 ├── brand/                            # [PERSISTENT BRAND MEMORY & PREFERENCES]
 │   ├── MEMO.md                       # Active memory: styling, handles, fonts, layout
+│   ├── brand-style-guide.pdf         # Brand guidelines, colors, typography rules & brand deck
 │   └── assets/                       # Vector logos (.svg), avatars, monograms, badges
 │
 ├── references/                       # [STYLE & BENCHMARK INSPIRATION HUB]
 │   ├── benchmark-reel.mp4            # Inspiration video to learn pacing & cuts from
-│   ├── brand-style-guide.pdf         # Brand guidelines, colors & typography rules
+│   ├── viral-hook-example.mp4        # Competitor/creator viral hook reference
 │   └── layout-reference.png          # Target lower-third or graphic layout screenshot
 │
 ├── sound-palette/                    # [OFFLINE TACTILE SOUND PALETTE]
@@ -184,8 +185,9 @@ python3 "$ENG/scripts/memo.py" set "Primary Caption Engine" "weight-shift"
 python3 "$ENG/scripts/memo.py" set "Video Quality" "UHD / 4K (2160x3840 @ 45M bitrate)"
 ```
 
-### What is stored in `brand/MEMO.md`:
+### What is stored in `brand/` and `brand/MEMO.md`:
 - **Identity & Profiles**: Social handles (`@instagram`, `@youtube`, `@x`), web URLs, and brand logos (`brand/assets/logo.svg`).
+- **Brand Style Guides & Rules**: Corporate decks, brand guidelines, and color palettes (`brand/brand-style-guide.pdf`).
 - **Creative Dynamic Layout**: Default layout transitions (Full $\rightarrow$ Split 40/60 $\rightarrow$ Corner PiP $\rightarrow$ Layered Canvas).
 - **Typography & Captions**: Primary font family (Inter, Poppins, DM Sans), caption engine (`weight-shift` / `caption-highlight`), and Roman Hinglish enforcement.
 - **Color Tokens**: Primary brand hex, accent highlights, and glassmorphism card surfaces.

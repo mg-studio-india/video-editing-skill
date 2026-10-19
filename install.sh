@@ -7,8 +7,8 @@
 #     package.json, LICENSES, .env (API keys), and agent-env.sh.
 #   - User Creative Workspace ($PROJECT, default: current directory):
 #     Houses ONLY clean user creative folders:
-#       brand/          (persistent memory brand/MEMO.md and vector logos)
-#       references/     (benchmark videos, style guides, font specimens)
+#       brand/          (persistent memory brand/MEMO.md, brand-style-guide.pdf, and vector logos)
+#       references/     (benchmark reels, viral hooks, layout screenshots)
 #       sound-palette/  (19 curated offline tactile SFX)
 #       videos/         (production projects with raw/ and processed/)
 #
@@ -598,8 +598,8 @@ fi
 cat <<EOF
 
 📂 Creative Workspace (${PROJECT}):
-  ├── brand/            <- Creator identity, social handles & brand/MEMO.md
-  ├── references/       <- Benchmark reels, color guides, layout screenshots
+  ├── brand/            <- Creator identity, brand-style-guide.pdf, social handles & brand/MEMO.md
+  ├── references/       <- Benchmark reels, viral hooks, layout screenshots
   ├── sound-palette/    <- 19 offline tactile audio assets (-3 dBFS)
   └── videos/           <- Production projects (raw/ -> processed/)
 

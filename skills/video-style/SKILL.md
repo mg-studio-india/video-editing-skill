@@ -18,7 +18,7 @@ W="videos/<project>"
 
 > [!IMPORTANT]
 > **Brand Memory Integration (`brand/MEMO.md`):**
-> Before generating `style.json`, always inspect `brand/MEMO.md` (or `$PROJECT/brand/MEMO.md`). If present, its colors, typography, handles, logo assets, layout preferences, and thinking process must seed `style.json`. User brand memory strictly overrides generic defaults.
+> Before generating `style.json`, always inspect `brand/MEMO.md` (or `$PROJECT/brand/MEMO.md`) and corporate style guides in `brand/` (e.g. `brand/brand-style-guide.pdf`). If present, its colors, typography, handles, logo assets, layout preferences, and thinking process must seed `style.json`. User brand memory strictly overrides generic defaults.
 
 A production-grade `style.json` governs five interdependent visual pillars:
 
