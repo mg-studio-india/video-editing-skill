@@ -196,6 +196,36 @@ python3 "$ENG/scripts/memo.py" set "Video Quality" "UHD / 4K (2160x3840 @ 45M bi
 
 ---
 
+## 🗂️ Built-in Style Blueprint Index (`video-reference-match`)
+
+The default reference set ships **inside the skill**, not in your workspace:
+
+```text
+skills/video-reference-match/          (installed to ~/.agents/skills/video-reference-match)
+├── SKILL.md                           # Reference gate + how a match becomes a roadmap
+├── references/                        # ← THE INDEX
+│   ├── INDEX.md                       # 50 blueprints grouped by caption family, signatures, tags
+│   ├── index.json                     # One row per blueprint: what the matcher reads
+│   ├── PROMPTS.md                     # Paste-ready brand prompts (colours/fonts as brand tokens)
+│   ├── blueprints/B01.json … B50.json # One self-contained, measured editing system per file
+│   ├── blueprint-schema.md            # What every blueprint contains
+│   └── weights.json                   # Matching columns & weights, similarity threshold
+└── scripts/
+    ├── match.py                       # Rank blueprints for a video / image / concept; --pick writes ROADMAP.md
+    ├── caption_probe.py, fit_font.py  # VERIFY: measure rendered captions; expected size of any word
+    ├── measure_blueprint.py           # Measured block (look, layout, music/SFX heuristics) for a new blueprint
+    └── build_index.py, check_blueprints.py   # Rebuild the index after edits; schema + anonymity check
+```
+
+- **What a blueprint holds:** what makes the style distinct, structure (% of runtime), pacing, caption spec (sizes solved for the bundled fonts, timing in frames), background text, motion graphics, cut-outs / silhouettes, layout, camera, transitions, sound, the 225-catalog style IDs it uses, when to use / avoid it, and a brand prompt.
+- **How it is used:** at the start of **every** project the footage (plus any reference video, image or concept you give) is matched against the index. If similar blueprints are found you are **asked** whether to style the video with one (or a mix); with no reference of your own you are offered the closest blueprints plus catalog styles. Nothing is applied without your answer. The chosen blueprint becomes `$W/reference-match/ROADMAP.md`.
+- **Grade is never copied:** it always comes from your own footage; a blueprint only states a look intent. Colours and fonts in prompts are brand tokens that your brand fills.
+- **Anonymous by design:** blueprints carry no creator, brand, person, file or quote, and no frames; nothing maps them back to source videos.
+- **Not the same as `references/`:** your workspace `references/` folder holds *your* inspiration videos for a project (studied with `video-watch`); this index is the built-in library every project is matched against.
+- **Editing / adding:** edit `references/blueprints/Bxx.json` (or add the next ID), then run `scripts/build_index.py` and `scripts/check_blueprints.py` (must report 0 problems). Re-run `install.sh` to update the installed copy.
+
+---
+
 ## 💡 Prompt Examples
 
 You can interact with your coding agent (Antigravity, Claude Code, Cursor) using simple conversational instructions or comprehensive production briefs:
