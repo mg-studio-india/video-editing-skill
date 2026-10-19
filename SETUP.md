@@ -6,13 +6,16 @@ edit files, and look at images: Claude Code by default (the desktop app or `clau
 
 ## 1. Install
 
-Make the folder you will open in Claude Code, and run the installer from inside it:
+Make the folder you will open in Claude Code, and run the one-line installer from inside it:
 
 ```bash
 mkdir -p ~/VideoEditing && cd ~/VideoEditing
-unzip ~/Downloads/video-editing-skill-complete.zip -d ~/Downloads
-bash ~/Downloads/video-editing-skill/install.sh
+curl -fsSL https://raw.githubusercontent.com/mg-studio-india/video-editing-skill/main/get.sh | bash
 ```
+
+Later: `video-skills check` (also run automatically at every project start), `video-skills update`,
+`video-skills rollback`; see the README's "Updates & package management". Without the package manager you can still run
+`bash /path/to/video-editing-skill/install.sh` from a downloaded copy (skills are copied and do not auto-update).
 
 Run it from your project folder, not from inside the package (it refuses if you do). If Homebrew is missing, it stops
 and points you to https://brew.sh: install that, open a new terminal, and run it again.

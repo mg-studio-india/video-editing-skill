@@ -1,0 +1,615 @@
+#!/usr/bin/env python3
+"""video-skills: install, update and roll back the video-editing-skill packages.
+
+  video-skills install   [--version X.Y.Z] [--project DIR] [--skills-dir DIR] [--skip-setup] [-- install.sh options]
+  video-skills check     [--quiet] [--cached]          is a newer release published? (cached for 24 h with --cached)
+  video-skills update    [SKILL ...] [--force] [--version X.Y.Z] [--skip-setup]
+  video-skills list                                    every skill: installed version, latest, local edits
+  video-skills status                                  package version, paths, last check, conflicts
+  video-skills changelog [--all]                       what changed since the installed version
+  video-skills rollback  [X.Y.Z]                       back to the previous (or a named) version
+  video-skills prune     [--keep N]                    delete old versions no skill points at (default keep 2)
+  video-skills doctor                                  check links, PATH, engine and the store
+  video-skills uninstall [--purge]                     remove the skill links and the command (--purge: the store too)
+  video-skills version
+
+Layout: every release lives in ~/.video-skills/pkg/<version>/ (a pristine copy + .pristine.json file hashes); each skill
+in the agents' skills folder (~/.agents/skills/<skill>) is a symlink into one of those versions. Updating relinks a
+skill to the new version; rollback relinks back. A skill you edited is never overwritten: when the release also changed
+it, the update keeps your copy and writes a diff to ~/.video-skills/conflicts/ (--force replaces it after a backup).
+Releases come from GitHub tags of mg-studio-india/video-editing-skill (VIDEO_SKILLS_REPO to change); VIDEO_SKILLS_SOURCE
+=<folder> installs from a local checkout instead (maintainers, tests). VIDEO_SKILLS_HOME moves ~/.video-skills.
+"""
+import argparse
+import difflib
+import hashlib
+import io
+import json
+import os
+import re
+import shutil
+import subprocess
+import sys
+import tarfile
+import tempfile
+import time
+import urllib.error
+import urllib.request
+from pathlib import Path
+
+REPO = os.environ.get("VIDEO_SKILLS_REPO", "mg-studio-india/video-editing-skill")
+HOME_DIR = Path(os.environ.get("VIDEO_SKILLS_HOME", "~/.video-skills")).expanduser()
+SOURCE = os.environ.get("VIDEO_SKILLS_SOURCE")
+STORE, STATE_F = HOME_DIR / "pkg", HOME_DIR / "state.json"
+CONFLICTS, BACKUPS = HOME_DIR / "conflicts", HOME_DIR / "backups"
+BIN_DIR = Path(os.environ.get("VIDEO_SKILLS_BIN", "~/.local/bin")).expanduser()
+DEFAULT_SKILLS = Path("~/.agents/skills").expanduser()
+IGNORE = {"__pycache__", ".DS_Store", ".git"}
+CHECK_TTL = 24 * 3600
+
+
+# ------------------------------------------------------------------ helpers
+def say(msg=""):
+    print(msg, flush=True)
+
+
+def die(msg, code=1):
+    print("video-skills: " + msg, file=sys.stderr)
+    sys.exit(code)
+
+
+def vkey(v):
+    return tuple(int(x) for x in re.findall(r"\d+", v)[:3]) + (0,) * (3 - len(re.findall(r"\d+", v)[:3]))
+
+
+def http(url, accept="application/vnd.github+json"):
+    req = urllib.request.Request(url, headers={"User-Agent": "video-skills", "Accept": accept})
+    tok = os.environ.get("GITHUB_TOKEN")
+    if tok and "github" in url:
+        req.add_header("Authorization", "Bearer " + tok)
+    with urllib.request.urlopen(req, timeout=30) as r:
+        return r.read()
+
+
+def load_state():
+    if STATE_F.is_file():
+        return json.loads(STATE_F.read_text())
+    return {"repo": REPO, "skills": {}, "history": []}
+
+
+def save_state(st):
+    HOME_DIR.mkdir(parents=True, exist_ok=True)
+    tmp = STATE_F.with_suffix(".tmp")
+    tmp.write_text(json.dumps(st, indent=1))
+    tmp.replace(STATE_F)
+
+
+GENERATED = ("assets/vendor/",)          # written by install.sh into a skill (e.g. the local GSAP copy): not an edit
+
+
+def skip(rel):
+    parts = rel.parts
+    return bool(set(parts) & IGNORE) or rel.suffix == ".pyc" or any(g in rel.as_posix() + "/" for g in GENERATED)
+
+
+def file_hashes(root):
+    out = {}
+    root = Path(root)
+    for p in sorted(root.rglob("*")):
+        if p.is_file() and not skip(p.relative_to(root)):
+            out[str(p.relative_to(root))] = hashlib.sha256(p.read_bytes()).hexdigest()
+    return out
+
+
+def tree_hash(h):
+    return hashlib.sha256(json.dumps(h, sort_keys=True).encode()).hexdigest()
+
+
+# ------------------------------------------------------------------ releases
+def latest_release():
+    """{'version', 'notes', 'published'} of the newest release."""
+    if SOURCE:
+        v = (Path(SOURCE) / "VERSION").read_text().strip()
+        return {"version": v, "notes": changelog_section(Path(SOURCE), upto=v).split("\n## ")[0], "published": None}
+    try:
+        r = json.loads(http("https://api.github.com/repos/%s/releases/latest" % REPO))
+        return {"version": r["tag_name"].lstrip("v"), "notes": r.get("body") or "", "published": r.get("published_at")}
+    except urllib.error.HTTPError as e:
+        if e.code != 404:
+            raise
+    tags = [t["name"].lstrip("v") for t in json.loads(http("https://api.github.com/repos/%s/tags?per_page=100" % REPO))
+            if re.fullmatch(r"v?\d+\.\d+\.\d+", t["name"])]
+    if not tags:
+        die("no release of %s is published yet" % REPO)
+    v = max(tags, key=vkey)
+    return {"version": v, "notes": "", "published": None}
+
+
+def fetch(version):
+    """Download (or copy) one release into the store; returns its folder."""
+    dest = STORE / version
+    if (dest / ".pristine.json").is_file():
+        return dest
+    STORE.mkdir(parents=True, exist_ok=True)
+    tmp = Path(tempfile.mkdtemp(prefix="vs-", dir=STORE))
+    try:
+        if SOURCE:
+            src_v = (Path(SOURCE) / "VERSION").read_text().strip()
+            if src_v != version:
+                die("VIDEO_SKILLS_SOURCE is version %s, not %s" % (src_v, version))
+            shutil.copytree(SOURCE, tmp / "pkg", ignore=shutil.ignore_patterns(*IGNORE, "workspace", "*.pyc"))
+            root = tmp / "pkg"
+        else:
+            say("  downloading %s v%s" % (REPO, version))
+            data = http("https://codeload.github.com/%s/tar.gz/refs/tags/v%s" % (REPO, version), accept="*/*")
+            with tarfile.open(fileobj=io.BytesIO(data), mode="r:gz") as tf:
+                tf.extractall(tmp, filter="data") if sys.version_info >= (3, 12) else tf.extractall(tmp)
+            root = next(p for p in tmp.iterdir() if p.is_dir())
+        pristine = {d.name: file_hashes(d) for d in sorted((root / "skills").iterdir()) if d.is_dir()}
+        (root / ".pristine.json").write_text(json.dumps(pristine))
+        with tarfile.open(root / ".pristine-skills.tar.gz", "w:gz") as tf:    # restores a skill edited in place
+            tf.add(root / "skills", arcname="skills", filter=lambda ti: None if skip(Path(ti.name)) else ti)
+        for exe in ("bin/video-skills", "install.sh", "get.sh"):
+            if (root / exe).is_file():
+                (root / exe).chmod(0o755)
+        if dest.exists():
+            shutil.rmtree(dest)
+        root.replace(dest)
+    finally:
+        shutil.rmtree(tmp, ignore_errors=True)
+    return dest
+
+
+def pristine(version):
+    p = STORE / version / ".pristine.json"
+    return json.loads(p.read_text()) if p.is_file() else {}
+
+
+def manifest(version):
+    p = STORE / version / "manifest.json"
+    return json.loads(p.read_text()) if p.is_file() else {}
+
+
+def skill_version(version, name):
+    return (manifest(version).get("skills", {}).get(name, {}) or {}).get("version", version)
+
+
+def changelog_section(root, since=None, upto=None):
+    """CHANGELOG.md sections newer than `since` (exclusive) up to `upto` (inclusive)."""
+    p = Path(root) / "CHANGELOG.md"
+    if not p.is_file():
+        return ""
+    parts = re.split(r"(?m)^## \[?v?(\d+\.\d+\.\d+)\]?", p.read_text())
+    out = []
+    for i in range(1, len(parts), 2):
+        v = parts[i]
+        if (since is None or vkey(v) > vkey(since)) and (upto is None or vkey(v) <= vkey(upto)):
+            out.append("## " + v + parts[i + 1].rstrip())
+    return "\n\n".join(out)
+
+
+# ------------------------------------------------------------------ skill links
+def version_of(target):
+    """The store version a resolved skill path belongs to, or None (not ours)."""
+    try:
+        rel = Path(target).resolve().relative_to(STORE.resolve())
+    except ValueError:
+        return None
+    return rel.parts[0] if len(rel.parts) >= 3 and rel.parts[1] == "skills" else None
+
+
+def is_ours(path):
+    p = Path(path)
+    return (p / ".video-skills").is_file() or ((p / "SKILL.md").is_file() and "video-pipeline/engine" in (p / "SKILL.md").read_text(errors="ignore"))
+
+
+def write_conflict(name, version, ours_dir, theirs_dir):
+    CONFLICTS.mkdir(parents=True, exist_ok=True)
+    out = CONFLICTS / ("%s-%s.diff" % (name, version))
+    a, b = file_hashes(theirs_dir), file_hashes(ours_dir)
+    lines = []
+    for rel in sorted(set(a) | set(b)):
+        if a.get(rel) == b.get(rel):
+            continue
+        ta = (Path(theirs_dir) / rel).read_text(errors="replace").splitlines(True) if rel in a else []
+        tb = (Path(ours_dir) / rel).read_text(errors="replace").splitlines(True) if rel in b else []
+        lines += difflib.unified_diff(ta, tb, "release-%s/%s" % (version, rel), "yours/%s" % rel)
+    out.write_text("".join(lines))
+    return out
+
+
+def restore_pristine(version, name):
+    """Put a store copy back to the release's files (after its edits were backed up)."""
+    arc = STORE / version / ".pristine-skills.tar.gz"
+    if not arc.is_file():
+        return False
+    dst = STORE / version / "skills" / name
+    tmp = Path(tempfile.mkdtemp(prefix="vs-restore-", dir=STORE))
+    try:
+        with tarfile.open(arc) as tf:
+            members = [m for m in tf.getmembers() if m.name == "skills/" + name or m.name.startswith("skills/%s/" % name)]
+            tf.extractall(tmp, members=members, **({"filter": "data"} if sys.version_info >= (3, 12) else {}))
+        shutil.rmtree(dst, ignore_errors=True)
+        (tmp / "skills" / name).replace(dst)
+    finally:
+        shutil.rmtree(tmp, ignore_errors=True)
+    return True
+
+
+def backup(path, name):
+    dst = BACKUPS / time.strftime("%Y%m%d-%H%M%S") / name
+    dst.parent.mkdir(parents=True, exist_ok=True)
+    shutil.copytree(path, dst, symlinks=False)
+    return dst
+
+
+def is_link(p):
+    """A symlink, or a Windows directory junction (both point into the store)."""
+    p = Path(p)
+    if p.is_symlink():
+        return True
+    if not os.path.lexists(p):
+        return False
+    # only the last component may be a link: resolve the parent (macOS /var -> /private/var is not a link of ours)
+    own = os.path.join(os.path.realpath(p.parent), p.name)
+    return os.path.normcase(os.path.realpath(p)) != os.path.normcase(own)
+
+
+def unlink_any(p):
+    p = Path(p)
+    if p.is_symlink() or p.is_file():
+        p.unlink()
+    elif is_link(p):
+        os.rmdir(p)                                   # removes a junction, never its target
+    elif p.is_dir():
+        shutil.rmtree(p)
+
+
+def link(dst, target):
+    if os.path.lexists(dst):
+        unlink_any(dst)
+    try:
+        dst.symlink_to(target, target_is_directory=True)
+    except OSError:
+        if os.name != "nt":
+            raise
+        r = subprocess.run(["cmd", "/c", "mklink", "/J", str(dst), str(target)], capture_output=True, text=True)
+        if r.returncode != 0:
+            die("could not link %s (enable Windows Developer Mode, or use WSL): %s" % (dst, r.stderr.strip()))
+
+
+def apply(version, skills_dir, names=None, force=False):
+    """Point skills at `version`, protecting local edits. Returns [(skill, outcome, detail)]."""
+    skills_dir.mkdir(parents=True, exist_ok=True)
+    new_p = pristine(version)
+    want = names or sorted(new_p)
+    report = []
+    for name in want:
+        if name not in new_p:
+            report.append((name, "not in release", "")); continue
+        new = STORE / version / "skills" / name
+        dst = skills_dir / name
+        if not os.path.lexists(dst):
+            link(dst, new); report.append((name, "installed", skill_version(version, name))); continue
+        if is_link(dst):
+            cur = Path(os.path.realpath(dst))
+            cur_v = version_of(cur)
+            if cur_v is None:
+                report.append((name, "skipped", "links outside the store (%s)" % cur)); continue
+            if cur_v == version:
+                report.append((name, "up to date", skill_version(version, name))); continue
+            modified = file_hashes(cur) != pristine(cur_v).get(name)
+            changed = pristine(cur_v).get(name) != new_p[name]
+            if not modified:
+                link(dst, new); report.append((name, "updated" if changed else "relinked", "%s -> %s" % (skill_version(cur_v, name), skill_version(version, name))))
+            elif not changed:
+                report.append((name, "kept (your edits)", "no change in %s; stays on your edited %s copy" % (version, cur_v)))
+            elif force:
+                b = backup(cur, name); restore_pristine(cur_v, name); link(dst, new)
+                report.append((name, "replaced", "your edits backed up to %s" % b))
+            else:
+                d = write_conflict(name, version, cur, new)
+                report.append((name, "CONFLICT", "you edited it and %s changed it: kept yours; diff %s; "
+                               "merge, then `video-skills update %s --force`" % (version, d, name)))
+            continue
+        if dst.is_dir():                                         # a plain copy from the old installer
+            if not is_ours(dst):
+                report.append((name, "skipped", "not a video-skills folder")); continue
+            h = file_hashes(dst)
+            if h == new_p[name] or any(pristine(v.name).get(name) == h for v in STORE.iterdir() if v.is_dir()) or force:
+                b = backup(dst, name) if force and h != new_p[name] else None
+                link(dst, new); report.append((name, "migrated to managed link", ("backup %s" % b) if b else ""))
+            else:
+                d = write_conflict(name, version, dst, new)
+                report.append((name, "CONFLICT", "an edited copy from the old installer: kept; diff %s; "
+                               "`video-skills update %s --force` replaces it after a backup" % (d, name)))
+    return report
+
+
+def print_report(rep):
+    w = max([len(r[0]) for r in rep] + [5])
+    for name, what, detail in rep:
+        say("  %-*s  %-22s %s" % (w, name, what, detail))
+    if any(r[1] == "CONFLICT" for r in rep):
+        say("\n  Conflicts keep your edited skill in place. Read the diff, merge what you want, then run the --force command.")
+
+
+# ------------------------------------------------------------------ setup (engine, workspace, agent links)
+def run_setup(version, st, first):
+    sh = STORE / version / "install.sh"
+    if not sh.is_file():
+        say("  (no install.sh in this release; skipped)"); return 0
+    args = ["bash", str(sh), "--skills-managed", "--skills-dir", st["skills_dir"]]
+    if st.get("project"):
+        args += ["--project", st["project"]]
+    args += st.get("install_args", [])
+    if not first:
+        args += ["--yes", "--skip-tests"]
+    say("  running install.sh (engine, models, workspace, agent links)...")
+    return subprocess.call(args)
+
+
+def install_cli(version):
+    BIN_DIR.mkdir(parents=True, exist_ok=True)
+    cur = STORE / "current"
+    if cur.is_symlink() or cur.exists():
+        cur.unlink()
+    cur.symlink_to(STORE / version, target_is_directory=True)
+    exe = BIN_DIR / "video-skills"
+    if exe.is_symlink() or exe.exists():
+        exe.unlink()
+    mgrs = [p for p in STORE.iterdir() if p.is_dir() and not p.is_symlink() and p.name[0].isdigit() and (p / "bin" / "video-skills").is_file()]
+    newest = max(mgrs, key=lambda p: vkey(p.name)) if mgrs else cur
+    exe.symlink_to(newest / "bin" / "video-skills")          # rollback moves the skills, never back to an older manager
+    if str(BIN_DIR) not in os.environ.get("PATH", "").split(os.pathsep):
+        rc = Path("~/.zshrc" if "zsh" in os.environ.get("SHELL", "") else "~/.bashrc").expanduser()
+        line = 'export PATH="%s:$PATH"  # video-skills' % BIN_DIR
+        if rc.parent.is_dir() and (not rc.is_file() or line not in rc.read_text()):
+            with rc.open("a") as fh:
+                fh.write("\n" + line + "\n")
+            say("  added %s to PATH in %s (open a new terminal)" % (BIN_DIR, rc))
+
+
+def record(st, version, rep, full):
+    for name, what, _ in rep:
+        if what in ("installed", "updated", "relinked", "replaced", "migrated to managed link", "up to date"):
+            st["skills"][name] = {"version": version}
+    if full:
+        if st.get("package_version") and st["package_version"] != version:
+            st["history"].append({"at": time.strftime("%Y-%m-%dT%H:%M:%S"), "from": st["package_version"], "to": version})
+        st["package_version"] = version
+
+
+# ------------------------------------------------------------------ commands
+def cmd_install(a):
+    st = load_state()
+    st["skills_dir"] = str(Path(a.skills_dir).expanduser() if a.skills_dir else Path(st.get("skills_dir", DEFAULT_SKILLS)))
+    if a.project:
+        st["project"] = str(Path(a.project).expanduser().resolve())
+    elif not st.get("project"):
+        st["project"] = os.getcwd()
+    if a.rest:
+        st["install_args"] = [x for x in a.rest if x != "--"]
+    v = a.version or latest_release()["version"]
+    say("video-skills: installing v%s into %s" % (v, st["skills_dir"]))
+    fetch(v)
+    rep = apply(v, Path(st["skills_dir"]), force=a.force)
+    print_report(rep)
+    record(st, v, rep, True)
+    install_cli(v)
+    save_state(st)
+    if not a.skip_setup and run_setup(v, st, first=True) != 0:
+        die("install.sh reported an error; fix it and run `video-skills update --version %s`" % v)
+    say("\nDone: video-skills v%s. Run `video-skills check` any time; the pipeline also checks at every project start." % v)
+
+
+def check(cached=False):
+    st = load_state()
+    lc = st.get("last_check") or {}
+    if cached and lc.get("at") and time.time() - lc["at"] < CHECK_TTL:
+        rel = lc
+    else:
+        r = latest_release()
+        rel = {"at": time.time(), "version": r["version"], "notes": (r["notes"] or "").strip()[:2000]}
+        st["last_check"] = rel
+        save_state(st)
+    return st.get("package_version"), rel
+
+
+def cmd_check(a):
+    try:
+        cur, rel = check(a.cached)
+    except Exception as e:                                   # offline: never block a project on this
+        if not a.quiet:
+            say("video-skills: could not reach the release server (%s)" % e.__class__.__name__)
+        return
+    if cur and vkey(rel["version"]) > vkey(cur):
+        head = next((l.strip("-* ").strip() for l in (rel.get("notes") or "").splitlines() if l.strip() and not l.startswith("#")), "")
+        say("video-skills update available: v%s -> v%s%s\nRun: video-skills update   (video-skills changelog to read it first)"
+            % (cur, rel["version"], (" — " + head) if head else ""))
+    elif not a.quiet:
+        say("video-skills v%s is up to date" % (cur or "?"))
+
+
+def cmd_update(a):
+    st = load_state()
+    if not st.get("package_version"):
+        die("not installed yet: run the one-line installer or `video-skills install`")
+    target = a.version or check()[1]["version"]
+    cur = st["package_version"]
+    names = a.skills or None
+    if not names and target == cur and not a.force:
+        say("video-skills v%s is up to date" % cur); return
+    say("video-skills: %s v%s%s" % ("updating to" if vkey(target) >= vkey(cur) else "moving to", target,
+                                    (" (only: %s)" % ", ".join(names)) if names else ""))
+    fetch(target)
+    rep = apply(target, Path(st["skills_dir"]), names, a.force)
+    print_report(rep)
+    record(st, target, rep, full=not names)
+    if not names:
+        install_cli(target)
+    save_state(st)
+    if not names and not a.skip_setup:
+        run_setup(target, st, first=False)
+    notes = changelog_section(STORE / target, since=cur, upto=target)
+    if notes:
+        say("\nWhat changed:\n" + notes)
+    if names:
+        say("\nOnly %s moved to v%s; everything else (and the engine) stays on v%s." % (", ".join(names), target, cur))
+
+
+def cmd_list(a):
+    st = load_state()
+    sd = Path(st.get("skills_dir", DEFAULT_SKILLS))
+    latest = (st.get("last_check") or {}).get("version")
+    rows = []
+    names = sorted(set(pristine(st.get("package_version", "")) or {}) | set(st.get("skills", {})))
+    for n in names:
+        dst = sd / n
+        if is_link(dst):
+            v = version_of(os.path.realpath(dst)) or "?"
+            state = "edited" if v != "?" and file_hashes(os.path.realpath(dst)) != pristine(v).get(n) else "clean"
+        elif dst.is_dir():
+            v, state = "copy", "unmanaged copy"
+        else:
+            v, state = "-", "missing"
+        rows.append((n, skill_version(v, n) if v not in ("?", "copy", "-") else v, v, state))
+    say("%-24s %-10s %-10s %-16s %s" % ("skill", "skill ver", "package", "state", ""))
+    for n, sv, v, s in rows:
+        flag = "update available (%s)" % latest if latest and v not in ("?", "copy", "-") and vkey(latest) > vkey(v) else ""
+        say("%-24s %-10s %-10s %-16s %s" % (n, sv, v, s, flag))
+
+
+def cmd_status(a):
+    st = load_state()
+    lc = st.get("last_check") or {}
+    say("package   v%s (%s)" % (st.get("package_version", "-"), REPO if not SOURCE else "local source " + SOURCE))
+    say("store     %s" % STORE)
+    say("skills    %s" % st.get("skills_dir", DEFAULT_SKILLS))
+    say("project   %s" % st.get("project", "-"))
+    say("latest    %s" % (("v%s (checked %s)" % (lc["version"], time.strftime("%Y-%m-%d %H:%M", time.localtime(lc["at"])))) if lc else "not checked yet"))
+    conf = sorted(CONFLICTS.glob("*.diff")) if CONFLICTS.is_dir() else []
+    say("conflicts %s" % (", ".join(p.name for p in conf) if conf else "none"))
+    say("history   %s" % (" -> ".join([h["from"] for h in st.get("history", [])] + [st.get("package_version", "-")])))
+
+
+def cmd_changelog(a):
+    st = load_state()
+    cur = st.get("package_version")
+    if a.all or not cur:
+        root = STORE / cur if cur else Path(SOURCE or ".")
+        say(changelog_section(root) or "(no changelog)"); return
+    _, rel = check(True)
+    if vkey(rel["version"]) <= vkey(cur):
+        say("v%s is the latest release.\n\n%s" % (cur, changelog_section(STORE / cur, upto=cur).split("\n## ")[0])); return
+    root = fetch(rel["version"])
+    say(changelog_section(root, since=cur, upto=rel["version"]) or rel.get("notes") or "(no notes)")
+
+
+def cmd_rollback(a):
+    st = load_state()
+    cur = st.get("package_version")
+    if a.version:
+        target = a.version
+    else:
+        prev = [h["from"] for h in st.get("history", []) if h.get("to") == cur]
+        if not prev:
+            die("no earlier version recorded; name one: video-skills rollback X.Y.Z (store has: %s)"
+                % ", ".join(sorted((p.name for p in STORE.iterdir() if p.is_dir() and p.name[0].isdigit()), key=vkey)))
+        target = prev[-1]
+    say("video-skills: rolling back v%s -> v%s" % (cur, target))
+    fetch(target)
+    rep = apply(target, Path(st["skills_dir"]))
+    print_report(rep)
+    record(st, target, rep, True)
+    install_cli(target)
+    save_state(st)
+    if not a.skip_setup:
+        run_setup(target, st, first=False)
+
+
+def cmd_prune(a):
+    st = load_state()
+    sd = Path(st.get("skills_dir", DEFAULT_SKILLS))
+    used = {version_of(os.path.realpath(p)) for p in sd.iterdir() if is_link(p)} if sd.is_dir() else set()
+    used.add(st.get("package_version"))
+    vers = sorted((p.name for p in STORE.iterdir() if p.is_dir() and not p.is_symlink() and p.name[0].isdigit()), key=vkey)
+    keep = set(vers[-a.keep:]) | used
+    for v in vers:
+        if v not in keep:
+            shutil.rmtree(STORE / v); say("  removed v%s" % v)
+    say("kept: %s" % ", ".join(sorted(keep - {None}, key=vkey)))
+
+
+def cmd_doctor(a):
+    st = load_state()
+    bad = 0
+    def chk(ok, msg):
+        nonlocal bad
+        bad += 0 if ok else 1
+        say(("  ok    " if ok else "  FIX   ") + msg)
+    chk(bool(st.get("package_version")), "installed version recorded (%s)" % st.get("package_version"))
+    chk((STORE / "current").exists(), "store current -> %s" % (os.path.realpath(STORE / "current") if (STORE / "current").exists() else "missing"))
+    chk(shutil.which("video-skills") is not None, "`video-skills` on PATH (%s)" % BIN_DIR)
+    sd = Path(st.get("skills_dir", DEFAULT_SKILLS))
+    for n in sorted(st.get("skills", {})):
+        p = sd / n
+        chk(is_link(p) and p.exists(), "skill %s -> %s" % (n, os.path.realpath(p) if p.exists() else "broken/missing"))
+    eng = Path(os.environ.get("VIDEO_ENGINE", sd / "video-pipeline" / "engine"))
+    chk(eng.is_dir(), "engine %s" % eng)
+    say("doctor: %s" % ("all good" if not bad else "%d problem(s); `video-skills update --force` relinks everything" % bad))
+
+
+def cmd_uninstall(a):
+    st = load_state()
+    sd = Path(st.get("skills_dir", DEFAULT_SKILLS))
+    n = 0
+    for p in list(sd.iterdir()) if sd.is_dir() else []:
+        if is_link(p) and version_of(os.path.realpath(p)):
+            unlink_any(p); n += 1
+    for agent_dir in (Path("~/.claude/skills").expanduser(),):
+        for p in list(agent_dir.iterdir()) if agent_dir.is_dir() else []:
+            if p.is_symlink() and not p.exists():
+                p.unlink()
+    exe = BIN_DIR / "video-skills"
+    if exe.is_symlink():
+        exe.unlink()
+    say("removed %d skill links and the command" % n)
+    if a.purge:
+        shutil.rmtree(HOME_DIR, ignore_errors=True); say("removed %s" % HOME_DIR)
+    say("your workspace (brand/, references/, videos/) and the engine sandbox were not touched")
+
+
+def main():
+    ap = argparse.ArgumentParser(prog="video-skills", description=__doc__.split("\n")[0])
+    sp = ap.add_subparsers(dest="cmd", required=True)
+    p = sp.add_parser("install"); p.add_argument("--version"); p.add_argument("--project"); p.add_argument("--skills-dir")
+    p.add_argument("--skip-setup", action="store_true"); p.add_argument("--force", action="store_true")
+    p.set_defaults(f=cmd_install)
+    p = sp.add_parser("check"); p.add_argument("--quiet", action="store_true"); p.add_argument("--cached", action="store_true"); p.set_defaults(f=cmd_check)
+    p = sp.add_parser("update"); p.add_argument("skills", nargs="*"); p.add_argument("--force", action="store_true")
+    p.add_argument("--version"); p.add_argument("--skip-setup", action="store_true"); p.set_defaults(f=cmd_update)
+    sp.add_parser("list").set_defaults(f=cmd_list)
+    sp.add_parser("status").set_defaults(f=cmd_status)
+    p = sp.add_parser("changelog"); p.add_argument("--all", action="store_true"); p.set_defaults(f=cmd_changelog)
+    p = sp.add_parser("rollback"); p.add_argument("version", nargs="?"); p.add_argument("--skip-setup", action="store_true"); p.set_defaults(f=cmd_rollback)
+    p = sp.add_parser("prune"); p.add_argument("--keep", type=int, default=2); p.set_defaults(f=cmd_prune)
+    sp.add_parser("doctor").set_defaults(f=cmd_doctor)
+    p = sp.add_parser("uninstall"); p.add_argument("--purge", action="store_true"); p.set_defaults(f=cmd_uninstall)
+    sp.add_parser("version").set_defaults(f=lambda a: say("video-skills v%s" % (load_state().get("package_version") or "not installed")))
+    a, extra = ap.parse_known_args()
+    if a.cmd == "install":
+        a.rest = [x for x in extra if x != "--"]                 # anything else is passed on to install.sh
+    elif extra:
+        ap.error("unrecognized arguments: %s" % " ".join(extra))
+    a.f(a)
+
+
+if __name__ == "__main__":
+    try:
+        main()
+    except BrokenPipeError:                       # output piped into head / grep -q: stop quietly
+        os.dup2(os.open(os.devnull, os.O_WRONLY), sys.stdout.fileno())
+        sys.exit(0)
+    except KeyboardInterrupt:
+        sys.exit(130)

@@ -17,6 +17,14 @@ W="videos/<project>"
 
 ---
 
+## Project start: update notice (every project)
+
+Before Gate 1, run `command -v video-skills >/dev/null && video-skills check --quiet --cached`. It is silent when up to
+date or offline and checks the release server at most once a day. If it prints an update notice, tell the user in one
+line ("video-editing-skill v1.3.0 is available: … — run `video-skills update`, or `video-skills changelog` first") and
+carry on with the project. Never run `video-skills update` yourself unless the user asks; an update never happens in
+the middle of a project.
+
 ## Core Principles
 
 1. **Creative, Innovative & Trendy by Default (Never Static Full-Screen Talking Head):** Static full-frame talking-head videos with basic subtitles slapped on top are strictly rejected. The default editing style must be high-production, visually dynamic, and trendy (Vox / MagnatesMedia / top-tier creator caliber):

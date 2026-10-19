@@ -29,249 +29,55 @@ The pipeline enforces strict separation between isolated engine plumbing and you
 └── videos/<id>/      # Production projects: raw/ footage, hyperframes/ (input-video.mp4), processed/
 ```
 
-> [!IMPORTANT]
-> **Zero Pollution & Single Source of Truth**: Creative workspaces contain strictly creative folders (no `node_modules` or `.venv`). The conformed video lives solely at `videos/<id>/hyperframes/input-video.mp4` (never duplicated at root). All temporary preview artifacts (`preview-*`, snapshots) are automatically purged by `clean-temp.py`.
-
----
-
-## 🚦 Streamlined Verification Gates (Gate 1 through Gate 6)
-
-The pipeline executes sequentially through 6 unified verification checkpoints, ensuring deterministic quality and strict interactive user verification:
-
-| Gate | Phase | Tools & Responsibility | Checkpoint & Deliverables |
-|---|---|---|---|
-| **Gate 1** | **Creative Spec & Context Audit** | `spec-resolver.py audit`, `memo.py` | Extracts prompt dimensions across 6 creative areas. If any dimension is missing, presents master catalog options (max 10 choices) with Option 1 strictly reserved for `(Recommended) Choose automatically based on video context & brand memory`. Proactively verifies quality flags (`--denoise neural` for indoor/outdoor, `--reframe yunet` for 9:16 vertical delivery, `--resolution uhd` for 4K). Audits typography catalog and caption engines. Emits `$W/resolved-spec.json`. |
-| **Gate 2** | **Mandatory Video Watch & Speech Ingest** | `watch.py mine`, `whisper.cpp`, `verify-words.py`, `match.py` | **MANDATORY**: Runs `watch.py mine` as Step 1 to inspect pacing, speech velocity (WPM), silence distribution, and visual contact sheets. Dialogue isolation, speech-to-text with misspelling audit, and Roman Hinglish enforcement (strictly zero Devanagari script). **Strict Asset Caching**: transcripts and audio cleanup are cached and never regenerated unnecessarily. Emits `$W/reference-match/ROADMAP.md` matching against 50 style blueprints. |
-| **Gate 3** | **Narrative Architecture & Storyboard** | `video-plan-storyboard`, `storyboard.py` | Hook design (0-3s), retention rhythm, scene breakdown, and multi-layout choreography (when A-roll shifts to split, pip, cutout, or layered canvas). Emits `$W/storyboard.plan.json`. |
-| **Gate 4** | **Precision Cut & Dead-Air Elimination** | `dead-air.py`, `apply-cut.py`, `grade.py preview` | **Waveform Silence Elimination**: Scans real audio waveform RMS energy (`dead-air.py` / ffmpeg `silencedetect`) to catch dead air hidden by Whisper ASR stretching. Generates `PAPER-CUT.md` with explicit tables of dropped pauses (>0.40s compressed to 0.25-0.30s breath margins). 3-way color grading preview sheet comparing 10 cinema presets. |
-| **Gate 5** | **Kinetic Captions & Typography Review** | `captions.py`, `compose.py`, HyperFrames CLI | Authors kinetic captions using `weight-shift` (Black 900 active word) or `caption-highlight` (fluorescent sweep) with scale-pop punch words. Selected from 5 approved typefaces (`DM Sans`, `Inter`, `Poppins`, `Google Sans`, `Roboto`). **Zero-Shadow by Default**: Defaults to zero text-shadow and zero blur (customizable on request). **Mandatory visual preview** presented to user for approval before rendering. |
-| **Gate 6** | **Master Render & Quality Gate** | `render.py`, `review.py`, `clean-temp.py` | Composite UHD 4K render in **Standard Dynamic Range (SDR with `--sdr` default)** with lossless BT.709 color tags (prevents HDR washouts and 30GB cache spikes), EBU R128 loudness mastering (-14 LUFS, -1.0 dBTP), structural verification (`VERIFY.md`, `REVIEW.md`), and automated temp file purge. Output in `processed/<project>-v<N>.mp4`. |
-
----
-
-## 🎨 3-Way Tone Formula & Cinema Color Grading (`grade.py`)
-
-No generic washed-out video filters. The engine applies formulaic 3-way tone adjustments:
-- **Low-Tones & Shadows**: Black floor lift (`colorlevels` min input calibration) to eliminate muddy black clipping.
-- **Midtones**: Gamma curves preserving natural skin-tone luminance.
-- **High-Tones & Highlights**: Soft white ceiling rolloff preventing blown-out exposure.
-- **Contrast & Saturation**: S-curve tone mapping with selective color vibrance.
-
-### Bundled Studio Cinema Presets:
-1. `kodak-portra`: Warm, golden skin tones with soft creamy highlight rolloff.
-2. `hollywood-teal`: High-contrast blockbuster look with warm facial tones and cool teal shadows.
-3. `vox-doc`: Clean documentary styling with rich deep blacks and clinical contrast.
-4. `magnates-gold`: Rich luxury gold and bronze tones for business and finance teardowns.
-5. `fuji-pro`: Atmospheric emerald greens, cool sky blues, and organic portrait softness.
-6. `modern-tech`: Crisp ultra-clean neutral shadows with subtle cyan accents for tech reviews.
-7. `moody-film`: Low-key dramatic shadow crush with desaturated film grain aesthetics.
-8. `vibrant-pop`: High-saturation punchy primaries for viral lifestyle and product shorts.
-9. `nordic-cold`: Desaturated steel-blue undertones for serious investigative journalism.
-10. `studio-clean`: Natural, color-accurate neutral grade calibrated for broadcast compliance.
-
----
-
-## 🔤 Razor-Sharp Typography & Kinetic Caption Contract
-
-Amateur video edits frequently suffer from blurry text, excessive drop shadows, and random font mismatches. The pipeline enforces a broadcast-grade typography standard:
-
-### 1. The Approved 5-Typeface Catalog
-All on-screen titles, lower-thirds, and kinetic captions are strictly selected from five verified typography families:
-- **`DM Sans`**: Clean geometric sans with friendly rounded curves; outstanding for tech, creator, and lifestyle content.
-- **`Inter`**: Highly articulate grotesque sans engineered for screen legibility; ideal for finance, data, and documentary authority.
-- **`Poppins`**: Wide geometric display sans; high visual impact, authoritative, and viral-tested for high-CTR reels.
-- **`Google Sans` / `Open Sans`**: Human-centered neutral typography; ideal for product demos and educational walkthroughs.
-- **`Roboto`**: Balanced industrial grotesque; neutral, crystal-clear legibility across all screen densities.
-
-### 2. Systematic Weight & Sizing Hierarchy
-- **Regular (400) / Medium (500)**: Secondary words, conversational connectors, inactive spoken text.
-- **SemiBold (600) / Bold (700)**: Card headers, section tags, active spoken words.
-- **ExtraBold (800) / Black (900)**: Emphatic punch words, key financial figures, statistics, and critical assertions.
-
-### 3. Zero-Shadow & Zero-Blur by Default (Creator-Customizable)
-> [!NOTE]
-> **Clean Vectors by Default**: By default, captions and badge pills render with **`text-shadow: none`**, **`box-shadow: none`**, and **zero artificial blur** to eliminate fuzzy edges and muddy halo artifacts.
-> Contrast is achieved purely through high-contrast solid vectors:
-> - **Inactive Words**: Clean 85% opacity white text (`rgba(255, 255, 255, 0.85)`).
-> - **Active Spoken Word**: Dynamic high-contrast brand accents (`#FFD700` Gold, `#00E5FF` Cyan, `#00E676` Emerald, `#FF9100` Amber).
-> - **Punch Words**: Solid, opaque rounded badge pills with bold Black 900 typography in solid `#000000` text, slightly tilted (-1.5° to -2°) for visual dynamism.
-> 
-> *Zero-shadow is a sensible default standard, not an inflexible rule: creators can freely choose to add drop shadows, outer glows, or blurs whenever requested for their custom creative aesthetic.*
-
-### 4. Mandatory Gate 5 Pre-Render Review
-Before any final video render, the pipeline presents a rendered snapshot comparing typography styles directly over the creator's footage, allowing creators to inspect and approve font pairings, weights, and badge pill colors before encoding.
-
----
-
-## ✂️ Waveform Dead-Air Elimination & The ASR Stretching Trap
-
-A major reason automated video editing pipelines leave awkward silences and dead air in raw footage is the **ASR Stretching Trap**:
-
-```text
-REAL AUDIO WAVEFORM:  [ "tumhare" ] ─── 1.60s DEAD SILENCE ─── [ "pas" ]
-                                     ▲
-WHISPER ASR TIMESTAMPS: [ tumhare: 2.66s ──────────────────── 6.00s ] [ pas: 6.00s ]
-                                     ▲ (Gap calculation: 6.00 - 6.00 = 0.0s! Dead air hidden!)
-```
-
-### How the Pipeline Solves This:
-1. **Audio Waveform RMS Energy Detection**: Instead of trusting Whisper word boundaries, the pipeline runs `dead-air.py` and ffmpeg `silencedetect=noise=-28dB:d=0.28` directly on the audio track.
-2. **Precision Silence Compression**: Every dead-air pause > 0.40s is identified and compressed down to a crisp, natural 0.25s - 0.30s conversational breath margin. Leading silence (>0.12s) and trailing hesitation (>0.15s) are cleanly clipped.
-3. **Interactive `PAPER-CUT.md`**: Before making permanent cuts, Gate 4 generates a complete cut ledger detailing original duration, proposed cut duration, exact timestamps of every dropped pause, and kept speech segments for creator approval.
-
----
-
-## 📺 Universal Standard Dynamic Range (SDR) & Color Integrity
-
-Modern smartphones (e.g., iPhone 14/15/16 Pro) capture video in 10-bit Dolby Vision / HLG HDR. While HDR looks vibrant on phone screens, processing HDR in browser-based composition engines introduces critical points of failure:
-
-| Challenge | HDR Processing | Pipeline SDR Default (`--sdr`) |
-|---|---|---|
-| **Intermediate Cache Size** | Chrome decodes 10-bit HDR into 16-bit uncompressed buffers, consuming **~30 GB of disk** for a 60-second video. | Converted to crisp Rec.709 SDR at ingest, keeping intermediate frame cache at **~2 GB**. |
-| **Color Fidelity & Gamma Shifts** | QuickTime, Instagram, and web players frequently apply inconsistent tone-mapping curves, causing washed-out skin tones or blown-out highlights. | Rendered with lossless BT.709 color tags (`bt709`), ensuring 100% color accuracy across all platforms. |
-| **Cross-Platform Compatibility** | Inconsistent rendering between macOS, Linux, Windows, and mobile devices. | Universally compatible across iOS, Android, macOS, Windows, and all social platforms without color grading distortion. |
-
-> [!NOTE]
-> All renders execute with `--sdr` by default. When an end-to-end HDR workflow is explicitly requested, `--hdr` can be passed to preserve native wide gamut color spaces.
-
----
-
-## 🧠 Persistent Brand Memory (`brand/MEMO.md`)
-
-The `brand/MEMO.md` file serves as the **persistent creator memory** across all video projects. The pipeline reads and updates this file at runtime, eliminating repetitive questions about your social handles, font preferences, or outro cards:
-
-```bash
-# Read brand memory as structured JSON
-python3 "$ENG/scripts/memo.py" get --json
-
-# Update creator preferences at runtime
-python3 "$ENG/scripts/memo.py" set "Instagram" "@founder_daily"
-python3 "$ENG/scripts/memo.py" set "Primary Caption Engine" "weight-shift"
-python3 "$ENG/scripts/memo.py" set "Video Quality" "UHD / 4K (2160x3840 @ 45M bitrate)"
-```
-
-### What is stored in `brand/` and `brand/MEMO.md`:
-- **Identity & Profiles**: Social handles (`@instagram`, `@youtube`, `@x`), web URLs, and brand logos (`brand/assets/logo.svg`).
-- **Brand Style Guides & Rules**: Corporate decks, brand guidelines, and color palettes (`brand/brand-style-guide.pdf`).
-- **Creative Dynamic Layout**: Default layout transitions (Full $\rightarrow$ Split 40/60 $\rightarrow$ Corner PiP $\rightarrow$ Layered Canvas).
-- **Typography & Captions**: Primary font family (Inter, Poppins, DM Sans), caption engine (`weight-shift` / `caption-highlight`), and Roman Hinglish enforcement.
-- **Color Tokens**: Primary brand hex, accent highlights, and glassmorphism card surfaces.
-- **Audio Master Defaults**: Neural speech isolation (`--denoise neural`), -14 LUFS loudness target, and -18 dB music ducking depth.
-- **Video Delivery Specs**: UHD / 4K resolution (2160x3840 @ 45M bitrate, BT.709 color tags).
-
----
-
-## 🗂️ Built-in Style Blueprint Index (`video-reference-match`)
-
-The default reference set ships **inside the skill**, not in your workspace:
-
-```text
-skills/video-reference-match/          (installed to ~/.agents/skills/video-reference-match)
-├── SKILL.md                           # Reference gate + how a match becomes a roadmap
-├── references/                        # ← THE INDEX
-│   ├── INDEX.md                       # 50 blueprints grouped by caption family, signatures, tags
-│   ├── index.json                     # One row per blueprint: what the matcher reads
-│   ├── PROMPTS.md                     # Paste-ready brand prompts (colours/fonts as brand tokens)
-│   ├── blueprints/B01.json … B50.json # One self-contained, measured editing system per file
-│   ├── blueprint-schema.md            # What every blueprint contains
-│   └── weights.json                   # Matching columns & weights, similarity threshold
-└── scripts/
-    ├── match.py                       # Rank blueprints for a video / image / concept; --pick writes ROADMAP.md
-    ├── caption_probe.py, fit_font.py  # VERIFY: measure rendered captions; expected size of any word
-    ├── measure_blueprint.py           # Measured block (look, layout, music/SFX heuristics) for a new blueprint
-    └── build_index.py, check_blueprints.py   # Rebuild the index after edits; schema + anonymity check
-```
-
-- **What a blueprint holds:** what makes the style distinct, structure (% of runtime), pacing, caption spec (sizes solved for the bundled fonts, timing in frames), background text, motion graphics, cut-outs / silhouettes, layout, camera, transitions, sound, the 225-catalog style IDs it uses, when to use / avoid it, and a brand prompt.
-- **How it is used:** at the start of **every** project the footage (plus any reference video, image or concept you give) is matched against the index. If similar blueprints are found you are **asked** whether to style the video with one (or a mix); with no reference of your own you are offered the closest blueprints plus catalog styles. Nothing is applied without your answer. The chosen blueprint becomes `$W/reference-match/ROADMAP.md`.
-- **Grade is never copied:** it always comes from your own footage; a blueprint only states a look intent. Colours and fonts in prompts are brand tokens that your brand fills.
-- **Anonymous by design:** blueprints carry no creator, brand, person, file or quote, and no frames; nothing maps them back to source videos.
-- **Not the same as `references/`:** your workspace `references/` folder holds *your* inspiration videos for a project (studied with `video-watch`); this index is the built-in library every project is matched against.
-- **Editing / adding:** edit `references/blueprints/Bxx.json` (or add the next ID), then run `scripts/build_index.py` and `scripts/check_blueprints.py` (must report 0 problems). Re-run `install.sh` to update the installed copy.
-
----
-
-## 💡 Prompt Examples
-
-You can interact with your coding agent (Antigravity, Claude Code, Cursor) using simple conversational instructions or comprehensive production briefs:
-
-### 1. Basic Prompt Examples
-
-#### Quick 9:16 Vertical Reel
-```text
-Edit videos/test-01/raw/take1.mp4 into a 9:16 vertical reel for Instagram.
-```
-*What happens automatically:*
-- Ingests `take1.mp4`, performs speech-to-text, and enforces Roman Hinglish transliteration.
-- Detects video context and defaults to `multi-dynamic` format with `weight-shift` captions.
-- Applies DeepFilterNet3 neural denoise for clean voice isolation and YuNet face tracking.
-- Renders master output in UHD 4K (2160x3840) with EBU R128 loudness mastering.
-
-#### Technical Code Screencast
-```text
-Edit videos/tutorial/raw/screen.mov into a YouTube tutorial with modern tech styling.
-```
-*What happens automatically:*
-- Detects technical walkthrough context and selects `screen-plus-facecam` layout.
-- Applies `modern-tech` color grading and crisp lower-third headline callouts.
-- Ducks ambient keyboard clicks while preserving crisp vocal presence.
-
-#### Conversational Talking Head
-```text
-Make a clean YouTube video from videos/interview/raw/pod.mp4 with warm Kodak Portra colors.
-```
-*What happens automatically:*
-- Selects conversational single-host pacing with natural breath safety margins.
-- Applies `kodak-portra` 3-way tone grading preview and subtle lofi background music.
-
----
-
-### 2. Detailed Production Prompt Examples
-
-#### High-Retention Investigative Financial Teardown
-```text
-Edit videos/finance-01/raw/pitch.mp4 into a high-retention financial teardown:
-- Format: Split-screen 40/60 (creator on left, dynamic research canvas on right).
-- Grading: Kodak Portra warm tone grade with soft shadow rolloff.
-- Graphics: Highlight research clippings with fluorescent yellow sweeps, draw animated revenue charts, and pop a glassmorphic stat counter for '$12.4M ARR'.
-- Captions: weight-shift style with Poppins font, scaling punch words like 'valuation' and 'crash' by 1.25x.
-- Audio: Enable neural speech isolation to eliminate room echo and AC hum. Add tactile paper slide and typewriter SFX on document reveals.
-- Delivery: 9:16 vertical UHD 4K.
-```
-
-#### Viral Startup Founder Commentary
-```text
-Transform videos/founder-update/raw/camera.mp4 into a viral business reel:
-- Pace: Punchy 1.4s median shot duration; cut all filler words and pauses >0.3s.
-- Layout: Multi-dynamic choreography (start full-camera 0-3s, drop to bottom corner PiP when displaying competitor metrics, shift to cutout canvas on hook punchline).
-- Tone Grade: Modern Tech cinema preset with crisp deep shadows and neutral skin tones.
-- Captions: caption-highlight engine with neon green fluorescent bar sweep and Roman Hinglish transliteration.
-- Face Tracking: Keep face centered using YuNet ONNX neural tracking.
-- Outro: Animate brand card from brand/assets/logo.svg with Instagram handle from brand/MEMO.md.
-```
-
-#### Luxury Business Empire Breakdown
-```text
-Edit videos/empire/raw/host.mp4 into an executive brand documentary:
-- Format: Layered-head canvas with large bold backdrop text numbers ('₹500 CRORE') floating seamlessly behind the speaker's shoulders.
-- Grading: Magnates Gold preset with rich bronze shadows and elevated warm highlights.
-- Sound Design: Minimal acoustic sound palette; soft riser swell on topic transitions, subtle vinyl clicks on bullet points, and upbeat lofi music ducked to -19 dB during speech.
-- Outro: Smooth scale-down into brand badge with subscribe trigger pill.
-- Resolution: Master at 2160x3840 UHD 4K @ 45 Mbps with BT.709 tags.
-```
-
 ---
 
 ## 📦 Installation & Setup
 
-Run the cross-platform installer from your creative workspace:
+One line, from the folder you want as your creative workspace:
 
 ```bash
-# 1. Create or navigate to your video workspace folder
+# macOS, Linux, Windows WSL / Git Bash
 mkdir -p ~/VideoWorkspace && cd ~/VideoWorkspace
+curl -fsSL https://raw.githubusercontent.com/mg-studio-india/video-editing-skill/main/get.sh | bash
+```
+```powershell
+# Windows PowerShell (runs the same installer through Git Bash or WSL)
+irm https://raw.githubusercontent.com/mg-studio-india/video-editing-skill/main/get.ps1 | iex
+```
 
-# 2. Run the installer (macOS, Linux, Windows WSL)
-bash /path/to/video-editing-skill/install.sh
+Installs the latest **tagged release** into `~/.video-skills/pkg/<version>/`, links every skill into `~/.agents/skills` (and Claude Code), adds the `video-skills` command to `~/.local/bin` (appending a PATH line to `~/.zshrc` / `~/.bashrc` if needed), and runs `install.sh` for the engine, models and workspace. Options go after `bash -s --`, e.g. `… | bash -s -- --project ~/VideoWorkspace --version 1.0.0 --model large-v3-turbo`.
+
+### Updates & package management (`video-skills`)
+
+| Command | What it does |
+|---|---|
+| `video-skills check` | Is a newer release out? The pipeline also checks (cached, once a day) at every project start and **tells you**; it never updates on its own. |
+| `video-skills changelog` | What changed between your version and the latest. |
+| `video-skills update` | Update every skill + the engine to the latest release. |
+| `video-skills update video-captions video-audio` | Update only those skills; the rest stay on your version. |
+| `video-skills update --version 1.2.0` | Move to a specific release. |
+| `video-skills list` / `status` | Each skill's version, latest version, edited or clean; paths, history, conflicts. |
+| `video-skills rollback [X.Y.Z]` | Back to the previous (or named) version; skills are relinked instantly. |
+| `video-skills prune --keep 2` · `doctor` · `uninstall [--purge]` | Delete unused old versions · check links, PATH and engine · remove links and command (your workspace is never touched). |
+
+**Your edits are safe.** Each skill is a link into a versioned copy. If you edited a skill and a release changes the same skill, `update` keeps yours, writes a diff to `~/.video-skills/conflicts/<skill>-<version>.diff` and tells you; merge what you want, then `video-skills update <skill> --force` (your copy is backed up to `~/.video-skills/backups/` first). Edited skills that a release did not touch stay as you have them.
+
+**Already installed with the old `install.sh`?** Run the one-liner once with `--force` (`… | bash -s -- --force`): your copied skills are backed up and replaced by managed links.
+
+**Windows:** WSL is recommended. Under Git Bash, skills are linked with directory junctions when symlinks are not allowed (no admin needed); enable Developer Mode if linking fails.
+
+### Publishing a release (maintainers)
+
+```bash
+bash tools/test-package-manager.sh                      # sandbox test: release, install, update, conflict, rollback
+python3 tools/release.py 1.1.0 --note "What users get" --push
+```
+`release.py` refuses uncommitted work, writes `manifest.json` (per-skill versions and file hashes; a skill gets the new version only when its files changed), prepends the `CHANGELOG.md` section, commits, tags `v1.1.0`, pushes and creates the GitHub release. Users see it on their next `video-skills check` or project start.
+
+### Manual install (no package manager)
+
+```bash
+bash /path/to/video-editing-skill/install.sh            # copies skills; no update notices or rollback
 ```
 
 ### Installation Options:
@@ -282,6 +88,28 @@ bash /path/to/video-editing-skill/install.sh
 - `--skip-pip`: Reuse existing Python virtual environment as is.
 - `--skills-dir DIR`: Directory to install agent skills (default: `~/.agents/skills`).
 - `--link DIR`: Link skills into other agents (e.g. `~/.claude/skills`, `~/.gemini/antigravity-cli/skills`).
+
+---
+
+## 💡 Prompt Examples
+
+Interact with your coding agent (Antigravity, Claude Code, Cursor) using simple instructions or detailed production briefs:
+
+### Basic Prompts
+- **9:16 Vertical Reel**: `Edit videos/test-01/raw/take1.mp4 into a 9:16 vertical reel for Instagram.`
+- **Code Screencast**: `Edit videos/tutorial/raw/screen.mov into a YouTube tutorial with modern tech styling.`
+- **Conversational Talking Head**: `Make a clean YouTube video from videos/interview/raw/pod.mp4 with warm Kodak Portra colors.`
+
+### Production Brief Example
+```text
+Edit videos/finance-01/raw/pitch.mp4 into a high-retention financial teardown:
+- Format: Split-screen 40/60 (creator on left, dynamic research canvas on right).
+- Grading: Kodak Portra warm tone grade with soft shadow rolloff.
+- Graphics: Highlight research clippings with fluorescent yellow sweeps, animated revenue charts, and glassmorphic stat counter.
+- Captions: weight-shift style with Poppins font, punch words scaled 1.25x.
+- Audio: Neural speech isolation; tactile paper slide and typewriter SFX.
+- Delivery: 9:16 vertical UHD 4K.
+```
 
 ---
 
@@ -300,28 +128,76 @@ bash /path/to/video-editing-skill/install.sh
 
 ## 🛠️ Offline Tactile Sound Palette
 
-The pipeline bundles 19 pre-trimmed, peak-normalized (-3 dBFS) tactile sound effects in `sound-palette/`:
+Bundles 19 pre-trimmed, peak-normalized (-3 dBFS) offline tactile SFX in `sound-palette/`:
 - **Pops & Clicks**: `pop-clean.wav`, `click-switch.wav`, `click-soft.wav`
 - **Paper & Textures**: `paper-slide.wav`, `paper-turn.wav`, `typewriter-ding.wav`
 - **Movement & Accents**: `swoosh-fast.wav`, `swoosh-deep.wav`, `whoosh-subtle.wav`
 - **Impacts & Shutters**: `camera-shutter.wav`, `camera-click.wav`, `thud-accent.wav`
 - **Transitions & Swells**: `riser-swell.wav`, `reverse-cymbal.wav`, `sub-drop.wav`
 
-All audio effects work completely offline without requiring cloud API credits. When a HeyGen API key is configured, the agent seamlessly blends expanded online tracks with this local palette.
-
 ---
 
 ## 🛡️ Anti-Hallucination & Quality Contract
 
-- **Universal SDR Delivery**: Videos strictly render in **Standard Dynamic Range with lossless BT.709 color tags (`--sdr` enabled by default)**, preventing QuickTime gamma washouts, extreme tone mapping variations across platforms, and 30 GB intermediate cache spikes.
-- **Zero-Shadow Typography by Default**: Captions and punch badge pills default to zero text-shadow, zero box-shadow, and zero blur, preventing muddy halos while remaining fully customizable if the creator requests shadows or glows.
-- **Audio Waveform Dead-Air Elimination**: All silence detection operates on real audio waveform RMS energy (`dead-air.py`), catching dead air hidden by Whisper ASR word stretching. Every pause > 0.40s is compressed to a natural 0.25-0.30s conversational pace.
-- **Approved 5-Typeface Catalog**: Restricted to verified, high-CTR typefaces (`DM Sans`, `Inter`, `Poppins`, `Google Sans`, `Roboto`) across 400-900 weight hierarchy with mandatory Gate 5 visual preview before rendering.
-- **Strict Hinglish Roman Transliteration**: Captions never mix Devanagari script into Latin captions (`yeh ek startup hai`, not `यह ek startup hai`).
-- **Real Visual Grounding**: Colors and dimensions are measured from real SVG vector logos or video frames. No arbitrary hex guesses (`#FFFFFF`).
-- **No Placeholder URLs**: Never generates fake citations (`example.com`). All references must be live URLs fetched during the session.
-- **Headroom Protection**: Overlays and checklists never cover the speaker's face or forehead (`y: 0.08 - 0.35`). Graphic cards strictly occupy the lower third (`y: 0.58 - 0.75`).
-- **Automated Verification & Review**: Gate 6 verifies loudness compliance (-14 LUFS), black-frame absence, and audio sync before finalizing the MP4.
+- **Universal SDR Delivery**: Renders in Standard Dynamic Range with BT.709 tags (`--sdr` default) to prevent gamma washouts and excessive cache usage.
+- **Zero-Shadow Vectors**: Captions default to zero text-shadow and blur for crisp legibility (customizable on request).
+- **Waveform Dead-Air Cuts**: Silence detection via waveform RMS energy (`dead-air.py`), compressing pauses >0.40s to 0.25–0.30s breath margins.
+- **Approved 5-Typeface Catalog**: Restricted to `DM Sans`, `Inter`, `Poppins`, `Google Sans`, and `Roboto` (400–900 weights).
+- **Hinglish Transliteration**: Strictly Latin script (`yeh ek startup hai`, never Devanagari script).
+- **Real Visual Grounding**: Colors and dimensions measured from real SVG vector logos or video frames.
+- **Headroom Protection**: Overlays restricted to lower thirds (`y: 0.58 - 0.75`), protecting face and forehead (`y: 0.08 - 0.35`).
+- **Automated Verification**: Gate 6 verifies loudness (-14 LUFS), zero black frames, and audio sync.
+
+---
+
+## 🚦 Streamlined Verification Gates (Gate 1 through Gate 6)
+
+The pipeline executes through 6 sequential verification checkpoints:
+- **Gate 1 (Spec & Context Audit)**: Audits prompt dimensions (`spec-resolver.py`), brand tokens (`memo.py`), and quality flags (`--denoise neural`, `--reframe yunet`, `--resolution uhd`).
+- **Gate 2 (Video Watch & Speech Ingest)**: Pacing/silence audit (`watch.py mine`), dialogue isolation, Whisper transcription (Roman Hinglish), and blueprint matching (`match.py`).
+- **Gate 3 (Narrative & Storyboard)**: Hook design (0–3s), pacing rhythm, scene breakdown, and layout choreography (`storyboard.py`).
+- **Gate 4 (Precision Cut & Dead-Air)**: Waveform RMS silence detection (`dead-air.py`), breath margin compression (0.25–0.30s), and `PAPER-CUT.md` ledger.
+- **Gate 5 (Kinetic Captions & Typography)**: Dynamic captions (`weight-shift` / `caption-highlight`) from 5 approved fonts with mandatory pre-render visual snapshot.
+- **Gate 6 (Master Render & Quality Gate)**: UHD 4K SDR (BT.709) render, EBU R128 loudness mastering (-14 LUFS), structural review (`review.py`), and temp cleanup.
+
+---
+
+## 🎨 3-Way Tone Formula & Cinema Color Grading (`grade.py`)
+
+Formulaic 3-way tone mapping (black floor lift, midtone skin gamma, soft highlight rolloff) with bundled cinema presets:
+`kodak-portra`, `hollywood-teal`, `vox-doc`, `magnates-gold`, `fuji-pro`, `modern-tech`, `moody-film`, `vibrant-pop`, `nordic-cold`, and `studio-clean`.
+
+---
+
+## 🔤 Razor-Sharp Typography & Kinetic Caption Contract
+
+- **5 Approved Typefaces**: `DM Sans`, `Inter`, `Poppins`, `Google Sans`, `Roboto` (weights 400 to 900).
+- **Clean Vectors by Default**: Zero text-shadow and zero blur by default to eliminate fuzzy halos (customizable on request).
+- **Engines**: `weight-shift` (active word emphasis) and `caption-highlight` (fluorescent sweeps) with Gate 5 pre-render approval.
+
+---
+
+## ✂️ Waveform Dead-Air Elimination & The ASR Stretching Trap
+
+Avoids Whisper ASR word-stretching inaccuracies by scanning audio waveform RMS energy (`dead-air.py` / `silencedetect`). Compresses pauses >0.40s down to 0.25–0.30s conversational breath margins, documented in `PAPER-CUT.md` before applying cuts.
+
+---
+
+## 📺 Universal Standard Dynamic Range (SDR) & Color Integrity
+
+Renders in Standard Dynamic Range with Rec.709/BT.709 color tags by default (`--sdr`), preventing HDR tone-mapping washouts and reducing intermediate cache from ~30 GB to ~2 GB. Pass `--hdr` when wide gamut is explicitly required.
+
+---
+
+## 🧠 Persistent Brand Memory (`brand/MEMO.md`)
+
+Maintains creator preferences across sessions (social handles, logos, font choices, caption engine, brand colors, default layouts, and audio targets). Inspected and updated via `python3 "$ENG/scripts/memo.py" [get|set]`.
+
+---
+
+## 🗂️ Built-in Style Blueprint Index (`video-reference-match`)
+
+Ships with 50 measured, anonymous style blueprints (`B01`–`B50`). At project start, footage is matched against blueprint pacing, layout, and caption heuristics to generate `$W/reference-match/ROADMAP.md` before cuts are applied.
 
 ---
 

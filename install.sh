@@ -37,6 +37,8 @@
 #   --link DIR          Link skills into additional agent directories (e.g. ~/.claude/skills, ~/.gemini/antigravity-cli/skills)
 #   --no-claude-link    Do not link into ~/.claude/skills
 #   --update-skills     Update skills in skills-dir (backs up custom edits first)
+#   --skills-managed    Skills are symlinks managed by `video-skills` (the one-line installer); do not copy them,
+#                       only set up the engine, workspace and agent links. Use `video-skills update` to update.
 set -euo pipefail
 
 HF_VERSION_DEFAULT="0.8.160"
@@ -53,6 +55,7 @@ SKILLS_DIR="$HOME/.agents/skills"
 LINKS=()
 CLAUDE_LINK=auto
 UPDATE_SKILLS=0
+SKILLS_MANAGED=0
 YES=0
 MODEL="large-v3"
 HF_VERSION="$HF_VERSION_DEFAULT"
@@ -75,6 +78,7 @@ while [ $# -gt 0 ]; do
     --skip-pip) SKIP_PIP=1 ;;
     --skip-tests) SKIP_TESTS=1 ;;
     --update-skills) UPDATE_SKILLS=1 ;;
+    --skills-managed) SKILLS_MANAGED=1 ;;
     --skills-dir) SKILLS_DIR="${2%/}"; shift ;;
     --link) LINKS+=("${2%/}"); shift ;;
     --no-claude-link) CLAUDE_LINK=no ;;
@@ -331,6 +335,7 @@ ours() {
 }
 
 for d in "$SKILLS_SRC"/*/; do
+  [ "$SKILLS_MANAGED" = 1 ] && break                    # video-skills already linked them into the versioned store
   name="$(basename "$d")"
   dst="$SKILLS_DIR/$name"
   if [ -e "$dst" ] && ! ours "$dst"; then
@@ -348,7 +353,11 @@ for d in "$SKILLS_SRC"/*/; do
     cp -R "$d" "$dst"; NEW=$((NEW + 1))
   fi
 done
-ok "skills in $(tilde "$SKILLS_DIR"): $NEW installed, $KEPT kept, $UPDATED updated"
+if [ "$SKILLS_MANAGED" = 1 ]; then
+  ok "skills in $(tilde "$SKILLS_DIR") are managed by video-skills (versioned links; update with: video-skills update)"
+else
+  ok "skills in $(tilde "$SKILLS_DIR"): $NEW installed, $KEPT kept, $UPDATED updated"
+fi
 [ -d "$SKILLS_DIR/business-reels-style" ] && rm -rf "$SKILLS_DIR/business-reels-style"
 
 # Link skills to other agents (e.g. Claude Code, Antigravity)
