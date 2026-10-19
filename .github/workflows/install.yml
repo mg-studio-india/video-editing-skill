@@ -2,12 +2,14 @@
 # doctor, a real whisper.cpp transcription (tiny model) through the pipeline, and the engine test suite.
 name: install
 
+# Runs on pull requests only (every release reaches main through a PR from its release/vX.Y.Z branch).
+# A newer push to the same PR cancels the run still going for the older commit.
 on:
-  push:
-    branches: [main]
-    tags: ["v*"]
   pull_request:
-  workflow_dispatch:
+
+concurrency:
+  group: install-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
 
 jobs:
   install:

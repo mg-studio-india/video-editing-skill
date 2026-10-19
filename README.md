@@ -172,7 +172,7 @@ Work on a `release/vX.Y.Z` branch, then:
 bash tools/test-package-manager.sh
 python3 tools/release.py X.Y.Z --note "What users get" --push
 ```
-CI (`.github/workflows/install.yml`) installs and tests on Ubuntu, macOS and Windows on every push to `main` and every tag.
+Open a pull request from the release branch to `main`: CI (`.github/workflows/install.yml`) installs and tests on Ubuntu, macOS and Windows for every PR, and only then. Merge after it passes.
 </details>
 
 ---
