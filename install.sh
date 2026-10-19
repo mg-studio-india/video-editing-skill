@@ -92,7 +92,9 @@ RERUN="bash install.sh"; [ "$SKILLS_MANAGED" = 1 ] && RERUN="video-skills setup"
 
 abspath() {
   local p="$1"; case "$p" in "~") p="$HOME" ;; "~/"*) p="$HOME/${p#\~/}" ;; esac
-  case "$p" in /*) ;; *) p="$ROOT_DIR/${p#./}" ;; esac
+  # C:/Users/... or C:\Users\... from Windows tools (video-skills runs as Windows Python): Git Bash spells it /c/Users/...
+  case "$p" in [A-Za-z]:[\\/]*) if command -v cygpath >/dev/null 2>&1; then p="$(cygpath -u "$p")"; fi ;; esac
+  case "$p" in /*|[A-Za-z]:[\\/]*) ;; *) p="$ROOT_DIR/${p#./}" ;; esac
   printf '%s' "${p%/}"
 }
 
