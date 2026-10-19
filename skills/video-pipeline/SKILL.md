@@ -5,6 +5,7 @@ description: Runs the professional video editing system with step-based user int
 
 # Video Pipeline (Production-Ready)
 
+> **Scripts:** which skill owns / runs every engine script: `references/engine-scripts.md`.
 > **Styles:** Pipeline architecture and the editor's style-rule checklist (from the style catalog appendix): `references/pipeline-architecture.md`.
 
 Orchestrates the complete professional editing workflow. Transforms raw creator footage into high-retention, studio-grade videos (Reels, Shorts, YouTube) through a **step-based interactive workflow** where the user verifies and approves creative decisions before combining everything into the final deliverable.

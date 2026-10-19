@@ -22,7 +22,20 @@ import subprocess
 import sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-sys.path.insert(0, HERE)
+
+
+def _engine_scripts():
+    """The shared engine scripts (video-pipeline/engine/scripts): $VIDEO_ENGINE, the sibling skill, or ~/.agents/skills."""
+    env = os.environ.get("VIDEO_ENGINE")
+    for c in ((os.path.join(env, "scripts") if env else ""), os.path.join(HERE, "..", "..", "video-pipeline", "engine", "scripts"),
+              os.path.expanduser("~/.agents/skills/video-pipeline/engine/scripts")):
+        if c and os.path.isfile(os.path.join(c, "runtime.py")):
+            return os.path.abspath(c)
+    raise SystemExit("video-pipeline engine not found: set VIDEO_ENGINE or install the skills side by side")
+
+
+ENG = _engine_scripts()
+sys.path.insert(0, ENG)
 import runtime
 runtime.ensure_project_venv()
 
@@ -31,7 +44,7 @@ LEAD, TAIL = 0.08, 0.15
 
 
 def _words_mod():
-    spec = importlib.util.spec_from_file_location("resolve_anchors", os.path.join(HERE, "resolve-anchors.py"))
+    spec = importlib.util.spec_from_file_location("resolve_anchors", os.path.join(ENG, "resolve-anchors.py"))
     m = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(m)
     return m
@@ -85,7 +98,7 @@ def main() -> None:
     cl = os.path.join(a.out_dir, "cut-list.json")
     json.dump({"source": os.path.abspath(a.flat), "source_duration": dur, "kept_seconds": total, "kept": kept},
               open(cl, "w"), indent=1)
-    r = subprocess.run([runtime.get_project_venv_python(), os.path.join(HERE, "apply-cut.py"), "--input", a.flat, "--cut-list", cl,
+    r = subprocess.run([runtime.get_project_venv_python(), os.path.join(ENG, "apply-cut.py"), "--input", a.flat, "--cut-list", cl,
                         "--out", os.path.join(a.out_dir, "public", "input-video.mp4")], capture_output=True, text=True)
     print(r.stdout.strip())
     if r.returncode != 0:

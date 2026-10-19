@@ -28,7 +28,7 @@ and why. Part of gate 1 when planned, else its own approval. Never cut a Short t
 
 ## 2. Cut
 
-`python3 "$S/make-short.py" --flat "$W/hyperframes/input-video.mp4" --transcript "$W/transcript.json" --out-dir "$W/shorts/01" --range "@the real reason..@nobody tells you"`
+`python3 "${VIDEO_SKILLS:-$HOME/.agents/skills}/video-short-form/scripts/make-short.py" --flat "$W/hyperframes/input-video.mp4" --transcript "$W/transcript.json" --out-dir "$W/shorts/01" --range "@the real reason..@nobody tells you"`
 Ranges are phrases (`@first words..@last words`) or seconds (`412.3-438.9`); edges snap to whole words with a short
 lead-in and tail. Open on the best line with two ranges (`--range "@this one setting..@doubled my views" --range "@let me explain..@and that's why"`),
 without repeating the hook line. Writes `hyperframes/input-video.mp4`, `cut-list.json`, `cut-map.json`, `short.json`; warns

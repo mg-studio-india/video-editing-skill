@@ -23,5 +23,5 @@ start the agent after `source agent-env.sh` (Claude Code also gets them from `.c
 | Gemini API key (optional) | `echo $GEMINI_API_KEY` set | `video-generate` / `video-omni-restyle` (Veo, Gemini Flash Image); then `pip install google-genai` |
 | OpenRouter key (optional) | `echo $OPENROUTER_API_KEY` set | the generation fallback |
 
-Tests: `cd "$ENG/scripts" && python3 -m unittest tests` and `cd "$ENG" && python3 -m unittest discover -s tests`. Both
-must end with `OK`. Run them after touching any engine script.
+Tests (one suite, `$ENG/tests`, covering the engine and the scripts owned by single skills): `cd "$ENG" && python3 -m unittest discover -s tests -t .`. It
+must end with `OK` (apart from known failures noted in the run). Run it after touching any engine script or a skill-owned script.

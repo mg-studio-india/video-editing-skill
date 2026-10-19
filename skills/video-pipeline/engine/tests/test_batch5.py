@@ -1,13 +1,13 @@
 """Speaker-video layouts (stack / pip / hide) and project transcript corrections (fix-words + transcribe --fix)."""
 import importlib.util, json, os, subprocess, sys, unittest
-from .helpers import SCRIPTS, ffmpeg, load, needs_ffmpeg, run, scratch, write
+from .helpers import SCRIPTS, script_path, ffmpeg, load, needs_ffmpeg, run, scratch, write
 
 sys.path.insert(0, SCRIPTS)
 import treatments as T  # noqa: E402
 
 
 def module(name, filename):
-    spec = importlib.util.spec_from_file_location(name, os.path.join(SCRIPTS, filename))
+    spec = importlib.util.spec_from_file_location(name, script_path(filename))
     m = importlib.util.module_from_spec(spec); spec.loader.exec_module(m); return m
 
 

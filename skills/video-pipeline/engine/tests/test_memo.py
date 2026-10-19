@@ -6,7 +6,7 @@ import unittest
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
-SCRIPTS = HERE.parent
+SCRIPTS = HERE.parent / "scripts"          # engine/scripts
 import sys
 sys.path.insert(0, str(SCRIPTS))
 import memo  # noqa: E402

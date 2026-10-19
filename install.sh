@@ -7,7 +7,7 @@
 #     package.json, LICENSES, .env (API keys), and agent-env.sh.
 #   - User Creative Workspace ($PROJECT, default: current directory):
 #     Houses ONLY clean user creative folders:
-#       brand/          (persistent memory brand/MEMO.md, brand-style-guide.pdf, and vector logos)
+#       brand/          (persistent memory brand/MEMO.md, STYLE-GUIDE.md, brand-style-guide.pdf, and vector logos)
 #       references/     (benchmark reels, viral hooks, layout screenshots)
 #       sound-palette/  (19 curated offline tactile SFX)
 #       videos/         (production projects with raw/ and processed/)
@@ -349,11 +349,13 @@ for d in "$SKILLS_SRC"/*/; do
   fi
 done
 ok "skills in $(tilde "$SKILLS_DIR"): $NEW installed, $KEPT kept, $UPDATED updated"
+[ -d "$SKILLS_DIR/business-reels-style" ] && rm -rf "$SKILLS_DIR/business-reels-style"
 
 # Link skills to other agents (e.g. Claude Code, Antigravity)
 for L in ${ABS_LINKS[@]+"${ABS_LINKS[@]}"}; do
   [ "$L" = "$SKILLS_DIR" ] && continue
   mkdir -p "$L"; n=0; skipped=0
+  [ -e "$L/business-reels-style" ] && rm -rf "$L/business-reels-style"
   for d in "$SKILLS_SRC"/*/; do
     name="$(basename "$d")"; target="$SKILLS_DIR/$name"
     rel="$("$VENV_PY" -c 'import os,sys; print(os.path.relpath(sys.argv[1], sys.argv[2]))' "$target" "$L")"
@@ -377,6 +379,12 @@ if [ -d "$PKG/sound-palette" ]; then
     cp -R "$PKG/sound-palette/audio/"* "$PROJECT/videos/_shared/sfx/" 2>/dev/null || true
   fi
   ok "Sound Palette integrated into $(tilde "$PROJECT")/sound-palette"
+fi
+
+# Brand style guide scaffold (brand/STYLE-GUIDE.md: fill the "Yours" column; the agent writes it into style.json)
+if [ ! -f "$PROJECT/brand/STYLE-GUIDE.md" ] && [ -f "$PKG/brand/STYLE-GUIDE.md" ]; then
+  cp "$PKG/brand/STYLE-GUIDE.md" "$PROJECT/brand/STYLE-GUIDE.md"
+  ok "brand style guide scaffolded at $(tilde "$PROJECT")/brand/STYLE-GUIDE.md"
 fi
 
 # Brand Memory scaffold (brand/MEMO.md)
@@ -581,7 +589,7 @@ if [ "$SKIP_TESTS" = 1 ]; then
   ok "tests skipped (--skip-tests)"
 else
   echo "  running relevant engine test cases..."
-  if (cd "$S" && "$VENV_PY" -m unittest tests/test_spec_resolver.py tests/test_memo.py tests/test_hinglish_and_venv.py >/dev/null 2>&1); then
+  if (cd "$ENG" && "$VENV_PY" -m unittest tests.test_spec_resolver tests.test_memo tests.test_hinglish_and_venv >/dev/null 2>&1); then
     ok "all relevant engine unit tests passed (spec-resolver, brand memo, hinglish, sandbox discovery)"
   else
     warn "unit test check reported an issue; see logs"

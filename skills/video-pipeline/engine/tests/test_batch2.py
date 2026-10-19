@@ -2,11 +2,11 @@
 reframe (face-tracked crops)."""
 import importlib.util, json, os, shutil, subprocess, sys, unittest
 import numpy as np
-from .helpers import SCRIPTS, ffmpeg, load, needs_ffmpeg, run, scratch, write
+from .helpers import SCRIPTS, script_path, ffmpeg, load, needs_ffmpeg, run, scratch, write
 
 
 def module(name, filename):
-    spec = importlib.util.spec_from_file_location(name, os.path.join(SCRIPTS, filename))
+    spec = importlib.util.spec_from_file_location(name, script_path(filename))
     m = importlib.util.module_from_spec(spec)
     sys.path.insert(0, SCRIPTS)
     spec.loader.exec_module(m)

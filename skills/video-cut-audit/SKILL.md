@@ -42,7 +42,7 @@ W="videos/<project>"
 > **Rule:** ALWAYS detect pauses via the **real audio waveform RMS energy** (`dead-air.py` or ffmpeg `silencedetect`), NEVER by word timestamp math alone.
 
 1. **Audio Waveform Dead-Air Scan:**
-   Run `dead-air.py` or ffmpeg `silencedetect=noise=-30dB:d=0.35` across the audio track:
+   Run `"${VIDEO_SKILLS:-$HOME/.agents/skills}/video-cut-audit/scripts/dead-air.py"` or ffmpeg `silencedetect=noise=-30dB:d=0.35` across the audio track:
    - Identify all pauses > 0.40s between sentences and clauses.
    - Propose dropping the quiet core of each pause to tighten spacing to 0.25s - 0.30s.
    - Strip leading dead air before the first word (> 0.12s) and trailing dead air after the final word (> 0.15s).

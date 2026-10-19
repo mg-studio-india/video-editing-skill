@@ -32,6 +32,7 @@ To keep your working directory 100% spotless across all platforms (**macOS, Linu
 📂 USER CREATIVE WORKSPACE (~/VideoWorkspace or your project folder)
 ├── brand/                            # [PERSISTENT BRAND MEMORY & PREFERENCES]
 │   ├── MEMO.md                       # Active memory: styling, handles, fonts, layout
+│   ├── STYLE-GUIDE.md                # Grade, palette, fonts, motion defaults: fill the "Yours" column
 │   ├── brand-style-guide.pdf         # Brand guidelines, colors, typography rules & brand deck
 │   └── assets/                       # Vector logos (.svg), avatars, monograms, badges
 │

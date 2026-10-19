@@ -16,7 +16,20 @@ Exit 1 when any check fails.
 import argparse, importlib.util, json, os, subprocess, sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-sys.path.insert(0, HERE)
+
+
+def _engine_scripts():
+    """The shared engine scripts (video-pipeline/engine/scripts): $VIDEO_ENGINE, the sibling skill, or ~/.agents/skills."""
+    env = os.environ.get("VIDEO_ENGINE")
+    for c in ((os.path.join(env, "scripts") if env else ""), os.path.join(HERE, "..", "..", "video-pipeline", "engine", "scripts"),
+              os.path.expanduser("~/.agents/skills/video-pipeline/engine/scripts")):
+        if c and os.path.isfile(os.path.join(c, "runtime.py")):
+            return os.path.abspath(c)
+    raise SystemExit("video-pipeline engine not found: set VIDEO_ENGINE or install the skills side by side")
+
+
+ENG = _engine_scripts()
+sys.path.insert(0, ENG)
 import runtime
 runtime.ensure_project_venv()
 
@@ -29,7 +42,7 @@ OWNERS = [("a cut, a word lost, a pause", "video-cut-audit"), ("what appears whe
 
 
 def mod(name):
-    spec = importlib.util.spec_from_file_location(name.replace("-", "_"), os.path.join(HERE, name + ".py"))
+    spec = importlib.util.spec_from_file_location(name.replace("-", "_"), os.path.join(ENG, name + ".py"))
     m = importlib.util.module_from_spec(spec); spec.loader.exec_module(m); return m
 
 
@@ -85,7 +98,7 @@ def main():
     a = ap.parse_args()
     stem = os.path.splitext(a.final)[0]
     rows = []
-    vcmd = [runtime.get_project_venv_python(), os.path.join(HERE, "verify-render.py"), "--render", a.final, "--out", stem + "-VERIFY.md"]
+    vcmd = [runtime.get_project_venv_python(), os.path.join(ENG, "verify-render.py"), "--render", a.final, "--out", stem + "-VERIFY.md"]
     if a.res:
         vcmd += ["--res", a.res]
     if a.transcript and a.render_words:

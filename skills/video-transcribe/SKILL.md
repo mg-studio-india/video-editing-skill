@@ -30,12 +30,12 @@ ffmpeg -y -v error -i "$W/hyperframes/input-video.mp4" -vn -acodec pcm_s16le -ar
 ```
 Never reuse the raw transcript after a cut or shift times by hand: a stale transcript is the top cause of captions and
 cards on the wrong word. Unresolved anchors are handled by `video-plan-storyboard`. One phrase by hand:
-`phrase-times.py --transcript "$W/transcript.json" "three tools" [--after T]` (`NOT FOUND` = cut or misheard).
+`"${VIDEO_SKILLS:-$HOME/.agents/skills}/video-transcribe/scripts/phrase-times.py" --transcript "$W/transcript.json" "three tools" [--after T]` (`NOT FOUND` = cut or misheard).
 
 - **Word Verification & Corrections (STRICT):** Immediately after transcription, verify words with:
-  `"$PROJECT/.venv/bin/python3" "$ENG/scripts/verify-words.py" --transcript "$W/transcript.json"`
+  `"$PROJECT/.venv/bin/python3" "${VIDEO_SKILLS:-$HOME/.agents/skills}/video-transcribe/scripts/verify-words.py" --transcript "$W/transcript.json"`
   Review flagged phonetic distortions and apply high-confidence fixes with `--auto-fix`, or add project-specific names/jargon:
-  `"$PROJECT/.venv/bin/python3" "$ENG/scripts/verify-words.py" --transcript "$W/transcript.json" --add "misheard=Correct"`
+  `"$PROJECT/.venv/bin/python3" "${VIDEO_SKILLS:-$HOME/.agents/skills}/video-transcribe/scripts/verify-words.py" --transcript "$W/transcript.json" --add "misheard=Correct"`
   All fixes are recorded in `$W/corrections.json` and automatically preserved across every future transcription pass without shifting audio timings. Never retype times by hand.
 - **Fillers kept by default** (the cut tools need "um/uh" to find restarts); `--no-fillers` for a finished cut.
 - **Names and jargon:** `--prompt "Claude, HyperFrames, Veo"` spells them right for captions and phrase lookups.

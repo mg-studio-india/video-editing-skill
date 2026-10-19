@@ -30,7 +30,7 @@ Never apply hardcoded frequencies, blind mic extraction, or static noise sample 
 > **Virtual Environment (STRICT)**: ALWAYS execute scripts using the project's virtual environment (`"$PROJECT/.venv/bin/python3"`). Never invoke system python.
 
 ```bash
-"$PROJECT/.venv/bin/python3" "$ENG/scripts/audio-analyze.py" "$INPUT" --json > acoustic_profile.json
+"$PROJECT/.venv/bin/python3" "${VIDEO_SKILLS:-$HOME/.agents/skills}/video-audio/scripts/audio-analyze.py" "$INPUT" --json > acoustic_profile.json
 ```
 
 The analyzer inspects the raw signal and dynamically identifies:

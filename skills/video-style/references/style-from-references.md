@@ -1,6 +1,6 @@
 # Style from reference videos: the comparison table
 
-Fill one column per creator from measured frames (`video-watch` sheets, `palette.py`), never from memory. A row where the
+Fill one column per creator from measured frames (`video-watch` sheets, `video-style/scripts/palette.py`), never from memory. A row where the
 creators agree is the convention; a row where they differ is a question for the user, asked with two frames side by
 side. Every value names the frame it came from (`rajshamani/03.mp4 @ 0:04.2`).
 

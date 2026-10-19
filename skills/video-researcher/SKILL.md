@@ -138,7 +138,7 @@ Before proceeding to `video-plan-storyboard` (Gate 0.5 Alignment & Gate 1), pres
 To quickly bootstrap a research workspace and auto-resolve entities from a transcript:
 
 ```bash
-python3 "$ENG/scripts/research-scaffold.py" --project "$W" --transcript "$W/transcript-raw.json"
+python3 "${VIDEO_SKILLS:-$HOME/.agents/skills}/video-researcher/scripts/research-scaffold.py" --project "$W" --transcript "$W/transcript-raw.json"
 ```
 
 This helper script:

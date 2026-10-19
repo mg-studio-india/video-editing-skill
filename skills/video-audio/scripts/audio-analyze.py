@@ -12,11 +12,25 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import sys
 from pathlib import Path
 
-HERE = Path(__file__).resolve().parent
-sys.path.insert(0, str(HERE))
+HERE = os.path.dirname(os.path.abspath(__file__))
+
+
+def _engine_scripts():
+    """The shared engine scripts (video-pipeline/engine/scripts): $VIDEO_ENGINE, the sibling skill, or ~/.agents/skills."""
+    env = os.environ.get("VIDEO_ENGINE")
+    for c in ((os.path.join(env, "scripts") if env else ""), os.path.join(HERE, "..", "..", "video-pipeline", "engine", "scripts"),
+              os.path.expanduser("~/.agents/skills/video-pipeline/engine/scripts")):
+        if c and os.path.isfile(os.path.join(c, "runtime.py")):
+            return os.path.abspath(c)
+    raise SystemExit("video-pipeline engine not found: set VIDEO_ENGINE or install the skills side by side")
+
+
+ENG = _engine_scripts()
+sys.path.insert(0, ENG)
 import runtime
 runtime.ensure_project_venv()
 

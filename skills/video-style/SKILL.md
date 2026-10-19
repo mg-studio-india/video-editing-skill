@@ -1,6 +1,6 @@
 ---
 name: video-style
-description: Curates the visual identity (color palette, typography pairings, card themes, color grading profiles, and motion physics) as style.json. Enables interactive user verification before visual elements are built. Owns Gate 3.
+description: Curates the visual identity (color palette, typography pairings, card themes, color grading profiles, motion physics, and business creator reel styles) as style.json. Enables interactive user verification before visual elements are built. Owns Gate 3.
 ---
 
 # Style & Visual Identity (Color Grading, Typography, Layout & Physics)
@@ -130,7 +130,53 @@ python3 "$ENG/scripts/grade.py" preview --input "$W/raw/<clip>.mp4" --out "$W/gr
 
 ---
 
-## 4. Gate 3: Interactive Style & Color Grade Verification
+## 4. Business Creator Reels Style Direction (Integrated)
+
+For short-form business, creator, interview, finance, entrepreneurship, D2C, and marketing videos (informed by top creators like Raj Shamani, Nitin Joshi, Markets with Jayant, Bypreneurs, D2C by Nikhil, and Marketing with Govind).
+
+### Core Principle: Editorial Credibility First, High-Energy Emphasis Second
+Story and evidence carry attention; typography and motion strengthen emphasis without fabricating certainty or obscuring missing facts.
+
+- **Palette Defaults (`styles/business-reels.json`):**
+  - Background: `#171717`, Surface: `#252525`, Text: `#F5F1EA`, Muted: `#B9B5AE`, Line: `#4A4845`
+  - Accent Punch: `#D9413A` (Red) or Brand Highlight (`#FFD700`, `#00E5FF`)
+  - White text on dark/cinematic footage; natural skin tones strictly preserved.
+- **Typography & Scripts:**
+  - High-legibility grotesque sans (`Inter` 700-800 or `Poppins` 800-900) for display/punch; `Inter` 400-500 for inactive flow.
+  - All Hindi/code-switched speech must strictly render in Roman script (Hinglish), never Devanagari.
+- **Evidence Contract:**
+  - Never fabricate revenue, valuation, conversion, CAC, ROAS, market share, or customer counts.
+  - Source labels remain distinct from headlines; distinguish documented facts, attributed allegations, and inferences.
+  - Show documents/charts only when they directly support the claim and remain legible long enough to read.
+
+### Motion Patterns & Timing Calibration
+- **Pattern 1: Claim → Evidence → Implication:**
+  Open on the claim/question → establish entity & context → reveal evidence step-by-step → state the implication.
+- **Pattern 2: Text Split Across Visual Contrast:**
+  State A in first frame → cut to contrasting state B → complete thought with aligned typography.
+- **Pattern 3: Speaker-Led Hook:**
+  Start speaker audio directly on the hook → clean medium close-up → modest punch-in (1.08x - 1.12x) on high-value assertion → return to stable frame for dense explanation.
+
+| Motion Element | Duration | Dynamic Behavior |
+|---|---:|---|
+| Headline Reveal | 180-280 ms | Opacity + subtle vertical settle (`power3.out`). No long intro before hook. |
+| Keyword Emphasis | 100-180 ms | Subtle scale pop (`0.90 -> 1.06 -> 1.00`), bold weight shift or badge pill. |
+| Callout / Stat Card | 220-360 ms | Opacity + directional slide in lower-third or side canvas. |
+| Camera Punch-in | 220-350 ms | Modest scale (1.06x - 1.12x) motivated by a key assertion. |
+| Kinetic Chart Build | 350-800 ms | Sequential bar/line growth timed to spoken data points. |
+| Scene Transition | 150-300 ms | Brief dissolve or slide; default to clean hard cut. |
+
+### Edit Templates (Content Structures)
+- **Template A — Founder / Podcast Moment (15-45s):** Strong hook (0-2s) → speaker context (2-6s) → cause-and-effect narrative → supportive real visuals → clean resolution.
+- **Template B — Business / Market Case Study (30-90s+):** Question/claim → entity & timeframe → mechanism in digestible steps → evidence reveal → source prompt & conclusion.
+- **Template C — D2C / Marketing Education (15-45s):** Problem/outcome → plain-language framework → concrete sourced example → actionable metric/lesson.
+- **Template D — Contrast / Retention Edit:** State A vs State B comparison → legible aligned metrics → causal analysis.
+
+> Full reference documentation: `references/business-reels-templates.md`, `references/business-reels-accounts.md`, and `references/business-reels-audit.md`.
+
+---
+
+## 5. Gate 3: Interactive Style & Color Grade Verification
 
 Before assembling the video or generating components, present `style.json` and the color preview to the user:
 1. **Color Grade Preview:** Display `$W/grade-preview.jpg` comparing the raw footage against the proposed preset.

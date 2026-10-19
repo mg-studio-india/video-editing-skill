@@ -20,7 +20,7 @@ F="$W/processed/<project>-v<N>.mp4"
 
 Run verification on the rendered MP4 file:
 ```bash
-"$PROJECT/.venv/bin/python3" "$ENG/scripts/review.py" --final "$F" --preset shorts --res 1080x1920 \
+"$PROJECT/.venv/bin/python3" "${VIDEO_SKILLS:-$HOME/.agents/skills}/video-review-gate/scripts/review.py" --final "$F" --preset shorts --res 1080x1920 \
   --storyboard "$W/storyboard.json" --transcript "$W/transcript.json"
 ```
 

@@ -6,7 +6,9 @@ import unittest
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
-SCRIPTS = HERE.parent
+SCRIPTS = HERE.parent / "scripts"          # engine/scripts (tests/ sits next to it)
+import sys
+sys.path.insert(0, str(SCRIPTS))
 import importlib.util
 spec = importlib.util.spec_from_file_location("spec_resolver", SCRIPTS / "spec-resolver.py")
 spec_resolver = importlib.util.module_from_spec(spec)

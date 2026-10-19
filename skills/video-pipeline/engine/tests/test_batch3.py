@@ -1,7 +1,7 @@
 """captions (grouping, catalog injection), treatments (builders), stage.py (any canvas) and the compose.py hook.
 These check structure and rules; the visual check is `npx hyperframes check` + snapshots, run by the skills."""
 import importlib.util, json, os, re, subprocess, sys, unittest
-from .helpers import SCRIPTS, load, run, scratch, write
+from .helpers import SCRIPTS, script_path, load, run, scratch, write
 
 sys.path.insert(0, SCRIPTS)
 import captions as C      # noqa: E402
@@ -156,7 +156,7 @@ class Stage(unittest.TestCase):
 class Palette(unittest.TestCase):
     def test_finds_the_accent_and_its_share(self):
         import numpy as np
-        spec = importlib.util.spec_from_file_location("palette_t", os.path.join(SCRIPTS, "palette.py"))
+        spec = importlib.util.spec_from_file_location("palette_t", script_path("palette.py"))
         P = importlib.util.module_from_spec(spec); spec.loader.exec_module(P)
         px = np.concatenate([np.tile([255, 212, 0], (300, 1)), np.tile([20, 20, 20], (700, 1))]).astype(float)
         c, share = P.kmeans(px, 2)
