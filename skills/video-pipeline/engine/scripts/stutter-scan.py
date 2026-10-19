@@ -31,6 +31,9 @@ os.makedirs(args.out_dir, exist_ok=True)
 kit_json = os.path.join(args.out_dir, "flat-transcript.json")
 json.dump({"language_code": "en", "audio_duration_secs": words[-1]["end"] if words else 0,
            "text": " ".join(w["text"] for w in words), "words": words}, open(kit_json, "w"))
+sys.path.insert(0, HERE)
+import runtime  # noqa: E402  (puts the engine's private Node 22 first when install.sh added one)
+os.environ["PATH"] = os.pathsep.join(runtime.engine_path_dirs() + [os.environ.get("PATH", "")])
 res = subprocess.run(["node", FINDER, kit_json, "--out-dir", args.out_dir], capture_output=True, text=True)
 if res.returncode != 0:
     sys.exit(res.stderr)

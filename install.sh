@@ -170,6 +170,76 @@ printf '   Skills catalog : %s%s%s\n' "$G" "$(tilde "$SKILLS_DIR")" "$N"
 
 OS="$(uname -s 2>/dev/null || echo "Unknown")"
 ARCH="$(uname -m 2>/dev/null || echo "Unknown")"
+case "$ARCH" in aarch64|arm64) ARCH_N=arm64 ;; x86_64|amd64) ARCH_N=x64 ;; *) ARCH_N="$ARCH" ;; esac
+IS_WIN=0; case "$OS" in MINGW*|MSYS*|CYGWIN*) IS_WIN=1 ;; esac
+# Native Windows programs (python.exe) read C:/... paths, not Git Bash's /c/...
+nativepath() { if [ "$IS_WIN" = 1 ] && command -v cygpath >/dev/null 2>&1; then cygpath -m "$1"; else printf '%s' "$1"; fi; }
+
+# Python 3.9+ runs the engine, and below it checks downloads and unpacks zips (Windows has python/py, not python3)
+PY=""
+for c in python3.13 python3.12 python3.11 python3.10 python3 python py; do
+  if command -v "$c" >/dev/null 2>&1 && "$c" -c 'import sys; sys.exit(0 if sys.version_info >= (3, 9) else 1)' 2>/dev/null; then
+    PY="$c"; break
+  fi
+done
+if [ -z "$PY" ]; then
+  if [ "$IS_WIN" = 1 ]; then die "Python 3.9+ not found: winget install Python.Python.3.12 (then open a new terminal)"; fi
+  die "Python 3.9+ not found: macOS 'brew install python', Ubuntu 'sudo apt-get install -y python3 python3-venv', Fedora 'sudo dnf install -y python3'"
+fi
+
+download() {  # url file: download to file.part, then rename
+  curl -L --fail --progress-bar -o "$2.part" "$1" && mv "$2.part" "$2" || { rm -f "$2.part"; return 1; }
+}
+sha256_of() { "$PY" -c 'import hashlib,sys; print(hashlib.sha256(open(sys.argv[1],"rb").read()).hexdigest())' "$(nativepath "$1")"; }
+unpack() {  # archive dir: .tar.gz with tar, .zip with Python (Git Bash has no unzip)
+  rm -rf "$2"; mkdir -p "$2"
+  case "$1" in
+    *.zip) "$PY" -m zipfile -e "$(nativepath "$1")" "$(nativepath "$2")" ;;
+    *) tar -xzf "$1" -C "$2" ;;
+  esac
+}
+node_major() { local v; v="$(node -v 2>/dev/null | sed 's/^v//; s/\..*//')"; case "$v" in ''|*[!0-9]*) echo 0 ;; *) echo "$v" ;; esac; }
+
+# A private Node 22 inside the engine (no sudo, nothing system-wide) when the system node is missing or older
+NODE_HOME="$ENGINE_DIR/node"
+if [ "$IS_WIN" = 1 ]; then NODE_BIN="$NODE_HOME"; else NODE_BIN="$NODE_HOME/bin"; fi
+if [ -d "$NODE_BIN" ]; then export PATH="$NODE_BIN:$PATH"; fi
+install_private_node() {
+  local plat="" ext=tar.gz sums line sha file tmp rc
+  case "$OS" in Darwin) plat="darwin-$ARCH_N" ;; Linux) plat="linux-$ARCH_N" ;; esac
+  if [ "$IS_WIN" = 1 ]; then plat="win-$ARCH_N"; ext=zip; fi
+  [ -n "$plat" ] || return 1
+  sums="$(curl -fsSL https://nodejs.org/dist/latest-v22.x/SHASUMS256.txt)" || return 1
+  line="$(printf '%s\n' "$sums" | grep -E "  node-v22\.[0-9.]+-$plat\.$ext\$" | head -1)"
+  [ -n "$line" ] || return 1
+  sha="${line%% *}"; file="${line##* }"
+  tmp="$ENGINE_DIR/.node-download"; mkdir -p "$tmp"
+  echo "  downloading $file (a private Node.js for the engine)"
+  download "https://nodejs.org/dist/latest-v22.x/$file" "$tmp/$file" || { rm -rf "$tmp"; return 1; }
+  if [ "$(sha256_of "$tmp/$file")" != "$sha" ]; then warn "Node.js download failed its checksum"; rm -rf "$tmp"; return 1; fi
+  unpack "$tmp/$file" "$tmp/x" && rm -rf "$NODE_HOME" && mv "$tmp/x/${file%.$ext}" "$NODE_HOME"
+  rc=$?; rm -rf "$tmp"; return $rc
+}
+
+# whisper.cpp prebuilt release (Linux, Windows) when no whisper-cli is installed; Homebrew covers macOS.
+# Kept in its own folder (it also ships main, bench, stream...) and found through WATCH_WHISPER_CPP_BIN, not PATH.
+WHISPER_TAG="b5454"
+WHISPER_DIR="$ENGINE_DIR/whisper"
+WHISPER_BIN=""
+whisper_works() { [ -n "$1" ] && [ -f "$1" ] && "$1" --help >/dev/null 2>&1; }
+find_private_whisper() { [ -d "$WHISPER_DIR" ] || return 0; find "$WHISPER_DIR" -type f \( -name whisper-cli -o -name whisper-cli.exe \) 2>/dev/null | head -1 || true; }
+install_private_whisper() {
+  local asset="" rc
+  case "$OS-$ARCH_N" in
+    Linux-x64) asset=whisper-bin-ubuntu-x64.tar.gz ;;
+    Linux-arm64) asset=whisper-bin-ubuntu-arm64.tar.gz ;;
+  esac
+  if [ "$IS_WIN" = 1 ] && [ "$ARCH_N" = x64 ]; then asset=whisper-bin-x64.zip; fi
+  [ -n "$asset" ] || return 1
+  echo "  downloading whisper.cpp $WHISPER_TAG ($asset)"
+  download "https://github.com/ggml-org/whisper.cpp/releases/download/$WHISPER_TAG/$asset" "$ENGINE_DIR/$asset" || return 1
+  unpack "$ENGINE_DIR/$asset" "$WHISPER_DIR"; rc=$?; rm -f "$ENGINE_DIR/$asset"; return $rc
+}
 
 # --------------------------------------------------------------------------------------------- 1. System tools
 step "1/8 System tools (node, ffmpeg, whisper-cpp, sox)"
@@ -187,34 +257,60 @@ elif [ "$OS" = "Darwin" ]; then
       ok "$f installed"
     fi
   done
-elif [ "$OS" = "Linux" ]; then
-  if command -v apt-get >/dev/null 2>&1; then
-    echo "  Debian/Ubuntu detected. Verifying packages..."
-    if ! command -v node >/dev/null 2>&1 || ! command -v ffmpeg >/dev/null 2>&1 || ! command -v sox >/dev/null 2>&1; then
-      warn "Missing system tools. Run: sudo apt-get update && sudo apt-get install -y nodejs npm ffmpeg sox libsox-fmt-all"
-    fi
-  elif command -v dnf >/dev/null 2>&1; then
-    echo "  Fedora/RHEL detected. Verifying packages..."
-    if ! command -v node >/dev/null 2>&1 || ! command -v ffmpeg >/dev/null 2>&1 || ! command -v sox >/dev/null 2>&1; then
-      warn "Missing system tools. Run: sudo dnf install -y nodejs npm ffmpeg sox"
-    fi
-  elif command -v pacman >/dev/null 2>&1; then
-    echo "  Arch Linux detected. Verifying packages..."
-    if ! command -v node >/dev/null 2>&1 || ! command -v ffmpeg >/dev/null 2>&1 || ! command -v sox >/dev/null 2>&1; then
-      warn "Missing system tools. Run: sudo pacman -S --needed nodejs npm ffmpeg sox"
-    fi
-  fi
-else
-  warn "Non-Unix / Windows environment. Ensure Node (22+), FFmpeg, SoX, and whisper-cli are in PATH."
 fi
 
-command -v node >/dev/null 2>&1 || die "node not found (install Node.js 22+)"
-NODE_MAJOR="$(node -v | sed 's/^v//; s/\..*//')"
-[ "$NODE_MAJOR" -ge 22 ] || die "Node 22 or newer is needed (found $(node -v))"
-ok "node $(node -v)"
-command -v ffmpeg >/dev/null 2>&1 && ok "ffmpeg ready" || die "ffmpeg not found"
-if command -v sox >/dev/null 2>&1; then ok "sox ready"; else warn "sox not found: required for dynamic audio cleaning and room profiling"; fi
-if command -v whisper-cli >/dev/null 2>&1; then ok "whisper-cli found"; else warn "whisper-cli not found: install whisper.cpp for offline transcription"; fi
+# The one command that installs what is missing (Node and whisper.cpp come privately below, so they are not in it)
+SYS_HINT=""
+if [ "$OS" = "Darwin" ]; then
+  SYS_HINT="brew install ffmpeg sox"
+elif [ "$OS" = "Linux" ]; then
+  if command -v apt-get >/dev/null 2>&1; then
+    SYS_HINT="sudo apt-get update && sudo apt-get install -y ffmpeg sox libsox-fmt-all libgomp1 python3-venv"
+  elif command -v dnf >/dev/null 2>&1; then
+    SYS_HINT="sudo dnf install -y ffmpeg-free sox libgomp python3 (for the full ffmpeg enable RPM Fusion)"
+  elif command -v pacman >/dev/null 2>&1; then
+    SYS_HINT="sudo pacman -S --needed ffmpeg sox python"
+  fi
+elif [ "$IS_WIN" = 1 ]; then
+  SYS_HINT="winget install --id Gyan.FFmpeg -e; winget install --id ChrisBagwell.SoX -e (then open a new terminal)"
+fi
+[ -n "$SYS_HINT" ] || SYS_HINT="install FFmpeg and SoX with your package manager"
+
+if [ "$(node_major)" -lt 22 ]; then
+  if [ "$(node_major)" -gt 0 ]; then echo "  system node is $(node -v); the engine needs 22+"; fi
+  install_private_node || warn "could not download a private Node.js 22"
+  export PATH="$NODE_BIN:$PATH"; hash -r
+fi
+[ "$(node_major)" -ge 22 ] || die "Node.js 22 or newer is needed (found: $(node -v 2>/dev/null || echo none)). Install it from https://nodejs.org and re-run."
+case "$(command -v node)" in "$NODE_BIN"/*) ok "node $(node -v) (private, in $(tilde "$NODE_HOME"))" ;; *) ok "node $(node -v)" ;; esac
+command -v ffmpeg >/dev/null 2>&1 && ok "ffmpeg ready" || die "ffmpeg not found. Run: $SYS_HINT"
+if command -v sox >/dev/null 2>&1; then ok "sox ready"; else warn "sox not found (needed for room-tone profiling and audio cleaning). Run: $SYS_HINT"; fi
+
+if command -v whisper-cli >/dev/null 2>&1; then
+  ok "whisper-cli found"
+else
+  WHISPER_BIN="$(find_private_whisper)"
+  if ! whisper_works "$WHISPER_BIN"; then
+    install_private_whisper || true
+    WHISPER_BIN="$(find_private_whisper)"
+  fi
+  if whisper_works "$WHISPER_BIN"; then
+    ok "whisper-cli ready: $(tilde "$WHISPER_BIN")"
+  else
+    MISSING_LIBS=""
+    if [ -n "$WHISPER_BIN" ] && command -v ldd >/dev/null 2>&1; then
+      MISSING_LIBS="$(ldd "$WHISPER_BIN" 2>/dev/null | awk '/not found/ {print $1}' | tr '\n' ' ')"
+    fi
+    if [ -n "$MISSING_LIBS" ]; then
+      warn "whisper-cli needs ${MISSING_LIBS% } from the system. Run: $SYS_HINT; then: video-skills setup"
+    elif [ "$OS" = "Darwin" ]; then
+      warn "whisper-cli not found: brew install whisper-cpp"
+    else
+      warn "whisper-cli not found and there is no prebuilt whisper.cpp for $OS-$ARCH: build https://github.com/ggml-org/whisper.cpp and set WATCH_WHISPER_CPP_BIN in ~/.config/video-skills/.env"
+    fi
+    WHISPER_BIN=""
+  fi
+fi
 
 # --------------------------------------------------------------------------------------------- 2. Models and neural nets
 step "2/8 Models & neural nets (Whisper, RNNoise, YuNet, DeepFilterNet)"
@@ -265,17 +361,18 @@ DF_VERSION="0.5.6"
 DF_DIR="$HOME/.config/video-skills/bin"
 DF_FILE="$DF_DIR/deep-filter"
 mkdir -p "$DF_DIR"
-case "$OS-$ARCH" in
+case "$OS-$ARCH_N" in
   Darwin-arm64) DF_ASSET="deep-filter-$DF_VERSION-aarch64-apple-darwin" ;;
-  Darwin-x86_64) DF_ASSET="deep-filter-$DF_VERSION-x86_64-apple-darwin" ;;
-  Linux-x86_64) DF_ASSET="deep-filter-$DF_VERSION-x86_64-unknown-linux-musl" ;;
-  Linux-aarch64) DF_ASSET="deep-filter-$DF_VERSION-aarch64-unknown-linux-gnu" ;;
+  Darwin-x64) DF_ASSET="deep-filter-$DF_VERSION-x86_64-apple-darwin" ;;
+  Linux-x64) DF_ASSET="deep-filter-$DF_VERSION-x86_64-unknown-linux-musl" ;;
+  Linux-arm64) DF_ASSET="deep-filter-$DF_VERSION-aarch64-unknown-linux-gnu" ;;
   *) DF_ASSET="" ;;
 esac
+if [ "$IS_WIN" = 1 ] && [ "$ARCH_N" = x64 ]; then DF_ASSET="deep-filter-$DF_VERSION-x86_64-pc-windows-msvc.exe"; DF_FILE="$DF_DIR/deep-filter.exe"; fi
 if [ -x "$DF_FILE" ] && "$DF_FILE" --help >/dev/null 2>&1; then
   ok "DeepFilterNet ready: $DF_FILE"
 elif [ -z "$DF_ASSET" ]; then
-  warn "No precompiled DeepFilterNet binary for $OS-$ARCH; voice-clean.py will fallback to RNNoise"
+  warn "No precompiled DeepFilterNet binary for $OS-$ARCH; the audio chain falls back to RNNoise"
 else
   echo "  downloading DeepFilterNet $DF_VERSION for indoor/outdoor neural speech isolation"
   curl -L --fail --progress-bar -o "$DF_FILE.part" "https://github.com/Rikorose/DeepFilterNet/releases/download/v$DF_VERSION/$DF_ASSET" \
@@ -285,22 +382,19 @@ fi
 
 # --------------------------------------------------------------------------------------------- 3. Python environment
 step "3/8 Python sandbox ($ENGINE_DIR/.venv)"
-PY=""
-for c in python3.13 python3.12 python3.11 python3.10 python3; do
-  if command -v "$c" >/dev/null 2>&1 && "$c" -c 'import sys; sys.exit(0 if sys.version_info >= (3, 9) else 1)' 2>/dev/null; then
-    PY="$c"; break
-  fi
-done
-[ -n "$PY" ] || die "Python 3.9+ not found. Please install Python 3.9 or higher."
-
 VENV_DIR="$ENGINE_DIR/.venv"
 VENV_PY="$VENV_DIR/bin/python"
 if [ ! -x "$VENV_PY" ] && [ -x "$VENV_DIR/Scripts/python.exe" ]; then
   VENV_PY="$VENV_DIR/Scripts/python.exe"
 fi
+# a venv made without pip (Debian/Ubuntu without python3-venv) is unusable: start it again
+if [ -x "$VENV_PY" ] && ! "$VENV_PY" -m pip --version >/dev/null 2>&1; then rm -rf "$VENV_DIR"; fi
 
 if [ ! -x "$VENV_PY" ]; then
-  "$PY" -m venv "$VENV_DIR"
+  if ! "$PY" -m venv "$VENV_DIR" >/dev/null 2>&1; then
+    rm -rf "$VENV_DIR"
+    die "could not create a Python virtual environment. Run: $SYS_HINT"
+  fi
   ok "created engine virtual environment ($("$PY" --version)) in $(tilde "$VENV_DIR")"
 else
   ok "engine virtual environment ready in $(tilde "$VENV_DIR")"
@@ -483,8 +577,18 @@ fi
 if [ "$NO_BROWSER" = 1 ]; then
   ok "browser skipped (--no-browser)"
 else
-  (cd "$ENGINE_DIR" && npx --no-install hyperframes browser ensure) && ok "HyperFrames Chrome ready" \
-    || warn "HyperFrames could not fetch Chrome; run 'cd $ENGINE_DIR && npx hyperframes browser ensure' later"
+  if (cd "$ENGINE_DIR" && npx --no-install hyperframes browser ensure); then
+    # ensure can settle on a system Chromium that does not start (snap stubs, Linux on ARM): ask doctor whether it runs
+    if (cd "$ENGINE_DIR" && npx --no-install hyperframes doctor 2>&1) | grep -qE "✗ +Chrome"; then
+      CH_HINT="install Google Chrome, or Chromium from your package manager, and set HYPERFRAMES_BROWSER_PATH in ~/.config/video-skills/.env"
+      [ "$OS-$ARCH_N" = Linux-arm64 ] && CH_HINT="Chrome has no Linux ARM build: install a non-snap Chromium (e.g. 'sudo dnf install chromium', Debian 'sudo apt-get install chromium') and set HYPERFRAMES_BROWSER_PATH in ~/.config/video-skills/.env"
+      warn "Chrome for rendering does not start (npx hyperframes doctor). $CH_HINT"
+    else
+      ok "HyperFrames Chrome ready"
+    fi
+  else
+    warn "HyperFrames could not fetch Chrome; run 'cd $ENGINE_DIR && npx hyperframes browser ensure' later"
+  fi
 fi
 
 HF_SKILLS=(
@@ -535,7 +639,9 @@ echo "  HeyGen (the sound library for all SFX and music)"
 HG_CUR="$(getenv HEYGEN_API_KEY)"; HG_CUR="${HG_CUR:-${HEYGEN_API_KEY:-}}"
 if [ -n "$HG_CUR" ]; then
   ok "HEYGEN_API_KEY already configured"; setenv HEYGEN_API_KEY "$HG_CUR"
-elif (cd "$ENGINE_DIR" && npx --no-install hyperframes auth status 2>&1 | grep -q "ot signed in"); then
+elif ! HG_STATUS="$(cd "$ENGINE_DIR" && npx --no-install hyperframes auth status 2>&1)" \
+     || printf '%s' "$HG_STATUS" | grep -qiE "not (signed|logged) in" \
+     || ! printf '%s' "$HG_STATUS" | grep -qiE "signed in|logged in|authenticated"; then   # only a clear yes counts as signed in
   HG_DEFAULT=1; { [ "$YES" = 1 ] || [ ! -r /dev/tty ]; } && HG_DEFAULT=3
   ask "Sign in now? 1 = browser sign-in (recommended), 2 = paste an API key, 3 = later" "$HG_DEFAULT"
   case "$REPLY" in
@@ -560,18 +666,23 @@ ask_secret "OPENROUTER_API_KEY (Enter to skip)" "$O_CUR"; REPLY="$(api_key "$REP
 ask "Main spoken language for transcription: en, hi (Hinglish Roman captions), or auto?" "$(getenv WATCH_WHISPER_LANG)"
 LANG_CHOICE="${REPLY:-auto}"; setenv WATCH_WHISPER_LANG "$LANG_CHOICE"; ok "WATCH_WHISPER_LANG=$LANG_CHOICE"
 
-[ "$MODEL" != "none" ] && setenv WATCH_WHISPER_MODEL "$MODEL_DIR/ggml-$MODEL.bin"
-setenv VIDEO_SKILLS "$SKILLS_DIR"
-setenv VIDEO_ENGINE "$ENG"
-setenv VIDEO_ENGINE_DIR "$ENGINE_DIR"
-setenv VIDEO_SOUND_PALETTE "$PROJECT/sound-palette"
-setenv RNNOISE_MODEL "$HOME/.config/video-skills/rnnoise/sh.rnnn"
-setenv YUNET_MODEL "$HOME/.config/video-skills/models/face_detection_yunet_2023mar.onnx"
+[ "$MODEL" != "none" ] && setenv WATCH_WHISPER_MODEL "$(nativepath "$MODEL_DIR/ggml-$MODEL.bin")"
+[ -n "$WHISPER_BIN" ] && setenv WATCH_WHISPER_CPP_BIN "$(nativepath "$WHISPER_BIN")"
+[ "$IS_WIN" = 1 ] && [ -x "$DF_FILE" ] && setenv VIDEO_DEEPFILTER "$(nativepath "$DF_FILE")"
+setenv VIDEO_SKILLS "$(nativepath "$SKILLS_DIR")"
+setenv VIDEO_ENGINE "$(nativepath "$ENG")"
+setenv VIDEO_ENGINE_DIR "$(nativepath "$ENGINE_DIR")"
+setenv VIDEO_SOUND_PALETTE "$(nativepath "$PROJECT/sound-palette")"
+setenv RNNOISE_MODEL "$(nativepath "$HOME/.config/video-skills/rnnoise/sh.rnnn")"
+setenv YUNET_MODEL "$(nativepath "$HOME/.config/video-skills/models/face_detection_yunet_2023mar.onnx")"
 ok "environment variables configured in ~/.config/video-skills/.env"
 
 # --------------------------------------------------------------------------------------------- 7. Agent wiring
 step "7/8 Agent runtime discovery wiring"
 AGENT_ENV_FILE="$ENGINE_DIR/agent-env.sh"
+# venv scripts (bin/, or Scripts/ on Windows), HyperFrames CLI, then the private Node when there is one
+ENGINE_PATH="$(dirname "$VENV_PY"):$ENGINE_DIR/node_modules/.bin"
+[ -d "$NODE_BIN" ] && ENGINE_PATH="$ENGINE_PATH:$NODE_BIN"
 {
   echo "# Autonomous Video Editing Environment"
   echo "export VIDEO_ENGINE_DIR=\"$ENGINE_DIR\""
@@ -580,18 +691,27 @@ AGENT_ENV_FILE="$ENGINE_DIR/agent-env.sh"
   echo "export VIDEO_SOUND_PALETTE=\"$PROJECT/sound-palette\""
   echo "export RNNOISE_MODEL=\"\$HOME/.config/video-skills/rnnoise/sh.rnnn\""
   echo "export YUNET_MODEL=\"\$HOME/.config/video-skills/models/face_detection_yunet_2023mar.onnx\""
-  echo "export PATH=\"$ENGINE_DIR/.venv/bin:$ENGINE_DIR/node_modules/.bin:\$PATH\""
+  echo "export PATH=\"$ENGINE_PATH:\$PATH\""
   echo "if [ -f \"\$HOME/.config/video-skills/.env\" ]; then set -a; . \"\$HOME/.config/video-skills/.env\"; set +a; fi"
 } > "$AGENT_ENV_FILE"
 cp "$AGENT_ENV_FILE" "$HOME/.config/video-skills/agent-env.sh" 2>/dev/null || true
 ok "global agent-env.sh generated at $(tilde "$AGENT_ENV_FILE") and ~/.config/video-skills/agent-env.sh"
+# The private Node only helps if agents' shells find it before an older system node (npx hyperframes needs 22+)
+if [ -d "$NODE_BIN" ]; then
+  case "${SHELL:-}" in *zsh) RC="$HOME/.zshrc" ;; *) RC="$HOME/.bashrc" ;; esac
+  RC_LINE="[ -d \"$NODE_BIN\" ] && export PATH=\"$NODE_BIN:\$PATH\"  # video-skills: Node.js 22 for the engine"
+  if ! grep -qF "$RC_LINE" "$RC" 2>/dev/null; then
+    printf '\n%s\n' "$RC_LINE" >> "$RC"
+    ok "Node.js 22 put first on PATH in $(tilde "$RC") (open a new terminal)"
+  fi
+fi
 
 # --------------------------------------------------------------------------------------------- 8. Checks
 step "8/8 Preflight verification"
 set -a
 [ -f "$HOME/.config/video-skills/.env" ] && . "$HOME/.config/video-skills/.env"
 set +a
-export PATH="$ENGINE_DIR/.venv/bin:$ENGINE_DIR/node_modules/.bin:$PATH"
+export PATH="$ENGINE_PATH:$PATH"
 
 S="$ENG/scripts"
 "$VENV_PY" "$S/watch.py" check 2>&1 | sed 's/^/  /' || warn "watch.py preflight check reported a warning"

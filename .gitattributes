@@ -1,0 +1,2 @@
+# Shell scripts and Python must keep LF line endings, also in Windows checkouts (bash cannot run CRLF scripts)
+* text=auto eol=lf

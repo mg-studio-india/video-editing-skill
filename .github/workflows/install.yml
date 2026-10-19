@@ -1,0 +1,68 @@
+# install.yml: install the package from this checkout on Linux, macOS and Windows (Git Bash), then prove it works:
+# doctor, a real whisper.cpp transcription (tiny model) through the pipeline, and the engine test suite.
+name: install
+
+on:
+  push:
+    branches: [main]
+    tags: ["v*"]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  install:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, macos-14, windows-2022]
+    runs-on: ${{ matrix.os }}
+    defaults:
+      run:
+        shell: bash                 # Git Bash on Windows: the same path users take through get.ps1
+    env:
+      VIDEO_SKILLS_SOURCE: ${{ github.workspace }}
+      PYTHONUTF8: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: System tools (what the installer asks users to install)
+        run: |
+          case "$RUNNER_OS" in
+            Linux)   sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg sox libsox-fmt-all libgomp1 ;;
+            macOS)   brew install ffmpeg sox whisper-cpp ;;
+            Windows) choco install -y --no-progress ffmpeg sox.portable ;;
+          esac
+
+      - name: Install (non-interactive, no 3 GB model, no Chrome)
+        run: |
+          mkdir -p "$RUNNER_TEMP/ws" && cd "$RUNNER_TEMP/ws"
+          python "$GITHUB_WORKSPACE/bin/video-skills" install --yes --model none --no-browser --skip-tests
+
+      - name: Doctor
+        run: |
+          export PATH="$HOME/.local/bin:$PATH"
+          video-skills doctor
+          video-skills list | head -5
+
+      - name: Real transcription (whisper.cpp tiny + JFK sample)
+        run: |
+          mkdir -p "$RUNNER_TEMP/w" && cd "$RUNNER_TEMP/w"
+          curl -fsSL -o ggml-tiny.bin https://huggingface.co/ggerganov/whisper.cpp/resolve/main/ggml-tiny.bin
+          curl -fsSL -o jfk.wav https://raw.githubusercontent.com/ggml-org/whisper.cpp/master/samples/jfk.wav
+          ffmpeg -loglevel error -f lavfi -i color=c=gray:s=320x568:d=11 -i jfk.wav -shortest -c:v libx264 -c:a aac clip.mp4
+          set -a; . "$HOME/.config/video-skills/.env"; set +a
+          ENGINE="$HOME/.video-skills/engine"; PY="$ENGINE/.venv/bin/python"; [ -x "$PY" ] || PY="$ENGINE/.venv/Scripts/python.exe"
+          WATCH_WHISPER_MODEL="$PWD/ggml-tiny.bin" "$PY" "$HOME/.agents/skills/video-pipeline/engine/scripts/transcribe.py" clip.mp4 --out t.json --lang en
+          "$PY" -c "import json; d=json.load(open('t.json')); w=d['words'] if isinstance(d,dict) else d; t=' '.join(x['text'] for x in w); print(t); assert 'country' in t.lower()"
+
+      - name: Engine test suite
+        run: |
+          ENGINE="$HOME/.video-skills/engine"; PY="$ENGINE/.venv/bin/python"; [ -x "$PY" ] || PY="$ENGINE/.venv/Scripts/python.exe"
+          cd "$HOME/.agents/skills/video-pipeline/engine" && "$PY" -m unittest discover -s tests -t .
+
+      - name: Package manager end-to-end (update, conflicts, rollback)
+        if: runner.os != 'Windows'      # the sandbox test uses rsync
+        run: bash tools/test-package-manager.sh

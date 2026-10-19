@@ -7,10 +7,10 @@ start the agent after `source agent-env.sh` (Claude Code also gets them from `.c
 
 | Needs | Check | Install when missing |
 |---|---|---|
-| Node.js 22+ | `node -v` | `brew install node` |
+| Node.js 22+ | `node -v` | `brew install node`; on Linux/Windows install.sh puts a private Node 22 in `$VIDEO_ENGINE_DIR/node` (on PATH via `agent-env.sh` and a marked shell-rc line) |
 | HyperFrames CLI | `npx hyperframes --version`, then `npx hyperframes doctor` | comes through npx; `doctor` lists anything else |
-| ffmpeg + ffprobe | `ffmpeg -version` | `brew install ffmpeg` |
-| whisper.cpp + model | `python3 $ENG/scripts/watch.py check` | `brew install whisper-cpp`; model steps in the `video-transcribe` skill |
+| ffmpeg + ffprobe | `ffmpeg -version` | `brew install ffmpeg` · `sudo apt-get install -y ffmpeg` · `sudo dnf install -y ffmpeg-free` · `winget install --id Gyan.FFmpeg -e` |
+| whisper.cpp + model | `python3 $ENG/scripts/watch.py check` | `brew install whisper-cpp`; on Linux/Windows install.sh downloads the prebuilt release into `$VIDEO_ENGINE_DIR/whisper` and sets `WATCH_WHISPER_CPP_BIN`; model steps in the `video-transcribe` skill |
 | Python 3 + numpy | `python3 -c "import numpy"` | `python3 -m pip install numpy` |
 | auto-editor | `auto-editor --version` | `pip install auto-editor` (speech chunks for the cut) |
 | Pillow (optional) | `python3 -c "import PIL"` | `python3 -m pip install pillow` (contact sheets) |

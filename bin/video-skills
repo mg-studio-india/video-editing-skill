@@ -8,6 +8,7 @@
   video-skills status                                  package version, paths, last check, conflicts
   video-skills changelog [--all]                       what changed since the installed version
   video-skills rollback  [X.Y.Z]                       back to the previous (or a named) version
+  video-skills setup     [-- install.sh options]       re-run the engine setup (after fixing a failed install)
   video-skills prune     [--keep N]                    delete old versions no skill points at (default keep 2)
   video-skills doctor                                  check links, PATH, engine and the store
   video-skills uninstall [--purge]                     remove the skill links and the command (--purge: the store too)
@@ -335,14 +336,35 @@ def print_report(rep):
 
 
 # ------------------------------------------------------------------ setup (engine, workspace, agent links)
-def run_setup(version, st, first):
+def find_bash():
+    """bash for install.sh. On Windows plain "bash" can resolve to System32\\bash.exe (WSL), which cannot see this
+    Python's C:\\ paths: prefer Git for Windows, then whatever bash is first on PATH."""
+    if os.name != "nt":
+        return "bash"
+    for root in (os.environ.get("ProgramFiles", r"C:\Program Files"), os.environ.get("ProgramFiles(x86)", ""),
+                 os.path.expanduser(r"~\AppData\Local\Programs")):
+        cand = os.path.join(root, "Git", "bin", "bash.exe") if root else ""
+        if cand and os.path.isfile(cand):
+            return cand
+    found = shutil.which("bash")
+    if found and "system32" not in found.lower():
+        return found
+    die("install.sh needs Git Bash on Windows: install Git for Windows (winget install Git.Git) and run this again")
+
+
+def sh_path(p):
+    """A path bash understands on every OS (C:/Users/... on Windows; Git Bash reads forward slashes)."""
+    return Path(p).as_posix() if os.name == "nt" else str(p)
+
+
+def run_setup(version, st, first, extra=()):
     sh = STORE / version / "install.sh"
     if not sh.is_file():
         say("  (no install.sh in this release; skipped)"); return 0
-    args = ["bash", str(sh), "--skills-managed", "--skills-dir", st["skills_dir"]]
+    args = [find_bash(), sh_path(sh), "--skills-managed", "--skills-dir", sh_path(st["skills_dir"])]
     if st.get("project"):
-        args += ["--project", st["project"]]
-    args += st.get("install_args", [])
+        args += ["--project", sh_path(st["project"])]
+    args += st.get("install_args", []) + list(extra)
     if not first:
         args += ["--yes", "--skip-tests"]
     say("  running install.sh (engine, models, workspace, agent links)...")
@@ -351,19 +373,25 @@ def run_setup(version, st, first):
 
 def install_cli(version):
     BIN_DIR.mkdir(parents=True, exist_ok=True)
-    cur = STORE / "current"
-    if cur.is_symlink() or cur.exists():
-        cur.unlink()
-    cur.symlink_to(STORE / version, target_is_directory=True)
+    link(STORE / "current", STORE / version)
     exe = BIN_DIR / "video-skills"
-    if exe.is_symlink() or exe.exists():
-        exe.unlink()
-    mgrs = [p for p in STORE.iterdir() if p.is_dir() and not p.is_symlink() and p.name[0].isdigit() and (p / "bin" / "video-skills").is_file()]
-    newest = max(mgrs, key=lambda p: vkey(p.name)) if mgrs else cur
-    exe.symlink_to(newest / "bin" / "video-skills")          # rollback moves the skills, never back to an older manager
+    for old in (exe, BIN_DIR / "video-skills.cmd"):
+        if os.path.lexists(old):
+            old.unlink()
+    mgrs = [p for p in STORE.iterdir() if p.is_dir() and not is_link(p) and p.name[0].isdigit() and (p / "bin" / "video-skills").is_file()]
+    newest = max(mgrs, key=lambda p: vkey(p.name)) if mgrs else STORE / "current"
+    mgr = newest / "bin" / "video-skills"                   # rollback moves the skills, never back to an older manager
+    if os.name == "nt":
+        # no symlinks without Developer Mode: small launchers for Git Bash and for cmd/PowerShell
+        py = Path(sys.executable)
+        exe.write_text('#!/usr/bin/env bash\nexec "%s" "%s" "$@"\n' % (py.as_posix(), mgr.as_posix()), newline="\n")
+        (BIN_DIR / "video-skills.cmd").write_text('@"%s" "%s" %%*\r\n' % (py, mgr), newline="")
+    else:
+        exe.symlink_to(mgr)
     if str(BIN_DIR) not in os.environ.get("PATH", "").split(os.pathsep):
         rc = Path("~/.zshrc" if "zsh" in os.environ.get("SHELL", "") else "~/.bashrc").expanduser()
-        line = 'export PATH="%s:$PATH"  # video-skills' % BIN_DIR
+        bin_sh = "/%s%s" % (BIN_DIR.drive[0].lower(), BIN_DIR.as_posix()[2:]) if os.name == "nt" and BIN_DIR.drive else str(BIN_DIR)
+        line = 'export PATH="%s:$PATH"  # video-skills' % bin_sh
         if rc.parent.is_dir() and (not rc.is_file() or line not in rc.read_text()):
             with rc.open("a") as fh:
                 fh.write("\n" + line + "\n")
@@ -399,7 +427,7 @@ def cmd_install(a):
     install_cli(v)
     save_state(st)
     if not a.skip_setup and run_setup(v, st, first=True) != 0:
-        die("install.sh reported an error; fix it and run `video-skills update --version %s`" % v)
+        die("install.sh stopped (see the message above). The skills are installed; fix that, then run: video-skills setup")
     say("\nDone: video-skills v%s. Run `video-skills check` any time; the pipeline also checks at every project start." % v)
 
 
@@ -449,8 +477,8 @@ def cmd_update(a):
     if not names:
         install_cli(target)
     save_state(st)
-    if not names and not a.skip_setup:
-        run_setup(target, st, first=False)
+    if not names and not a.skip_setup and run_setup(target, st, first=False) != 0:
+        say("\ninstall.sh stopped (see above); the skills are updated. Fix that, then run: video-skills setup")
     notes = changelog_section(STORE / target, since=cur, upto=target)
     if notes:
         say("\nWhat changed:\n" + notes)
@@ -524,8 +552,19 @@ def cmd_rollback(a):
     record(st, target, rep, True)
     install_cli(target)
     save_state(st)
-    if not a.skip_setup:
-        run_setup(target, st, first=False)
+    if not a.skip_setup and run_setup(target, st, first=False) != 0:
+        say("\ninstall.sh stopped (see above); the skills are rolled back. Fix that, then run: video-skills setup")
+
+
+def cmd_setup(a):
+    st = load_state()
+    v = st.get("package_version")
+    if not v:
+        die("not installed yet: run the one-line installer or `video-skills install`")
+    rc = run_setup(v, st, first=True, extra=[x for x in a.rest if x != "--"])
+    if rc != 0:
+        die("install.sh stopped again (see above)", rc)
+    say("\nsetup done for v%s" % v)
 
 
 def cmd_prune(a):
@@ -571,9 +610,9 @@ def cmd_uninstall(a):
         for p in list(agent_dir.iterdir()) if agent_dir.is_dir() else []:
             if p.is_symlink() and not p.exists():
                 p.unlink()
-    exe = BIN_DIR / "video-skills"
-    if exe.is_symlink():
-        exe.unlink()
+    for exe in (BIN_DIR / "video-skills", BIN_DIR / "video-skills.cmd"):
+        if os.path.lexists(exe):
+            exe.unlink()
     say("removed %d skill links and the command" % n)
     if a.purge:
         shutil.rmtree(HOME_DIR, ignore_errors=True); say("removed %s" % HOME_DIR)
@@ -593,12 +632,13 @@ def main():
     sp.add_parser("status").set_defaults(f=cmd_status)
     p = sp.add_parser("changelog"); p.add_argument("--all", action="store_true"); p.set_defaults(f=cmd_changelog)
     p = sp.add_parser("rollback"); p.add_argument("version", nargs="?"); p.add_argument("--skip-setup", action="store_true"); p.set_defaults(f=cmd_rollback)
+    p = sp.add_parser("setup"); p.set_defaults(f=cmd_setup)
     p = sp.add_parser("prune"); p.add_argument("--keep", type=int, default=2); p.set_defaults(f=cmd_prune)
     sp.add_parser("doctor").set_defaults(f=cmd_doctor)
     p = sp.add_parser("uninstall"); p.add_argument("--purge", action="store_true"); p.set_defaults(f=cmd_uninstall)
     sp.add_parser("version").set_defaults(f=lambda a: say("video-skills v%s" % (load_state().get("package_version") or "not installed")))
     a, extra = ap.parse_known_args()
-    if a.cmd == "install":
+    if a.cmd in ("install", "setup"):
         a.rest = [x for x in extra if x != "--"]                 # anything else is passed on to install.sh
     elif extra:
         ap.error("unrecognized arguments: %s" % " ".join(extra))

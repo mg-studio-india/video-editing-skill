@@ -28,6 +28,7 @@ def find_deep_filter() -> Path:
     """$VIDEO_DEEPFILTER, then the install.sh location, then next to this script."""
     import os
     for c in (os.environ.get("VIDEO_DEEPFILTER"), os.path.expanduser("~/.config/video-skills/bin/deep-filter"),
+              os.path.expanduser("~/.config/video-skills/bin/deep-filter.exe"),
               str(Path(__file__).resolve().parent / "deep-filter")):
         if c and os.path.isfile(c) and os.access(c, os.X_OK):
             return Path(c)

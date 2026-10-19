@@ -173,6 +173,7 @@ def find_deep_filter() -> str | None:
     for c in (
         os.environ.get("VIDEO_DEEPFILTER"),
         os.path.expanduser("~/.config/video-skills/bin/deep-filter"),
+        os.path.expanduser("~/.config/video-skills/bin/deep-filter.exe"),
         os.path.expanduser("~/.local/bin/deep-filter"),
     ):
         if c and os.path.isfile(c) and os.access(c, os.X_OK):

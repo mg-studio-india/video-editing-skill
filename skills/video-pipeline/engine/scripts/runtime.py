@@ -166,6 +166,14 @@ def load_global_env() -> None:
                 pass
 
 
+def engine_path_dirs() -> list[str]:
+    """Engine folders that belong on PATH: the HyperFrames CLI, and the private Node.js 22 that install.sh
+    downloads when the system node is missing or too old (node/bin, or node/ on Windows)."""
+    eng = find_engine_dir()
+    dirs = [eng / "node_modules" / ".bin", eng / "node" / ("" if os.name == "nt" else "bin")]
+    return [str(d) for d in dirs if d.is_dir()]
+
+
 def ensure_project_venv() -> None:
     """Enforce that the current process is running inside the virtual environment.
     If running under system Python, automatically re-executes using the engine .venv python.
@@ -175,14 +183,15 @@ def ensure_project_venv() -> None:
     venv_py = get_project_venv_python()
     venv_dir = str(Path(venv_py).parent.parent.absolute())
 
-    # Prepend engine node_modules/.bin and venv bin/Scripts to PATH
-    engine_node_bin = str(find_engine_dir() / "node_modules" / ".bin")
+    # Prepend engine node_modules/.bin (+ the private Node install.sh may add) and venv bin/Scripts to PATH
+    engine_dirs = engine_path_dirs()
     venv_bin = str(Path(venv_py).parent)
 
     # Check if we are already running inside this virtual environment
     if sys.prefix != sys.base_prefix and Path(sys.prefix).absolute() == Path(venv_dir).absolute():
-        if Path(engine_node_bin).is_dir() and engine_node_bin not in os.environ.get("PATH", ""):
-            os.environ["PATH"] = f"{engine_node_bin}{os.pathsep}{os.environ.get('PATH', '')}"
+        missing = [d for d in engine_dirs if d not in os.environ.get("PATH", "").split(os.pathsep)]
+        if missing:
+            os.environ["PATH"] = os.pathsep.join(missing + [os.environ.get("PATH", "")])
         return
 
     # Check loop prevention marker
@@ -192,9 +201,7 @@ def ensure_project_venv() -> None:
     env = dict(os.environ)
     env["VIRTUAL_ENV"] = venv_dir
     current_path = env.get("PATH", "")
-    new_path_parts = [venv_bin]
-    if Path(engine_node_bin).is_dir():
-        new_path_parts.append(engine_node_bin)
+    new_path_parts = [venv_bin] + engine_path_dirs()
     new_path_parts.append(current_path)
     env["PATH"] = os.pathsep.join(new_path_parts)
     env["_SKILL_VENV_ENFORCED"] = venv_py

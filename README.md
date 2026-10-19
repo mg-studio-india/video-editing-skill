@@ -41,7 +41,7 @@ mkdir -p ~/VideoWorkspace && cd ~/VideoWorkspace
 curl -fsSL https://raw.githubusercontent.com/mg-studio-india/video-editing-skill/main/get.sh | bash
 ```
 ```powershell
-# Windows PowerShell (runs the same installer through Git Bash or WSL)
+# Windows PowerShell (checks prerequisites, then runs the same installer in Git Bash)
 irm https://raw.githubusercontent.com/mg-studio-india/video-editing-skill/main/get.ps1 | iex
 ```
 
@@ -58,13 +58,14 @@ Installs the latest **tagged release** into `~/.video-skills/pkg/<version>/`, li
 | `video-skills update --version 1.2.0` | Move to a specific release. |
 | `video-skills list` / `status` | Each skill's version, latest version, edited or clean; paths, history, conflicts. |
 | `video-skills rollback [X.Y.Z]` | Back to the previous (or named) version; skills are relinked instantly. |
+| `video-skills setup` | Re-run the engine setup for your version (after fixing whatever stopped the installer). |
 | `video-skills prune --keep 2` · `doctor` · `uninstall [--purge]` | Delete unused old versions · check links, PATH and engine · remove links and command (your workspace is never touched). |
 
 **Your edits are safe.** Each skill is a link into a versioned copy. If you edited a skill and a release changes the same skill, `update` keeps yours, writes a diff to `~/.video-skills/conflicts/<skill>-<version>.diff` and tells you; merge what you want, then `video-skills update <skill> --force` (your copy is backed up to `~/.video-skills/backups/` first). Edited skills that a release did not touch stay as you have them.
 
 **Already installed with the old `install.sh`?** Run the one-liner once with `--force` (`… | bash -s -- --force`): your copied skills are backed up and replaced by managed links.
 
-**Windows:** WSL is recommended. Under Git Bash, skills are linked with directory junctions when symlinks are not allowed (no admin needed); enable Developer Mode if linking fails.
+**Windows:** use Git Bash (Git for Windows) or WSL. `get.ps1` lists any missing prerequisite with its `winget` line. Under Git Bash, skills are linked with directory junctions when symlinks are not allowed (no admin needed), the `video-skills` command gets a `video-skills.cmd` twin for cmd/PowerShell, and paths in `.env` are written as `C:/...` for the Windows Python.
 
 ### Publishing a release (maintainers)
 
@@ -115,14 +116,18 @@ Edit videos/finance-01/raw/pitch.mp4 into a high-retention financial teardown:
 
 ## 💻 Cross-Platform Support
 
-| Platform | System Tools Setup | Python Runtime | Engine Sandbox |
-|---|---|---|---|
-| **macOS** | `brew install node ffmpeg sox whisper-cpp` | Apple Silicon / Intel Python 3.9+ | `~/.video-skills/engine` |
-| **Linux (Ubuntu/Debian)** | `sudo apt install nodejs npm ffmpeg sox libsox-fmt-all` | Python 3.9+ (`python3-venv`) | `~/.config/video-skills/engine` |
-| **Linux (Fedora/RHEL)** | `sudo dnf install nodejs npm ffmpeg sox` | Python 3.9+ | `~/.config/video-skills/engine` |
-| **Linux (Arch)** | `sudo pacman -S nodejs npm ffmpeg sox` | Python 3.9+ | `~/.config/video-skills/engine` |
-| **Windows (WSL2)** | Native Ubuntu setup inside WSL2 | Ubuntu Python 3.9+ | `~/.video-skills/engine` |
-| **Windows (Native)** | `winget install Gyan.FFmpeg OpenJS.NodeJS ChrisBagwell.SoX` | Python 3.9+ (`Scripts/python.exe`) | `%USERPROFILE%\.video-skills\engine` |
+Install these first (the installer prints the same line for your system if something is missing):
+
+| Platform | You install | The installer adds, privately in the engine (no sudo) |
+|---|---|---|
+| **macOS** | Homebrew; the installer runs `brew install node ffmpeg sox whisper-cpp` | DeepFilterNet |
+| **Ubuntu / Debian** | `sudo apt-get install -y ffmpeg sox libsox-fmt-all libgomp1 python3-venv curl git` | Node.js 22 (if the system one is missing or older), whisper.cpp, DeepFilterNet |
+| **Fedora** | `sudo dnf install -y ffmpeg-free sox libgomp python3 git` (full ffmpeg: RPM Fusion) | Node.js 22, whisper.cpp, DeepFilterNet |
+| **Arch** | `sudo pacman -S --needed ffmpeg sox python git` | Node.js 22, whisper.cpp, DeepFilterNet |
+| **Windows (Git Bash)** | `winget install --id Git.Git -e`, `Python.Python.3.12`, `Gyan.FFmpeg`, `ChrisBagwell.SoX` | Node.js 22, whisper.cpp, DeepFilterNet (x64) |
+| **Windows (WSL2)** | the Ubuntu line, inside WSL | as Ubuntu |
+
+Everything lands in `~/.video-skills/engine` (`node/`, `whisper/`, `.venv/`, `node_modules/`) and `~/.config/video-skills/`. When the private Node is installed, one marked line in `~/.bashrc` / `~/.zshrc` puts it first on PATH so `npx hyperframes` gets Node 22. Rendering needs Chrome: HyperFrames downloads its own on x64; on Linux ARM (no Chrome build exists) install a non-snap Chromium and set `HYPERFRAMES_BROWSER_PATH`.
 
 ---
 
