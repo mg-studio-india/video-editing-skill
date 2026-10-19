@@ -2,6 +2,11 @@
 
 Every release of video-editing-skill. Update with `video-skills update`.
 
+## [1.0.5] - 2026-10-19
+
+- Default creative workspace to current working directory unconditionally
+- Uninstall removes .engine sandbox and cleans broken agent links
+
 ## [1.0.4] - 2026-10-19
 
 - Windows: install.sh accepts C:/... paths from video-skills, so the workspace and skills folder are created in the right place
