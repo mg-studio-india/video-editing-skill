@@ -1,7 +1,7 @@
 # Setup check
 
-`install.sh` (in the package, run from the project folder) does all of this; re-running it is the simplest fix, since
-finished steps are skipped and installed skills are kept. Commands assume the project folder as the working directory;
+The installer (`video-skills`, from the one-line install) does all of this; `video-skills setup` re-runs it and is the
+simplest fix, since finished steps are skipped and skills are kept. `video-skills doctor` checks every skill link. Commands assume the project folder as the working directory;
 `npx hyperframes` uses the copy pinned in `package.json`. The agent's shell needs `.venv`, the keys and `VIDEO_ENGINE`:
 start the agent after `source agent-env.sh` (Claude Code also gets them from `.claude/settings.local.json`). Check each line, install what is missing (ask before anything needing admin rights).
 

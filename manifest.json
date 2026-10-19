@@ -1,19 +1,19 @@
 {
  "schema": "video-skills-manifest/1",
- "version": "1.0.2",
+ "version": "1.0.3",
  "released": "2026-10-19",
  "repo": "mg-studio-india/video-editing-skill",
  "skills": {
   "video-audio": {
-   "version": "1.0.1",
-   "tree": "c8173896bb92843a2fcec1e12c96e35f0281d4fe6060861f6819fb6c3fef720d",
+   "version": "1.0.3",
+   "tree": "43b5f52e9bb3db08f67463d193ba215f9ce67614d97ad38285cadbcbd6510ec0",
    "files": {
     ".video-skills": "3830f5731e3a76df5150309a9f27126f116cff92cd995f16af5553c30db75e12",
     "SKILL.md": "0fd9616a6a668b8f607112f0af0e20fc2fefdcf3e7f94e1d94ae6025bc599c23",
     "references/tuning.md": "e53321e4764a424ae2d40bd12a8ab2e3e2d910de50956d6a1f9ecd160805853e",
     "scripts/audio-analyze.py": "acd7fbc2d3ebe945dcb3f86917a1dfb2faefd6ea7a1d60bd2466737d3d10fe7e",
     "tools/late-reverb.py": "a8e3271723ea21239499eb5b6fac08ae3e843d068fe0c59e5be4003b713ae9d7",
-    "tools/voice-clean.py": "bcce0d9c0357e49d5fa67ae544639254e362e5d060af0aac851d90a062af0ed6"
+    "tools/voice-clean.py": "df1faec1b8472e59026d597fe7cb22ef068c13fc642e0fafe97b8fac43651cec"
    }
   },
   "video-captions": {
@@ -81,8 +81,8 @@
    }
   },
   "video-pipeline": {
-   "version": "1.0.2",
-   "tree": "d81e6434164e20eee9b26def252453b32c986c48427e8b378c0d63374ae1ce29",
+   "version": "1.0.3",
+   "tree": "7462abccec883be15749ace4c13cf12268c380587419ba70a5e20458f03103d3",
    "files": {
     ".video-skills": "3830f5731e3a76df5150309a9f27126f116cff92cd995f16af5553c30db75e12",
     "SKILL.md": "e444f31bfb163a0a5eb1d711271e0fa155aceafc644ae9ac1ff900b785a8fbee",
@@ -170,7 +170,7 @@
     "references/engine-scripts.md": "8f6b2a793356aed0fe113aeb92553dec1f22366fdd45ac5ea32f5e2577042a59",
     "references/pipeline-architecture.md": "2601867819c1d18ff559b04e1e5e29c18697ae8aada3cc05a93bc47747af5b91",
     "references/project-file.md": "f0a2dc0b1ec30575fee698da147121655e4022e8704b307dc5319798ce48f660",
-    "references/setup-check.md": "873dca75b93be5b6ba10e07677457b492309a913877b0c7c8855478d45ce3ffe"
+    "references/setup-check.md": "1cebfd7e01cce22fcde2587b0d49960e4a7758e39d6185c0347d981dfde7abde"
    }
   },
   "video-plan-storyboard": {

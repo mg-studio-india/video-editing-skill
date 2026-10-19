@@ -2,12 +2,14 @@
 # doctor, a real whisper.cpp transcription (tiny model) through the pipeline, and the engine test suite.
 name: install
 
+# Runs on pull requests only (every release reaches main through a PR from its release/vX.Y.Z branch).
+# A newer push to the same PR cancels the run still going for the older commit.
 on:
-  push:
-    branches: [main]
-    tags: ["v*"]
   pull_request:
-  workflow_dispatch:
+
+concurrency:
+  group: install-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
 
 jobs:
   install:
@@ -33,8 +35,26 @@ jobs:
           case "$RUNNER_OS" in
             Linux)   sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg sox libsox-fmt-all libgomp1 ;;
             macOS)   brew install ffmpeg sox whisper-cpp ;;
-            Windows) choco install -y --no-progress ffmpeg sox.portable ;;
+            Windows)
+              # FFmpeg from a GitHub-hosted build (the Chocolatey feed has returned 504s); Chocolatey only as fallback
+              if curl -fsSL -o "$RUNNER_TEMP/ffmpeg.zip" https://github.com/BtbN/FFmpeg-Builds/releases/download/latest/ffmpeg-master-latest-win64-gpl.zip; then
+                python -m zipfile -e "$RUNNER_TEMP/ffmpeg.zip" "$RUNNER_TEMP/ffmpeg"
+                cygpath -w "$(ls -d "$RUNNER_TEMP"/ffmpeg/*/bin)" >> "$GITHUB_PATH"
+              else
+                choco install -y --no-progress ffmpeg </dev/null
+              fi
+              # sox.portable downloads from SourceForge, which sometimes asks the runner for credentials: retry, then
+              # go on without it (the installer only warns when SoX is missing)
+              ok=0
+              for i in 1 2 3; do
+                if choco install -y --no-progress sox.portable </dev/null; then ok=1; break; fi
+                sleep 10
+              done
+              [ "$ok" = 1 ] || echo "::warning::SoX could not be installed on this runner; continuing without it" ;;
           esac
+
+      - name: FFmpeg is on PATH
+        run: ffmpeg -version | head -1
 
       - name: Install (non-interactive, no 3 GB model, no Chrome)
         run: |
