@@ -170,9 +170,9 @@ cd ~/VideoWorkspace && bash ~/video-editing-skill/install.sh
 Work on a `release/vX.Y.Z` branch, then:
 ```bash
 bash tools/test-package-manager.sh
-python3 tools/release.py X.Y.Z --note "What users get" --push
+python3 tools/release.py X.Y.Z --note "What users get"
 ```
-Open a pull request from the release branch to `main`: CI (`.github/workflows/install.yml`) installs and tests on Ubuntu, macOS and Windows for every PR, and only then. Merge after it passes.
+Run `release.py` without `--push` on the release branch, then open a pull request to `main`: CI (`.github/workflows/install.yml`) installs and tests on Ubuntu, macOS and Windows for every PR, and only then. After the merge, publish: `git push origin vX.Y.Z && gh release create vX.Y.Z --notes-file <(sed -n '/## \[X.Y.Z\]/,/^## \[/p' CHANGELOG.md)`.
 </details>
 
 ---
