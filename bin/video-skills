@@ -575,6 +575,11 @@ def cmd_setup(a):
     v = st.get("package_version")
     if not v:
         die("not installed yet: run the one-line installer or `video-skills install`")
+    if getattr(a, "project", None):
+        st["project"] = str(Path(a.project).expanduser().resolve())
+    else:
+        st["project"] = os.getcwd()
+    save_state(st)
     rc = run_setup(v, st, first=True, extra=[x for x in a.rest if x != "--"])
     if rc != 0:
         die("install.sh stopped again (see above)", rc)
@@ -684,7 +689,7 @@ def main():
     sp.add_parser("status").set_defaults(f=cmd_status)
     p = sp.add_parser("changelog"); p.add_argument("--all", action="store_true"); p.set_defaults(f=cmd_changelog)
     p = sp.add_parser("rollback"); p.add_argument("version", nargs="?"); p.add_argument("--skip-setup", action="store_true"); p.set_defaults(f=cmd_rollback)
-    p = sp.add_parser("setup"); p.set_defaults(f=cmd_setup)
+    p = sp.add_parser("setup"); p.add_argument("--project"); p.set_defaults(f=cmd_setup)
     p = sp.add_parser("prune"); p.add_argument("--keep", type=int, default=2); p.set_defaults(f=cmd_prune)
     sp.add_parser("doctor").set_defaults(f=cmd_doctor)
     p = sp.add_parser("uninstall"); p.add_argument("--purge", action="store_true"); p.set_defaults(f=cmd_uninstall)
