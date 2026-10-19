@@ -1,14 +1,15 @@
 # Engine scripts: ownership map
 
-Generated from the skill docs, imports and tests. Scripts used by a single skill live in that skill's `scripts/` folder
-(`audio-analyze` video-audio · `dead-air` video-cut-audit · `make-short` video-short-form · `palette` video-style ·
-`phrase-times`, `verify-words` video-transcribe · `research-scaffold` video-researcher · `review` video-review-gate ·
-`snap-beats` video-motion-graphics); everything below stays in `video-pipeline/engine/scripts/` because several skills
-or other scripts depend on it. Tests: one suite in `engine/tests` (`cd "$ENG" && python3 -m unittest discover -s tests -t .`).
+Generated from the skill docs, imports and tests. Scripts used by a single skill live in that skill's `scripts/` folder:
+`video-audio` audio-analyze · `video-cut-audit` dead-air, hand-cut, tighten-cut, sliver, cutlist-to-edl + build-edl-review.mjs ·
+`video-short-form` make-short · `video-style` palette · `video-transcribe` phrase-times, verify-words · `video-researcher`
+research-scaffold · `video-review-gate` review · `video-motion-graphics` snap-beats · `video-sound-design` audiocraft-gen ·
+`video-watch` screen-activity, teardown · `video-plan-storyboard` storyboard-md. Everything below stays in
+`video-pipeline/engine/scripts/` because several skills or other scripts depend on it (or it is pipeline intake). Tests: one suite in `engine/tests` (`cd "$ENG" && python3 -m unittest discover -s tests -t .`).
 
 **Status:** *shared library* = imported/called by other scripts, not run by skills directly · *multi-skill tool* = run by
-two or more skills · *skill tool* = run by one skill but also used by other scripts (so it stays shared) · *undocumented* =
-no skill mentions it: either document it in the skill that should own it or remove it.
+two or more skills · *skill tool* = run by one skill but also used by other scripts (so it stays shared) · *pipeline intake* = run by
+video-pipeline itself (multi-clip / multi-camera intake).
 
 | Script | Status | Skills that run it | Used by scripts | Tested | Purpose |
 |---|---|---|---|---|---|
@@ -41,7 +42,6 @@ no skill mentions it: either document it in the skill that should own it or remo
 | `treatments.py` | skill tool | format | captions.py, compose.py, stage.py | yes | Each builder takes a beat (resolved times) and a context, and returns (html, css, js_lines, placement): |
 | `audio.py` | shared library | — | watch.py | yes | from __future__ import annotations |
 | `beat-check.py` | shared library | — | compose.py | yes | transcript-sync gate for our compositions (Gate 0: every card lands on its spoken word). |
-| `build-edl-review.mjs` | shared library | — | cutlist-to-edl.py | — | Adapted from an MIT-licensed open-source HyperFrames starter kit; license and copyright notice: LICENSES/MIT-s |
 | `config.py` | shared library | — | setup.py, transcribe.py, transcribe_cpp.py, watch.py | yes | Everything here is a local path or a tuning number. There are no API keys in |
 | `download.py` | shared library | — | watch.py | — | This is the only place the skill touches the network, and only to download the |
 | `edge-audit.py` | shared library | — | dead-air.py | — | check every edge of a cut list by the AUDIO, not the transcript, and optionally fix it. |
@@ -59,15 +59,5 @@ no skill mentions it: either document it in the skill that should own it or remo
 | `shots.py` | shared library | — | frames.py, watch.py | yes | Why this is separate from frame extraction: cuts are measured across the |
 | `speech.py` | shared library | — | editplan.py, watch.py | yes | All pure functions over plain dicts, so they are easy to unit-test. |
 | `storyboard.py` | shared library | — | watch.py | yes | Everything measurable is filled in by code (timecodes, durations, transitions, |
-| `audiocraft-gen.py` | undocumented → suggested owner **video-sound-design** | — | — | yes | music beds (MusicGen) and sound effects (AudioGen) generated locally with Meta's AudioCraft. |
-| `cutlist-to-edl.py` | undocumented → suggested owner **video-cut-audit** | — | — | — | turn our cut-list.json into the EDL shape the cut review page reads, so the page can be built. |
-| `hand-cut.py` | undocumented → suggested owner **video-cut-audit** | — | — | — | rebuild cut-list.json from an explicit list of kept lines, for the cases paper-cut.py gets |
-| `ingest.py` | undocumented → suggested owner **video-pipeline (multi-clip intake)** | — | — | — | probe every clip in a raw/ folder, put them in order, and optionally join the talking-head |
-| `screen-activity.py` | undocumented → suggested owner **video-watch** | — | — | — | how much the screen recording changes over time (typing, scrolling, drawing show up; a |
-| `sliver.py` | undocumented → suggested owner **video-cut-audit** | — | — | — | -cut-list W/cut-list.json --audio <the raw clip's audio wav> [--fix]: the glitches edge-audit's 300-RMS |
-| `storyboard-md.py` | undocumented → suggested owner **video-plan-storyboard** | — | — | — | render the delivery STORYBOARD.md (time / beat / what is on screen) from one or more |
-| `sync-tracks.py` | undocumented → suggested owner **video-pipeline (multi-cam intake)** | — | — | — | find the time offset between two recordings of the same take (the camera file and the |
-| `teardown.py` | undocumented → suggested owner **video-watch** | — | — | yes | measure any video for the editing teardown loop (every two videos: two reference videos you admire vs |
-| `tighten-cut.py` | undocumented → suggested owner **video-cut-audit** | — | — | — | trim dead air by the SOUND, not the transcript (a cut built from word starts alone leaves too much |
-
-The undocumented scripts are working tools (several are part of the cut workflow: `hand-cut` → `tighten-cut` → `edge-audit` → `sliver`). Before moving any of them into its suggested skill, document it in that skill's SKILL.md; none were deleted.
+| `ingest.py` | pipeline intake (video-pipeline, before Gate 2) | — | — | — | probe every clip in a raw/ folder, put them in order, and optionally join the talking-head |
+| `sync-tracks.py` | pipeline intake (video-pipeline, before Gate 2) | — | — | — | find the time offset between two recordings of the same take (the camera file and the |
