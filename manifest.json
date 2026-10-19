@@ -1,19 +1,19 @@
 {
  "schema": "video-skills-manifest/1",
- "version": "1.0.0",
+ "version": "1.0.1",
  "released": "2026-10-19",
  "repo": "mg-studio-india/video-editing-skill",
  "skills": {
   "video-audio": {
-   "version": "1.0.0",
-   "tree": "070f522bac5b7608287af6cb3425f519d4e374e0b89f0d07421c18225e778b0c",
+   "version": "1.0.1",
+   "tree": "c8173896bb92843a2fcec1e12c96e35f0281d4fe6060861f6819fb6c3fef720d",
    "files": {
     ".video-skills": "3830f5731e3a76df5150309a9f27126f116cff92cd995f16af5553c30db75e12",
     "SKILL.md": "0fd9616a6a668b8f607112f0af0e20fc2fefdcf3e7f94e1d94ae6025bc599c23",
     "references/tuning.md": "e53321e4764a424ae2d40bd12a8ab2e3e2d910de50956d6a1f9ecd160805853e",
     "scripts/audio-analyze.py": "acd7fbc2d3ebe945dcb3f86917a1dfb2faefd6ea7a1d60bd2466737d3d10fe7e",
     "tools/late-reverb.py": "a8e3271723ea21239499eb5b6fac08ae3e843d068fe0c59e5be4003b713ae9d7",
-    "tools/voice-clean.py": "4a3bf46f9e48fefd6879a8f692db38d219695622954f1b54e3f0bec70cd25eb1"
+    "tools/voice-clean.py": "bcce0d9c0357e49d5fa67ae544639254e362e5d060af0aac851d90a062af0ed6"
    }
   },
   "video-captions": {
@@ -81,8 +81,8 @@
    }
   },
   "video-pipeline": {
-   "version": "1.0.0",
-   "tree": "829bb9e39d0b810fc6aecc2338f8a6b4bdc1e4b7ca2c00425169c486dffcc41c",
+   "version": "1.0.1",
+   "tree": "cdd903ab6fff0577be21798e989e940c6ad83994c64e21ce04e195b34772b4e9",
    "files": {
     ".video-skills": "3830f5731e3a76df5150309a9f27126f116cff92cd995f16af5553c30db75e12",
     "SKILL.md": "e444f31bfb163a0a5eb1d711271e0fa155aceafc644ae9ac1ff900b785a8fbee",
@@ -102,7 +102,7 @@
     "engine/formats/claude_chat.py": "5201f3b080949c4c550df1cc9ccc551ab212f4d24c0a042ef4d85acac8b5ed58",
     "engine/scripts/apply-cut.py": "b30ea7b3e65a2a6170489452e9f7a75fde9bed2fbeda6e31f8452af5ab14552d",
     "engine/scripts/assemble.py": "bb9ad4806f8131624121494fff472bf00257dd10621ba2f7cc04b827780537dc",
-    "engine/scripts/audio-chain.py": "22738df3ab4ff898913c2292609007f5adbf49991dcf3d947ab52c11e02d7b4c",
+    "engine/scripts/audio-chain.py": "0456cd74f1f49d93b86532f52a87213a6c15ea6dbcc08942eeb9a8d8d61414a5",
     "engine/scripts/audio.py": "1e979f0dfbafc9cf8131810e5b5580a38046426118e987c82d2b0734bb3a5b3e",
     "engine/scripts/beat-check.py": "d87839ca9787dd59a93850933e6856bf9035a3f276a361af5d30b9d8be8dbc1c",
     "engine/scripts/broll-conform.py": "c937e199eb9b5c6843faa47c280b50c54d60f0e675842b8debc8c76a6a906a7d",
@@ -129,10 +129,10 @@
     "engine/scripts/paper-cut.py": "020e6d6328dc34e98801d89a396b19030bbe40955c87c55e8d7c3be9b57af42e",
     "engine/scripts/patch-cut.py": "af85f9967e3621906bf7af055ea047aeffdd0fc666610bcdaa737e766eaecc90",
     "engine/scripts/probe.py": "806d88a35efea9abcb67bad222412c5a213d8829ce612cba92c38724c1657b52",
-    "engine/scripts/reframe.py": "ed103ac19ecb03bba7ce1e32368ed39de6491bd967c9b397110ef5d8d66e2195",
+    "engine/scripts/reframe.py": "c5755e980104c796fb502c55fa3616f32ff1b54759d31ce719cc86fc97b3d3c9",
     "engine/scripts/render.py": "300989c7a2d64f84a46d5c1de0d228b8794770bbf50d3eb42185d2d673c9ec07",
     "engine/scripts/resolve-anchors.py": "d7e7cc0bbdbeb349a0029c91855ddeee11f5e4eb77526f15b6b95f62a08b70e0",
-    "engine/scripts/runtime.py": "078280fe53ab9d88e2e4d5dc188fce0c9f23c029053c8d5fd152fc52f09ec25a",
+    "engine/scripts/runtime.py": "900144336fc85d4adcd9fc5aa96e182e3da822036389d144f41eb9cb973947d6",
     "engine/scripts/setup.py": "8a016aec3e7df152d87c7bbd09ba9981991a7ba12df4ab24bcb4d8081e82195b",
     "engine/scripts/sfx-prep.py": "27c8970779c8b3339bfa4f06cb77fd77bca7dab14f97980d4559cd9af25287af",
     "engine/scripts/shots.py": "c9054041f51786295b4045026f644dab3e68a064c298899b5bb1f794ebe1e78a",
@@ -140,7 +140,7 @@
     "engine/scripts/speech.py": "c898fb71c63f051bc5d7823c0d814d15c1be9dc65d38122c7950096e8193259a",
     "engine/scripts/stage.py": "a297aea6ccfe103722580c4631fe8069f828849fb4c2d5ab80a03f80e779ef25",
     "engine/scripts/storyboard.py": "4cb4f1ea46539f4f477980d807fb11179e8acd6be91599bdac81f69ba3797122",
-    "engine/scripts/stutter-scan.py": "e82e25a4d79bbe2e3c8606591d9f0381044624d0e8569ed5beef437c57d2175d",
+    "engine/scripts/stutter-scan.py": "4a048b2885831b50043955c06a9b408c1d1f3834aa1b2d288d47f1dae013fea9",
     "engine/scripts/sync-tracks.py": "02bdf88aee52af17314b5f743db7209c784fbee7e1209e278537ecda60e31fef",
     "engine/scripts/transcribe.py": "2f546ab1c72f0af1c1d3fba8944b202ad0ba5fab148add33efbc55b265f04167",
     "engine/scripts/transcribe_cpp.py": "4d80cca229263a07841d2d11076c57d847db75fe50f48b421ac3f00a2e6197e9",
@@ -170,7 +170,7 @@
     "references/engine-scripts.md": "8f6b2a793356aed0fe113aeb92553dec1f22366fdd45ac5ea32f5e2577042a59",
     "references/pipeline-architecture.md": "2601867819c1d18ff559b04e1e5e29c18697ae8aada3cc05a93bc47747af5b91",
     "references/project-file.md": "f0a2dc0b1ec30575fee698da147121655e4022e8704b307dc5319798ce48f660",
-    "references/setup-check.md": "0c29a590999113c3f1c5dd813504d3b03c51f170a0d95f490457c888149b1212"
+    "references/setup-check.md": "873dca75b93be5b6ba10e07677457b492309a913877b0c7c8855478d45ce3ffe"
    }
   },
   "video-plan-storyboard": {

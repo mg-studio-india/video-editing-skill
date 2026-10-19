@@ -2,6 +2,16 @@
 
 Every release of video-editing-skill. Update with `video-skills update`.
 
+## [1.0.1] - 2026-10-19
+
+- Linux: private Node.js 22 and prebuilt whisper.cpp installed automatically (no sudo); clear install hints per distro
+- Windows: get.ps1 checks prerequisites with winget hints and uses Git Bash; .cmd launcher; Windows-safe paths and DeepFilterNet
+- API keys in .env are always quoted safely; non-key input is refused
+- New: video-skills setup re-runs the engine setup after a fix
+- Fix: reframe.py crashed (missing import); HeyGen sign-in check no longer reports a false yes
+
+Skills changed: video-audio 1.0.0 -> 1.0.1, video-pipeline 1.0.0 -> 1.0.1
+
 ## [1.0.0] - 2026-10-19
 
 - One-line install (get.sh / get.ps1) and the video-skills package manager: check, update, per-skill update, rollback, conflict-safe edits
