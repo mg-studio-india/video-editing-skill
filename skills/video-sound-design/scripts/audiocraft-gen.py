@@ -1,20 +1,5 @@
 #!/usr/bin/env python3
-"""audiocraft-gen.py: music beds (MusicGen) and sound effects (AudioGen) generated locally with Meta's AudioCraft.
-
-LICENCE: AudioCraft's code is MIT, but Meta released the pretrained MusicGen and AudioGen WEIGHTS under CC-BY-NC 4.0
-(non-commercial). For a monetised channel or client work, prefer HyperFrames' media library / HeyGen music, Google
-Lyria, or a licensed library first (the sound-design skill's order). This script refuses to run without
---non-commercial-ok, which records that the user read this.
-
-Usage:
-  python3 audiocraft-gen.py music --prompt "calm lo-fi, soft keys, 90 bpm" --seconds 45 --out W/music/bed.wav --non-commercial-ok
-  python3 audiocraft-gen.py sfx   --prompt "single soft mouse click" --seconds 1.5 --out W/sfx/click.wav --non-commercial-ok
-  ... --dry-run   prints the plan without loading a model
-Music longer than one generation (~30 s) is one seed clip crossfade-looped to length (no seams mid-phrase), then
-faded out. SFX should then go through sfx-prep.py. Each output is recorded in <out dir>/ledger.json.
-
-Install once (a separate virtual environment is wise; it pulls torch):  python3 -m pip install audiocraft
-"""
+"""audiocraft-gen.py: music beds (MusicGen) and sound effects (AudioGen) generated locally with Meta's AudioCraft."""
 import argparse, datetime as dt, json, os, subprocess, sys
 
 MODELS = {"music": os.environ.get("MUSICGEN_MODEL", "facebook/musicgen-small"),
@@ -23,7 +8,6 @@ MAX_GEN = 28.0
 
 
 def plan(kind, seconds):
-    """Pure (tested): how many generated seconds and how the target length is reached."""
     gen = min(seconds, MAX_GEN)
     loops = 0 if seconds <= MAX_GEN else int((seconds - gen) // (gen - 2.0)) + 1
     return {"model": MODELS[kind], "generate_seconds": round(gen, 2), "crossfade_loops": loops, "target_seconds": seconds}

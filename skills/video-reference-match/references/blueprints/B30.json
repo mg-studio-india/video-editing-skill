@@ -560,5 +560,27 @@
  },
  "quality_score": 3,
  "brand_prompt": "Use /video-pipeline with /video-captions on videos/<project>. Apply style blueprint B30 (video-reference-match/references/blueprints/B30.json) to this brand.\n\nBRAND TOKENS (use the brand's colour for each role; keep the contrast relationship — text and accent must stay >= 4.5:1 / >= 3:1 against what sits behind them on the footage):\n- {{TEXT}}      default #FFFFFF (lead words, CTA heading)\n- {{ACCENT}}    default #F2D805 (key words, bullets, phone number)\n- {{ACCENT_2}}  default #CF9C5E (end-card descriptor box)\n- {{SURFACE}}   default #000000 (end card / bottom gradient)\n- {{CARD_BG}}   default #B18B63 (end-card headings)\n- {{FONT_DISPLAY}} default Poppins 700 (Montserrat ExtraBold is closer)\n- {{FONT_BODY}}    default Poppins 700; Playfair Display 700 for the CTA heading\n- {{HANDLE}}    default @handle\n- {{LOGO}}      default the brand's logo file (transparent PNG/SVG)\n{{ACCENT}} must stay >= 3:1 on the footage even above the gradient; a dark brand colour needs a lighter tint for the key words.\nCanvas 1080x1920, 30 fps.\n\nCAPTIONS (keyword callouts, not full transcripts)\n1. One callout per sentence, only on shots where the sentence has a clear topic phrase: 1-3 small lowercase lead-in words as spoken + ONE key word or 2-word phrase in Title Case (placeholder 'lead words here' + 'KEY WORD'). No punctuation, no emoji.\n2. Key: {{FONT_DISPLAY}} at 128 px (fixed size, never fit-to-width; a 2-word phrase may run to ~87 % W), {{ACCENT}}, tracking -0.01 em, slight dark shadow 0 2px 6px rgba(0,0,0,.4), no stroke / box, centred at ~68 % H. Two-word phrases may stack as two lines, line 1 right-aligned to line 2.\n3. Lead-in: {{FONT_DISPLAY}} at 57 px, {{TEXT}}, slight shadow, directly above the key word and JUSTIFIED to the key's width (first word flush left, last flush right, extra word spacing), centre ~62.3 % H.\n4. Top variant (once, for the big claim): key phrase at the top (centre 19.4 %), small {{TEXT}} words UNDER it at 24.6 %, first flush left, last flush right.\n5. Background: dark bottom gradient ({{SURFACE}} -> transparent from the bottom edge to ~55 % H) under the lower callouts.\n6. Animation: each word appears as it is spoken — fade + blur + slight scale-down / upward settle over 3-4 frames; lead words first, key word last. Callouts hard-cut out with their shot. No idle motion.\n\nOTHER TEXT (only where the script has a matching beat)\n7. Bullet list (3 benefits): left-aligned {{ACCENT}} lines with ring bullets, bold geometric ~94 px, baseline pitch 5.5 % H, block x 12.8-89 %, y 62-76 %.\n8. {{LOGO}} badge pop (~15-frame scale-in) at ~70 % H when the brand is first named; optional money-rain overlay (~75 frames) on a revenue / earnings line.\n9. CTA: 'CONTACT US:' in {{TEXT}} bold serif caps (Playfair Display 700, 64 px, +0.02 em) centred at 65.6 %, phone number(s) in {{ACCENT}} serif below at 69.8 % (~77 % W).\n10. End card (last ~114 frames): {{SURFACE}}; {{LOGO}} + brand name at 28-42 %; {{ACCENT_2}} box with white caps descriptor lines at 45-50 %; 'contact' / 'location' headings in {{CARD_BG}} caps with white caps details below (54-71 %).\n11. Edit: B-roll for ~96 % of runtime, median ~73 frames per shot; in list sections one 50-70 frame shot per item; VO leads cuts (J-cuts); two light-leak flashes in the hook; screen footage gets slow push-ins. Limit the master to -1 dBTP.\n\nGRADE\nGrade from the user's footage (video-style / grade.py); target look: warm, saturated, golden light, high contrast, dark bottom vignette for text.\n\nVERIFY before rendering\na) Render the lead word 'just' (in a lead line 'lead just here') over 'KEY WORD', and 'CONTACT US:', then measure:\n   python3 video-reference-match/scripts/caption_probe.py <test-render> --out <dir> --at <t> --box 0.12,0.655,0.88,0.71 --ink \"{{ACCENT}}:60\"\n   python3 video-reference-match/scripts/caption_probe.py <test-render> --out <dir> --at <t> --box 0.42,0.6,0.56,0.655 --ink \"{{TEXT}}:40\"\n   python3 video-reference-match/scripts/caption_probe.py <test-render> --out <dir> --at <t> --box 0.2,0.63,0.8,0.68 --ink \"{{TEXT}}:50\"\n   Expected (±0.5 % H, ±2 % W): 'just' ~2.8 % H (estimated) / 11.7 % W; 'CONTACT US:' 2.66 % H / 39.6 % W at 64 px Playfair 700.\nb) Key word: python3 video-reference-match/scripts/fit_font.py --font \"Poppins 700\" --word \"<Key word without descenders>\" --ink 5.16 --tracking -0.01 -> ~122-128 px with Poppins (128 px is the width-balanced value; Montserrat ExtraBold matches better). Lead words: --font \"Poppins 700\" --word \"just\" --width 11.7 -> ~57-66 px. Measure white over a dark area. (fit_font.py needs a target: --ink and/or --width; it returns the px that reproduces that ink for YOUR word plus the width it will read at that px. Requires Pillow.)\nc) Positions within ±1 % H: lead centre 62.3 %, key centre 68 %, top-variant key 19.4 %, CTA heading 65.6 %, number line 69.8 %.",
- "caption_family": "giant-keyword"
+ "caption_family": "giant-keyword",
+ "hyperframes_compositions": [
+  {
+   "name": "caption-neon-accent",
+   "role": "Giant glowing accent keyword per module",
+   "type": "component"
+  },
+  {
+   "name": "animated-bar-chart",
+   "role": "Course statistics and student growth curve",
+   "type": "component"
+  },
+  {
+   "name": "cta-close",
+   "role": "Course enrollment call-to-action lockup",
+   "type": "component"
+  },
+  {
+   "name": "transitions-light",
+   "role": "Organic light leak transition between shots",
+   "type": "block"
+  }
+ ]
 }

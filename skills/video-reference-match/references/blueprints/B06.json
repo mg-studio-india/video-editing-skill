@@ -372,5 +372,32 @@
  },
  "quality_score": 4,
  "brand_prompt": "Use /video-pipeline with /video-captions on videos/<project>. Apply style blueprint B06 (video-reference-match/references/blueprints/B06.json) to this brand.\nCanvas 1080x1920, 30 fps. All positions are % of frame; px are at 1080x1920.\n\nBRAND TOKENS (use the brand's colour/font for each role; keep the contrast relationship: {{TEXT}} must stay >= 4.5:1 on {{SURFACE}} and >= 3:1 on the footage)\n- {{TEXT}}      captions                          default #FFFFFF\n- {{ACCENT}}    none (this blueprint has no emphasis colour; do not add one)  default none\n- {{ACCENT_2}}  none                              default none\n- {{SURFACE}}   letterbox canvas behind inserts   default #050405 (near-black)\n- {{CARD_BG}}   none                              default none\n- {{FONT_DISPLAY}} captions                       default Poppins 500 (geometric sans medium)\n- {{FONT_BODY}}    same as display                default Poppins 500\n- {{HANDLE}}    not shown\n- {{LOGO}}      not shown (only logos that are native to the b-roll)\n\nCAPTIONS\n1. English as spoken, sentence case (capital \"I\"); keep full stops, commas, apostrophes. No emoji, no highlight colour, no box.\n2. Grouping: one clause per block, 1-6 words over at most 2 centred lines (~45 % of width max per line).\n3. Type: {{FONT_DISPLAY}} at 57 px, {{TEXT}}, tracking 0, no stroke, no shadow, no box.\n4. Position: block centred horizontally; line 1 centre at 79.0 % of height, line 2 at 82.4 % (line pitch 3.4 % ~ 65 px). Same position over selfie footage and over inserts.\n5. Animation (30 fps): lay out the full block centred first, then reveal each word in its final slot on its spoken word (up to ~9 frames early is fine): fade in while rising ~1 % of height over 2 frames. No scale, no blur. The whole block hard-cuts out when the next clause starts. Partial lines look off-centre until complete; that is correct.\n\nOTHER TEXT\n6. No authored titles, lower thirds or end card. For receipts, place each screenshot / quote / press image full-width on a {{SURFACE}} 9:16 canvas (image band roughly y 6-77 %) for ~90-120 frames, untouched, with captions continuing below at ~79 %.\n\nEDIT DEVICES\n7. Shape: selfie hook (~13 % of runtime) -> insert block (~60 %: receipts on {{SURFACE}} + full-frame b-roll of the subject, a new visual every ~90-180 frames) -> one long selfie close (~28 %). Hard cuts only, no punch-ins.\n\nGRADE\n8. Grade from the user's footage (video-style / grade.py); target look: warm, high-contrast, natural saturation, daylight phone look; leave inserts in their native colours.\n\nAUDIO\n9. Calm unobtrusive music bed under the voice (optional); no SFX on cuts. Master to about -14.2 LUFS, true peak <= -1 dBTP.\n\nVERIFY before rendering\na) Render a test frame with the caption \"KEY WORD\" on line 1 over {{SURFACE}} and the word \"school.\" on line 2, then measure:\n   python video-reference-match/scripts/caption_probe.py <test.mp4> --out <dir> --at <t> --box 0.1,0.775,0.9,0.81 --ink \"{{TEXT}}:50\"\n   python video-reference-match/scripts/caption_probe.py <test.mp4> --out <dir> --at <t> --box 0.3,0.81,0.7,0.845 --ink \"{{TEXT}}:50\"\n   Required: \"school.\" ink 2.19 % ±0.5 of height and 18.3 % ±2 of width (at the default font); \"KEY WORD\" within ±0.5 % H of the value from video-reference-match/scripts/fit_font.py ({{FONT_DISPLAY}}, 57 px). Line centres within ±1 % of 79.0 / 82.4 %; colour equal to {{TEXT}}.\n",
- "caption_family": "word-by-word-plain"
+ "caption_family": "word-by-word-plain",
+ "hyperframes_compositions": [
+  {
+   "name": "x-post",
+   "role": "Embedded third-party Twitter/X post proof receipt",
+   "type": "block"
+  },
+  {
+   "name": "reddit-post",
+   "role": "Social forum testimonial card on dark ground",
+   "type": "block"
+  },
+  {
+   "name": "comparison-split",
+   "role": "Split-screen letterbox separating selfie from receipts",
+   "type": "component"
+  },
+  {
+   "name": "testimonial-card",
+   "role": "User review card with avatar and quote",
+   "type": "component"
+  },
+  {
+   "name": "device-frame-stage",
+   "role": "Rounded phone mockup displaying screenshot proof",
+   "type": "component"
+  }
+ ]
 }

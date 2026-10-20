@@ -1,10 +1,5 @@
 #!/usr/bin/env python3
-"""research-scaffold.py: Scaffolds research workspace, extracts entities & metrics dynamically,
-extracts real brand colors from resolved assets, and initializes clean research.json and research.md.
-
-Usage:
-  python3 research-scaffold.py --project videos/my-project [--transcript videos/my-project/transcript-raw.json] [--topic "Topic text"]
-"""
+"""research-scaffold.py: Scaffolds research workspace, extracts entities & metrics dynamically,"""
 from __future__ import annotations
 
 import argparse
@@ -59,7 +54,6 @@ def slugify(text: str) -> str:
 
 
 def extract_colors_from_svg(svg_path: Path) -> dict[str, str | None]:
-    """Dynamically parses an SVG file and extracts dominant fill/stroke hex colors."""
     if not svg_path.exists():
         return {"primary": None, "accent": None}
 
@@ -101,7 +95,6 @@ def extract_colors_from_svg(svg_path: Path) -> dict[str, str | None]:
 
 
 def extract_colors_from_image(image_path: Path) -> dict[str, str | None]:
-    """Dynamically extracts dominant non-background colors from a PNG/JPEG image."""
     if not image_path.exists():
         return {"primary": None, "accent": None}
 
@@ -145,7 +138,6 @@ def extract_colors_from_image(image_path: Path) -> dict[str, str | None]:
 
 
 def extract_dynamic_entities(text: str) -> list[str]:
-    """Dynamically extracts potential brand, company, tool, and entity mentions without hardcoding."""
     found = set()
 
     # 1. Domain names and web handles (e.g., github.com, supabase.io, v0.dev)
@@ -197,7 +189,6 @@ def extract_dynamic_entities(text: str) -> list[str]:
 
 
 def extract_dynamic_metrics(text: str) -> list[str]:
-    """Dynamically extracts numbers, percentages, currencies, multipliers, and time periods."""
     pattern = re.compile(
         r'(?:'
         r'[\$₹€£]\s*[0-9]+(?:[\.,][0-9]+)?(?:\s*(?:k|m|b|crore|lakh|billion|million|trillion))?'
@@ -219,7 +210,6 @@ def extract_dynamic_metrics(text: str) -> list[str]:
 
 
 def infer_dynamic_category(text: str) -> str | None:
-    """Infers the most likely video genre based on term density in the transcript."""
     text_lower = text.lower()
     scores: dict[str, int] = {}
     for category, keywords in CATEGORY_SIGNATURES.items():
@@ -233,7 +223,6 @@ def infer_dynamic_category(text: str) -> str | None:
 
 
 def resolve_logo_asset(entity: str, slug: str, logos_dir: Path) -> dict:
-    """Finds or resolves a logo file, extracting its real brand colors dynamically."""
     svg_path = logos_dir / f"{slug}.svg"
     png_path = logos_dir / f"{slug}.png"
 
@@ -296,7 +285,6 @@ def resolve_logo_asset(entity: str, slug: str, logos_dir: Path) -> dict:
 
 
 def parse_transcript_content(path_or_str: str) -> tuple[str, list[dict]]:
-    """Extracts raw text and timestamped words if available."""
     p = Path(path_or_str)
     if not p.exists():
         return path_or_str, []

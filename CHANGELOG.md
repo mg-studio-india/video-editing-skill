@@ -2,6 +2,16 @@
 
 Every release of video-editing-skill. Update with `video-skills update`.
 
+## [1.1.0] - 2026-10-20
+
+- User references take precedence over style blueprints
+- Bottom split-screen speaker layout (70%) with head-area focus crop
+- Studio mesh illuminated gradient background for graphic card canvas
+- HyperFrames composition library integration and installer indexing
+- Minified runtime engine scripts
+
+Skills changed: video-audio 1.0.3 -> 1.1.0, video-captions 1.0.0 -> 1.1.0, video-cut-audit 1.0.0 -> 1.1.0, video-format 1.0.0 -> 1.1.0, video-motion-graphics 1.0.0 -> 1.1.0, video-pipeline 1.0.3 -> 1.1.0, video-plan-storyboard 1.0.0 -> 1.1.0, video-reference-match 1.0.2 -> 1.1.0, video-researcher 1.0.0 -> 1.1.0, video-review-gate 1.0.0 -> 1.1.0, video-short-form 1.0.0 -> 1.1.0, video-sound-design 1.0.0 -> 1.1.0, video-style 1.0.0 -> 1.1.0, video-take-geometry 1.0.0 -> 1.1.0, video-transcribe 1.0.0 -> 1.1.0, video-watch 1.0.2 -> 1.1.0
+
 ## [1.0.5] - 2026-10-19
 
 - Default creative workspace to current working directory unconditionally

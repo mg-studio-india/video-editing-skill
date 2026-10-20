@@ -504,5 +504,22 @@
  },
  "quality_score": 3,
  "brand_prompt": "Use /video-pipeline with /video-captions on videos/<project>. Apply style blueprint B23 (video-reference-match/references/blueprints/B23.json) to this brand.\nNative canvas 1920x1080 at 30 fps (sizes below give the 16:9 px and the 1080x1920 px for a 9:16 reframe).\n\nBRAND TOKENS (use the brand's colour/font for each role; keep the contrast relationship: {{TEXT}} >= 4.5:1 on the chest; {{ACCENT}} gradient must stay >= 3:1 on the background behind the title, e.g. dark foliage or walls)\n- {{TEXT}}: default #FFFFFF (captions, title sans line, end-card wordmark)\n- {{ACCENT}}: default #F5D34C (gold gradient light stop)\n- {{ACCENT_2}}: default #E0A820 (gold gradient deep stop)\n- {{SURFACE}}: none (footage)\n- {{CARD_BG}}: default #000000 (end card)\n- {{FONT_DISPLAY}}: default Playfair Display 700 italic (a swash italic/script is closer)\n- {{FONT_BODY}}: default Inter 500\n- {{HANDLE}}: not used\n- {{LOGO}}: monogram for the end card\n\nCAPTIONS\n1. Latin, as spoken, lowercase except 'I'; no punctuation, no emoji.\n2. One word at a time: {{FONT_BODY}} at 43 px on 1920x1080 (76 px on 1080x1920), {{TEXT}}, no stroke, no shadow, no box, tracking 0; centred, centre y 55.7 % H (chest), same position over b-roll.\n3. Hook only (first ~7 % of runtime): the opening sentence accumulates in ONE widely spaced line at ~55 % H; each word gets a fixed slot with ~3-5 % W gaps (16:9: x 15-80 %; 9:16: inside x 8-92 %); each word fades in over 2 frames.\n4. Each word hard-cuts in 0-6 frames after its spoken start and out when the next starts; no idle motion.\n\nCORNER TITLES (2-3 per minute, for the key phrase)\n5. Two lines beside the head, never over the face. Line 1: {{FONT_BODY}} at 79 px on 16:9 (140 px on 9:16), {{TEXT}}, sentence case 'lead words', left edge 8.6 % W, y 17-23 % (9:16: left 8 % W, y 15-21 %). Line 2: the KEY WORD in {{FONT_DISPLAY}} at 170 px on 16:9 (302 px on 9:16), vertical gradient {{ACCENT}} -> {{ACCENT_2}}, starting ~3-9 % W further left and tucked under line 1 (y 25-36 %); any trailing word in the white sans.\n6. Title words fade in one by one (~3 frames each, slight blur-in), hold 2-3 s, hard cut out.\n\nEDIT DEVICES\n7. Right after the first line: 4 b-roll shots of ~15 frames each (flash burst).\n8. Alternate WS and MS (~130 %) every 1.5-3 s; intercut founder-at-work b-roll for ~25 % of runtime, 1-2.3 s per shot.\n9. Twice per piece, a half-frame split wipe (b-roll | presenter) as the transition.\n10. End card (last ~10 %): {{CARD_BG}}, {{LOGO}} monogram (~7 % W on 16:9, ~20 % W on 9:16) centred at 48 % H, letter-spaced caps brand name (~1.5 % H, tracking ~0.4em) at 54.5 % H. No lower-thirds, no emoji.\n\nGRADE: Grade from the user's footage (video-style / grade.py); target look: natural daylight, moderate saturation, soft mid contrast, neutral-warm.\nSOUND: calm music bed (~72 bpm) under the voice, carrying the end card; keep true peak below -1 dBTP; -14 LUFS.\n\nVERIFY\na) Render the caption word \"and\" at 43 px on 1920x1080 (or 76 px on 1080x1920) over a dark area at 55.7 % H and measure:\n   python video-reference-match/scripts/caption_probe.py <test_render> --out <dir> --at <t> --box 0.4,0.5,0.6,0.61 --ink \"{{TEXT}}:60\"   (default ink #FFFFFF)\n   Required (16:9 frame): 2.65 % ±0.5 of H, 4.5 % ±2 of W; \"processes\" 2.79 % H, 13.0 % W.\nb) Corner title: render \"grow\" in {{FONT_DISPLAY}} at 170 px (16:9) and measure with --ink \"{{ACCENT}}:90\": 11.0 % ±0.5 H, 22.2 % ±2 W.\nc) Expected ink for any other word: video-reference-match/scripts/fit_font.py --font \"{{FONT_BODY}}\" --word <word> --canvas 1920x1080.",
- "caption_family": "word-by-word-plain"
+ "caption_family": "word-by-word-plain",
+ "hyperframes_compositions": [
+  {
+   "name": "flash-through-white",
+   "role": "Flash-burst hook opener transition",
+   "type": "block"
+  },
+  {
+   "name": "caption-kinetic-slam",
+   "role": "One-word progressive bold captions",
+   "type": "component"
+  },
+  {
+   "name": "lt-accent-underline",
+   "role": "Speaker title card",
+   "type": "block"
+  }
+ ]
 }

@@ -504,5 +504,32 @@
  },
  "quality_score": 4,
  "brand_prompt": "Use /video-pipeline with /video-captions on videos/<project>. Apply style blueprint B36 (video-reference-match/references/blueprints/B36.json) to this brand.\nCanvas 1080x1920, 30 fps. Speaker on a plain light canvas ({{SURFACE}}) in the bottom half, UI graphics in the top third.\n\nBRAND TOKENS (use the brand's colour/font for each role; keep the contrast relationship: current-word {{TEXT}} must stay >= 7:1 on {{SURFACE}}, upcoming grey must stay visibly lighter than spoken grey, {{ACCENT}} box must keep >= 7:1 behind {{TEXT}})\n- {{TEXT}}: default #161410 (current word, headline)\n- {{ACCENT}}: default #FBD409 (headline key-word box, badges, cost callouts)\n- {{ACCENT_2}}: default #9C968C (already-spoken words); upcoming words default #D1CCC2 (derive as a lighter tint of {{ACCENT_2}} toward {{SURFACE}})\n- {{SURFACE}}: default #F1EDE3 (warm cream canvas behind speaker and graphics)\n- {{CARD_BG}}: default #FFFFFF (UI cards, phone screens)\n- {{FONT_DISPLAY}}: default Inter 700 (headline)\n- {{FONT_BODY}}: default Poppins 800 (captions; Montserrat ExtraBold is the closer original)\n- {{HANDLE}}: default @handle (comment/DM CTA cards)\n- {{LOGO}}: optional, inside UI cards only; never a corner bug\n\nCAPTIONS\n1. Latin, as spoken, sentence case, no punctuation, no emoji.\n2. One line of 3-5 words per phrase; never 2 lines.\n3. {{FONT_BODY}} at 60 px, tracking 0, no stroke, no shadow, no box.\n4. Three states: whole phrase visible from its start in the upcoming grey (default #D1CCC2); the word being spoken in {{TEXT}}; words already spoken in {{ACCENT_2}}.\n5. Centred. Centre y 40.3 % H while the speaker is in frame (gap between top graphics and head); 69.5 % H when a graphic fills the frame.\n6. Phrase hard-cuts in on its first word (first word already {{TEXT}}); highlight jumps to each next word within ±1 frame of its start as a 1-frame colour switch; hard cut to the next phrase; no idle motion.\n\nOTHER TEXT AND EDIT DEVICES\n7. Hook headline (first ~8 % of runtime, ~90 frames): 2 centred lines in {{FONT_DISPLAY}} 63 px, {{TEXT}}, tracking -0.01em, lines at 12.8-18.8 % H (centres 14.3 % / 17.3 %); {{ACCENT}} box (~3.75 % H tall, ~6 px radius) behind the one KEY WORD, text stays {{TEXT}}.\n8. Result-first hook graphic: two {{CARD_BG}} rounded cards at x 7-46 % and 54-92 %, y 21-32 % ('what you pay for' -> 'your version'), a thin progress bar counting 2 % -> 100 % synced to the spoken promise, then a small {{ACCENT}} badge.\n9. No hard cuts: the speaker slides out with one motion-blur whip (~6-8 frames) at ~8 % and returns for the claim and the CTA; for ~70 % of runtime full-screen UI mock-ups on {{SURFACE}} carry the story, a new element every ~1-2 s (slide/scale in, 8-12 frame ease-out, soft shadows).\n10. When a cost or number is spoken, an {{ACCENT}} rounded callout with a bold {{TEXT}} number at ~x 42-76 %, y ~51-55 %.\n11. CTA (last ~12 %): speaker returns; mock comment card with a keyword from {{HANDLE}} + DM card with a link animate in above the head.\n12. No lower-thirds, no emoji, no end card.\n\nGRADE: Grade from the user's footage (video-style / grade.py); target look: bright warm cream, low saturation, high-contrast black type, natural skin, soft vignette.\nSOUND: voice-led, compressed, -14 LUFS, no music bed required; optional soft whoosh on the whip.\n\nVERIFY\na) Render a test frame with a 4-word phrase whose current word is \"with\", centred at 40.3 % H, and measure:\n   python video-reference-match/scripts/caption_probe.py <test_render> --out <dir> --at <t> --box 0.43,0.37,0.62,0.45 --ink \"{{TEXT}}:60\"   (default ink #161410)\n   Required: \"with\" ink 2.5 % ±0.5 of H and 12.9 % ±2 of W; centre y 40.3 %. Second check: \"sent\" 2.11 % H, 12.5 % W.\nb) Headline: render \"KEY WORD\" in {{FONT_DISPLAY}} at 63 px and measure with --box 0.15,0.12,0.85,0.158 --ink \"{{TEXT}}:80\"; expected ink for any word: video-reference-match/scripts/fit_font.py --font \"{{FONT_DISPLAY}}\" --word <word>.\nc) If {{FONT_BODY}} is not Poppins 800, re-solve px with fit_font.py --font \"{{FONT_BODY}}\" --word with --ink 2.5 --width 12.9 and use that size.",
- "caption_family": "karaoke-highlight"
+ "caption_family": "karaoke-highlight",
+ "hyperframes_compositions": [
+  {
+   "name": "browser-device-stage",
+   "role": "Browser mockup window with live UI interaction",
+   "type": "component"
+  },
+  {
+   "name": "agent-cursor",
+   "role": "Mouse cursor moving and clicking key interface features",
+   "type": "component"
+  },
+  {
+   "name": "cursor-annotate",
+   "role": "Pen / circle annotation drawing over UI buttons",
+   "type": "component"
+  },
+  {
+   "name": "flowchart-vertical",
+   "role": "Vertical step-by-step logic flow",
+   "type": "block"
+  },
+  {
+   "name": "chart-story",
+   "role": "Data curve validating workflow efficiency",
+   "type": "component"
+  }
+ ]
 }

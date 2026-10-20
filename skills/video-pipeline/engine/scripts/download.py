@@ -1,9 +1,4 @@
-"""Fetch a video from a URL with yt-dlp. OPTIONAL.
-
-This is the only place the skill touches the network, and only to download the
-video file you asked for. Analysis itself never uploads anything. If you would
-rather stay fully offline, download the file yourself and pass its path.
-"""
+"""Fetch a video from a URL with yt-dlp. OPTIONAL."""
 from __future__ import annotations
 
 import re

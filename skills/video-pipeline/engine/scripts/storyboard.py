@@ -1,11 +1,4 @@
-"""Storyboard skeleton.
-
-Everything measurable is filled in by code (timecodes, durations, transitions,
-spoken words, pacing, audio). Everything that needs eyes (framing, movement,
-on-screen text, purpose, hook pattern, takeaways) is left as the marker
-`⟨fill⟩` for Claude. `lint` fails while any marker remains, so a half-filled
-storyboard never gets treated as finished.
-"""
+"""Storyboard skeleton."""
 from __future__ import annotations
 
 import datetime as _dt
@@ -134,7 +127,6 @@ def render(analysis: dict, transcript: dict | None, intent: str | None,
 
 
 def lint(path: Path) -> list[str]:
-    """Return a list of 'line N: text' for every unfilled marker."""
     problems = []
     for i, line in enumerate(Path(path).read_text(encoding="utf-8").splitlines(), 1):
         if FILL in line:

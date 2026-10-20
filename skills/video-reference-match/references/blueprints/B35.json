@@ -343,5 +343,22 @@
  },
  "quality_score": 3,
  "brand_prompt": "Use /video-pipeline with /video-captions on videos/<project>. Apply style blueprint B35 (video-reference-match/references/blueprints/B35.json) to this brand.\nCanvas 1080x1920, 30 fps. All positions are % of frame; px are at 1080x1920.\n\nBRAND TOKENS (use the brand's colour/font for each role; keep the contrast relationship: {{TEXT}} must stay >= 4.5:1 on the speaker's top where it sits, with the thin dark outline)\n- {{TEXT}}      caption words                          default #FFFFFF\n- {{ACCENT}}    none (no highlight colour; the dim look is only the fade)  default none\n- {{ACCENT_2}}  caption outline                        default near-black (#111111)\n- {{SURFACE}}   none                                   default none\n- {{CARD_BG}}   none                                   default none\n- {{FONT_DISPLAY}} captions                            default Inter 800 (bold grotesque; alt Figtree Bold / Plus Jakarta Sans Bold)\n- {{FONT_BODY}}    same as display                     default Inter 800\n- {{HANDLE}}    not shown\n- {{LOGO}}      not shown\n\nCAPTIONS\n1. English as spoken, sentence case (capital at a sentence start); keep commas, full stops, apostrophes.\n2. Phrases of up to ~7 words over at most 2 centred lines, max line width ~55 % W (~595 px). Lay out the whole phrase first (line breaks and centring fixed), then reveal word by word as spoken; earlier words never move.\n3. Type: {{FONT_DISPLAY}} at 50 px, line pitch 60 px, tracking 0, {{TEXT}}, thin {{ACCENT_2}} outline ~2 px (paint-order stroke or a 1 px 4-direction text-shadow), no blurred shadow, no box.\n4. Position: centred; the first line's ink top fixed at 61.0 % of height (y ~1171 px): one line centres at 62.2 %, a second line grows downward (centre 63.7 %). Keep it on the speaker's chest / dark clothing.\n5. Per-word animation: opacity 0 -> 0.11 -> 0.20 -> 0.30 -> 0.41 -> 0.57 -> 0.73 over 6 frames, then snap to 1.0 on frame 7 (ease-in); start 2-9 frames after the word's transcript start. No scale, slide or blur. When the phrase is complete, cut it out on one frame, leave the band empty ~4 frames, then start the next phrase.\n6. No colour highlight and no idle motion.\n\nOTHER TEXT\n7. None: no title, lower third, sticker, CTA card or end card.\n\nEDIT DEVICES\n8. Keep one locked-off thigh-up take; trim only head and tail. Script shape: credential stack + failure twist in the first ~5 % of runtime, the question by ~10 %, then numbered points with spoken signposts every ~15-20 % of runtime, one-word sign-off. (For a faster cut, add a punch-in every ~90-150 frames without moving the caption position.)\n\nGRADE\n9. Grade from the user's footage (video-style / grade.py); target look: mid-contrast, muted, warm-leaning natural daylight; flat, ungraded feel.\n\nAUDIO\n10. Dry voice only, no music, no SFX; keep natural short pauses. Master to about -14.0 LUFS, true peak <= -1 dBTP.\n\nVERIFY before rendering\na) Render a test frame with a fully built one-line caption \"KEY WORD\" over a dark area and measure:\n   python video-reference-match/scripts/caption_probe.py <test.mp4> --out <dir> --at <t> --box 0.2,0.585,0.8,0.67 --ink \"{{TEXT}}:60\"\nb) Expected ink: video-reference-match/scripts/fit_font.py with {{FONT_DISPLAY}} at 50 px (reference: lines with descenders 2.42 % H, without 1.88 % H). Required: within ±0.5 % H; first-line ink top at 61.0 % ±0.5; colour equal to {{TEXT}}. Check a mid-fade frame: the word at frame 6 of its ramp must read at ~73 % opacity.\n",
- "caption_family": "word-by-word-plain"
+ "caption_family": "word-by-word-plain",
+ "hyperframes_compositions": [
+  {
+   "name": "caption-highlight",
+   "role": "Progressive word-by-word highlighted captions",
+   "type": "component"
+  },
+  {
+   "name": "lt-clean-bar",
+   "role": "Minimalist lower third name badge",
+   "type": "block"
+  },
+  {
+   "name": "vignette",
+   "role": "Subtle background vignette keeping focus on speaker",
+   "type": "component"
+  }
+ ]
 }

@@ -1,24 +1,5 @@
 #!/usr/bin/env python3
-"""edge-audit.py: check every edge of a cut list by the AUDIO, not the transcript, and optionally fix it.
-
-Why: The ASR can merge a leaked sliver of a dropped take into the next word, so a transcript
-looks clean while the viewer hears "right. [ght] A couple hours ago". Three glitch shapes, all found by level alone:
-  - a segment that STARTS while sound is already playing (the tail of a dropped take rides in),
-  - a segment that ENDS mid-sound (a chopped word, or the first sliver of the next dropped take),
-  - a very short segment that holds no kept word (a restart fragment left behind by a later cut).
-
-Fixes, in the direction that never loses a kept word:
-  - a loud head moves to the quietest 10 ms in [first kept word start - 0.28, first kept word start + 0.10]
-    (search BACKWARD from the first kept word; searching forward from the old start skipped "if you want the"),
-  - a loud tail moves to the quietest 10 ms in [end - 0.35, end], never before the last kept word's start + 0.15,
-  - a short fragment (< 0.5 s, no kept word) is dropped.
-
-Usage:
-  edge-audit.py --audio W/audio-raw.wav --cut-list W/cut-list.json --transcript W/transcript-raw.json
-                [--keeps W/build/keeps.args] [--fix] [--threshold 300]
---keeps is the hand-cut keep list ("--keep A-B ..."); without it every transcript word counts as kept.
-Always re-run after --fix: it must print "0 issues". Then apply-cut, then check the joins of the NEW file the same way.
-"""
+"""edge-audit.py: check every edge of a cut list by the AUDIO, not the transcript, and optionally fix it."""
 import argparse, json, re, wave
 import numpy as np
 

@@ -528,5 +528,32 @@
  },
  "quality_score": 4,
  "brand_prompt": "Use /video-pipeline with /video-captions on videos/<project>. Apply style blueprint B45 (video-reference-match/references/blueprints/B45.json) to this brand.\n\nBRAND TOKENS (use the brand's colour/font for each role; keep the contrast relationship: {{TEXT}} on {{SURFACE}} >= 7:1, white numbers on {{ACCENT}} badges >= 4.5:1, {{ACCENT}} underline >= 3:1 on {{SURFACE}})\n- {{TEXT}} captions + titles - default #FFFFFF (near-black #0A0A0A on {{CARD_BG}} panels)\n- {{ACCENT}} counter badges, step labels, active chapter bar, title underline - default red #B20F14\n- {{ACCENT_2}} highlight ring / mechanism ring - default lime #C9DC32 (a green ring is fine)\n- {{SURFACE}} graphic panel - default near-black #020202 with a faint grid\n- {{CARD_BG}} alternate light panel + CTA card - default light grey #DDDCD9 with a dot grid\n- {{FONT_DISPLAY}} italic accent word / coined term - default italic old-style serif (Instrument Serif Italic or EB Garamond Italic; local stand-in Playfair Display 400 italic)\n- {{FONT_BODY}} captions, titles, labels - default Inter 800 (ExtraBold)\n- {{HANDLE}} - @handle (profile-card mocks, optional)\n- {{LOGO}} - optional, on the video-player mock in the CTA\n\nCanvas 1080x1920, 24 fps.\n\nLAYOUT\n1. Split for ~77 % of runtime: animated graphic panel y 0-70 % on {{SURFACE}} (a few panels on {{CARD_BG}} for variety); speaker in a rounded face card x 5.5-94.5 %, y ~70.5-100 %, radius ~3 % W. Full-face MCU for ~23 % (14-113 frames each) for opinions and transitions; alternate faster (every 24-72 frames) in the middle of the longest step.\n2. Proof for every claim as a UI mock-up in the panel: profile cards, video-player mocks with view counts, phone mock, thumbnail grids, funnel. Numbers sit in {{ACCENT}} rectangular badges with white bold digits that count up (power2.out over ~60-84 frames).\n3. Chapter card at each step change: 'Framework name' with 01 / 02 / 03; the active step in a solid {{ACCENT}} bar.\n4. Hook frame 1: title + avatar orbit with an {{ACCENT}} counter badge climbing ~10x in ~84 frames and a launch move; first full-face cut at ~3 % of runtime naming the method in {{FONT_DISPLAY}}.\n\nCAPTIONS\n5. Latin script, as spoken, punctuation kept, numbers as digits; 1-3-word meaning chunks, one line.\n6. {{FONT_BODY}}, -0.02em, {{TEXT}}, no stroke/box, very soft shadow 0 2px 6px rgba(0,0,0,.5); centred at y 64.4 %; 54 px on splits, 68 px on full-face; near-black on {{CARD_BG}} panels.\n7. Hard-cut chunk swaps ~2 frames after the chunk's first word, no gap, no emphasis colour.\n8. Once, the coined term replaces the caption on a full-face shot in {{FONT_DISPLAY}} (~56-69 px, verify), centred at y 64.4 %.\n\nOTHER TEXT\n9. Section title on every split: 'Headline here' (line 1, {{FONT_BODY}} 58 px, centre y 10 %, x ~22-78 %) / 'Second line here' (line 2, ~15 % larger, y ~12-15.5 %, x ~17-84 %), last word of line 2 in {{FONT_DISPLAY}}, thin {{ACCENT}} underline at y ~15.6 % spanning line 2.\n10. Recap: bar chart with the viewer's bar ('YOU') tallest.\n11. CTA (last ~6 %): {{CARD_BG}} card, black 'Comment' + {{FONT_DISPLAY}} '\"KEYWORD\"' / 'To Get This Video' (2 centred lines, y ~11-19 %, x 15-84 %) above a video-player mock with {{LOGO}}/{{HANDLE}} in the channel row; caption continues in near-black.\n\nGRADE: Grade from the user's footage (video-style / grade.py); target look: dark low-key studio, high-contrast, muted, warm bokeh, cool desaturated shadows.\nSOUND: dense voice at about -14 LUFS; counter tick/roll under badges, soft whoosh on panel transitions.\n\nVERIFY before rendering (px values were render-verified with Inter; if the brand font differs, adjust px until the numbers match):\na) Render test frames over {{SURFACE}}: \"a personal brand\" ({{FONT_BODY}} 54 px), \"KEY WORD\" as a full-face caption (68 px), a title line \"Headline here\" (58 px), and \"KEY WORD\" in {{FONT_DISPLAY}} (~56-69 px).\nb) Measure: python video-reference-match/scripts/caption_probe.py <test render or snapshot> --out <dir> --at <t> --box 0.2,0.62,0.8,0.67 --ink \"{{TEXT}}:60\" (caption); --box 0.15,0.088,0.85,0.118 --ink \"{{TEXT}}:70\" (title line 1); --box 0.15,0.615,0.85,0.672 --ink \"{{TEXT}}:70\" (serif callout).\nc) Required: \"a personal brand\" ink 2.58 % +-0.5 of H and 37.9 % +-2 of W. For the full-face caption, title and serif callout compute expected ink with python video-reference-match/scripts/fit_font.py --font \"<font>\" --word \"<text>\" at the px above (targets: full-face caption cap+descender ~3.4 % H, title line ~2.7 % H, serif ~3.4 % H).",
- "caption_family": "phrase-plain"
+ "caption_family": "phrase-plain",
+ "hyperframes_compositions": [
+  {
+   "name": "comparison-split",
+   "role": "Split-panel layout separating speaker from UI mock proof",
+   "type": "component"
+  },
+  {
+   "name": "browser-device-stage",
+   "role": "Browser mockup showcasing live workflow proof",
+   "type": "component"
+  },
+  {
+   "name": "count-up",
+   "role": "Accent milestone count badges",
+   "type": "component"
+  },
+  {
+   "name": "conic-progress-ring",
+   "role": "Framework progress indicator ring",
+   "type": "component"
+  },
+  {
+   "name": "chart-story",
+   "role": "Metric progression story validating framework",
+   "type": "component"
+  }
+ ]
 }

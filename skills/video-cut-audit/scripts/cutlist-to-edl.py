@@ -1,16 +1,5 @@
 #!/usr/bin/env python3
-"""cutlist-to-edl.py: turn our cut-list.json into the EDL shape the cut review page reads, so the page can be built.
-
-The review page (build-edl-review.mjs, next to this script) shows kept vs cut regions on a timeline,
-lists the largest cuts, and embeds the ORIGINAL and the EDITED video side by side so the creator can click any
-red mark and hear exactly what was removed. This is Checkpoint A for anything longer than a hook.
-
-Usage (SCRIPTS = the folder holding this script: video-cut-audit/scripts, where build-edl-review.mjs also lives):
-  python3 cutlist-to-edl.py --cut-list videos/<p>/cut-list.json --out videos/<p>/cut-edl.json
-  node "$SCRIPTS/build-edl-review.mjs" videos/<p>/cut-edl.json \
-       --original videos/<p>/raw/<clip>.MP4 --edited videos/<p>/public/input-video.mp4 \
-       --output videos/<p>/CUT-REVIEW.html
-"""
+"""cutlist-to-edl.py: turn our cut-list.json into the EDL shape the cut review page reads, so the page can be built."""
 import argparse, json
 
 ap = argparse.ArgumentParser()

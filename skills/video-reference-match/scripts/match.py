@@ -1,18 +1,5 @@
 #!/usr/bin/env python3
-"""match.py: rank the style blueprints against a user's video / image / concept and write an editing roadmap.
-
-  match.py [--video FILE ...] [--image FILE ...] [--concept "text"] [--transcript transcript.json]
-           [--tags a,b] [--format talking-head] [--language Hinglish] [--weights weights.json]
-           [--top 5] [--out DIR] [--pick B07[,B21]]
-
-Without --pick: prints the ranked blueprints with per-column scores and writes <out>/matches.json.
-With --pick: also writes <out>/ROADMAP.md (elements, motion graphics, cut-outs, captions, background text, transitions,
-camera, layout, sound, pacing, grade-from-footage, catalog style IDs, brand prompt) for the chosen blueprint(s).
-
-Columns are weighted (references/weights.json) and re-normalised over the columns this input can show. "similar" in
-the output means score >= similar_threshold: that is the trigger for the reference gate (see SKILL.md).
-Nothing is uploaded; video analysis is ffprobe/ffmpeg + a Haar face count.
-"""
+"""match.py: rank the style blueprints against a user's video / image / concept and write an editing roadmap."""
 import argparse
 import glob
 import json
@@ -264,6 +251,12 @@ def roadmap(bps, f):
               "- fonts: %s" % json.dumps(st.get("fonts", {})), ""]
         L += ["### Grade", "", "- **From this project's own footage** (video-style / grade.py), not from the blueprint. Target look: %s." % st.get("look_intent", "natural"), ""]
         L += ["### Catalog styles to cite in plan.md", ""] + ["- #%s %s — %s" % (c.get("id"), c.get("name"), c.get("role", "")) for c in b.get("catalog_styles", [])] + [""]
+        hf_comps = b.get("hyperframes_compositions", [])
+        if hf_comps:
+            L += ["### Linked HyperFrames Compositions", ""] + [
+                "- **`%s`** (%s) — %s" % (c.get("name"), c.get("type", "component"), c.get("role", ""))
+                for c in hf_comps
+            ] + [""]
         L += ["### Needs", "", "- %s" % json.dumps(b.get("match", {}).get("needs", {})), "- avoid when: %s" % "; ".join(b.get("avoid_when", [])), ""]
         L += ["### Brand prompt", "", "```text", b.get("brand_prompt", ""), "```", ""]
     return "\n".join(L)
@@ -288,7 +281,8 @@ def main():
     res = {"input": {k: (sorted(v) if isinstance(v, set) else v) for k, v in f.items() if k != "text"},
            "threshold": thr, "similar_found": ranked[0][0][0] >= thr,
            "matches": [{"id": b["id"], "score": sc, "similar": sc >= thr, "columns": cs, "one_line": b.get("signature", {}).get("one_line"),
-                        "format": b.get("format"), "path": b["_path"]} for (sc, cs), b in ranked[:top]]}
+                        "format": b.get("format"), "path": b["_path"],
+                        "hyperframes_compositions": b.get("hyperframes_compositions", [])} for (sc, cs), b in ranked[:top]]}
     os.makedirs(a.out, exist_ok=True)
     json.dump(res, open(os.path.join(a.out, "matches.json"), "w"), indent=1)
     for m in res["matches"]:

@@ -317,5 +317,27 @@
  },
  "quality_score": 1,
  "brand_prompt": "Use /video-pipeline with /video-captions on videos/<project>. Apply style blueprint B05 (video-reference-match/references/blueprints/B05.json) to this brand.\n\nBRAND TOKENS (use the brand's colour for each role; keep the contrast relationship — text and accent must stay >= 4.5:1 / >= 3:1 against what sits behind them on the footage):\n- {{TEXT}}      default #FFFFFF (POV label)\n- {{ACCENT}}    default #FFFFFF (no accent in this style)\n- {{ACCENT_2}}  default none\n- {{SURFACE}}   default none\n- {{CARD_BG}}   default none\n- {{FONT_DISPLAY}} default Poppins 500\n- {{FONT_BODY}}    default Poppins 500\n- {{HANDLE}}    default @handle\n- {{LOGO}}      default the brand's logo file (transparent PNG/SVG)\nLabel must stay >= 4.5:1 on the footage at mid-frame; if the subject wears white, add the faint shadow (0 1px 3px rgba(0,0,0,.25)) or darken clothing, never a box.\nCanvas 1080x1920, 30 fps.\n\nCAPTIONS\n1. No speech captions.\n\nOTHER TEXT\n2. One persistent label from frame 0 to the last frame: 'POV:' in caps + a short lowercase premise (placeholder 'POV: headline here'), {{FONT_DISPLAY}} at 67 px, {{TEXT}}, tracking 0, very faint soft shadow, no stroke / box, one line centred at 49.8 % H (~81 % W for ~24 characters). No animation; unaffected by cuts.\n3. No {{LOGO}}, watermark or end card ({{HANDLE}} only if required, small, outside the label band).\n4. Edit: one propped-phone medium shot; frustrated beat first, then a soft jump cut at ~30 % of runtime to the polite/professional beat. No music required; keep the audio dynamic so the tone flip is audible.\n\nGRADE\nGrade from the user's footage (video-style / grade.py); target look: mid-contrast, natural-saturation, warm; natural indoor phone light.\n\nVERIFY before rendering\na) Render the label and measure: python3 video-reference-match/scripts/caption_probe.py <test-render> --out <dir> --at <t> --box 0.05,0.47,0.95,0.53 --ink \"{{TEXT}}:60\"\n   Expected (±0.5 % H, ±2 % W) with Poppins 500 at 67 px: 'POV:' ink ~2.66 % H / ~14 % W; a ~24-character line ~81 % W.\nb) python3 video-reference-match/scripts/fit_font.py --font \"Poppins 500\" --word \"<your label>\" --ink 3.44 -> ~64-67 px for a line with descenders; if at_verified_px width exceeds ~85 % W, shorten the premise rather than shrinking below ~60 px. (fit_font.py needs a target: --ink and/or --width; it returns the px that reproduces that ink for YOUR word plus the width it will read at that px. Requires Pillow.)\nc) Position within ±1 % H: label centre 49.8 %.",
- "caption_family": "title-only"
+ "caption_family": "title-only",
+ "hyperframes_compositions": [
+  {
+   "name": "lt-bold-block",
+   "role": "Persistent character / scenario POV label badge",
+   "type": "block"
+  },
+  {
+   "name": "caption-clip-wipe",
+   "role": "Punchy dialogue subtitle wipe",
+   "type": "component"
+  },
+  {
+   "name": "camera-shake",
+   "role": "Subtle handheld camera shake reaction",
+   "type": "component"
+  },
+  {
+   "name": "confetti",
+   "role": "Ironic celebratory burst on comedic punchline",
+   "type": "component"
+  }
+ ]
 }

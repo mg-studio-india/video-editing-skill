@@ -1,9 +1,5 @@
 #!/usr/bin/env python3
-"""storyboard-md.py: render the delivery STORYBOARD.md (time / beat / what is on screen) from one or more
-storyboard.json files, so the review document is generated from the same source the composition is built from.
-
-Usage: python3 storyboard-md.py --title "Hook v2" --note "what changed" --project videos/<p>/C0001:01-hook:"Part 1" ... --out videos/<p>/STORYBOARD.md
-"""
+"""storyboard-md.py: render the delivery STORYBOARD.md (time / beat / what is on screen) from one or more"""
 import argparse, json, os
 
 ap = argparse.ArgumentParser()

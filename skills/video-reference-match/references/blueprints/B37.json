@@ -381,5 +381,27 @@
  },
  "quality_score": 2,
  "brand_prompt": "Use /video-pipeline with /video-captions on videos/<project>. Apply style blueprint B37 (video-reference-match/references/blueprints/B37.json) to this brand.\nThis blueprint has NO captions and NO overlays until the end card: a music-led phone BTS montage. Canvas 1080x1920, 30 fps.\n\nBRAND TOKENS (use the brand's colour for each role; keep the contrast relationship: {{ACCENT}} and {{ACCENT_2}} fills sit inside a {{TEXT}} outline, and the outlined lines must stay >= 3:1 against the dark/sky area of the last shot)\n- {{TEXT}}: outline colour of both end-card lines, default #FFFFFF\n- {{ACCENT}}: brand-name fill, default #E31E28\n- {{ACCENT_2}}: contact-line fill, default #000000\n- {{SURFACE}}: unused, default none\n- {{CARD_BG}}: unused, default none\n- {{FONT_DISPLAY}}: default Poppins 600\n- {{FONT_BODY}}: default Poppins 600\n- {{HANDLE}}: contact line (phone number or \"@handle\")\n- {{LOGO}}: not overlaid; the brand must be visible in-shot (uniforms, signage, props)\n\nEDIT\n1. Open with a walk-to-camera of the lead person through the busiest part of the set (~13 % of runtime), music hitting on frame 0.\n2. Then cut every ~42 frames (median shot 1.42), with two bursts of ~15-frame shots (48-60 cuts/min) at ~20-40 % and ~60-80 % of runtime on the music's hits; cut on musical phrases, not on lyrics.\n3. ~62 % of changes soft: ~6-frame light-flash/flare or quick blend between locations; one ~6-frame white-out early (~24 %). No punch-ins; all motion handheld.\n4. Order: walk-in -> prep / pattern interrupt -> scale proof (vehicles, stage, performers) -> people directing + happy client -> high wide.\n\nCAPTIONS\n5. None; do not caption song lyrics. No logo bug; let in-shot branding carry the brand 5+ times.\n\nOTHER TEXT (end card, last shot only, ~38 frames)\n6. Hard-cut in on the same frame as the final high wide, static, held to the last frame, over a dark/sky area.\n7. Line 1, brand name, sentence case: {{FONT_DISPLAY}} 61 px, fill {{ACCENT}}, {{TEXT}} outline ~4 px, no shadow/box; centred, centre y 28.5 % H (x 25.8-72.6 % at ~14 characters, ink 2.97 % H).\n8. Line 2, {{HANDLE}} / phone digits: {{FONT_BODY}} 73 px (~1.2x line 1), fill {{ACCENT_2}}, {{TEXT}} outline ~4 px; centred directly under line 1, centre y 31.8 % H (outline box 30.0-33.6 % H, ~37.6 % W for 10 digits).\n\nSOUND: music with vocals at full level, no voiceover. Normalise to -14 LUFS and limit true peak to -1 dBTP (do not clip).\nGRADE: Grade from the user's footage (video-style / grade.py); target look: mid-contrast, saturated, neutral-warm night event colour (rich uniforms, purple-blue stage light, warm practicals).\n\nVERIFY before rendering: render a test end-card frame with \"Brand name here\" (or the real brand) and a 10-digit number, then measure:\n  video-reference-match/scripts/caption_probe.py <render-file> --out <dir> --at <t_endcard> --box 0.22,0.255,0.78,0.30 --ink \"#E31E28:80\"\n  video-reference-match/scripts/caption_probe.py <render-file> --out <dir> --at <t_endcard> --box 0.25,0.30,0.75,0.34 --ink \"#FFFFFF:40\"\nSwap the --ink colours to {{ACCENT}} / {{TEXT}}. Compute the expected ink height/width of the brand's actual line with video-reference-match/scripts/fit_font.py at 61 px / 73 px; a 14-character line in Poppins 600 61 px should read ~2.97-3.2 % H; the 10-digit outline box ~3.67 % H / 37.6 % W. Positions within +-1 % of frame height.",
- "caption_family": "title-only"
+ "caption_family": "title-only",
+ "hyperframes_compositions": [
+  {
+   "name": "flash-through-white",
+   "role": "Energetic flash transition on beat drops",
+   "type": "block"
+  },
+  {
+   "name": "beat-freeze-cut",
+   "role": "Freeze-frame cut with title card pop on bass hits",
+   "type": "block"
+  },
+  {
+   "name": "cinematic-zoom",
+   "role": "Speed-ramped cinematic punch-in",
+   "type": "block"
+  },
+  {
+   "name": "logo-outro",
+   "role": "Closing event logo reveal",
+   "type": "block"
+  }
+ ]
 }

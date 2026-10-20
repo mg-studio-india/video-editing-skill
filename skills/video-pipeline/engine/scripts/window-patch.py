@@ -1,16 +1,5 @@
 #!/usr/bin/env python3
-"""window-patch.py: make a render-ready copy of a composed project that covers only [T0, T1] of its timeline, so a
-fix inside a long render costs seconds of capture instead of an hour. Render the copy with the same flags as the full
-render, then lay it over the full render (ffmpeg overlay with enable='between(t,T0,T1)', patch shifted by T0).
-
-What it rewrites in index.html: the stage and bg-video durations (bg-video gets data-media-start T0), every other
-timed element shifted by -T0 (clamped into the window; ones fully outside get display:none), <audio> removed (the
-patch is picture only; keep the full render's sound), and the registered timeline wrapped so window time t plays the
-original timeline at T0 + t (tl.tweenFromTo). T0 and T1 are snapped to frames. The input video is hard-linked.
-
-Usage: python3 window-patch.py --public videos/<p>/public --t0 1057.5 --t1 1092.1 --out videos/<p>/patch-a
-Then:  npx hyperframes render videos/<p>/patch-a/public --resolution 4k --video-bitrate 45M --gpu --workers 1 -o .../patch-a.mp4
-"""
+"""window-patch.py: make a render-ready copy of a composed project that covers only [T0, T1] of its timeline, so a"""
 import argparse, os, re, shutil
 ap = argparse.ArgumentParser()
 ap.add_argument("--public", required=True); ap.add_argument("--t0", type=float, required=True)

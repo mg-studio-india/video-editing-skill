@@ -495,5 +495,32 @@
  },
  "quality_score": 3,
  "brand_prompt": "Use /video-pipeline with /video-captions on videos/<project>. Apply style blueprint B32 (video-reference-match/references/blueprints/B32.json) to this brand.\nCanvas 1080x1920, 30 fps. Speaker footage desaturated; most of the piece on a light canvas with line art.\n\nBRAND TOKENS (use the brand's colour/font for each role; keep the contrast relationship: {{ACCENT}} is the ONLY saturated colour and must stay >= 3:1 on {{SURFACE}} and on the desaturated footage; {{TEXT}} >= 7:1 on {{SURFACE}})\n- {{TEXT}}: default #31302E on cream (white #FFFFFF on footage / dark sections)\n- {{ACCENT}}: default #E23A78 (key words, face ring, pill borders, highlighted bar)\n- {{ACCENT_2}}: default #AFAEAD (line art)\n- {{SURFACE}}: default #FBF8F7 (cream canvas)\n- {{CARD_BG}}: default #121212 (dark section behind the UI card)\n- {{FONT_DISPLAY}}: default Inter 700 (key words)\n- {{FONT_BODY}}: default Inter 500 (lead words)\n- {{HANDLE}}: not on screen\n- {{LOGO}}: none\n\nCAPTIONS\n1. Latin, as spoken, punctuation kept; sentence case (continuation blocks start lowercase); key words lowercase; no emoji.\n2. Blocks of 2-8 words (~5), up to 4 lines, laid out centred in advance (does not re-centre while growing); 0-1 key word per block on its own line.\n3. Lead: {{FONT_BODY}} at 77 px, tracking -0.02em, {{TEXT}}; key: {{FONT_DISPLAY}} at ~148-153 px (~2x lead, fixed size), tracking -0.03em, {{ACCENT}}. No stroke, shadow or box.\n4. Hook state (first ~11 %, over footage): block top 65 % H, lines at 66.8 % / 71.2 %, key at 78.3 %, pitch 4.4 % H. Main state (canvas): first line centre 15.1 % H, key line 21.7-22.3 % (17.6 % when it opens the block), lines after key 24.5-28.9 %, lead pitch 4.9 % H, lead-to-key baseline pitch 8.3 % H; max width 78 % W, margins >= 11 % W.\n5. Each word appears on its spoken word (0-3 frames early), sliding ~2 % W from the left with a 3-frame horizontal motion blur (smeared, light blur, sharp); no scale. Block exit: blur + fade + drift up ~1 % H over ~6 frames; the next block's first word lands ~1 frame later.\n\nGRAPHICS AND EDIT DEVICES\n6. Hook: desaturated footage, {{ACCENT}} oval ring (~1.5 % W stroke) around the face, faint white grid overlay; hard switch to {{SURFACE}} at ~11 %.\n7. Speaker as a face pill / rounded-rect cutout 13-30 % W with a ~3 px {{ACCENT}} border, linked into one {{ACCENT_2}} line-art metaphor that changes state every sentence (break, branch, network, final {{ACCENT}} version). Change the graphic state every ~0.5-1.5 s.\n8. Example beat (~14 % of runtime): motion-blur drop to {{CARD_BG}}; white rounded card x 9-91 %, y 41.5-82.5 % with a soft {{ACCENT}} glow; icon + 'Card title' + grey subtitle; 5 rows avatar + 'Name' + bar + counting %; the hero row's bar in {{ACCENT}}, others light grey; others fade out.\n9. Transitions: graphic zoom-throughs and vertical motion-blur drops (~6-8 frames); one hard footage->canvas switch.\n10. No lower-thirds, logos or emoji.\n\nGRADE: Grade from the user's footage (video-style / grade.py); target look: near-B&W desaturated speaker, warm cream canvas, high-contrast text, one saturated accent.\nSOUND: voice only, dense delivery (do not speed up artificially), -14 LUFS; soft whooshes on blur drops.\n\nVERIFY\na) Render the key word \"lose\" at 148 px on line 2 of a block on {{SURFACE}} and measure:\n   python video-reference-match/scripts/caption_probe.py <test_render> --out <dir> --at <t> --box 0.06,0.18,0.94,0.26 --ink \"{{ACCENT}}:60\"   (default ink #E23A78)\n   Required: 5.62 % ±0.5 of H, 24.2 % ±2 of W. \"no point\" at 153 px: 7.5 % H, 49.2 % W (--box 0.06,0.10,0.94,0.215).\nb) Lead: \"everybody else is\" at 77 px white over {{CARD_BG}}: --box 0.06,0.12,0.94,0.175 --ink \"#FFFFFF:50\" -> 3.75 % ±0.5 H, 51.9 % ±2 W.\nc) Expected ink for any other word: video-reference-match/scripts/fit_font.py --font \"{{FONT_BODY}}\" --word <word> --tracking -0.02.",
- "caption_family": "stacked-kinetic"
+ "caption_family": "stacked-kinetic",
+ "hyperframes_compositions": [
+  {
+   "name": "flowchart",
+   "role": "Clean line-art concept node diagram",
+   "type": "block"
+  },
+  {
+   "name": "conic-progress-ring",
+   "role": "Animated circular progress and proportion ring",
+   "type": "component"
+  },
+  {
+   "name": "constellation-hub",
+   "role": "Interconnected concept ecosystem",
+   "type": "component"
+  },
+  {
+   "name": "device-frame-stage",
+   "role": "Face-pill floating cutout window",
+   "type": "component"
+  },
+  {
+   "name": "data-chart",
+   "role": "Smooth curve trend chart",
+   "type": "block"
+  }
+ ]
 }

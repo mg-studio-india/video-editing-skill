@@ -643,5 +643,37 @@
  },
  "quality_score": 5,
  "brand_prompt": "Use /video-pipeline with /video-captions on videos/<project>. Apply style blueprint B09 (video-reference-match/references/blueprints/B09.json) to this brand.\nCanvas 1080x1920, 25 fps. Seated speaker, plain saturated wall, dark top.\n\nBRAND TOKENS (use the brand's colour/font for each role; keep the contrast relationship: {{TEXT}} >= 4.5:1 on the chest/shirt, numeral gradient top {{ACCENT}} must stay >= 3:1 on the footage and darken toward the shirt)\n- {{TEXT}}: default #FFFFFF (captions, titles)\n- {{ACCENT}}: default #0259BA (numeral gradient top; bottom = a 60 % darker shade, default #123153)\n- {{ACCENT_2}}: default #7500FE (chat bubbles)\n- {{SURFACE}}: default rgba(60,60,62,.6) grey pill behind captions on white screenshots\n- {{CARD_BG}}: default #0A4C8A (square lower-third name box)\n- {{FONT_DISPLAY}}: default Playfair Display italic (Instrument Serif Italic preferred) for accent words\n- {{FONT_BODY}}: default Inter 600 (captions, numerals, titles)\n- {{HANDLE}}: default @handle (chat bubble sender, screenshots)\n- {{LOGO}}: not used on screen\n\nCAPTIONS\n1. Latin, as spoken, lowercase except 'I', proper nouns and sentence starts; keep hyphens; at most a full stop at a sentence end; no emoji.\n2. One line of 2-3 words per phrase.\n3. {{FONT_BODY}} at 69 px, {{TEXT}}, tracking -0.01em, very soft shadow 0 2px 8px rgba(0,0,0,.35), no stroke, no box. Centred, centre y 60.5 % H.\n4. At most one accent word per line in {{FONT_DISPLAY}}, same cap height as the sans inline; standalone accent words over b-roll at 137 px, left-aligned at x 17 %, y 22-30 %.\n5. Over white screenshots: same caption on a {{SURFACE}} pill (radius ~15 px, padding ~3 % W) at 60.7 % H.\n6. Hard cut per phrase, from 2 frames before to 4 frames after the first word, or exactly on a shot cut; captions are applied before punch-ins so they scale ~1.15x with the shot.\n\nNUMBERS (hook)\n7. When the hook states counts: lead line centred at 57 % H; giant numeral in {{FONT_BODY}} 310 px centred at 59-71.5 % H with a vertical gradient {{ACCENT}} -> dark shade fading into the shirt; unit word in {{TEXT}} at ~73 % H revealed syllable by syllable with 2-frame fades. Roll like a slot counter: one digit per frame easing out (0 -> N over ~11 frames), count down for the next item.\n\nOTHER TEXT AND EDIT DEVICES\n8. Hook title over b-roll (~8-9 % of runtime): big ordinal/number in {{FONT_BODY}} 192 px, {{TEXT}} fading to transparent at the bottom, red/cyan chromatic fringes ~3 px, centred x ~46 %, y 17-25 %; a sans line in Inter 500 82 px at y 27-30 %; last word in {{FONT_DISPLAY}}; builds line by line with a chromatic flicker.\n9. Lower-third after the hook (12-18 % of runtime, ~85 frames): 'Name Surname' Inter 700 69 px {{TEXT}} on a square {{CARD_BG}} box (x 28.5-70 %, y 72-76.5 %), 'Role, Company' Inter 500 42 px at 78.6 % H; box wipes in from the left.\n10. Receipts: {{ACCENT_2}} rounded chat bubbles with small white text and a round avatar pop in over the chest; replies in white bubbles; then full-screen screenshots (~2 s each, slow zoom, key line highlighted) for ~30 % of runtime. Blur private names.\n11. Cut rhythm: every ~1.9 s alternate locked-off MCU and a ~120 % CU punch-in; ~half the transitions are short blur/defocus soft cuts; let audio lead ~40 % of cuts (J-cut).\n12. Optional: speaker cut-out composited over a thumbnail collage when scale is mentioned. No end card, no emoji.\n\nGRADE: Grade from the user's footage (video-style / grade.py); target look: punchy contrast, cool saturated backdrop, warm natural skin, b-roll warmer and darker.\nSOUND: voice-led, compressed, -14 LUFS; whoosh/hit on about half the hard cuts; tick per numeral digit; soft pop per chat bubble.\n\nVERIFY\na) Render the caption \"exclusively\" on the grey pill at 60.7 % H and measure:\n   python video-reference-match/scripts/caption_probe.py <test_render> --out <dir> --at <t> --box 0.2,0.57,0.8,0.64 --ink \"{{TEXT}}:60\"   (default ink #FFFFFF)\n   Required: 3.28 % ±0.5 of H, 31.4 % ±2 of W.\nb) Numeral \"4\" at 310 px: --box 0.35,0.55,0.65,0.75 --ink \"{{ACCENT}}:90\" -> ~11-12.5 % H, 18.8 % ±2 W.\nc) Accent \"to close\" in the italic at 137 px: height 5.7 % ±0.5 H (height only).\nd) Lower-third: render \"KEY WORD\" in Inter 700 69 px on the box, --box 0.29,0.73,0.69,0.77; expected ink for the brand's real name: video-reference-match/scripts/fit_font.py --font \"Inter 700\" --word <name>.\ne) If {{FONT_BODY}} is not Inter 600, re-solve with fit_font.py --font \"{{FONT_BODY}}\" --word exclusively --ink 3.28 --width 31.4.",
- "caption_family": "other:plain-serif-accent"
+ "caption_family": "other:plain-serif-accent",
+ "hyperframes_compositions": [
+  {
+   "name": "chat-thread",
+   "role": "Full iMessage conversation thread with avatar and receipts",
+   "type": "component"
+  },
+  {
+   "name": "chat-message",
+   "role": "Individual chat bubble popping with sender tail",
+   "type": "component"
+  },
+  {
+   "name": "count-up",
+   "role": "Rolling gradient metric counter",
+   "type": "component"
+  },
+  {
+   "name": "chart-story",
+   "role": "Data chart story landing exact revenue figures",
+   "type": "component"
+  },
+  {
+   "name": "card-resize",
+   "role": "Interactive proof card expanding to detail view",
+   "type": "component"
+  },
+  {
+   "name": "lt-clean-bar",
+   "role": "Subtle founder credibility lower third",
+   "type": "block"
+  }
+ ]
 }

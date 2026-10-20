@@ -312,5 +312,22 @@
  },
  "quality_score": 2,
  "brand_prompt": "Use /video-pipeline with /video-captions on videos/<project>. Apply style blueprint B21 (video-reference-match/references/blueprints/B21.json) to this brand.\nCanvas 1080x1920, 30 fps. Multi-character handheld scene.\n\nBRAND TOKENS (use the brand's colour/font for each role; keep the contrast relationship: subtitle {{TEXT}} must stay >= 4.5:1 against its box over both light walls and dark clothing)\n- {{TEXT}}: default #F2C911 (subtitle yellow)\n- {{ACCENT}}: default #F2C911 (same as text; no separate emphasis)\n- {{ACCENT_2}}: none\n- {{SURFACE}}: default rgba(0,0,0,.25) (subtitle box)\n- {{CARD_BG}}: none\n- {{FONT_DISPLAY}}: none (no titles)\n- {{FONT_BODY}}: default Inter 700 (Arimo Bold for an Arial look)\n- {{HANDLE}}: not on screen\n- {{LOGO}}: none (the skit carries no branding on screen)\n\nCAPTIONS\n1. Latin, as spoken, sentence case like written dialogue; keep commas, full stops and question marks; no emoji.\n2. 1-5 words per subtitle (a clause), one line, break at punctuation or natural pauses.\n3. {{FONT_BODY}} at 48 px, {{TEXT}}, tracking 0, tight dark edge (text-shadow 0 0 2px rgba(0,0,0,.8)), on a {{SURFACE}} rectangle, radius ~4 px, padding ~13 px left/right and ~12 px top/bottom; the box hugs the line (~3 % H tall).\n4. Centred, centre y 66 % H, the same position on every shot (does not follow the speaker).\n5. Hard cut in on the first word of each phrase (within ~1 frame), hard cut out on the next phrase; no idle motion.\n6. Turn captions OFF for the silent payoff (last ~17 % of runtime).\n\nEDIT DEVICES\n7. Open mid-conversation: first word inside ~4 frames, a name/role and a concrete number in the first line; no title card.\n8. Handoffs between characters: ~half the cuts are horizontal whip pans (~6-8 frames motion blur); on most cuts start the next line before the picture changes (J-cut).\n9. Median shot ~3 s; no punch-ins, no titles, no graphics, no b-roll.\n10. Payoff: the last ~17 % of runtime as wordless wide reveal shots plus one deadpan reaction; grade the reveal cooler and darker than the rest.\n\nGRADE: Grade from the user's footage (video-style / grade.py); target look: soft, muted warm beige interiors, then a cooler grey reveal.\nSOUND: quiet bed or room tone under dialogue (gaps ~8 dB below speech), ambience through the reveal; -14 LUFS, true peak <= -1 dBTP.\n\nVERIFY\na) Render \"KEY WORD\" as a subtitle at 48 px on its box at 66 % H and measure:\n   python video-reference-match/scripts/caption_probe.py <test_render> --out <dir> --at <t> --box 0.3,0.63,0.7,0.69 --ink \"{{TEXT}}:60\"   (default ink #F2C911)\n   Expected ink for it (and any other word) from video-reference-match/scripts/fit_font.py --font \"{{FONT_BODY}}\" --word \"KEY WORD\"; a short mixed-case phrase should land near 1.8-2.3 % H.\nb) Box height ~3.0 % H, centred on 66 % H.",
- "caption_family": "other:subtitle-box"
+ "caption_family": "other:subtitle-box",
+ "hyperframes_compositions": [
+  {
+   "name": "caption-pill-karaoke",
+   "role": "Film-style boxed dialog subtitles",
+   "type": "component"
+  },
+  {
+   "name": "whip-pan",
+   "role": "Whip-pan character transition between dual roles",
+   "type": "block"
+  },
+  {
+   "name": "camera-shake",
+   "role": "Realistic handheld comedy camera drift",
+   "type": "component"
+  }
+ ]
 }

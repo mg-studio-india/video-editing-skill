@@ -1,16 +1,5 @@
 #!/usr/bin/env python3
-"""verify-words.py: Audit, verify, and correct mis-spelled or misheard words in transcripts.
-
-Whisper frequently produces phonetic distortions, split syllables, or accent marks in Hinglish/English
-speech (e.g. 'ho ga' -> 'hoga', 'wajahe' -> 'wajah', 'tuk' -> 'tak', 'nuxan' -> 'nuksan', 'siraf' -> 'sirf').
-This tool audits transcripts for known misspellings, non-standard diacritics, and split words,
-reporting candidates for verification and optionally applying high-confidence fixes via corrections.json.
-
-Usage:
-  python3 verify-words.py --transcript W/transcript.json
-  python3 verify-words.py --transcript W/transcript.json --auto-fix
-  python3 verify-words.py --transcript W/transcript.json --add "misheard=Correct"
-"""
+"""verify-words.py: Audit, verify, and correct mis-spelled or misheard words in transcripts."""
 import argparse
 import json
 import os
@@ -22,7 +11,6 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 
 
 def _engine_scripts():
-    """The shared engine scripts (video-pipeline/engine/scripts): $VIDEO_ENGINE, the sibling skill, or ~/.agents/skills."""
     env = os.environ.get("VIDEO_ENGINE")
     for c in ((os.path.join(env, "scripts") if env else ""), os.path.join(HERE, "..", "..", "video-pipeline", "engine", "scripts"),
               os.path.expanduser("~/.agents/skills/video-pipeline/engine/scripts")):
@@ -87,24 +75,30 @@ COMMON_HINGLISH_CORRECTIONS: dict[str, str] = {
     "corod": "crore",
     "per lena": "kar lena",
     "par lena": "kar lena",
-    "kar li": "kar li",
     "rivinyo": "revenue",
     "rivinyon": "revenue",
+    "bild karta": "build karta",
+    "kise bejna": "kise bechna",
+    "kya bejna": "kya bechna",
+    "tumhen bejna": "tumhen bechna",
+    "shoing d testimoriyals": "showing the testimonials",
+    "testimoriyals": "testimonials",
+    "phrom agar klaints": "from our clients",
+    "agar klaints": "our clients",
+    "yor previyas vark": "your previous work",
+    "previyas vark": "previous work",
+    "end projekt": "and project",
+    "kolej projekt": "college project",
+    "thainks hui beldar": "things we build",
 }
 
 
 def strip_accents(text: str) -> str:
-    """Strip combining diacritics (e.g. 'bêch' -> 'bech')."""
     nfkd = unicodedata.normalize("NFKD", text)
     return "".join(c for c in nfkd if not unicodedata.combining(c))
 
 
 def audit_transcript(words: list[dict]) -> list[dict]:
-    """Scan word list and identify mis-spelled words, diacritics, and split phrases.
-
-    Returns a list of candidate dictionaries:
-      {"start": float, "end": float, "original": str, "suggested": str, "reason": str}
-    """
     candidates = []
     n = len(words)
     i = 0
@@ -182,7 +176,6 @@ def audit_transcript(words: list[dict]) -> list[dict]:
 
 
 def apply_candidates(transcript_path: str, candidates: list[dict], corrections_path: str) -> int:
-    """Save candidates into corrections.json and apply them to transcript.json."""
     corr = FW.load_corrections(corrections_path)
     for c in candidates:
         orig = re.sub(r"[^\w\s']+", "", c["original"]).strip().lower()

@@ -1,15 +1,4 @@
-"""Local transcription with whisper.cpp (`whisper-cli`). Nothing leaves the machine.
-
-Word timing recipe: `-ml 1 -sow` makes whisper.cpp emit one entry per word,
-each with millisecond offsets. This is the widely used way to get word-level
-timestamps from the CLI, and it does not depend on token-level JSON fields.
-`--dtw` is available as an opt-in refinement (WATCH_WHISPER_DTW).
-
-Flags were written against the whisper.cpp CLI help; any optional flag your
-build does not know is dropped automatically and the run is retried, so a
-slightly older or newer build still works. Run `setup.py` to see what your
-build supports.
-"""
+"""Local transcription with whisper.cpp (`whisper-cli`). Nothing leaves the machine."""
 from __future__ import annotations
 
 import json
@@ -29,15 +18,14 @@ IGNORED_CUES = {"blank_audio", "silence", "no speech", "inaudible"}
 OPTIONAL_FLAGS = {"-np": 0, "--dtw": 1, "-t": 1, "--prompt": 1, "--carry-initial-prompt": 0}  # flag -> number of values
 
 DEFAULT_HINGLISH_PROMPT = (
-    "Namaste dosto. Aaj ke is video mein hum baat karenge business, startup aur market ke baare mein. "
-    "Kya aapko lagta hai ki yeh sahi hai ya galat?"
+    "Namaste dosto. Aaj ke is video mein hum business, startup, clients, testimonials, previous work, "
+    "college projects, deadlines, milestones, trust, connections aur net worth ke baare mein baat karenge."
 )
 
 
 # ---------------------------------------------------------------- audio extraction
 def extract_wav(video: str, out_wav: Path, start: float | None = None,
                 end: float | None = None) -> Path:
-    """16 kHz mono 16-bit PCM WAV: the input format whisper.cpp expects."""
     cmd = ["ffmpeg", "-hide_banner", "-loglevel", "error", "-y"]
     if start:
         cmd += ["-ss", f"{start:.3f}"]
@@ -45,7 +33,9 @@ def extract_wav(video: str, out_wav: Path, start: float | None = None,
         cmd += ["-t", f"{max(0.0, end - start):.3f}"]
     elif end is not None:
         cmd += ["-t", f"{end:.3f}"]
-    cmd += ["-i", str(Path(video).resolve()), "-vn", "-ac", "1", "-ar", "16000",
+    cmd += ["-i", str(Path(video).resolve()), "-vn",
+            "-af", "highpass=f=80,loudnorm=I=-16:TP=-1.5:LRA=11",
+            "-ac", "1", "-ar", "16000",
             "-c:a", "pcm_s16le", str(out_wav)]
     run(cmd)
     return out_wav
@@ -93,7 +83,6 @@ def _drop_flag(cmd: list[str], flag: str) -> list[str]:
 
 
 def run_whisper(cmd: list[str]) -> None:
-    """Run whisper-cli; drop optional flags this build rejects and retry."""
     for _ in range(len(OPTIONAL_FLAGS) + 1):
         proc = run(cmd, check=False)
         if proc.returncode == 0:
@@ -110,7 +99,6 @@ def run_whisper(cmd: list[str]) -> None:
 
 # ---------------------------------------------------------------- parsing
 def parse_whisper_json(data: dict, offset: float = 0.0) -> dict:
-    """Convert whisper.cpp `-oj` output (one entry per word) into words + sound cues."""
     language = (data.get("result") or {}).get("language")
     words: list[dict] = []
     cues: list[dict] = []
@@ -159,8 +147,6 @@ def parse_whisper_json(data: dict, offset: float = 0.0) -> dict:
 
 
 def collapse_loops(words: list[dict]) -> tuple[list[dict], int]:
-    """Whisper sometimes loops on silence/music ('Thank you. Thank you. ...').
-    Collapse a phrase repeated back-to-back many times down to one occurrence."""
     norm = [re.sub(r"\W+", "", w["w"].lower()) for w in words]
     keep = [True] * len(words)
     removed = 0
@@ -187,7 +173,6 @@ def collapse_loops(words: list[dict]) -> tuple[list[dict], int]:
 
 
 def words_to_segments(words: list[dict], gap: float = 0.8, max_words: int = 28) -> list[dict]:
-    """Group words into sentence-like segments (punctuation, long pause, or length)."""
     segments: list[dict] = []
     cur: list[dict] = []
 
@@ -226,7 +211,6 @@ def build_transcript(parsed: dict, model_name: str, rng: tuple[float | None, flo
 
 
 def filter_range(transcript: dict, start: float | None, end: float | None) -> dict:
-    """Slice a full-video transcript to [start, end] (used when a cached one exists)."""
     lo = start if start is not None else float("-inf")
     hi = end if end is not None else float("inf")
     words = [w for w in transcript["words"] if w["end"] >= lo and w["start"] <= hi]

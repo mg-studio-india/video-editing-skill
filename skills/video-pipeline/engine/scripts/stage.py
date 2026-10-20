@@ -1,20 +1,5 @@
 #!/usr/bin/env python3
-"""stage.py: storyboard.json -> public/index.html for ANY canvas (9:16 Shorts and Reels, 1:1, 4:5, or 16:9).
-
-compose.py is the 16:9 talking-head composer with the forked format library; stage.py is the canvas-agnostic builder for
-the seven treatments, word-exact captions, B-roll, registry blocks and the camera. Same storyboard shape and camera ops,
-plus:
-  "canvas": [1080, 1920]            output size (default 1080x1920)
-  "video": "input-9x16.mp4"         the base footage in public/ (its audio is the programme sound)
-  "matte": "subject-matte.webm"     optional alpha matte of the speaker, for "behind" beats (layered-head)
-  "origin": "50% 30%"               camera transform origin (keep it on the face; top-anchored for 16:9 talking heads)
-  "captions": {"source": "transcript.json", "max_words": 3, "emphasis": ["words"]}   adds the caption rail
-  "sfx": [{"id": "pop1", "src": "sfx/pop.mp3", "at": 3.2, "dur": 0.4, "volume": 0.35}]
-
-Usage:
-  python3 stage.py --spec W/storyboard.json --out W/public --style W/style.json [--cut-map W/cut-map.json]
-  then: npx hyperframes lint W/public && npx hyperframes snapshot W/public --at <beat midpoints>
-"""
+"""stage.py: storyboard.json -> public/index.html for ANY canvas (9:16 Shorts and Reels, 1:1, 4:5, or 16:9)."""
 from __future__ import annotations
 
 import argparse
@@ -53,16 +38,16 @@ def camera_js(ops: list) -> list[str]:
 
 
 def stage_fonts(style: dict, style_dir: str, out: str) -> dict:
-    """Copy the style's font files into public/fonts and rewrite the paths the page uses."""
     st = json.loads(json.dumps(style))
     for role in ("display", "body", "fallback"):
         f = (st.get("fonts") or {}).get(role)
-        if not f:
+        if not f or not isinstance(f, dict):
             continue
         for w, path in list((f.get("files") or {}).items()):
             src = T.resolve_font(path, style_dir)
             if not os.path.isfile(src):
-                raise SystemExit("font file not found: %s" % src)
+                print("WARN: font file not found: %s; skipping" % src)
+                continue
             os.makedirs(os.path.join(out, "fonts"), exist_ok=True)
             shutil.copyfile(src, os.path.join(out, "fonts", os.path.basename(src)))
             f["files"][w] = "fonts/" + os.path.basename(src)
@@ -193,7 +178,9 @@ html, body { margin: 0; background: #000; }
   </div>
 </body>
 </html>
-""" % (T.font_faces(style), cid, T.tok(style, "colors", "dark") or "#000", W, H, spec.get("origin", "50% 30%" if H > W else "52% 0%"), "\n".join(css), cid, cid, D, W, H,
+"""
+    bg = (style.get("colors") or {}).get("canvas_bg") or T.tok(style, "colors", "canvas_bg") or "radial-gradient(circle at 50% 20%, rgba(56, 189, 248, 0.16) 0%, transparent 55%), radial-gradient(ellipse 90% 65% at 50% 25%, #1e2c48 0%, #0d1526 60%, #040710 100%)"
+    page = page % (T.font_faces(style), cid, bg, W, H, spec.get("origin", "50% 30%" if H > W else "52% 0%"), "\n".join(css), cid, cid, D, W, H,
        spec.get("video", "input-video.mp4"), D, "".join(behind), matte, "".join(root), "".join(front), "\n    ".join(audio),
        gsap, "\n        ".join(camera_js(spec.get("camera"))), "\n        ".join(T.layout_js(lay, W, H, style)),
        "\n        ".join(js), D, cid)

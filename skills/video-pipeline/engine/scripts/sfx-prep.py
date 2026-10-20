@@ -1,14 +1,5 @@
 #!/usr/bin/env python3
-"""sfx-prep.py: make a sound effect land on its frame and sit at a known level.
-
-1. Trim the silence before the transient, so the audible peak (not the file start) lands on the cue.
-2. Peak-normalise to -3 dBFS, so data-volume in the composition is the only mix control (library files differ up to
-   10x in level; at one shared volume some vanish).
-3. Optional fade-out and length cap, so a tail never runs past its data-duration.
-
-Usage: python3 sfx-prep.py IN OUT [--peak -3] [--max 1.5] [--fade 0.05] [--threshold -40]
-Prints the new length and peak, and the data-duration to use.
-"""
+"""sfx-prep.py: make a sound effect land on its frame and sit at a known level."""
 import argparse, re, subprocess, sys
 
 

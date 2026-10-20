@@ -393,5 +393,22 @@
  },
  "quality_score": 3,
  "brand_prompt": "Use /video-pipeline with /video-captions on videos/<project>. Apply style blueprint B25 (video-reference-match/references/blueprints/B25.json) to this brand.\n\nBRAND TOKENS (use the brand's colour/font for each role; keep the contrast relationship: {{TEXT}} on {{SURFACE}} >= 7:1, captions >= 4.5:1 on the footage with the shadow)\n- {{TEXT}} headline + captions - default #FFFFFF\n- {{ACCENT}} - default #FFFFFF (this blueprint has no colour emphasis; a brand accent may tint '!!' or one headline word at most)\n- {{ACCENT_2}} - none\n- {{SURFACE}} letterbox bars - default #000000\n- {{CARD_BG}} - none\n- {{FONT_DISPLAY}} headline - default Poppins 700 (Montserrat Bold is closer to the original width)\n- {{FONT_BODY}} captions - default Poppins 500 (Montserrat SemiBold closer)\n- {{HANDLE}} - @handle (optional, small in the empty bottom bar)\n- {{LOGO}} - optional, small in the bottom bar\n\nCanvas 1080x1920, 30 fps (29.97).\n\nLAYOUT\n1. {{SURFACE}} 9:16 canvas; the speaker footage scaled into a near-square (~1.09:1) window 1080x995 px at y 463-1457 px (24.1-75.9 % H), bars above and below.\n2. Fixed headline for 100 % of runtime in the top bar: 2 centred lines 'Pain point headline / because of this!!', {{FONT_DISPLAY}} 64 px, {{TEXT}}, no shadow/box; line centres y 16.7 % (x ~11-89 %) and 20.8 % (x ~16-84 %).\n3. Cuts move between camera angles (front MS, angled MS, tighter MCU) at a ~111-frame median shot length; allow one long hold for the core lesson; short dissolves or straight cuts on phrase boundaries; no punch-ins, no B-roll, no graphics.\n4. End: last ~9 frames black with only the headline (loop-back).\n\nCAPTIONS\n5. Latin script, sentence case as spoken, profanity masked with asterisks.\n6. 3-7 words per caption split over 2 lines (short line 1, longer line 2), {{FONT_BODY}} 47-48 px, {{TEXT}}, tracking 0, no stroke/box, soft shadow 0 2px 6px rgba(0,0,0,.5); centred, line centres y 61.3 % and 64.3 % (1177 px / 1235 px), i.e. the bottom quarter of the window.\n7. Whole phrase hard-cuts in 0-4 frames after its first word and hard-cuts to the next phrase with no gap; no emphasis, no animation.\n\nGRADE: Grade from the user's footage (video-style / grade.py); target look: high-contrast, muted, cool background with natural skin.\nSOUND: voice only at about -14 LUFS; keep short breath pauses; no SFX.\n\nVERIFY before rendering (px values were render-verified with Poppins; with Montserrat or another face, adjust px until the numbers match):\na) Render a test frame with the caption \"When you\" / \"KEY WORD\" and the headline \"Headline here\" over the black bar / a dark area.\nb) Measure: python video-reference-match/scripts/caption_probe.py <test render or snapshot> --out <dir> --at <t> --box 0.25,0.595,0.75,0.627 --ink \"{{TEXT}}:60\" (caption line 1); --box 0.05,0.15,0.95,0.185 --ink \"{{TEXT}}:60\" (headline line 1).\nc) Required: \"When you\" ink 2.27 % +-0.5 of H and 22.8 % +-2 of W. For the second caption line and the headline compute expected ink with python video-reference-match/scripts/fit_font.py --font \"<font>\" --word \"<line>\" at 47-48 px / 64 px (headline target ink ~3.3 % H).",
- "caption_family": "phrase-plain"
+ "caption_family": "phrase-plain",
+ "hyperframes_compositions": [
+  {
+   "name": "comparison-split",
+   "role": "Letterbox layout framing square video in 9:16",
+   "type": "component"
+  },
+  {
+   "name": "headline-slam",
+   "role": "Header topic banner in letterbox margin",
+   "type": "component"
+  },
+  {
+   "name": "caption-highlight",
+   "role": "Subtitles pinned in bottom letterbox margin",
+   "type": "component"
+  }
+ ]
 }

@@ -1,26 +1,5 @@
 #!/usr/bin/env python3
-"""reframe.py: crop a 16:9 shot to another aspect around the speaker's face, never a blind centre crop.
-
-For 9:16 Shorts, a 1:1 or 4:5 feed version, or one half of a split-screen (8:9 side by side in 16:9, 9:8 stacked in
-9:16). Faces are found locally with OpenCV: the YuNet detector when its model is installed, else the Haar cascade that
-ships with opencv-python.
-
-Modes
-  static (default)  one crop per shot, on the median face position: steady, like a camera operator who framed once.
-                    Best for talking heads.
-  follow            the crop drifts with the face, with a dead zone (it only moves when the face leaves the middle 30%
-                    of the crop) and smoothing. For people who walk or lean a lot. Still jumps (never glides) at cuts.
-
-Shots come from --cut-map (the flat cut's jump cuts) plus picture cuts found by ffmpeg's scene score. Framing: the
-face centre sits at 38% of the crop height from the top (eyes near the upper third), clamped to the frame.
-
-Usage:
-  python3 reframe.py --video W/public/input-video.mp4 --aspect 9:16 --out W/shorts/01/reframe-9x16.json \
-      [--cut-map W/cut-map.json] [--mode static|follow] [--zoom 1.0] [--subject largest|left|right] \
-      [--render W/shorts/01/public/input-9x16.mp4 --size 1080x1920]
-YuNet (optional, better on side angles and small faces): put face_detection_yunet_2023mar.onnx (from the
-opencv_zoo repository) in ~/.config/video-skills/models/, or pass --yunet PATH.
-"""
+"""reframe.py: crop a 16:9 shot to another aspect around the speaker's face, never a blind centre crop."""
 from __future__ import annotations
 
 import argparse
@@ -66,7 +45,6 @@ def scene_cuts(video: str, threshold: float = 0.3) -> list[float]:
 
 
 def shots_from(cuts: list[float], duration: float, min_gap: float = 0.25) -> list[tuple[float, float]]:
-    """Pure: merge cut lists into ordered shots, dropping cuts closer than min_gap."""
     pts = [0.0]
     for c in sorted(cuts):
         if min_gap < c < duration - min_gap and c - pts[-1] >= min_gap:
@@ -150,8 +128,6 @@ def place(cx: float, cy: float, cw: int, ch: int, src_w: int, src_h: int) -> tup
 
 def plan(dets: list[dict], shots: list[tuple[float, float]], src_w: int, src_h: int, cw: int, ch: int,
          mode: str = "static") -> tuple[list[dict], list[dict]]:
-    """Keyframes [{t, x, y}] (crop top-left) and a per-shot report. Static: one key per shot. Follow: one key per
-    sample inside the shot, dead-zoned and smoothed, jumping at each shot start."""
     keys, report = [], []
     last = (src_w / 2, src_h / 2)
     for s0, s1 in shots:
@@ -185,7 +161,6 @@ def plan(dets: list[dict], shots: list[tuple[float, float]], src_w: int, src_h: 
 
 
 def per_frame(keys: list[dict], shots: list[tuple[float, float]], fps: float) -> list[dict]:
-    """Follow mode: interpolate inside a shot so the crop glides; never across a shot start (jumps there)."""
     starts = {round(s0, 3) for s0, _ in shots}
     out = []
     for a, b in zip(keys, keys[1:] + [None]):

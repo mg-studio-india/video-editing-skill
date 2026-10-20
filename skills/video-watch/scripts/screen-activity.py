@@ -1,10 +1,5 @@
 #!/usr/bin/env python3
-"""screen-activity.py: how much the screen recording changes over time (typing, scrolling, drawing show up; a
-still page does not). Reads the screen track at 2 fps, 96 px wide, greyscale, and writes activity.json:
-[[source_seconds, mean_abs_diff_0_255], ...]. Used to decide full-face sections on a screen tutorial: a stretch
-with no clicks AND activity near zero is a candidate; typing on a whiteboard shows as activity without clicks.
-Usage: python3 screen-activity.py --video screen.mp4 --out activity.json
-"""
+"""screen-activity.py: how much the screen recording changes over time (typing, scrolling, drawing show up; a"""
 import argparse, json, subprocess, sys
 ap = argparse.ArgumentParser(); ap.add_argument("--video", required=True); ap.add_argument("--out", required=True)
 ap.add_argument("--fps", type=float, default=2.0); ap.add_argument("--width", type=int, default=96)

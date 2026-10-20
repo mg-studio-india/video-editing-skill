@@ -1,29 +1,5 @@
 #!/usr/bin/env python3
-"""audio-chain.py: voice processing in the right order, with ffmpeg only, measured before and after.
-
-Order (fixed, the reason is in the audio skill):
-  gain staging -> high-pass -> noise reduction -> [expander] -> de-ess -> compression -> tonal EQ -> loudness -> limiter
-  (the expander runs in master only: it keeps compression from lifting the pauses and the hiss back up)
-
-Modes
-  measure  MEDIA                                  print loudness, true peak, range, noise floor; change nothing
-  clean    MEDIA --out OUT                        light early pass: gain staging, high-pass, adaptive noise reduction.
-                                                  Run on the raw camera file before transcription and cutting.
-  master   MEDIA --out OUT --preset youtube       full chain on the final mix, optional ducked music bed, loudness to
-           [--music bed.wav --duck-db 18]         the preset target, a limiter under the true-peak ceiling, verified.
-
-A video input keeps its picture untouched (stream copy); only the audio is replaced. --report writes the numbers as JSON.
-
-Noise reduction is adaptive, because over-processing a clean file is what creates artifacts (watery highs, pumping):
-  noise floor below -62 dBFS   -> none
-  -62 to -50                   -> light   (afftdn nr 6)
-  -50 to -40                   -> medium  (afftdn nr 10)
-  above -40                    -> strong  (afftdn nr 14), plus arnndn when an RNNoise model is available
-The floor is the 10th percentile of 50 ms RMS frames, and afftdn gets nf = floor + 12 dB
-(it works per band), never closer than 15 dB to the speech level. An RNNoise model (.rnnn) is used from --rnn-model, or the first
-file in ~/.config/video-skills/rnnoise/. arnndn runs with mix 0.85 so a little dry signal masks its artifacts.
---denoise off|light|medium|strong overrides the choice.
-"""
+"""audio-chain.py: voice processing in the right order, with ffmpeg only, measured before and after."""
 from __future__ import annotations
 
 import argparse
@@ -99,7 +75,6 @@ def sample_peak(media: str) -> float:
 
 
 def decode_pcm(media: str) -> np.ndarray:
-    """16 kHz mono int16 samples."""
     p = subprocess.run(["ffmpeg", "-hide_banner", "-loglevel", "error", "-i", str(media), "-vn", "-ac", "1",
                         "-ar", "16000", "-f", "s16le", "-"], capture_output=True)
     if p.returncode != 0:
@@ -125,7 +100,6 @@ def speech_from_pcm(pcm: np.ndarray, rate: int = 16000) -> float:
 
 
 def snr_from_pcm(pcm: np.ndarray, rate: int = 16000) -> float:
-    """Speech level (90th percentile frame) minus noise floor (10th): the number denoising should raise."""
     d = frame_db(pcm, rate)
     return round(float(np.percentile(d, 90) - np.percentile(d, 10)), 1)
 
@@ -156,8 +130,6 @@ def afftdn_floor(floor_db: float, speech_db: float) -> float:
 
 
 def denoise_filters(level: str, rnn_model: str | None, floor_db: float, speech_db: float) -> list[str]:
-    """afftdn only works when told where the noise sits. Measured on test material: a fixed nf of -50 removed 1 dB of
-    a -44 dB hiss; nf at floor+12 removed the full nr (6/10/14 dB) on white and pink noise, speech level unchanged."""
     if level in ("off", "none"):
         return []
     out = []
@@ -210,9 +182,6 @@ def find_rnn_model(explicit: str | None) -> str | None:
 
 
 def expander(floor_db: float, speech_db: float) -> str:
-    """Gentle downward expander so the pauses sit lower before compression narrows the range: 2:1, at most 10 dB.
-    agate's detector reads lower than the 50 ms RMS floor, so the threshold sits 14 dB above it (at +8 it did
-    nothing on test material; at +14 the pauses dropped ~5 dB), never closer than 12 dB to the speech level."""
     thr_db = min(floor_db + 14.0, speech_db - 12.0)
     return f"agate=threshold={10 ** (thr_db / 20):.5f}:ratio=2:range={10 ** (-10 / 20):.3f}:attack=5:release=150"
 

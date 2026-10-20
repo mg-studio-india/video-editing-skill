@@ -585,5 +585,27 @@
  },
  "quality_score": 4,
  "brand_prompt": "Use /video-pipeline with /video-captions on videos/<project>. Apply style blueprint B08 (video-reference-match/references/blueprints/B08.json) to this brand.\n\nBRAND TOKENS (use the brand's colour/font for each role; keep the contrast relationship: the {{ACCENT}} key word must stay >= 3:1 on the footage, with its dark glow behind it; thin {{TEXT}} words need a dark area behind them)\n- {{TEXT}} light caption words - default #FFFFFF\n- {{ACCENT}} key word - default blue #2E88FE, with a dark glow tinted from it (default indigo rgba(30,25,120,.6))\n- {{ACCENT_2}} one-off key word for 'future / change' moments - default coral #FE664A\n- {{SURFACE}} - none (footage)\n- {{CARD_BG}} end card - default near-white #F6FDFF\n- {{FONT_DISPLAY}} key word - default Poppins 800 (Plus Jakarta Sans ExtraBold is closer)\n- {{FONT_BODY}} light words - default Inter 300 (Plus Jakarta Sans Light is closer)\n- {{HANDLE}} - @handle (not shown in this blueprint; optional on the end card)\n- {{LOGO}} - animated circular logo on the end card (~45 % W)\n\nCanvas 1080x1920, 25 fps.\n\nEDIT\n1. Cold open (~100 frames): lift the strongest line from later in the interview, grade it black-and-white, no intro (first word within ~3 frames); then a ~12-frame pink-to-orange gradient flash into the colour question. Replay the line in colour where it really occurs.\n2. Let takes run long (median shot ~200 frames); tighten slowly inside a long take (MCU -> CU, ~100 -> 125 %); break any take longer than ~375 frames with an L-cut to the listener. Soft dissolves (~8-12 frames) between speakers; tighten pauses under ~10 frames.\n3. When the speaker names a concrete thing, composite matching footage into the bottom ~40 % of frame under the caption block for ~100 frames instead of cutting away.\n4. End: ~75 frames {{CARD_BG}} card with {{LOGO}} animated, centred at 45-55 % H, no text.\n\nCAPTIONS\n5. Latin script, lowercase as spoken (capital only at the start of a thought), no punctuation, no emoji.\n6. Blocks of 2-7 words over 2-4 stacked lines, left-aligned at x 12-13 %, ragged right, max width 81 %, first line top at y 65-66 %, band y 62-85 %; very tight leading (ascenders touch the descenders above); a short trailing line may indent under the end of the line above. Never cover the face (faces above 55 % H).\n7. Light words: {{FONT_BODY}} 300, {{TEXT}}, no shadow/stroke/box; connective / first line 132 px, secondary lines 87 px. Each word fades in over 2 frames (half, then full) on its spoken word; no drift/scale.\n8. Key word (0-1 per block, the word that carries the idea): {{FONT_DISPLAY}} 800, -0.02em, {{ACCENT}}, ~192 px on the main speaker (shrink long words to stay <= 81 % W), ~133 px on the host / listener; dark glow 0 12px 60px; hard-cut in, full size, 2-3 frames BEFORE the spoken word. In the B&W cold open it reads grey (#8C8C8C); use {{ACCENT_2}} once for a 'future / change' word.\n9. Block grows downward line by line, existing lines never move; the whole block hard-cuts out ~3 frames before the next phrase.\n\nGRADE: Grade from the user's footage (video-style / grade.py); target look: high-contrast, natural-saturation, neutral-warm skin, shallow depth of field; B&W for the cold open only.\nSOUND: voice at about -14 LUFS over a low bed; whoosh/shimmer on the colour flash; no cut hits.\n\nVERIFY before rendering (px values were render-verified with Inter / Poppins; with the closer Plus Jakarta Sans, re-fit px until the numbers match):\na) Render test frames over a dark area: \"because\" ({{FONT_BODY}} 300, 132 px), \"online\" and \"frankly\" ({{FONT_DISPLAY}} 800, ~192 px, {{ACCENT}}), \"digital\" ({{FONT_DISPLAY}} 800, 133 px), and \"KEY WORD\" in {{FONT_BODY}} 300 at 87 px.\nb) Measure: python video-reference-match/scripts/caption_probe.py <test render or snapshot> --out <dir> --at <t> --box 0.1,0.62,0.95,0.86 --ink \"{{TEXT}}:60,{{ACCENT}}:80\" (tighten --box per line).\nc) Required: \"because\" ink 5.47 % +-0.5 of H and 41.7 % +-2 of W; \"online\" 8.83 % +-0.5 and 53.8 % +-2; \"frankly\" 11.64 % +-0.5 and 60.3 % +-2 (Poppins misses one axis - prefer the closer face); \"digital\" 7.97 % +-0.5 and 37.6 % +-2. For the 87 px tier compute expected ink with python video-reference-match/scripts/fit_font.py --font \"<{{FONT_BODY}}>\" --word \"KEY WORD\".",
- "caption_family": "stacked-kinetic"
+ "caption_family": "stacked-kinetic",
+ "hyperframes_compositions": [
+  {
+   "name": "caption-gradient-fill",
+   "role": "Stacked glowing accent key word captions",
+   "type": "component"
+  },
+  {
+   "name": "yt-lower-third",
+   "role": "Host and guest identification badge",
+   "type": "block"
+  },
+  {
+   "name": "vignette",
+   "role": "Cinematic edge vignette",
+   "type": "component"
+  },
+  {
+   "name": "whip-pan-cut",
+   "role": "Clean angle switch between host and guest",
+   "type": "component"
+  }
+ ]
 }

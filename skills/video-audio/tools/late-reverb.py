@@ -1,8 +1,5 @@
 #!/usr/bin/env python3
-"""late-reverb.py IN.wav OUT.wav [--rt60 0.5] [--td 0.05] [--floor-db -10]
-Single-channel late-reverberation suppression (Lebart et al. 2001 / Habets 2007 statistical model):
-late-reverb PSD = exp(-2*delta*Td) * PSD(t - Td), delta = 3 ln10 / RT60; spectral gain = max(1 - late/PSD, floor),
-smoothed over time so it never 'warbles'. Early reflections (< Td) are left alone, which keeps the voice natural."""
+"""late-reverb.py IN.wav OUT.wav [--rt60 0.5] [--td 0.05] [--floor-db -10]"""
 import argparse, numpy as np, soundfile as sf
 from scipy.signal import stft, istft
 ap = argparse.ArgumentParser(); ap.add_argument("inp"); ap.add_argument("out")

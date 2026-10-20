@@ -1,19 +1,5 @@
 #!/usr/bin/env python3
-"""sync-tracks.py: find the time offset between two recordings of the same take (the camera file and the
-screen recording from the two-camera setup) by cross-correlating their audio, then optionally write copies
-that start on the same instant.
-
-Both files must have picked up the same sound (the voice reaches the camera mic and the computer mic).
-Works on the first --window seconds of overlap, so a 20 minute session resolves in a few seconds.
-
-Usage:
-  python3 sync-tracks.py --a raw/C0001.MP4 --b raw/screen.mov
-  python3 sync-tracks.py --a raw/C0001.MP4 --b raw/screen.mov --write-aligned videos/<p>/aligned
-Prints: offset (seconds B starts after A; negative = B started first), confidence, and the ffmpeg
--ss to apply. With --write-aligned it trims the head of the earlier file so both begin together
-(stream copy; frame-accurate to one keyframe, then the Cut stage re-encodes anyway).
-Needs numpy: run with a Python that has it (python3 -m pip install numpy).
-"""
+"""sync-tracks.py: find the time offset between two recordings of the same take (the camera file and the"""
 import argparse, json, os, subprocess, sys
 try:
     import numpy as np

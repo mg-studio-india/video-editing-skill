@@ -4,21 +4,34 @@ From the 225-style catalog appendix: how a chosen style flows through the skills
 reviewer enforces.
 
 
-How the styles in this catalog are processed and rendered through the engine:
+How the styles and presets are processed and rendered through the engine:
 
 ```mermaid
 flowchart TD
-    A["Raw Intake Footage & Transcript"] --> B["video-plan-storyboard (Gate 1)"]
-    B -->|"Selects from 225 Styles Matrix"| C["plan.md & storyboard.plan.json"]
-    C --> D["video-style (Gate 3: style.json)"]
-    D --> E["video-take-geometry (Face Tracking & Mattes)"]
-    D --> F["video-format (Layouts & Kit Blocks)"]
-    D --> G["video-motion-graphics (GSAP Physics)"]
-    D --> H["video-captions (Phoneme Sync & Styling)"]
-    D --> I["video-audio (Mastering -14 LUFS & SFX)"]
-    E & F & G & H & I --> J["HyperFrames Engine (Deterministic Build)"]
-    J --> K["video-review-gate (Gate 5)"]
-    K --> L["Final Delivered MP4"]
+    RAW["Raw Footage (HDR/HLG or SDR)"] --> STD["Standard Ingest (SDR Rec.709 H.265 @ 60fps)"]
+    
+    subgraph P1 ["Phase 1: Ingest, Parallel Analysis & Matching (~20s)"]
+        STD --> WA["Audio Worker: 80Hz rumble cut + EBU R128 loudnorm + whisper.cpp ASR"]
+        STD --> WV["Visual Worker: Probe 60fps + 4 Keyframes + Dynamic Frame Color Correction"]
+        WA & WV --> VCA["video-cut-audit: Tight Paper Cut (paper-cut.py --tight)"]
+        VCA --> VRM["video-reference-match: Rank top 3 presets from 50 creator blueprints (match.py)"]
+    end
+    
+    subgraph P2 ["Phase 2: User Direction & Storyboard Gate"]
+        VRM --> ASK{"ask_question (Gate Q)<br>Did user specify preferences in prompt?"}
+        ASK -->|No| PROMPT["Prompt User: Select Preset, Multi-Layout & Proof Elements"]
+        ASK -->|Yes| VPS
+        PROMPT --> VPS["video-plan-storyboard (Gate S)<br>Generate STORYBOARD.md, grade-preview.jpg, Keyframes"]
+        VPS --> GATE_S{"Gate S: User Review & Approval"}
+    end
+    
+    subgraph P3 ["Phase 3: Assembly, Motion Scenes & Master Render (~50s)"]
+        GATE_S -->|Approved| AC["apply-cut.py (Tight Cut + Dynamic Grade in Rec.709)"]
+        AC --> P2T["Pass 2 Transcribe (Direct Word Sync on Conformed Cut)"]
+        P2T --> STG["stage.py (take-geometry + motion-graphics + sound-design + captions)<br>- Studio Mesh Canvas (No Black Backgrounds)<br>- Squircle PiP / Rounded Top Card<br>- Active HyperFrames Motion Scenes<br>- Vibrant Single-Row Captions<br>- Subtle SFX (-20dB)"]
+        STG --> RND["render.py & video-review-gate (60fps BT.709 Master, -14.4 LUFS, Programmatic QA)"]
+        RND --> DELIV["Deliverable: processed/<project>-v1.mp4<br>(Temp folders preview/, hyperframes/, audio_processing/ preserved)"]
+    end
 ```
 
 ### Style Rule Checklist for Editors & Autonomous Agents:

@@ -1,17 +1,5 @@
 #!/usr/bin/env python3
-"""fit_font.py: solve the font size (px at a 1080x1920 canvas) that reproduces a reference's measured calibration word.
-
-  fit_font.py --font "Inter 900" --word quality --ink 14.61 --width 85.4 [--canvas 1080x1920]
-  fit_font.py --font "Inter 900" --word "KEY WORD" --px 292 [--tracking -0.03]   expected ink / width at a given size
-  fit_font.py --spec <blueprint or caption-spec.json> [--write]   every tier with a calibration entry + closest local font
-
-Renders the word with the local font file (Pillow/FreeType, same outlines the browser uses), measures its ink height
-(% of canvas height) and ink width (% of canvas width), and returns the px that matches the height, the px that matches
-the width, and the compromise that keeps both inside the VERIFY tolerances (±0.5 % H, ±2 % W) when possible.
---write stores {"verified_px", "fit": {...}} on each tier of the spec.
-Notes: the local DM Sans files are the static "9 pt" optical cut (wide, loose) - poor for display-size matches, prefer
-Inter; Playfair here is upright only, so italic-serif fits are approximate; scripts/handwriting have no local match.
-"""
+"""fit_font.py: solve the font size (px at a 1080x1920 canvas) that reproduces a reference's measured calibration word."""
 import argparse
 import glob
 import json
@@ -69,7 +57,6 @@ def load(family, weight, px):
 
 
 def measure(family, weight, px, word, upper=False, W=1080, H=1920, tracking=0.0):
-    """Ink height % of H and ink width % of W; tracking (em, CSS letter-spacing) adds (chars-1) * tracking * px."""
     f = load(family, weight, px)
     t = word.upper() if upper else word
     l, top, r, b = ImageDraw.Draw(Image.new("L", (10, 10))).textbbox((0, 0), t, font=f)

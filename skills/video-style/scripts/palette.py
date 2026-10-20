@@ -1,14 +1,5 @@
 #!/usr/bin/env python3
-"""palette.py: the dominant colours in a region of one or more frames, measured, not guessed.
-
-Used by the style skill on frames from reference reels: point it at the caption area, a card, or a highlight, and it
-returns the colours that cover the most pixels (k-means in RGB), with their share and a readable name hint. Near-black
-and near-white are reported separately so the accent colours are not drowned out by footage and text.
-
-Usage:
-  python3 palette.py frames/*.jpg [--box 0.05,0.60,0.95,0.78] [--k 6] [--json]
-  --box is x0,y0,x1,y1 as fractions of the frame (default: the whole frame)
-"""
+"""palette.py: the dominant colours in a region of one or more frames, measured, not guessed."""
 from __future__ import annotations
 
 import argparse
@@ -36,7 +27,6 @@ def load(paths: list[str], box: tuple[float, float, float, float] | None, per_im
 
 
 def kmeans(px: np.ndarray, k: int, iters: int = 25) -> tuple[np.ndarray, np.ndarray]:
-    """Pure (tested): centres and the share of pixels nearest each, largest first."""
     rng = np.random.default_rng(1)
     k = max(1, min(k, len(px)))
     c = px[rng.choice(len(px), k, replace=False)]

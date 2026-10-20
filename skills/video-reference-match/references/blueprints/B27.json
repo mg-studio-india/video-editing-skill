@@ -429,5 +429,27 @@
  },
  "quality_score": 2,
  "brand_prompt": "Use /video-pipeline with /video-captions on videos/<project>. Apply style blueprint B27 (video-reference-match/references/blueprints/B27.json) to this brand.\nCanvas 1080x1920, 30 fps. All positions are % of frame; px are at 1080x1920.\n\nBRAND TOKENS (use the brand's colour/font for each role; keep the contrast relationship: {{TEXT}} must stay >= 3:1 on the footage at 68.5 % height, helped by the tight shadow)\n- {{TEXT}}      caption words and pinned label          default #FFFFFF\n- {{ACCENT}}    none (no emphasis colour; do not add one) default none\n- {{ACCENT_2}}  none                                     default none\n- {{SURFACE}}   none                                     default none\n- {{CARD_BG}}   pinned-label square                       default #FFFFFF (same as {{TEXT}})\n- {{FONT_DISPLAY}} caption words                         default Poppins 900 (heavy geometric caps; Montserrat Black slightly wider)\n- {{FONT_BODY}}    pinned spec label                     default Poppins 700\n- {{HANDLE}}    not shown\n- {{LOGO}}      not shown (the label pins under the product's own logo)\n\nCAPTIONS\n1. English as spoken, ALL UPPERCASE. Strip commas, full stops and question marks; keep apostrophes (LET'S). Spell numbers as spoken (e.g. \"10x\" -> TEN, TIMES).\n2. Exactly ONE word on screen at a time; every spoken word captioned (including THE, CAN, SO). Never two words, never two lines.\n3. Type: {{FONT_DISPLAY}} at 42 px, letter-spacing +0.05em, {{TEXT}}, no stroke, no box, tight soft dark shadow 0 1px 6px rgba(0,0,0,.55).\n4. Position: centred horizontally (x 540 px), vertical centre 68.5 % of height (y ~1315 px), the same spot in every shot.\n5. Animation: hard cut in at full size and opacity 0-7 frames after the word's transcript start (never early); hard cut out when the next word replaces it. No fade, pop, scale, slide, highlight or idle motion.\n6. Drop captions during 10-12-frame product roll-call inserts and on wordless pointing / establishing shots.\n\nOTHER TEXT\n7. Object-pinned spec label when the hero product is held to camera (~77 frames): a {{CARD_BG}} square (~45x45 px) then a short spec label (\"Label here\") in {{FONT_BODY}} ~39 px, {{TEXT}}, tracking 0.05em, no shadow, pinned just under the product's logo (reference: square x 37.5 %, text x 44-64 %, centre y 58.5 %) and tracked so it moves and scales with the object. Square grows from a dot at its bottom-left over 6 frames; characters appear right-to-left with very wide letter-spacing collapsing to normal over ~22 frames; exit: characters delete right-to-left while the square shrinks to a dot over ~9 frames, before the cut.\n8. No title cards, lower thirds, stickers, CTA or end card.\n\nEDIT DEVICES\n9. Hook: yes/no stakes question in the first word; ~9 cuts in the first 300 frames, including a roll-call of each contender at 10-12 frames as it is named. Then relax to ~12 cuts/min.\n10. Body: identical POV framing for every contender's round; cut on hand/device motion (motion blur hides the cut); voice continuous across cuts (J/L). Give the hero the longest take; end on an unresolved reaction, no CTA.\n\nGRADE\n11. Grade from the user's footage (video-style / grade.py); target look: warm, mid-contrast, natural saturation; moody LED-backlit intro, bright natural daylight for the test rounds.\n\nAUDIO\n12. Light continuous bed or ambience under the VO; a hit/whoosh on most hard cuts and every roll-call flash. Master to about -14.1 LUFS, true peak <= -1 dBTP.\n\nVERIFY before rendering\na) Render a test frame with the caption \"ACTUALLY\" (and then \"WORST\") over a dark area and measure:\n   python video-reference-match/scripts/caption_probe.py <test.mp4> --out <dir> --at <t> --box 0.35,0.66,0.65,0.72 --ink \"{{TEXT}}:45\"\n   Required at the default font: \"ACTUALLY\" ink 1.56 % ±0.5 of height and 23.2 % ±2 of width; \"WORST\" 1.56 % H, 15.0 % W; centre y 68.5 % ±0.5. With a brand font, compute the expected ink with video-reference-match/scripts/fit_font.py ({{FONT_DISPLAY}}, 42 px, +0.05em) and match it within ±0.5 % H.\n",
- "caption_family": "word-by-word-plain"
+ "caption_family": "word-by-word-plain",
+ "hyperframes_compositions": [
+  {
+   "name": "before-after-wipe",
+   "role": "Interactive before / after wipe divider",
+   "type": "component"
+  },
+  {
+   "name": "comparison-split",
+   "role": "Side-by-side product comparison split",
+   "type": "component"
+  },
+  {
+   "name": "split-tilt-cards",
+   "role": "3D tilted dual card comparison",
+   "type": "component"
+  },
+  {
+   "name": "badge-pop",
+   "role": "Winner / verdict badge stamp",
+   "type": "component"
+  }
+ ]
 }

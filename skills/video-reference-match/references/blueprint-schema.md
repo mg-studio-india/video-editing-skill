@@ -19,6 +19,7 @@ solved for the local engine fonts; everything else is a description of the editi
 | `sound` | music (heuristic), SFX placements, loudness |
 | `measured` | grade numbers (look reference only), layout shares (letterbox, split), sound heuristics (beat periodicity, cut-hit share) |
 | `catalog_styles` | style IDs from `video-plan-storyboard/references/style-catalog.md` with their role here |
+| `hyperframes_compositions` | Array of `{name, type, role}` linked HyperFrames compositions to execute this blueprint |
 | `use_when`, `avoid_when` | conditions for choosing it |
 | `match` | `tags`, `keywords`, `needs` (speaker footage, screen recordings, B-roll, brand assets) |
 | `quality_score` | 1-5 fit as a business/creator reel reference |

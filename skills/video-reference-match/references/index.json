@@ -32,6 +32,33 @@
     180,
     204
    ],
+   "hyperframes_compositions": [
+    {
+     "name": "instagram-follow",
+     "role": "Mock profile row with follow pill and state switch",
+     "type": "block"
+    },
+    {
+     "name": "tiktok-follow",
+     "role": "Follow card animation on flat color card",
+     "type": "block"
+    },
+    {
+     "name": "cta-close",
+     "role": "Display-scale action line and CTA capsule",
+     "type": "component"
+    },
+    {
+     "name": "char-slam-explode",
+     "role": "Headline glyphs reassembling with overshooting slam",
+     "type": "component"
+    },
+    {
+     "name": "colorama-wipe",
+     "role": "Color-mapped sweep wipe transition between background cards",
+     "type": "component"
+    }
+   ],
    "tags": [
     "kinetic-typography",
     "text-only",
@@ -83,6 +110,33 @@
     37,
     103,
     176
+   ],
+   "hyperframes_compositions": [
+    {
+     "name": "yt-lower-third",
+     "role": "Channel and podcast episode identification lower-third",
+     "type": "block"
+    },
+    {
+     "name": "lt-clean-bar",
+     "role": "Speaker name bar with accent underline",
+     "type": "block"
+    },
+    {
+     "name": "caption-editorial-emphasis",
+     "role": "Two-tier caption typography with accented script finish",
+     "type": "component"
+    },
+    {
+     "name": "testimonial-card",
+     "role": "Pull-quote highlight on speaker assertions",
+     "type": "component"
+    },
+    {
+     "name": "waveform",
+     "role": "Subtle audio waveform activity visualizer",
+     "type": "block"
+    }
    ],
    "tags": [
     "podcast-clip",
@@ -137,6 +191,33 @@
     209,
     198,
     173
+   ],
+   "hyperframes_compositions": [
+    {
+     "name": "count-up",
+     "role": "Animated stat counter on money-claim hook",
+     "type": "component"
+    },
+    {
+     "name": "apple-money-count",
+     "role": "Visualized currency count-up animation",
+     "type": "block"
+    },
+    {
+     "name": "cinematic-zoom",
+     "role": "Fast camera punch-in on impactful assertions",
+     "type": "block"
+    },
+    {
+     "name": "yt-lower-third",
+     "role": "Speaker and podcast channel badge",
+     "type": "block"
+    },
+    {
+     "name": "whip-pan",
+     "role": "Dynamic whip-pan cut between conversational points",
+     "type": "block"
+    }
    ],
    "tags": [
     "podcast-clip",
@@ -195,6 +276,33 @@
     62,
     46
    ],
+   "hyperframes_compositions": [
+    {
+     "name": "flowchart",
+     "role": "Evolving course curriculum and framework diagram",
+     "type": "block"
+    },
+    {
+     "name": "constellation-hub",
+     "role": "Connected module feature nodes expanding from center",
+     "type": "component"
+    },
+    {
+     "name": "mk-specs-list",
+     "role": "Clean course deliverables and feature checklist",
+     "type": "block"
+    },
+    {
+     "name": "card-resize",
+     "role": "Card expansion from outline to full curriculum panel",
+     "type": "component"
+    },
+    {
+     "name": "logo-brand-close",
+     "role": "Closing course brand lockup",
+     "type": "component"
+    }
+   ],
    "tags": [
     "course-launch",
     "landscape-16x9",
@@ -247,6 +355,28 @@
     173,
     192
    ],
+   "hyperframes_compositions": [
+    {
+     "name": "lt-bold-block",
+     "role": "Persistent character / scenario POV label badge",
+     "type": "block"
+    },
+    {
+     "name": "caption-clip-wipe",
+     "role": "Punchy dialogue subtitle wipe",
+     "type": "component"
+    },
+    {
+     "name": "camera-shake",
+     "role": "Subtle handheld camera shake reaction",
+     "type": "component"
+    },
+    {
+     "name": "confetti",
+     "role": "Ironic celebratory burst on comedic punchline",
+     "type": "component"
+    }
+   ],
    "tags": [
     "pov-skit",
     "comedy",
@@ -297,6 +427,33 @@
     162,
     159,
     173
+   ],
+   "hyperframes_compositions": [
+    {
+     "name": "x-post",
+     "role": "Embedded third-party Twitter/X post proof receipt",
+     "type": "block"
+    },
+    {
+     "name": "reddit-post",
+     "role": "Social forum testimonial card on dark ground",
+     "type": "block"
+    },
+    {
+     "name": "comparison-split",
+     "role": "Split-screen letterbox separating selfie from receipts",
+     "type": "component"
+    },
+    {
+     "name": "testimonial-card",
+     "role": "User review card with avatar and quote",
+     "type": "component"
+    },
+    {
+     "name": "device-frame-stage",
+     "role": "Rounded phone mockup displaying screenshot proof",
+     "type": "component"
+    }
    ],
    "tags": [
     "talking-head",
@@ -352,6 +509,28 @@
     191,
     201
    ],
+   "hyperframes_compositions": [
+    {
+     "name": "yt-comment-card",
+     "role": "Viewer question card pop",
+     "type": "block"
+    },
+    {
+     "name": "caption-kinetic-slam",
+     "role": "Bold uppercase answer title slam",
+     "type": "component"
+    },
+    {
+     "name": "cta-lockup",
+     "role": "Save / bookmark prompt call-to-action",
+     "type": "component"
+    },
+    {
+     "name": "mesh-gradient-bg",
+     "role": "Dynamic color-shifting background",
+     "type": "component"
+    }
+   ],
    "tags": [
     "music-only",
     "no-speech",
@@ -404,6 +583,28 @@
     13,
     176,
     195
+   ],
+   "hyperframes_compositions": [
+    {
+     "name": "caption-gradient-fill",
+     "role": "Stacked glowing accent key word captions",
+     "type": "component"
+    },
+    {
+     "name": "yt-lower-third",
+     "role": "Host and guest identification badge",
+     "type": "block"
+    },
+    {
+     "name": "vignette",
+     "role": "Cinematic edge vignette",
+     "type": "component"
+    },
+    {
+     "name": "whip-pan-cut",
+     "role": "Clean angle switch between host and guest",
+     "type": "component"
+    }
    ],
    "tags": [
     "podcast-clip",
@@ -461,6 +662,38 @@
     21,
     155
    ],
+   "hyperframes_compositions": [
+    {
+     "name": "chat-thread",
+     "role": "Full iMessage conversation thread with avatar and receipts",
+     "type": "component"
+    },
+    {
+     "name": "chat-message",
+     "role": "Individual chat bubble popping with sender tail",
+     "type": "component"
+    },
+    {
+     "name": "count-up",
+     "role": "Rolling gradient metric counter",
+     "type": "component"
+    },
+    {
+     "name": "chart-story",
+     "role": "Data chart story landing exact revenue figures",
+     "type": "component"
+    },
+    {
+     "name": "card-resize",
+     "role": "Interactive proof card expanding to detail view",
+     "type": "component"
+    },
+    {
+     "name": "lt-clean-bar",
+     "role": "Subtle founder credibility lower third",
+     "type": "block"
+    }
+   ],
    "tags": [
     "talking-head",
     "founder-story",
@@ -513,6 +746,23 @@
     222,
     70,
     201
+   ],
+   "hyperframes_compositions": [
+    {
+     "name": "lt-dark-card",
+     "role": "Boxed competitor pain title card",
+     "type": "block"
+    },
+    {
+     "name": "marker-highlight",
+     "role": "Hand-drawn accent highlighter over key pain point",
+     "type": "component"
+    },
+    {
+     "name": "caption-pill-karaoke",
+     "role": "Minimal boxed dialogue pill",
+     "type": "component"
+    }
    ],
    "tags": [
     "meme",
@@ -567,6 +817,33 @@
     39,
     174
    ],
+   "hyperframes_compositions": [
+    {
+     "name": "comparison-split",
+     "role": "50/50 split-screen layout with accent divider",
+     "type": "component"
+    },
+    {
+     "name": "split-tilt-cards",
+     "role": "3D tilted dual card comparison montage",
+     "type": "component"
+    },
+    {
+     "name": "card-resize",
+     "role": "Card popping from thumbnail to focus panel",
+     "type": "component"
+    },
+    {
+     "name": "yt-lower-third",
+     "role": "Speaker credential pill",
+     "type": "block"
+    },
+    {
+     "name": "flash-through-white",
+     "role": "High-energy white flash transition",
+     "type": "block"
+    }
+   ],
    "tags": [
     "podcast-clip",
     "interview",
@@ -620,6 +897,28 @@
     144,
     46,
     148
+   ],
+   "hyperframes_compositions": [
+    {
+     "name": "flowchart",
+     "role": "Evolving diagram with animated connectors above speaker",
+     "type": "block"
+    },
+    {
+     "name": "constellation-hub",
+     "role": "Central concept hub branching into sub-nodes",
+     "type": "component"
+    },
+    {
+     "name": "device-frame-stage",
+     "role": "Rounded face card window geometry",
+     "type": "component"
+    },
+    {
+     "name": "grid-card-assemble",
+     "role": "Interactive dot-grid diagram elements assembling",
+     "type": "component"
+    }
    ],
    "tags": [
     "talking-head",
@@ -676,6 +975,28 @@
     224,
     72
    ],
+   "hyperframes_compositions": [
+    {
+     "name": "caption-pill-karaoke",
+     "role": "High-contrast boxed accent divider pills",
+     "type": "component"
+    },
+    {
+     "name": "yt-lower-third",
+     "role": "Quick-fire guest identifier badge",
+     "type": "block"
+    },
+    {
+     "name": "badge-pop",
+     "role": "Name-drop logo badge pop",
+     "type": "component"
+    },
+    {
+     "name": "cinematic-zoom",
+     "role": "Aggressive rapid jump-cut punch-ins",
+     "type": "block"
+    }
+   ],
    "tags": [
     "podcast-clip",
     "name-drop",
@@ -730,6 +1051,33 @@
     77,
     174,
     99
+   ],
+   "hyperframes_compositions": [
+    {
+     "name": "app-showcase",
+     "role": "Feature-by-feature mobile application showcase",
+     "type": "block"
+    },
+    {
+     "name": "mk-specs-list",
+     "role": "Rapid feature specs cards",
+     "type": "block"
+    },
+    {
+     "name": "badge-pop",
+     "role": "Feature highlight badge pill",
+     "type": "component"
+    },
+    {
+     "name": "vfx-iphone-device",
+     "role": "3D photorealistic phone device render",
+     "type": "block"
+    },
+    {
+     "name": "cta-close",
+     "role": "High-converting product purchase CTA",
+     "type": "component"
+    }
    ],
    "tags": [
     "product-ad",
@@ -787,6 +1135,23 @@
     35,
     201
    ],
+   "hyperframes_compositions": [
+    {
+     "name": "lower-third-bild",
+     "role": "Broadcast news lower third banner",
+     "type": "block"
+    },
+    {
+     "name": "lt-clean-bar",
+     "role": "Subject name and occupation bar",
+     "type": "block"
+    },
+    {
+     "name": "camera-shake",
+     "role": "Subtle handheld documentary camera motion",
+     "type": "component"
+    }
+   ],
    "tags": [
     "street-interview",
     "doorstep",
@@ -837,6 +1202,23 @@
     187,
     191,
     222
+   ],
+   "hyperframes_compositions": [
+    {
+     "name": "avatar-group-hover",
+     "role": "Team member roster showcase",
+     "type": "component"
+    },
+    {
+     "name": "headline-slam",
+     "role": "Persistent team title banner",
+     "type": "component"
+    },
+    {
+     "name": "fade-through",
+     "role": "Smooth dissolve between team member marks",
+     "type": "component"
+    }
    ],
    "tags": [
     "team-lineup",
@@ -889,6 +1271,23 @@
     31,
     135
    ],
+   "hyperframes_compositions": [
+    {
+     "name": "whip-pan",
+     "role": "Fast whip pan from question to answer",
+     "type": "block"
+    },
+    {
+     "name": "yt-lower-third",
+     "role": "Speaker name and social handle",
+     "type": "block"
+    },
+    {
+     "name": "caption-clip-wipe",
+     "role": "Clean lowercase answer subtitles",
+     "type": "component"
+    }
+   ],
    "tags": [
     "podcast-clip",
     "micro",
@@ -939,6 +1338,23 @@
     68,
     101,
     191
+   ],
+   "hyperframes_compositions": [
+    {
+     "name": "comparison-split",
+     "role": "Dual vertical event phone clip split",
+     "type": "component"
+    },
+    {
+     "name": "headline-slam",
+     "role": "Persistent 3-line headline card",
+     "type": "component"
+    },
+    {
+     "name": "cta-lockup",
+     "role": "Event registration CTA button",
+     "type": "component"
+    }
    ],
    "tags": [
     "ugc",
@@ -992,6 +1408,38 @@
     119,
     118,
     35
+   ],
+   "hyperframes_compositions": [
+    {
+     "name": "browser-device-stage",
+     "role": "Browser mockup frame scrolling through live SaaS UI",
+     "type": "component"
+    },
+    {
+     "name": "app-showcase",
+     "role": "Mobile app walkthrough showcase",
+     "type": "block"
+    },
+    {
+     "name": "agent-cursor",
+     "role": "AI cursor typing and clicking interface buttons",
+     "type": "component"
+    },
+    {
+     "name": "code-terminal-run",
+     "role": "Live shell terminal executing commands",
+     "type": "component"
+    },
+    {
+     "name": "card-resize",
+     "role": "Feature card expanding into detail panel",
+     "type": "component"
+    },
+    {
+     "name": "split-tilt-cards",
+     "role": "3D tilted dual cards comparing workflows",
+     "type": "component"
+    }
    ],
    "tags": [
     "talking-head",
@@ -1047,6 +1495,28 @@
     56,
     170
    ],
+   "hyperframes_compositions": [
+    {
+     "name": "caption-gradient-fill",
+     "role": "Giant glowing accent keyword caption stack",
+     "type": "component"
+    },
+    {
+     "name": "yt-lower-third",
+     "role": "Host and guest identification badge",
+     "type": "block"
+    },
+    {
+     "name": "whip-pan-cut",
+     "role": "Rapid angle handoff between speakers",
+     "type": "component"
+    },
+    {
+     "name": "waveform",
+     "role": "Subtle audio activity visualizer",
+     "type": "block"
+    }
+   ],
    "tags": [
     "podcast-clip",
     "two-person",
@@ -1101,6 +1571,23 @@
     151,
     195
    ],
+   "hyperframes_compositions": [
+    {
+     "name": "caption-pill-karaoke",
+     "role": "Film-style boxed dialog subtitles",
+     "type": "component"
+    },
+    {
+     "name": "whip-pan",
+     "role": "Whip-pan character transition between dual roles",
+     "type": "block"
+    },
+    {
+     "name": "camera-shake",
+     "role": "Realistic handheld comedy camera drift",
+     "type": "component"
+    }
+   ],
    "tags": [
     "skit",
     "comedy",
@@ -1152,6 +1639,23 @@
     24,
     173,
     191
+   ],
+   "hyperframes_compositions": [
+    {
+     "name": "x-post",
+     "role": "Quoted ironic claim card over selfie",
+     "type": "block"
+    },
+    {
+     "name": "caption-clip-wipe",
+     "role": "Punchline text reveal",
+     "type": "component"
+    },
+    {
+     "name": "vignette",
+     "role": "Subtle meme vignette border",
+     "type": "component"
+    }
    ],
    "tags": [
     "meme-text",
@@ -1206,6 +1710,23 @@
     50,
     166
    ],
+   "hyperframes_compositions": [
+    {
+     "name": "flash-through-white",
+     "role": "Flash-burst hook opener transition",
+     "type": "block"
+    },
+    {
+     "name": "caption-kinetic-slam",
+     "role": "One-word progressive bold captions",
+     "type": "component"
+    },
+    {
+     "name": "lt-accent-underline",
+     "role": "Speaker title card",
+     "type": "block"
+    }
+   ],
    "tags": [
     "talking-head",
     "hinglish",
@@ -1256,6 +1777,23 @@
     173,
     80,
     61
+   ],
+   "hyperframes_compositions": [
+    {
+     "name": "lt-dark-card",
+     "role": "Two-line scenario setup card",
+     "type": "block"
+    },
+    {
+     "name": "caption-pill-karaoke",
+     "role": "Clean conversational subtitles",
+     "type": "component"
+    },
+    {
+     "name": "confetti",
+     "role": "Ironic celebration particle burst",
+     "type": "component"
+    }
    ],
    "tags": [
     "office-skit",
@@ -1308,6 +1846,23 @@
     159,
     184
    ],
+   "hyperframes_compositions": [
+    {
+     "name": "comparison-split",
+     "role": "Letterbox layout framing square video in 9:16",
+     "type": "component"
+    },
+    {
+     "name": "headline-slam",
+     "role": "Header topic banner in letterbox margin",
+     "type": "component"
+    },
+    {
+     "name": "caption-highlight",
+     "role": "Subtitles pinned in bottom letterbox margin",
+     "type": "component"
+    }
+   ],
    "tags": [
     "talking-head",
     "letterbox",
@@ -1359,6 +1914,28 @@
     24,
     46,
     159
+   ],
+   "hyperframes_compositions": [
+    {
+     "name": "ai-answer-rank",
+     "role": "Animated tier ranking list with rank shifts",
+     "type": "block"
+    },
+    {
+     "name": "badge-pop",
+     "role": "S / A / B / C / D tier badge pop",
+     "type": "component"
+    },
+    {
+     "name": "grid-card-assemble",
+     "role": "Interactive tier list board grid assembly",
+     "type": "component"
+    },
+    {
+     "name": "card-resize",
+     "role": "Item card expanding from board to center spotlight",
+     "type": "component"
+    }
    ],
    "tags": [
     "tier-list",
@@ -1415,6 +1992,28 @@
     169,
     63
    ],
+   "hyperframes_compositions": [
+    {
+     "name": "before-after-wipe",
+     "role": "Interactive before / after wipe divider",
+     "type": "component"
+    },
+    {
+     "name": "comparison-split",
+     "role": "Side-by-side product comparison split",
+     "type": "component"
+    },
+    {
+     "name": "split-tilt-cards",
+     "role": "3D tilted dual card comparison",
+     "type": "component"
+    },
+    {
+     "name": "badge-pop",
+     "role": "Winner / verdict badge stamp",
+     "type": "component"
+    }
+   ],
    "tags": [
     "product-comparison",
     "tech-review",
@@ -1467,6 +2066,23 @@
     198,
     106
    ],
+   "hyperframes_compositions": [
+    {
+     "name": "lt-dark-card",
+     "role": "Moody dialog label card",
+     "type": "block"
+    },
+    {
+     "name": "caption-blend-difference",
+     "role": "Inverted difference-blend subtitles",
+     "type": "component"
+    },
+    {
+     "name": "vignette",
+     "role": "Cinematic moody vignette",
+     "type": "component"
+    }
+   ],
    "tags": [
     "office-skit",
     "lip-sync",
@@ -1518,6 +2134,28 @@
     31,
     21,
     173
+   ],
+   "hyperframes_compositions": [
+    {
+     "name": "yt-lower-third",
+     "role": "Banter speaker lower third",
+     "type": "block"
+    },
+    {
+     "name": "flash-through-white",
+     "role": "Accent cut-out gag flash",
+     "type": "block"
+    },
+    {
+     "name": "whip-pan",
+     "role": "Dynamic reaction camera whip",
+     "type": "block"
+    },
+    {
+     "name": "confetti",
+     "role": "Gag punchline particle burst",
+     "type": "component"
+    }
    ],
    "tags": [
     "podcast-clip",
@@ -1573,6 +2211,28 @@
     99,
     214,
     201
+   ],
+   "hyperframes_compositions": [
+    {
+     "name": "caption-neon-accent",
+     "role": "Giant glowing accent keyword per module",
+     "type": "component"
+    },
+    {
+     "name": "animated-bar-chart",
+     "role": "Course statistics and student growth curve",
+     "type": "component"
+    },
+    {
+     "name": "cta-close",
+     "role": "Course enrollment call-to-action lockup",
+     "type": "component"
+    },
+    {
+     "name": "transitions-light",
+     "role": "Organic light leak transition between shots",
+     "type": "block"
+    }
    ],
    "tags": [
     "b-roll",
@@ -1630,6 +2290,28 @@
     169,
     202
    ],
+   "hyperframes_compositions": [
+    {
+     "name": "comparison-split",
+     "role": "Split screen versus battle divider",
+     "type": "component"
+    },
+    {
+     "name": "count-up",
+     "role": "Live updating battle scoreboard counter",
+     "type": "component"
+    },
+    {
+     "name": "confetti",
+     "role": "Victory confetti explosion on winner announcement",
+     "type": "component"
+    },
+    {
+     "name": "badge-pop",
+     "role": "Round winner badge pop",
+     "type": "component"
+    }
+   ],
    "tags": [
     "versus",
     "comparison",
@@ -1686,6 +2368,33 @@
     103,
     159
    ],
+   "hyperframes_compositions": [
+    {
+     "name": "flowchart",
+     "role": "Clean line-art concept node diagram",
+     "type": "block"
+    },
+    {
+     "name": "conic-progress-ring",
+     "role": "Animated circular progress and proportion ring",
+     "type": "component"
+    },
+    {
+     "name": "constellation-hub",
+     "role": "Interconnected concept ecosystem",
+     "type": "component"
+    },
+    {
+     "name": "device-frame-stage",
+     "role": "Face-pill floating cutout window",
+     "type": "component"
+    },
+    {
+     "name": "data-chart",
+     "role": "Smooth curve trend chart",
+     "type": "block"
+    }
+   ],
    "tags": [
     "explainer-graphics",
     "line-art-metaphor",
@@ -1740,6 +2449,38 @@
     174,
     173
    ],
+   "hyperframes_compositions": [
+    {
+     "name": "comparison-split",
+     "role": "Top proof window over bottom selfie divider with accent bar",
+     "type": "component"
+    },
+    {
+     "name": "x-post",
+     "role": "Social proof screenshot cards in top panel",
+     "type": "block"
+    },
+    {
+     "name": "chart-story",
+     "role": "Metric and revenue breakdown data narrative",
+     "type": "component"
+    },
+    {
+     "name": "count-up",
+     "role": "Animated stat counter on revenue metrics",
+     "type": "component"
+    },
+    {
+     "name": "card-resize",
+     "role": "Screenshot card expanding to full detail view",
+     "type": "component"
+    },
+    {
+     "name": "marker-checklist-card",
+     "role": "3-step framework checklist with checkmarks",
+     "type": "component"
+    }
+   ],
    "tags": [
     "talking-head",
     "hinglish",
@@ -1790,6 +2531,23 @@
     24,
     121,
     169
+   ],
+   "hyperframes_compositions": [
+    {
+     "name": "headline-slam",
+     "role": "Two-box persistent header card with topic title",
+     "type": "component"
+    },
+    {
+     "name": "lt-clean-bar",
+     "role": "Speaker credibility and channel badge",
+     "type": "block"
+    },
+    {
+     "name": "marker-highlight",
+     "role": "Accent color callout on core thesis",
+     "type": "component"
+    }
    ],
    "tags": [
     "talking-head",
@@ -1844,6 +2602,23 @@
     22,
     121,
     161
+   ],
+   "hyperframes_compositions": [
+    {
+     "name": "caption-highlight",
+     "role": "Progressive word-by-word highlighted captions",
+     "type": "component"
+    },
+    {
+     "name": "lt-clean-bar",
+     "role": "Minimalist lower third name badge",
+     "type": "block"
+    },
+    {
+     "name": "vignette",
+     "role": "Subtle background vignette keeping focus on speaker",
+     "type": "component"
+    }
    ],
    "tags": [
     "talking-head",
@@ -1901,6 +2676,33 @@
     35,
     178
    ],
+   "hyperframes_compositions": [
+    {
+     "name": "browser-device-stage",
+     "role": "Browser mockup window with live UI interaction",
+     "type": "component"
+    },
+    {
+     "name": "agent-cursor",
+     "role": "Mouse cursor moving and clicking key interface features",
+     "type": "component"
+    },
+    {
+     "name": "cursor-annotate",
+     "role": "Pen / circle annotation drawing over UI buttons",
+     "type": "component"
+    },
+    {
+     "name": "flowchart-vertical",
+     "role": "Vertical step-by-step logic flow",
+     "type": "block"
+    },
+    {
+     "name": "chart-story",
+     "role": "Data curve validating workflow efficiency",
+     "type": "component"
+    }
+   ],
    "tags": [
     "explainer-graphics",
     "ui-mockups",
@@ -1954,6 +2756,28 @@
     99,
     77,
     204
+   ],
+   "hyperframes_compositions": [
+    {
+     "name": "flash-through-white",
+     "role": "Energetic flash transition on beat drops",
+     "type": "block"
+    },
+    {
+     "name": "beat-freeze-cut",
+     "role": "Freeze-frame cut with title card pop on bass hits",
+     "type": "block"
+    },
+    {
+     "name": "cinematic-zoom",
+     "role": "Speed-ramped cinematic punch-in",
+     "type": "block"
+    },
+    {
+     "name": "logo-outro",
+     "role": "Closing event logo reveal",
+     "type": "block"
+    }
    ],
    "tags": [
     "bts",
@@ -2010,6 +2834,23 @@
     111,
     148
    ],
+   "hyperframes_compositions": [
+    {
+     "name": "caption-blend-difference",
+     "role": "Difference-blend white captions on speaker chest",
+     "type": "component"
+    },
+    {
+     "name": "lt-clean-bar",
+     "role": "Executive speaker title bar",
+     "type": "block"
+    },
+    {
+     "name": "chart-story",
+     "role": "Subtle floating B2B ROI chart",
+     "type": "component"
+    }
+   ],
    "tags": [
     "talking-head",
     "english",
@@ -2064,6 +2905,23 @@
     187,
     210
    ],
+   "hyperframes_compositions": [
+    {
+     "name": "caption-pill-karaoke",
+     "role": "Top-band karaoke captions above press mics",
+     "type": "component"
+    },
+    {
+     "name": "lower-third-bild",
+     "role": "Breaking news ticker lower third",
+     "type": "block"
+    },
+    {
+     "name": "camera-shake",
+     "role": "Authentic press scrum camera movement",
+     "type": "component"
+    }
+   ],
    "tags": [
     "karaoke-captions",
     "top-captions",
@@ -2116,6 +2974,28 @@
     209,
     148,
     173
+   ],
+   "hyperframes_compositions": [
+    {
+     "name": "mesh-gradient-bg",
+     "role": "Dynamic color-shifting studio backdrop behind keyed speaker",
+     "type": "component"
+    },
+    {
+     "name": "caption-kinetic-slam",
+     "role": "Zig-zag stacked kinetic caption blocks",
+     "type": "component"
+    },
+    {
+     "name": "tilt-card",
+     "role": "3D floating product screen next to speaker",
+     "type": "component"
+    },
+    {
+     "name": "card-resize",
+     "role": "Interactive graphics panel expanding into view",
+     "type": "component"
+    }
    ],
    "tags": [
     "talking-head",
@@ -2170,6 +3050,28 @@
     103,
     41
    ],
+   "hyperframes_compositions": [
+    {
+     "name": "device-frame-stage",
+     "role": "Laptop / phone screen displaying job offer",
+     "type": "component"
+    },
+    {
+     "name": "marker-checklist-card",
+     "role": "Role perks and benefits checklist",
+     "type": "component"
+    },
+    {
+     "name": "confetti",
+     "role": "Welcome to the team celebration burst",
+     "type": "component"
+    },
+    {
+     "name": "cta-close",
+     "role": "Apply now link-in-bio call-to-action",
+     "type": "component"
+    }
+   ],
    "tags": [
     "diegetic-text",
     "prop-signs",
@@ -2220,6 +3122,23 @@
     175,
     68,
     170
+   ],
+   "hyperframes_compositions": [
+    {
+     "name": "char-slam-explode",
+     "role": "Serif title card reveal",
+     "type": "component"
+    },
+    {
+     "name": "flash-through-white",
+     "role": "Flash cut into highlight burst",
+     "type": "block"
+    },
+    {
+     "name": "beat-freeze-cut",
+     "role": "Freeze-frame beat sync on group poses",
+     "type": "block"
+    }
    ],
    "tags": [
     "hold-then-burst",
@@ -2274,6 +3193,28 @@
     203,
     204
    ],
+   "hyperframes_compositions": [
+    {
+     "name": "char-slam-explode",
+     "role": "Headline slam landing with screen impact",
+     "type": "component"
+    },
+    {
+     "name": "colorama-wipe",
+     "role": "Vibrant color sweep wipe between manifesto statements",
+     "type": "component"
+    },
+    {
+     "name": "morph-text",
+     "role": "Seamless typography morphing between nouns",
+     "type": "component"
+    },
+    {
+     "name": "cta-close",
+     "role": "Manifesto conclusion call-to-action",
+     "type": "component"
+    }
+   ],
    "tags": [
     "kinetic-typography",
     "music-only",
@@ -2326,6 +3267,23 @@
     31,
     178,
     159
+   ],
+   "hyperframes_compositions": [
+    {
+     "name": "comparison-split",
+     "role": "Speaker-over-listener horizontal split layout",
+     "type": "component"
+    },
+    {
+     "name": "yt-lower-third",
+     "role": "Speaker credential pills on split seam",
+     "type": "block"
+    },
+    {
+     "name": "caption-gradient-fill",
+     "role": "Glowing three-tier seam caption rail",
+     "type": "component"
+    }
    ],
    "tags": [
     "podcast-clip",
@@ -2380,6 +3338,33 @@
     131,
     224
    ],
+   "hyperframes_compositions": [
+    {
+     "name": "comparison-split",
+     "role": "Split-panel layout separating speaker from UI mock proof",
+     "type": "component"
+    },
+    {
+     "name": "browser-device-stage",
+     "role": "Browser mockup showcasing live workflow proof",
+     "type": "component"
+    },
+    {
+     "name": "count-up",
+     "role": "Accent milestone count badges",
+     "type": "component"
+    },
+    {
+     "name": "conic-progress-ring",
+     "role": "Framework progress indicator ring",
+     "type": "component"
+    },
+    {
+     "name": "chart-story",
+     "role": "Metric progression story validating framework",
+     "type": "component"
+    }
+   ],
    "tags": [
     "talking-head",
     "split-screen",
@@ -2432,6 +3417,23 @@
     180,
     174,
     31
+   ],
+   "hyperframes_compositions": [
+    {
+     "name": "colorama-wipe",
+     "role": "Contrast flash wipe between accent and dark cards",
+     "type": "component"
+    },
+    {
+     "name": "char-slam-explode",
+     "role": "Teaser keyword impact slam",
+     "type": "component"
+    },
+    {
+     "name": "logo-outro",
+     "role": "Final brand reveal teaser card",
+     "type": "block"
+    }
    ],
    "tags": [
     "kinetic-typography",
@@ -2486,6 +3488,28 @@
     208,
     170
    ],
+   "hyperframes_compositions": [
+    {
+     "name": "caption-editorial-emphasis",
+     "role": "Top-left progressive editorial word build",
+     "type": "component"
+    },
+    {
+     "name": "yt-lower-third",
+     "role": "Minimalist editorial guest identification",
+     "type": "block"
+    },
+    {
+     "name": "testimonial-proof-card",
+     "role": "Giant accent pull-quote callout",
+     "type": "component"
+    },
+    {
+     "name": "card-resize",
+     "role": "Editorial reference card expanding on side margin",
+     "type": "component"
+    }
+   ],
    "tags": [
     "podcast-clip",
     "editorial-layout",
@@ -2538,6 +3562,28 @@
     46,
     70
    ],
+   "hyperframes_compositions": [
+    {
+     "name": "ai-answer-rank",
+     "role": "Top-N itemized ranking card with animated reordering",
+     "type": "block"
+    },
+    {
+     "name": "badge-pop",
+     "role": "Numbered listicle counter badge (1, 2, 3)",
+     "type": "component"
+    },
+    {
+     "name": "caption-pill-karaoke",
+     "role": "Hopping black word box chest captions",
+     "type": "component"
+    },
+    {
+     "name": "marker-checklist-card",
+     "role": "Summary checklist card marking all items",
+     "type": "component"
+    }
+   ],
    "tags": [
     "listicle",
     "top-n",
@@ -2586,6 +3632,23 @@
     30,
     198,
     191
+   ],
+   "hyperframes_compositions": [
+    {
+     "name": "lt-soft-pill",
+     "role": "Accent role-label pill pinned above characters",
+     "type": "block"
+    },
+    {
+     "name": "caption-pill-karaoke",
+     "role": "Color-coded character dialogue subtitles",
+     "type": "component"
+    },
+    {
+     "name": "confetti",
+     "role": "Punchline celebration burst",
+     "type": "component"
+    }
    ],
    "tags": [
     "meme-skit",
@@ -2639,6 +3702,28 @@
     50,
     173,
     150
+   ],
+   "hyperframes_compositions": [
+    {
+     "name": "waveform",
+     "role": "Live dual-channel audio waveform display",
+     "type": "block"
+    },
+    {
+     "name": "thread-message-stack",
+     "role": "Stacked transcript notes appearing in real time",
+     "type": "block"
+    },
+    {
+     "name": "caption-highlight",
+     "role": "Speaker-coded colored dialogue captions",
+     "type": "component"
+    },
+    {
+     "name": "card-resize",
+     "role": "Call key takeaway summary card",
+     "type": "component"
+    }
    ],
    "tags": [
     "fly-on-the-wall",

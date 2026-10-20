@@ -1,16 +1,5 @@
 #!/usr/bin/env python3
-"""measure_blueprint.py <video> --watch <dir> [--out measured.json]: the "measured" block of a new blueprint.
-
-<dir> is the output folder of `watch.py ref <video> --out-dir <dir>` (it reads full/analysis.json and
-full/transcript.json). Paste the result into the blueprint's "measured" key; the grade numbers are a look reference
-only (a project's grade always comes from its own footage).
-
-grade   24 evenly spaced frames: black/white points, contrast, saturation, colourfulness, warmth (R-B), tint, vignette,
-        6-colour dominant palette
-layout  letterbox bar share, split-screen (full-width divider) share of frames
-sound   music-bed heuristic (beat periodicity of the onset envelope at 60-180 BPM + level in speech gaps),
-        share of hard cuts that carry an audio transient (SFX / hit on cut)
-"""
+"""measure_blueprint.py <video> --watch <dir> [--out measured.json]: the "measured" block of a new blueprint."""
 import json
 import os
 import subprocess

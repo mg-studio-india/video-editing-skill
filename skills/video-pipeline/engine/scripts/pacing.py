@@ -1,5 +1,4 @@
-"""Editorial pacing metrics, computed from the FULL shot list (never from a
-frame-capped sample), so the numbers stay honest on fast-cut videos."""
+"""Editorial pacing metrics, computed from the FULL shot list (never from a"""
 from __future__ import annotations
 
 import json

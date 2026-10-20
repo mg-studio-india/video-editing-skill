@@ -458,5 +458,27 @@
  },
  "quality_score": 3,
  "brand_prompt": "Use /video-pipeline with /video-captions on videos/<project>. Apply style blueprint B50 (video-reference-match/references/blueprints/B50.json) to this brand.\nCanvas 1080x1920, 30 fps. All positions are % of frame; px are at 1080x1920.\n\nBRAND TOKENS (use the brand's colour/font for each role; keep the contrast relationship: {{TEXT}} and {{ACCENT}} must each stay >= 3:1 on the footage behind the captions, and {{ACCENT_2}} >= 4.5:1 on the {{ACCENT}} bar)\n- {{TEXT}}      on-camera voice captions, title          default #FFFFFF\n- {{ACCENT}}    off-camera voice captions, outcome bar   default #EDF21C (yellow)\n- {{ACCENT_2}}  text on the outcome bar and aside pill   default #000000\n- {{SURFACE}}   not used                                 default none\n- {{CARD_BG}}   aside pill fill                          default #FFFFFF\n- {{FONT_DISPLAY}} on-camera voice, title, bar, pill     default Playfair Display 700/900 (bold high-contrast serif)\n- {{FONT_BODY}}    off-camera voice                      default Syne 700 (heavy wide grotesque; Archivo ExtraBold Expanded is closer)\n- {{HANDLE}}    not shown\n- {{LOGO}}      not shown\n\nCAPTIONS (two voices, colour-coded)\n1. English as spoken, sentence case, commas/apostrophes kept; spell names and brand names correctly. No emoji in captions.\n2. Grouping: 2-5 words per caption (about 3-4), one line, max line width 55 % W; the style switches whenever the speaker switches.\n3. On-camera voice: {{FONT_DISPLAY}} 700 at 45 px, {{TEXT}}, no box, very soft dark shadow. Centred, sitting just above the subject's head: centre y 28.9 % in a wide high-angle shot, 26.1 % when punched in, ~16 % in a tight shot.\n4. Off-camera / phone voice: {{FONT_BODY}} at 49 px, {{ACCENT}} with a thin ~1.5 px dark outline, centred at ~21 % of height (about 5 % above where the on-camera line sits when both show).\n5. Animation: none. Each phrase appears by hard cut ~1 frame before its first word and is replaced by hard cut. No pop, fade or highlight.\n\nOTHER TEXT\n6. Result-first title for the first ~87 frames, over a 15-frame blur-to-sharp opening of the footage: 2-word title (e.g. \"Headline here\") in {{FONT_DISPLAY}} 900 at 99 px, {{TEXT}}, soft shadow, centred at 15.7 %; under it a solid {{ACCENT}} rounded bar x 11.4-88.5 %, y 19.5-25.1 % (radius ~2 % W) with the outcome in {{FONT_DISPLAY}} 900 at 56 px, {{ACCENT_2}}, ending in one emoji. Both hard-cut out together.\n7. One candid aside, once, starting at ~22 % of runtime, held ~90 frames: {{CARD_BG}} rounded pill x 15-85 %, y 70.5-75.3 % with {{ACCENT_2}} heavy serif (~46 px) text in parentheses plus one laughing emoji.\n\nEDIT DEVICES\n8. Keep one high-angle static camera; jump-cut dead air between turns (about 5-6 cuts/min) and add one ~115 % punch-in section around 26-43 % of runtime. Leave real friction (rejection, objection) in.\n\nGRADE\n9. Grade from the user's footage (video-style / grade.py); target look: warm, mid-contrast, natural saturation, soft indoor daylight.\n\nAUDIO\n10. Voice only, no music bed or SFX. Master to about -14.4 LUFS, true peak <= -1 dBTP; lift the quieter phone-side voice.\n\nVERIFY before rendering\na) Render a test frame with \"KEY WORD\" as an on-camera caption at 45 px centred at 26 % and as an off-camera caption at 49 px centred at 21 %, then measure:\n   python video-reference-match/scripts/caption_probe.py <test.mp4> --out <dir> --at <t> --box 0.25,0.24,0.75,0.285 --ink \"{{TEXT}}:60\"\n   python video-reference-match/scripts/caption_probe.py <test.mp4> --out <dir> --at <t> --box 0.05,0.19,0.95,0.235 --ink \"{{ACCENT}}:80\"\n   Title: --box 0.25,0.13,0.75,0.185 --ink \"{{TEXT}}:60\"; bar text: --box 0.12,0.2,0.80,0.245 --ink \"{{ACCENT_2}}:90\".\nb) Expected ink for any word: video-reference-match/scripts/fit_font.py with the token font and px above (reference ink heights: on-camera 2.19 % H, off-camera 2.03 % H, title 3.75 % H, bar 2.11 % H). Required: within ±0.5 % H of the fit_font.py value; positions within ±1 % of height; colours equal to the tokens.\n",
- "caption_family": "other:two-voice-colour"
+ "caption_family": "other:two-voice-colour",
+ "hyperframes_compositions": [
+  {
+   "name": "waveform",
+   "role": "Live dual-channel audio waveform display",
+   "type": "block"
+  },
+  {
+   "name": "thread-message-stack",
+   "role": "Stacked transcript notes appearing in real time",
+   "type": "block"
+  },
+  {
+   "name": "caption-highlight",
+   "role": "Speaker-coded colored dialogue captions",
+   "type": "component"
+  },
+  {
+   "name": "card-resize",
+   "role": "Call key takeaway summary card",
+   "type": "component"
+  }
+ ]
 }

@@ -1,25 +1,5 @@
 #!/usr/bin/env python3
-"""paper-cut.py: decide what to remove from a raw talking-head recording.
-
-Input : a word-level transcript JSON (whisper.cpp: [{text,start,end}] or {"words":[...]})
-Output: cut-list.json  {source_duration, kept_seconds, kept:[{start,end}], removed:[{start,end,reason,text}]}
-        PAPER-CUT.md   the transcript with removed stretches struck through + a reason each
-
-Passes, in order:
-  1. restarts inside a sentence   "Today chat, today ChatGPT made the, today ChatGPT made the craziest..." -> keep the last start
-  2. explicit markers             "cut that", "scratch that", "let me redo", "start over", "take two", a lone "again"
-                                  -> remove the marker sentence AND the sentence before it (the flub)
-  3. retakes / alternates         a sentence that comes back within the next WINDOW sentences (similar wording, or the
-                                  same short beat with the same key words) -> keep the LAST take, drop everything between.
-                                  Exception: if the last take only adds a leading filler ("so", "okay", "and"), keep the
-                                  clean earlier take instead.
-  4. false starts                 a fragment of <= 5 words whose first 2 words open the next sentence -> drop the fragment
-  5. silence                      gaps between kept words longer than GAP are trimmed to BEFORE s ahead of speech and
-                                  AFTER s behind it; head and tail trimmed too
-
-Usage:
-  python3 paper-cut.py --transcript transcript.json --duration 187.19 --out-dir videos/proj
-"""
+"""paper-cut.py: decide what to remove from a raw talking-head recording."""
 import argparse, json, re, difflib, os
 
 ap = argparse.ArgumentParser()
@@ -33,12 +13,20 @@ ap.add_argument("--before", type=float, default=0.15)
 ap.add_argument("--after", type=float, default=0.45)
 ap.add_argument("--head", type=float, default=0.25)
 ap.add_argument("--tail", type=float, default=0.60)
+ap.add_argument("--tight", action="store_true", help="Apply tight cutting parameters for high-retention social reels")
 ap.add_argument("--speech", help="auto-editor v1 JSON (audio-based speech chunks). When given, segment ends come from the audio, not the transcript, because ASR word ends stretch into pauses.")
 args = ap.parse_args()
 
+if args.tight:
+    if args.gap == 0.60: args.gap = 0.35
+    if args.before == 0.15: args.before = 0.08
+    if args.after == 0.45: args.after = 0.12
+    if args.head == 0.25: args.head = 0.10
+    if args.tail == 0.60: args.tail = 0.18
+
 raw = json.load(open(args.transcript))
 words = raw["words"] if isinstance(raw, dict) and "words" in raw else raw
-words = [{"text": w["text"], "start": float(w["start"]), "end": float(w["end"])} for w in words]
+words = [{"text": w.get("text") or w.get("w", ""), "start": float(w["start"]), "end": float(w["end"])} for w in words]
 
 STOP = set("the a an is are it it's to of in on and so if be at as for with my me i i'm i'll you you're your we that um uh".split())
 FILLERS = ("so", "okay", "ok", "and", "yeah", "um", "uh", "alright")

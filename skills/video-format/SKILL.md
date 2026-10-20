@@ -26,7 +26,7 @@ The default editing style must be **creative, innovative, and trendy** (Vox, Mag
 |---|---|---|
 | **Full-Bleed Presenter** | Full camera shot with subtle cinematic grade and responsive captions. | Opening emotional hook, bold statements, punchy sign-offs. |
 | **Corner Picture-in-Picture (PiP)** | Presenter video minimizes to an elegant squircle or circle in a corner (~28-34% width), clearing platform UI. | **Opens 70% of canvas** for researcher articles, 3D mockups, animated financial charts, and evidence cards. |
-| **Stacked / Side Split-Screen** | Presenter occupies 35-45% of canvas (top or side); clean 2-3px styled divider. | Dedicated data/media pane displaying comparison metrics, website tours, news highlights, or charts. |
+| **Bottom Split-Screen (70% Standard)** | Presenter occupies bottom 40-45% of canvas with top/bottom crop focusing on head area; clean 2-3px styled divider or rounded card edge. | Upper 55-60% pane dedicated to active HyperFrames motion scenes, researcher articles, or kinetic charts. |
 | **Speaker Cutout / Matte on Styled Canvas** | Speaker cutout/silhouette extracted and placed over a dynamic graphical, neutral dark (#0f172a, #111116), clean white, or cinematic gradient backdrop. | Premium documentary feel: text, animated charts, and 3D icons float behind and around the speaker with physical depth. |
 | **Full Graphic & Research Canvas** | A-roll momentarily hides or tucks away; full graphic canvas takes center stage. | High-impact data reveals, document leaks, animated map routes, or complex infographic comparisons. |
 
@@ -70,21 +70,26 @@ When the A-roll is minimized or shifted into split/PiP view, the newly opened ca
 
 ---
 
-## 4. Catalog First Execution Protocol
+## 4. Catalog-First Execution Protocol (Pre-Installed Offline Library)
 
-Before writing any HTML or CSS:
-1. **Search the Catalog:**
+All 447 compositions and components from the HyperFrames registry are pre-installed into the global engine cache (`$ENGINE_DIR/compositions/`) during installation (`install.sh`). There are zero cold network fetches required during an edit.
+
+1. **Pre-Cached Local Inventory:**
+   Look up verified components instantly from `references/index.json` or query the local library directly:
    ```bash
-   npx hyperframes catalog --query "<what you want to show>" --json
+   ls "$ENG/compositions"
    ```
-2. **Install the Component:**
-   ```bash
-   cd "$W/hyperframes" && npx hyperframes add <component-name> --no-clipboard && cd -
-   ```
-3. **Inspect the Component:**
-   Read the installed file in `$W/hyperframes/compositions/` to discover its parameters, CSS variables, and layout contracts.
+2. **Instant Staging from Local Cache:**
+   When a blueprint preset is selected (e.g. `B19` or `B33`), `parallel_pipeline.py` automatically stages its linked compositions from the global cache into `$W/hyperframes/compositions/`.
+3. **Adaptive Customization (Similar Effects vs Blind Copying):**
+   The editor tailors the staged HTML/CSS/GSAP composition across 5 dimensions:
+   - **Content Injection:** Replace stock placeholder text/stats with the speaker's exact spoken numbers and claims.
+   - **Color & Brand Tokens:** Apply the active color scheme (`#ffe600` accent, `#1e293b` studio backdrop).
+   - **Beat Synchronization:** Align entrance animations (`data-start`, `tl.fromTo`) with transcript phrase timestamps.
+   - **Spatial Clearance:** Scale and anchor the component safely within chin-safe coordinates.
+   - **Animation Dynamics:** Retain critically damped harmonic motion (`power3.out`, `back.out(1.3)`).
 4. **Wire into Storyboard:**
-   Mount as a modular sub-composition (`block`) or component snippet inside `$W/hyperframes/index.html`.
+   Mount as a modular sub-composition (`block` / `<div data-composition-src="...">`) or component snippet inside `$W/hyperframes/index.html`.
 
 ---
 

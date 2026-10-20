@@ -400,5 +400,32 @@
  },
  "quality_score": 4,
  "brand_prompt": "Use /video-pipeline with /video-captions on videos/<project>. Apply style blueprint B02 (video-reference-match/references/blueprints/B02.json) to this brand.\n\nBRAND TOKENS (use the brand's colour for each role; keep the contrast relationship — text and accent must stay >= 4.5:1 / >= 3:1 against what sits behind them on the footage):\n- {{TEXT}}      default #EEE6E2 (warm white caps line; #FFFFFF before a warm grade)\n- {{ACCENT}}    default #E5EB7A (pale lime script line + glow)\n- {{ACCENT_2}}  default none\n- {{SURFACE}}   default none (captions sit on footage)\n- {{CARD_BG}}   default none\n- {{FONT_DISPLAY}} default Poppins 800 (caps line)\n- {{FONT_BODY}}    default a monoline connected script, e.g. Sacramento (completion line)\n- {{HANDLE}}    default @handle\n- {{LOGO}}      default the brand's logo file (transparent PNG/SVG)\nThe script line is thin: keep {{ACCENT}} light enough for >= 3:1 on the clothing behind it and keep its glow; if the brand accent is dark, use a light tint of it.\nCanvas 1080x1920, 30 fps. The reference picture is 9:10 placed full-width (1080x1200 at y 360-1560); if your footage fills 9:16, keep the captions on the lower chest just below the mic (69 % / 74 % of the picture height).\n\nCAPTIONS\n1. Roman script as spoken (transliterate Devanagari). Split each phrase into two tiers: line 1 = first 1-5 words in UPPERCASE; line 2 = the completion (1-5 words) in lowercase script (placeholder 'LEAD WORDS' / 'key word here'). No punctuation, no emoji.\n2. Line 1: {{FONT_DISPLAY}} at 57 px, tracking +0.04 em, {{TEXT}}, soft dark drop shadow 0 2px 6px rgba(0,0,0,.45), no stroke / box. Centred; ink centre at 62.0 % H. Max line width ~75 % W.\n3. Line 2: {{FONT_BODY}}, lowercase, {{ACCENT}}, soft outer glow 0 0 8px {{ACCENT}} at ~60 % opacity, centred with its centre at 64.7 % H so the tall ascenders overlap the bottom of line 1. Start at ~66 px.\n4. Reveal: lay out the full two-tier phrase first, then reveal it word by word IN PLACE. Each word fades 0->100 % over 5-8 frames (script words 6-10), no scale / slide, starting 2-8 frames after the word is spoken. Line 2 begins after line 1 is complete.\n5. Exit: the whole block hard-cuts out at the phrase end; 2-3 empty frames before the next block. No idle motion.\n\nOTHER TEXT\n6. None: no titles, lower-thirds, {{LOGO}}, watermark or end card.\n7. Edit: open with a ~15-frame zoom-blur into the first MCU with the first word on frame 1; hold 7-8 s shots; L-trail cut to a second angle mid-way; soft cut to a ~115 % crop for the final line.\n\nGRADE\nGrade from the user's footage (video-style / grade.py); target look: warm, creamy, high-key with bloom/glow and crisp sharpening, natural saturation.\n\nVERIFY before rendering\na) Render 'FINANCIALLY' on line 1 and a two-word placeholder 'key word' on line 2, then measure:\n   python3 video-reference-match/scripts/caption_probe.py <test-render> --out <dir> --at <t> --box 0.25,0.59,0.75,0.635 --ink \"{{TEXT}}:45\"\n   python3 video-reference-match/scripts/caption_probe.py <test-render> --out <dir> --at <t> --box 0.15,0.625,0.85,0.68 --ink \"{{ACCENT}}:60\"\n   Expected (±0.5 % H, ±2 % W): 'FINANCIALLY' ink 2.11 % H / 37.6 % W at 57 px Poppins 800 +0.04 em. Script line: ink ~3.05 % H for a two-word lowercase line; adjust px from 66 until it matches.\nb) Any other caps word / font: python3 video-reference-match/scripts/fit_font.py --font \"Poppins 800\" --word \"<WORD>\" --upper --ink 2.11 --tracking 0.04 -> ~57 px. Measure over dark clothing, not the light set. (fit_font.py needs a target: --ink and/or --width; it returns the px that reproduces that ink for YOUR word plus the width it will read at that px. Requires Pillow.)\nc) Positions within ±1 % H: line 1 centre 62.0 %, line 2 centre 64.7 %.",
- "caption_family": "two-tier-script"
+ "caption_family": "two-tier-script",
+ "hyperframes_compositions": [
+  {
+   "name": "yt-lower-third",
+   "role": "Channel and podcast episode identification lower-third",
+   "type": "block"
+  },
+  {
+   "name": "lt-clean-bar",
+   "role": "Speaker name bar with accent underline",
+   "type": "block"
+  },
+  {
+   "name": "caption-editorial-emphasis",
+   "role": "Two-tier caption typography with accented script finish",
+   "type": "component"
+  },
+  {
+   "name": "testimonial-card",
+   "role": "Pull-quote highlight on speaker assertions",
+   "type": "component"
+  },
+  {
+   "name": "waveform",
+   "role": "Subtle audio waveform activity visualizer",
+   "type": "block"
+  }
+ ]
 }

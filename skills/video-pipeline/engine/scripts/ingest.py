@@ -1,20 +1,5 @@
 #!/usr/bin/env python3
-"""ingest.py: probe every clip in a raw/ folder, put them in order, and optionally join the talking-head
-clips into one source file for a long-form edit.
-
-Usage:
-  python3 ingest.py --raw videos/<project>/raw --out videos/<project>            # probe + ingest.json only
-  python3 ingest.py --raw videos/<project>/raw --out videos/<project> --concat   # also write source.mp4
-  python3 ingest.py ... --order C0002,C0001                                       # explicit order (basenames, no ext)
-  python3 ingest.py ... --only C0001,C0003                                        # subset
-
-Order: --order if given, else filename order (Sony C0xxx numbers are sequential), else recording time.
-Concat: ffmpeg concat demuxer with stream copy when every clip shares codec, size, fps and audio layout
-(no quality loss); any odd clip is re-encoded to match first. Writes ingest.json with the offsets so a
-timestamp in source.mp4 can always be mapped back to (clip, time).
-Screen recordings and other non-talking-head files can live in the same raw/ folder: pass --only to
-pick the camera clips, or they are skipped automatically when their resolution differs.
-"""
+"""ingest.py: probe every clip in a raw/ folder, put them in order, and optionally join the talking-head"""
 import argparse, json, os, subprocess, sys, glob
 
 ap = argparse.ArgumentParser()

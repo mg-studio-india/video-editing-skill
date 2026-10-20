@@ -1,8 +1,4 @@
-"""hinglish.py: Transliterates Devanagari Hindi text to Roman Hinglish.
-
-Ensures that all transcriptions, captions, and on-screen text for Hindi/Hinglish
-speech are ALWAYS rendered in Roman script (Hinglish) rather than Devanagari.
-"""
+"""hinglish.py: Transliterates Devanagari Hindi text to Roman Hinglish."""
 from __future__ import annotations
 
 import re
@@ -88,12 +84,10 @@ SIGNS: dict[str, str] = {
 
 
 def has_devanagari(text: str) -> bool:
-    """Returns True if the string contains any Devanagari character."""
     return bool(DEVANAGARI_RE.search(text))
 
 
 def transliterate_token(token: str) -> str:
-    """Transliterate a single token from Devanagari to Hinglish."""
     if not has_devanagari(token):
         return token
 
@@ -178,7 +172,6 @@ def transliterate_token(token: str) -> str:
 
 
 def to_hinglish(text: str) -> str:
-    """Converts any Devanagari text or mixed text into clean Roman Hinglish."""
     if not text or not has_devanagari(text):
         return text.replace("।", ".")
 
@@ -194,7 +187,6 @@ def to_hinglish(text: str) -> str:
 
 
 def clean_transcript_words(words: list[dict[str, Any]]) -> list[dict[str, Any]]:
-    """Clean a list of word dictionaries, ensuring text and w are in Hinglish."""
     cleaned = []
     for w in words:
         item = dict(w)
@@ -207,7 +199,6 @@ def clean_transcript_words(words: list[dict[str, Any]]) -> list[dict[str, Any]]:
 
 
 def clean_transcript(data: dict[str, Any]) -> dict[str, Any]:
-    """Ensure that an entire transcript.json data structure uses Hinglish with zero Devanagari."""
     out = dict(data)
     if "text" in out and isinstance(out["text"], str):
         out["text"] = to_hinglish(out["text"])

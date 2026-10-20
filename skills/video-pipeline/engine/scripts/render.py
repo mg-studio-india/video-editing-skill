@@ -1,18 +1,5 @@
 #!/usr/bin/env python3
-"""render.py: one command from a checked composition to a deliverable file, with no step skipped.
-
-  1. npx hyperframes render  (resolution preset, bitrate for the platform)
-  2. BT.709 tags, lossless  (the render leaves them unknown; QuickTime then shows faces darker and redder)
-  3. audio master            (audio-chain.py: loudness to the preset, true-peak limit, optional ducked music)
-  4. verify-render.py        (resolution, tags, bitrate, duration, A/V, black frames) -> VERIFY.md; exit 1 = do not deliver
-
-Usage:
-  python3 render.py --public W/hyperframes --out W/processed/<project>-v1.mp4 --resolution portrait --audio-preset shorts
-      [--music W/music/bed.wav] [--gpu] [--workers N]
-  --raw FILE skips step 1 and finishes an existing render.
-Resolution presets (HyperFrames): portrait 1080x1920, portrait-4k 2160x3840, landscape 1920x1080, landscape-4k
-3840x2160, square 1080x1080. Over ~2 minutes of 4K, see the render traps in motion-graphics/references/kit-motion.md.
-"""
+"""render.py: one command from a checked composition to a deliverable file, with no step skipped."""
 import argparse, os, subprocess, sys
 from pathlib import Path
 
@@ -22,13 +9,13 @@ import runtime
 runtime.ensure_project_venv()
 
 PRESETS = {
-    "portrait": (1080, 1920, "12M"),
+    "portrait": (1080, 1920, "25M"),
     "portrait-4k": (2160, 3840, "45M"),
     "portrait-uhd": (2160, 3840, "45M"),
-    "landscape": (1920, 1080, "12M"),
+    "landscape": (1920, 1080, "25M"),
     "landscape-4k": (3840, 2160, "45M"),
     "landscape-uhd": (3840, 2160, "45M"),
-    "square": (1080, 1080, "10M"),
+    "square": (1080, 1080, "20M"),
     "square-4k": (2160, 2160, "35M"),
     "square-uhd": (2160, 2160, "35M"),
     "uhd": (2160, 3840, "45M"),
@@ -52,7 +39,6 @@ def step(name, cmd):
 
 
 def find_hyperframes_cmd() -> list[str]:
-    """Find hyperframes binary across global engine, project .engine, or system npx."""
     bin_name = "hyperframes.cmd" if os.name == "nt" else "hyperframes"
     cands = [
         runtime.find_engine_dir() / "node_modules" / ".bin" / bin_name,

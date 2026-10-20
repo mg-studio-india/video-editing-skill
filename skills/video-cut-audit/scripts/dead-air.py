@@ -1,15 +1,5 @@
 #!/usr/bin/env python3
-"""dead-air.py W [--max 0.45] [--target 0.30] [--keep T ...] [--plan] [--json out]: the dead-air scan of a flat cut
-(the little stretches of dead silence a flat cut can still hold after a line is spoken).
-W = the cut folder holding audio.wav (the flat cut's audio), cut-map.json and transcript.json.
-
-By the AUDIO of the flat cut (audio.wav = public/input-video.mp4), never by the ASR's word gaps (it stretches sentence ends):
-a pause is a stretch with no 10 ms frame over SPEECH RMS between two stretches of speech. Every pause longer than --max
-(joins and inner pauses alike, plus the section's head and tail) is listed with the words on both sides; with --plan the
-script proposes the flat range to drop so the pause comes down to --target: the cut sits inside the quietest core of the
-pause (frames under QUIET RMS), keeps the decay of the last word and the breath before the next one, and both new edges
-land in room tone. --keep T leaves the pause that holds flat time T alone (a deliberate beat).
-Then: patch-cut.py --drop-flat for each range -> edge-audit.py to 0 issues -> apply-cut -> re-transcribe -> this scan again."""
+"""dead-air.py W [--max 0.45] [--target 0.30] [--keep T ...] [--plan] [--json out]: the dead-air scan of a flat cut"""
 import argparse, json, os, sys, wave
 import numpy as np
 
@@ -35,7 +25,6 @@ word_after = lambda t: ([q["text"] for q in W if q["start"] >= t - 0.05] or ["(e
 
 rows, plan = [], []
 def core(i0, i1):
-    """longest run of frames under QUIET inside [i0, i1)"""
     best, k = (i0, i0), i0
     while k < i1:
         if r[k] < a.quiet:

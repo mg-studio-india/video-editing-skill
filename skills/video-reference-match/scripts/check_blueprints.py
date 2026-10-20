@@ -1,12 +1,5 @@
 #!/usr/bin/env python3
-"""check_blueprints.py: schema + anonymity check of references/blueprints/B*.json (run after any edit).
-
-  check_blueprints.py [--deny words.txt]
-
-Fails on: missing keys, invalid JSON, unfilled {{BID}}, source traces (source file ids, video file names, frame or probe
-paths, URLs, mm:ss timestamps, @handles other than the @handle placeholder), grade values in a brand prompt, and any
-word from an optional private deny list (one per line, case-insensitive; keep that list outside the repo).
-"""
+"""check_blueprints.py: schema + anonymity check of references/blueprints/B*.json (run after any edit)."""
 import argparse
 import glob
 import json

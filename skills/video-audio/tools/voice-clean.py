@@ -1,15 +1,5 @@
 #!/usr/bin/env python3
-"""voice-clean.py: dereverb (WPE, multi-mic) + neural denoise (DeepFilterNet) ahead of the audio-chain.
-
-  voice-clean.py SRC_MEDIA --video VIDEO_FOR_PICTURE --out OUT.mp4 [--taps 18] [--delay 3] [--atten 32]
-
-1. decode the source audio as 48 kHz float, keeping both iPhone mics (WPE uses the spatial diversity)
-2. WPE dereverberation (nara_wpe): predicts and subtracts the late reverb tail per frequency band
-2b. statistical late-reverb suppression (tools/late-reverb.py, RT60 0.5 s, -10 dB floor): ~7 dB less tail into pauses
-3. DeepFilterNet3 (deep-filter binary, installed by install.sh into ~/.config/video-skills/bin): broadband/white-noise suppression with an attenuation limit so
-   the voice keeps its natural texture (no watery artifacts)
-4. 80 Hz high-pass and gain staging to -3 dBFS peak, muxed back onto the picture (stream copy)
-"""
+"""voice-clean.py: dereverb (WPE, multi-mic) + neural denoise (DeepFilterNet) ahead of the audio-chain."""
 from __future__ import annotations
 
 import argparse
@@ -25,7 +15,6 @@ from nara_wpe.utils import istft, stft
 from nara_wpe.wpe import wpe
 
 def find_deep_filter() -> Path:
-    """$VIDEO_DEEPFILTER, then the install.sh location, then next to this script."""
     import os
     for c in (os.environ.get("VIDEO_DEEPFILTER"), os.path.expanduser("~/.config/video-skills/bin/deep-filter"),
               os.path.expanduser("~/.config/video-skills/bin/deep-filter.exe"),

@@ -1,13 +1,5 @@
 #!/usr/bin/env python3
-"""audio-analyze.py: Identify acoustic parameters dynamically from input audio/video.
-
-Scans the input file to detect:
-  1. Channel topology & asymmetric mic selection (c0 vs c1 vs stereo)
-  2. Optimal room-tone noise profiling window (quietest inter-phrase pause)
-  3. Speaker fundamental pitch (F0), highpass cutoff, and warmth frequency
-  4. Room resonance modes / standing waves (narrow peaks in 100-800 Hz)
-  5. Calibrated leveling compressor threshold based on speech RMS
-"""
+"""audio-analyze.py: Identify acoustic parameters dynamically from input audio/video."""
 from __future__ import annotations
 
 import argparse
@@ -20,7 +12,6 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 
 
 def _engine_scripts():
-    """The shared engine scripts (video-pipeline/engine/scripts): $VIDEO_ENGINE, the sibling skill, or ~/.agents/skills."""
     env = os.environ.get("VIDEO_ENGINE")
     for c in ((os.path.join(env, "scripts") if env else ""), os.path.join(HERE, "..", "..", "video-pipeline", "engine", "scripts"),
               os.path.expanduser("~/.agents/skills/video-pipeline/engine/scripts")):

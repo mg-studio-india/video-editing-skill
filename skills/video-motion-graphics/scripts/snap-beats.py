@@ -1,11 +1,5 @@
 #!/usr/bin/env python3
-"""snap-beats.py: snapshot every card moment of a composed project and tile them into one contact sheet.
-Reads the storyboard.json next to public/ (compose.py format): tag in + 0.9, every beat in + 0.9, a list or
-bullets beat again 0.6 s after its last item, plus any --at extras. A snapshot is seconds; a render is a minute.
-
-Usage: python3 snap-beats.py --project videos/<p> [--at 12.3 --at 20.0]
-Writes videos/<p>/snaps/at-<t>.png and videos/<p>/snaps/sheet.png (tiled, 640 px wide each).
-"""
+"""snap-beats.py: snapshot every card moment of a composed project and tile them into one contact sheet."""
 import argparse, json, os, subprocess, shutil, glob, math
 
 ap = argparse.ArgumentParser()

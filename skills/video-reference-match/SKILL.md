@@ -5,11 +5,16 @@ description: Matches a project's footage, a user-supplied reference video/image,
 
 # Reference match (style blueprints, Gate R)
 
+> [!IMPORTANT]
+> **References Precedence Contract**: User-provided references (videos, screenshots, or benchmark files in `references/`, `videos/<project>/references/`, or passed via prompt/CLI) **ALWAYS take absolute precedence over blueprints**. The 50 blueprints provide proven baseline systems, but when a reference is supplied, its measured structure, layout choices (e.g. split-screen with speaker in bottom pane), pacing, and visual devices override the blueprint defaults.
+
 A library of **50 style blueprints**, each a measured editing system with no source identity: what makes it distinct,
 structure by % of runtime, pacing, caption spec (sizes solved for local fonts, colours as brand roles, frame timings),
-background text, motion graphics, cut-outs, layout, camera, transitions, sound, the catalog styles it uses, when to use
+background text, motion graphics, cut-outs, layout, camera, transitions, sound, the catalog styles it uses,
+linked verified HyperFrames compositions (`hyperframes_compositions`), when to use
 and avoid it, and a brand prompt. Grade is never copied: it is built from the project's own footage; a blueprint only
-gives a look intent.
+gives a look intent. In split-screen video, the speaker takes the bottom (70% of the time), with top and bottom cropped
+to keep the focus on head area visibility.
 
 ```bash
 ENG="${VIDEO_ENGINE:-$HOME/.agents/skills/video-pipeline/engine}"   # shared engine (watch, transcribe, render)
@@ -54,7 +59,8 @@ PY="$PROJECT/.venv/bin/python3"; W="videos/<project>"
 4. **Roadmap.** For the chosen blueprint(s):
    `"$PY" "$RM/scripts/match.py" ... --pick B07[,B21] --out "$W/reference-match"` → `ROADMAP.md`: structure mapped to
    the project's runtime, pacing targets, and per element (captions, background text, motion graphics, cards, cut-outs,
-   B-roll, layout, camera, transitions, end card, sound) what / how / when with catalog style IDs; the grade line points
+   B-roll, layout, camera, transitions, end card, sound) what / how / when with catalog style IDs, and linked HyperFrames
+   compositions to mount (`compositions/`); the grade line points
    to the project's own footage. `video-plan-storyboard` builds `plan.md` from it (cite `#ID Name` for every style) and
    `video-style` fills the brand tokens.
 5. **Brand prompt.** The blueprint's `brand_prompt` is the caption/text spec against brand tokens (`{{ACCENT}}`,

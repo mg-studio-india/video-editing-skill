@@ -395,5 +395,27 @@
  },
  "quality_score": 1,
  "brand_prompt": "Use /video-pipeline with /video-captions on videos/<project>. Apply style blueprint B07 (video-reference-match/references/blueprints/B07.json) to this brand.\n\nBRAND TOKENS (use the brand's colour for each role; keep the contrast relationship — text and accent must stay >= 4.5:1 / >= 3:1 against what sits behind them on the footage):\n- {{TEXT}}      default #FFFFFF (title lines, end-card type and frame)\n- {{ACCENT}}    default #71CAC3 (teal 'yes' heading)\n- {{ACCENT_2}}  default unmeasured red/pink ('no' heading; use the brand's warning colour)\n- {{SURFACE}}   default #000000 (dark-mode UI / end card)\n- {{CARD_BG}}   default #0F2025 (dark-teal highlight band behind 'yes' headings)\n- {{FONT_DISPLAY}} default Inter 400 (title lines); spaced bold geometric caps for the end-card wordmark\n- {{FONT_BODY}}    default Inter 400\n- {{HANDLE}}    default @handle\n- {{LOGO}}      default the brand's logo file (transparent PNG/SVG)\nKeep the highlight band dark and the heading text light (>= 4.5:1 inside the band).\nCanvas 1080x1920, sizes are px at that canvas; frame counts at 30 fps.\n\nCAPTIONS\n1. No speech captions (music-only format). If the edit has speech, do not add a caption track unless asked.\n\nOTHER TEXT\n2. Hook question (frame 0 to the first cut, ~46 % of runtime): the audience's own question in curly double quotes, sentence case, one line, {{FONT_BODY}} at 43 px, {{TEXT}}, tracking 0, no stroke / shadow / box, centred, ink centre at 50 % H, ~68 % W. Screen-fixed while the footage slowly pushes in.\n3. Answer line: UPPERCASE 2-3 word reassurance ending in '!!' (placeholder 'KEY WORD!!'), {{FONT_BODY}} 46 px, {{TEXT}}, centred at 57.3 % H. Hard cut in ~65 frames after the start; both lines hard-cut out with the shot cut.\n4. Proof screens: real dark-mode phone note screenshots of the brand's list, {{SURFACE}} background, light-grey body text left-aligned at x 11 % (~3.8 % H line pitch); 'yes' headings in {{ACCENT}} on a {{CARD_BG}} highlight band, 'no' headings in {{ACCENT_2}} italic on a dark-red band with a cross emoji; a new page every ~30 frames by hard cut.\n5. End card (~24 frames, hard cut in, static): {{SURFACE}}; thin 2 px {{TEXT}} frame (x 15-85 %, y 21-79 %); {{LOGO}} monogram at 28-37 %; brand name in bold geometric caps, ~0.3 em tracking (ink 1.72 % H, ~49 % W, centre 41 %); light spaced-caps sub-line below; short rule at ~53.5 %; small serif 'by' at ~63.5 %; founder / team name in spaced serif caps (Playfair Display, ink 1.95 % H, ~49 % W, centre 70.4 %).\n6. Footage: one slow linear push-in (~110-115 %) across the first shot; hard cuts only; music-only bed, no SFX.\n\nGRADE\nGrade from the user's footage (video-style / grade.py); target look: low-contrast, muted, neutral-warm; dim warm studio, then pure-black UI.\n\nVERIFY before rendering\na) Render the hook question and the answer line with neutral placeholders ('Headline here, is this a question?' and 'KEY WORD!!'), then measure:\n   python3 video-reference-match/scripts/caption_probe.py <test-render> --out <dir> --at <t> --box 0.1,0.475,0.9,0.52 --ink \"{{TEXT}}:70\"\n   python3 video-reference-match/scripts/caption_probe.py <test-render> --out <dir> --at <t> --box 0.3,0.55,0.7,0.6 --ink \"{{TEXT}}:70\"\nb) python3 video-reference-match/scripts/fit_font.py --font \"Inter 400\" --word \"<your question line>\" --ink 1.95 -> ~39-43 px (keep 43 px if your line spans <= ~70 % W); answer: --word \"<ANSWER>!!\" --upper --ink 1.72 -> ~44-46 px. The returned width is what the probe should read. Measure over mid-grey or darker background. (fit_font.py needs a target: --ink and/or --width; it returns the px that reproduces that ink for YOUR word plus the width it will read at that px. Requires Pillow.)\nc) Positions within ±1 % H: question centre 50.2 %, answer centre 57.3 %, end-card wordmark 41.1 %, founder line 70.4 %.",
- "caption_family": "title-only"
+ "caption_family": "title-only",
+ "hyperframes_compositions": [
+  {
+   "name": "yt-comment-card",
+   "role": "Viewer question card pop",
+   "type": "block"
+  },
+  {
+   "name": "caption-kinetic-slam",
+   "role": "Bold uppercase answer title slam",
+   "type": "component"
+  },
+  {
+   "name": "cta-lockup",
+   "role": "Save / bookmark prompt call-to-action",
+   "type": "component"
+  },
+  {
+   "name": "mesh-gradient-bg",
+   "role": "Dynamic color-shifting background",
+   "type": "component"
+  }
+ ]
 }

@@ -2,12 +2,12 @@
 > Persistent memory for video editing preferences, brand identity, and creative decisions. Prioritized across all future edits.
 
 ## 1. Identity & Profiles
-- **Creator / Channel:** Vihan
+- **Creator / Channel:** Me
 - **Handles:**
-  - Instagram: `@vihan_`
-  - YouTube: `@vihan_`
-  - X / Twitter: `@vihan_`
-  - LinkedIn: `vihan`
+  - Instagram: ``
+  - YouTube: ``
+  - X / Twitter: ``
+  - LinkedIn: ``
 - **Website:** 
 - **Logos & Badges:**
   - Primary Vector: `brand/assets/logo.svg`
@@ -62,5 +62,5 @@
 - **Color Space:** `BT.709` lossless color tags
 
 ## 7. Outro & Call to Action
-- **Card Style:** Interactive Instagram follow card (`+1 Follower` heart bounce, avatar ring, verified handle, follow button click).
+- **Card Style:** Interactive follow card (`+1 Follower` heart bounce, avatar ring, verified handle, follow button click).
 - **Placement:** Final 2.5-3.0s of reel.

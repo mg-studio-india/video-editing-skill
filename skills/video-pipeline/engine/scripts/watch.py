@@ -1,15 +1,5 @@
 #!/usr/bin/env python3
-"""watch: local video analysis for storyboarding references and planning edits.
-
-  watch.py ref     <video|url>   storyboard skeleton + style fingerprint of a REFERENCE video
-  watch.py mine    <video>       QA, tight-cut list and edit plan for YOUR footage
-  watch.py focus   <video> --start A --end B   dense look at one moment (frames + words)
-  watch.py compare <ref-fingerprint.json> <mine-fingerprint.json>
-  watch.py lint    <storyboard.md | fingerprint.json>   fail while anything is unfilled
-  watch.py check                      preflight (ffmpeg, whisper.cpp, model)
-
-Everything runs on this machine. Transcription is whisper.cpp; nothing is uploaded.
-"""
+"""watch: local video analysis for storyboarding references and planning edits."""
 from __future__ import annotations
 
 import argparse
@@ -70,7 +60,6 @@ def resolve_range(args, duration: float) -> tuple[float, float, bool]:
 
 def get_transcript(video: Path, meta: dict, base: Path, run_dir: Path, t0: float, t1: float,
                    full_range: bool, args, cfg: dict, warnings: list[str]) -> dict | None:
-    """Cached whisper.cpp transcript. The expensive full-video pass is reused by every mode."""
     if not meta["has_audio"]:
         warnings.append("no audio stream: nothing to transcribe")
         return None

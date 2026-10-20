@@ -1,11 +1,5 @@
 #!/usr/bin/env python3
-"""Preflight for the watch skill. Never installs anything and never touches the network.
-
-  setup.py              human-readable report with the exact fix command for anything missing
-  setup.py --json       machine-readable
-  setup.py --check      silent; exit 0 if the core (ffmpeg + ffprobe) is present, 2 if not
-  setup.py --init-config  write a commented ~/.config/watch/.env template if none exists
-"""
+"""Preflight for the watch skill. Never installs anything and never touches the network."""
 from __future__ import annotations
 
 import argparse
@@ -32,7 +26,6 @@ def _first_line(cmd: list[str]) -> str | None:
 
 
 def whisper_capabilities(binary: Path) -> dict:
-    """Read `whisper-cli -h` to learn which flags this build understands."""
     try:
         proc = run([str(binary), "-h"], check=False, timeout=20)
     except Exception:  # noqa: BLE001

@@ -1,7 +1,4 @@
-"""Shared helpers: time parsing/formatting, a safe subprocess wrapper, JSON I/O.
-
-Stdlib only. Imported by every other script in this folder.
-"""
+"""Shared helpers: time parsing/formatting, a safe subprocess wrapper, JSON I/O."""
 from __future__ import annotations
 
 import json
@@ -12,11 +9,10 @@ from pathlib import Path
 
 
 class ToolError(RuntimeError):
-    """A command-line tool failed. The message is safe to show the user."""
+    pass
 
 
 def _find_python_in_venv(venv: Path) -> Path | None:
-    """Find python binary inside a virtual environment across Unix and Windows."""
     for cand in (
         venv / "bin" / "python3",
         venv / "bin" / "python",
@@ -29,7 +25,6 @@ def _find_python_in_venv(venv: Path) -> Path | None:
 
 
 def find_engine_dir() -> Path:
-    """Find the global or sandboxed video-skills engine directory across OSes (macOS, Linux, Windows)."""
     # 1. Explicit environment variable
     env_dir = os.environ.get("VIDEO_ENGINE_DIR")
     if env_dir and Path(env_dir).is_dir():
@@ -57,13 +52,6 @@ def find_engine_dir() -> Path:
 
 
 def find_project_venv() -> Path | None:
-    """Find the virtual environment (.venv) directory across OSes (macOS, Linux, Windows).
-    Supports:
-      - Active VIRTUAL_ENV / sys.prefix
-      - Global Engine Sandbox: ~/.video-skills/engine/.venv
-      - Project Isolated Sandbox: .engine/.venv
-      - Workspace local: .venv
-    """
     # 1. Active virtual environment from VIRTUAL_ENV env var
     venv_env = os.environ.get("VIRTUAL_ENV")
     if venv_env and Path(venv_env).is_dir():
@@ -126,9 +114,6 @@ def find_project_venv() -> Path | None:
 
 
 def get_project_venv_python() -> str:
-    """Return the absolute path to the virtual environment python executable.
-    Cross-platform: supports Unix (bin/python3, bin/python) and Windows (Scripts/python.exe, Scripts/python).
-    """
     venv = find_project_venv()
     if not venv:
         raise ToolError(
@@ -146,7 +131,6 @@ def get_project_venv_python() -> str:
 
 
 def load_global_env() -> None:
-    """Load API keys from global engine ~/.config/video-skills/.env and ~/.video-skills/engine/.env."""
     for cand in (
         Path.home() / ".config" / "video-skills" / ".env",
         find_engine_dir() / ".env",
@@ -167,25 +151,17 @@ def load_global_env() -> None:
 
 
 def ff_filter_path(path) -> str:
-    """A file path for a filter option, to be wrapped in single quotes: f"file='{ff_filter_path(p)}'".
-    Forward slashes and an escaped drive colon, so C:\\Users\\... survives both levels of FFmpeg filter parsing."""
     s = os.path.abspath(str(path)).replace("\\", "/")
     return s.replace(":", "\\:").replace("'", "\\'")
 
 
 def engine_path_dirs() -> list[str]:
-    """Engine folders that belong on PATH: the HyperFrames CLI, and the private Node.js 22 that install.sh
-    downloads when the system node is missing or too old (node/bin, or node/ on Windows)."""
     eng = find_engine_dir()
     dirs = [eng / "node_modules" / ".bin", eng / "node" / ("" if os.name == "nt" else "bin")]
     return [str(d) for d in dirs if d.is_dir()]
 
 
 def ensure_project_venv() -> None:
-    """Enforce that the current process is running inside the virtual environment.
-    If running under system Python, automatically re-executes using the engine .venv python.
-    Also ensures engine node_modules/.bin is prepended to PATH for HyperFrames CLI.
-    """
     load_global_env()
     venv_py = get_project_venv_python()
     venv_dir = str(Path(venv_py).parent.parent.absolute())
@@ -217,7 +193,6 @@ def ensure_project_venv() -> None:
 
 
 def configure_stdio() -> None:
-    """Call once at script entry so non-ASCII titles never crash the console."""
     for stream in (sys.stdout, sys.stderr):
         reconfigure = getattr(stream, "reconfigure", None)
         if reconfigure is not None:
@@ -235,11 +210,6 @@ def tail(text: str | bytes | None, limit: int = 1500) -> str:
 
 def run(cmd: list[str], *, timeout: float | None = None, check: bool = True,
         cwd: str | None = None) -> subprocess.CompletedProcess:
-    """Run a command, capturing text output. Never uses a shell.
-
-    Raises ToolError with the tail of stderr on failure (when check=True), so
-    the agent sees the real reason instead of a bare traceback.
-    """
     try:
         proc = subprocess.run(
             [str(c) for c in cmd], capture_output=True, encoding="utf-8",
@@ -257,7 +227,6 @@ def run(cmd: list[str], *, timeout: float | None = None, check: bool = True,
 
 
 def parse_time(value) -> float | None:
-    """Accept SS, MM:SS, HH:MM:SS (fractions allowed). None passes through."""
     if value is None or value == "":
         return None
     if isinstance(value, (int, float)):
@@ -276,7 +245,6 @@ def parse_time(value) -> float | None:
 
 
 def fmt_time(seconds: float, decimals: int = 0) -> str:
-    """MM:SS (or HH:MM:SS), optionally with decimals: 01:05.3"""
     seconds = max(0.0, float(seconds))
     if decimals:
         whole = int(seconds)

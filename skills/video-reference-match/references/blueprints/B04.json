@@ -546,5 +546,32 @@
  },
  "quality_score": 3,
  "brand_prompt": "Use /video-pipeline with /video-captions on videos/<project>. Apply style blueprint B04 (video-reference-match/references/blueprints/B04.json) to this brand.\nCanvas: the blueprint is native 16:9 (1920x1080, 30 fps). For a vertical 1080x1920 cut use the short-side rule: keep the same px, keep x centring, put lower-band callouts at ~80-85 % height and the title at ~50 %. All positions below are % of frame.\n\nBRAND TOKENS (use the brand's colour/font for each role; keep the contrast relationship: {{TEXT}} and {{ACCENT}} must stay >= 4.5:1 on {{SURFACE}} / {{CARD_BG}}; graphics stay light while the talking head stays dark)\n- {{TEXT}}      text on white graphics, product title     default #111111\n- {{ACCENT}}    real-price text                           default #1D6E96 (teal-blue)\n- {{ACCENT_2}}  strike line on wrong prices               default saturated red (not measured)\n- {{SURFACE}}   graphic canvas                            default #F8F6F9 (near-white)\n- {{CARD_BG}}   price pills, cards, windows               default #F8F9FC\n- {{FONT_DISPLAY}} title, price, CTA                      default Inter 500 (medium neo-grotesque)\n- {{FONT_BODY}}    labels, pills, cards                   default Inter 500\n- {{HANDLE}}    shown inside profile-style proof cards (\"@handle\")\n- {{LOGO}}      small logo badge in a corner of the curriculum split, and logo tiles in the hook graphic\n\nCAPTIONS\n1. Add NO running speech captions. All on-screen text is short callouts in {{FONT_DISPLAY}}, tracking 0.\n\nOTHER TEXT (only where the script has a matching beat)\n2. Product title over a collage: 2x3 grid of rounded image/product cards with a soft white radial glow in the middle; title in {{FONT_DISPLAY}} at 104 px, {{TEXT}}, centred at 50 % height (x ~28.7-71.2 % on 16:9).\n3. Price ladder (one pill per spoken wrong guess, ~30 frames apart, left to right): {{CARD_BG}} rounded pills ~14.5 % W each, evenly across x 6-93 %, y 81-90 % (16:9) on a translucent dark band; on vertical stack 2-3 per row at ~80-86 %. Text dark #2A2A2A {{FONT_BODY}}; each pill crossed by a {{ACCENT_2}} diagonal strike from top-left to bottom-right that overshoots the pill.\n4. Real price: one larger {{CARD_BG}} rounded pill (x 40-60 %, y 78.1-92.5 % on 16:9; centred at ~82 % on vertical), price in {{FONT_DISPLAY}} at 86 px, {{ACCENT}}; pops in (back.out(1.4), ~8 frames) with small sparkle particles.\n5. CTA for the last ~150 frames: 'Comment \"KEYWORD\"' in {{FONT_DISPLAY}} at 83 px, #FFFFFF, centred at ~87 % (16:9) / ~85 % (vertical) on a faint frosted dark panel (x ~30-70 %, y ~81-93 %).\n6. Hook graphic (~3-4 % of runtime): three logo tiles on {{SURFACE}} with a small label (\"Label here\") above a grey progress bar that fills over ~45 frames.\n\nEDIT DEVICES\n7. Pixel-glitch reveal (~10 frames) from the talking head into a collage ~45 frames in.\n8. Social proof: 3 profile-style cards ({{HANDLE}}, counts) stack in on a white grid over ~180 frames.\n9. Curriculum (~41-79 % of runtime): speaker in a rounded card on the left ~35 % W of a {{SURFACE}} canvas; thin vertical timeline with dot markers and grey 'Chapter 0X: Label' labels; a new chapter label + screen-recording window slides in on the right every ~120 frames (power3.out); {{LOGO}} badge in a corner.\n10. Talking-head blocks: static MCU, dark low-key set; hard cuts back from graphics. In a short cut, punch in or add a callout at least every ~120-180 frames.\n\nGRADE\n11. Grade from the user's footage (video-style / grade.py); target look: high-contrast, muted, neutral-warm talking head (low-key, warm bokeh, natural skin) against clean bright graphics.\n\nAUDIO\n12. Voice only, no music bed. Soft whoosh/tick on graphic slide-ins (about a third of cuts), a small sparkle on the price pop. Master to about -14.4 LUFS, true peak <= -1 dBTP.\n\nVERIFY before rendering (on 1080x1920; on 16:9 scale the box y-ranges with the canvas)\na) Render a test frame with 'Comment \"KEY WORD\"' over a dark area and a real-price pill with \"KEY WORD\", then measure:\n   python video-reference-match/scripts/caption_probe.py <test.mp4> --out <dir> --at <t> --box 0.05,0.82,0.95,0.88 --ink \"#FFFFFF:40\"\n   python video-reference-match/scripts/caption_probe.py <test.mp4> --out <dir> --at <t> --box 0.3,0.79,0.7,0.85 --ink \"{{ACCENT}}:60\"\nb) Expected ink for any word: video-reference-match/scripts/fit_font.py with {{FONT_DISPLAY}} at the px above (reference ink heights on 1080x1920: CTA and price 3.28 % H, title 4.14 % H). Required: within ±0.5 % H of the fit_font.py value; positions within ±1 %; colours equal to the tokens.\n",
- "caption_family": "title-only"
+ "caption_family": "title-only",
+ "hyperframes_compositions": [
+  {
+   "name": "flowchart",
+   "role": "Evolving course curriculum and framework diagram",
+   "type": "block"
+  },
+  {
+   "name": "constellation-hub",
+   "role": "Connected module feature nodes expanding from center",
+   "type": "component"
+  },
+  {
+   "name": "mk-specs-list",
+   "role": "Clean course deliverables and feature checklist",
+   "type": "block"
+  },
+  {
+   "name": "card-resize",
+   "role": "Card expansion from outline to full curriculum panel",
+   "type": "component"
+  },
+  {
+   "name": "logo-brand-close",
+   "role": "Closing course brand lockup",
+   "type": "component"
+  }
+ ]
 }

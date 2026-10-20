@@ -1,42 +1,5 @@
 #!/usr/bin/env python3
-"""grade.py: cinematic, high-retention color grading engine for creator videos.
-
-Provides professional 3-way color grading filter chains (shadows/lift, midtones/gamma,
-highlights/gain, contrast S-curves, skin tone protection, color temperature, vibrance,
-and unsharp clarity) via FFmpeg filter graphs, with side-by-side preview comparisons.
-
-Presets (10 Studio & Cinema Presets):
-  kodak-portra-warm      Kodak Portra 400: Golden skin tones, soft highlight rolloff, lifted blacks, organic contrast.
-  hollywood-teal-orange  Blockbuster cinema: Teal shadow split, warm amber midtones/highlights, punchy dynamic range.
-  fuji-pro-cinematic     Fuji Eterna / Pro 400H: Pastel greens/cool mids, soft rolloff, natural documentary skin tones.
-  vox-documentary        Investigative journalism: Deep true blacks, crisp micro-clarity, 5600K neutral daylight.
-  magnates-gold          MagnatesMedia style: Amber-gold midtone bias, rich contrast with deep true blacks, rich accents.
-  modern-tech            Clean 5800K daylight, deep blacks, high clarity, vivid saturated tech accents.
-  moody-film             Analog 35mm print curve, softened highlights, lifted deep blacks, warm shadows, fine grain.
-  vibrant-pop            High-energy social feed look, rich color saturation, dynamic contrast punch, warm skin tones.
-  nordic-cold            Desaturated Scandinavian drama look, cool blue shadows, muted mids, soft silvery highlights.
-  studio-clean-balanced  Precision Rec.709 balanced studio correction, phone sensor cast removal, neutral skin fidelity.
-
-Formula Mode:
-  Explicitly control the 3-way color wheels:
-    --shadows       (-1.0 to 1.0): Black floor lift/crush and low-tone density
-    --midtones      (0.5 to 1.8): Midtone gamma exposure and voice clarity
-    --highlights    (-1.0 to 1.0): White ceiling rolloff and clipping protection
-    --contrast      (0.8 to 1.5): Contrast S-curve
-    --saturation    (0.0 to 2.0): Global color saturation and vibrance
-    --temperature   (Kelvin): Color temperature balance (e.g. 5600, 6400)
-    --sharpness     (0.0 to 1.5): Unsharp mask clarity
-
-Usage:
-  # Generate comparison preview grid of top presets on a keyframe
-  python3 grade.py preview --input raw.mp4 --out grade-comparison.jpg [--at 3.0]
-
-  # Apply a preset to a video
-  python3 grade.py apply --input raw.mp4 --out graded.mp4 --preset kodak-portra-warm
-
-  # Apply custom formula 3-way grade
-  python3 grade.py apply --input raw.mp4 --out graded.mp4 --formula --shadows 0.03 --midtones 1.08 --highlights -0.04 --contrast 1.14 --saturation 1.12
-"""
+"""grade.py: cinematic, high-retention color grading engine for creator videos."""
 from __future__ import annotations
 
 import argparse
@@ -53,81 +16,42 @@ import runtime
 runtime.ensure_project_venv()
 
 # -----------------------------------------------------------------------------
-# 10 Professional Master Presets (Cinema & Digital Creator Standards)
+# Photographic Color Correction & Enhancement Standards (No Stylized Filters)
 # -----------------------------------------------------------------------------
 
 PRESET_FILTERS = {
-    "kodak-portra-warm": (
-        "colorlevels=rimin=0.03:gimin=0.03:bimin=0.03:rimax=0.96:gimax=0.96:bimax=0.96,"
-        "colorbalance=rm=0.05:gm=0.02:bm=-0.04:rh=0.03:gh=0.02:bh=-0.03,"
-        "colortemperature=temperature=6400,"
-        "eq=gamma=1.06:gamma_weight=0.6:contrast=1.12:saturation=1.10,"
-        "unsharp=3:3:0.5:3:3:0.0"
+    "enhanced-natural": (
+        "colortemperature=temperature=5650,"
+        "colorlevels=rimin=0.005:gimin=0.005:bimin=0.005:rimax=0.995:gimax=0.995:bimax=0.995,"
+        "eq=gamma=1.02:gamma_weight=0.5:contrast=1.05:saturation=1.05,"
+        "unsharp=3:3:0.12:3:3:0.0"
     ),
-    "hollywood-teal-orange": (
-        "colorlevels=rimin=0.01:gimin=0.01:bimin=0.02:rimax=0.98:gimax=0.98:bimax=0.98,"
-        "colorbalance=rs=-0.04:gs=0.02:bs=0.08:rm=0.06:gm=0.01:bm=-0.05:rh=0.07:gh=0.03:bh=-0.06,"
-        "eq=gamma=1.08:gamma_weight=0.5:contrast=1.18:saturation=1.20,"
-        "unsharp=3:3:0.6:3:3:0.0"
-    ),
-    "fuji-pro-cinematic": (
-        "colorlevels=rimin=0.04:gimin=0.04:bimin=0.04:rimax=0.95:gimax=0.95:bimax=0.95,"
-        "colorbalance=rs=0.0:gs=0.03:bs=0.02:rm=0.02:gm=0.01:bm=0.0:rh=-0.02:gh=0.01:bh=-0.02,"
-        "eq=gamma=1.05:gamma_weight=0.7:contrast=1.08:saturation=0.96,"
-        "unsharp=3:3:0.4:3:3:0.0"
-    ),
-    "vox-documentary": (
-        "colorlevels=rimin=0.01:gimin=0.01:bimin=0.01:rimax=0.99:gimax=0.99:bimax=0.99,"
+    "vibrant-enhanced": (
         "colortemperature=temperature=5600,"
-        "colorbalance=rm=0.01:gm=0.0:bm=-0.01,"
-        "eq=gamma=1.02:gamma_weight=0.5:contrast=1.14:saturation=1.08,"
-        "unsharp=5:5:0.8:5:5:0.0"
+        "colorlevels=rimin=0.004:gimin=0.004:bimin=0.004:rimax=0.996:gimax=0.996:bimax=0.996,"
+        "eq=gamma=1.03:gamma_weight=0.5:contrast=1.08:saturation=1.08,"
+        "unsharp=3:3:0.18:3:3:0.0"
     ),
-    "magnates-gold": (
-        "colorlevels=rimin=0.02:gimin=0.01:bimin=0.01:rimax=0.97:gimax=0.97:bimax=0.95,"
-        "colorbalance=rm=0.08:gm=0.04:bm=-0.07:rh=0.06:gh=0.04:bh=-0.05,"
-        "colortemperature=temperature=6300,"
-        "eq=gamma=1.05:gamma_weight=0.5:contrast=1.20:saturation=1.16,"
-        "unsharp=3:3:0.7:3:3:0.0"
-    ),
-    "modern-tech": (
-        "colorlevels=rimin=0.02:gimin=0.02:bimin=0.02:rimax=0.98:gimax=0.98:bimax=0.98,"
-        "colortemperature=temperature=5800,"
-        "colorbalance=rs=-0.02:bs=0.04:rm=0.02:bm=0.02,"
-        "eq=gamma=1.05:contrast=1.12:saturation=1.18,"
-        "unsharp=5:5:0.7:5:5:0.0"
-    ),
-    "moody-film": (
-        "colorlevels=rimin=0.06:gimin=0.06:bimin=0.06:rimax=0.94:gimax=0.94:bimax=0.94,"
-        "colorbalance=rs=0.04:gs=0.01:bs=-0.03:rm=0.03:gm=0.01:bm=-0.02,"
-        "eq=contrast=1.06:brightness=0.01:saturation=0.92,"
-        "noise=alls=5:allf=t+u"
-    ),
-    "vibrant-pop": (
-        "colorlevels=rimin=0.01:gimin=0.01:bimin=0.01:rimax=0.98:gimax=0.98:bimax=0.98,"
-        "colortemperature=temperature=6100,"
-        "colorbalance=rm=0.04:gm=0.01:bm=-0.02,"
-        "eq=gamma=1.08:contrast=1.16:brightness=0.01:saturation=1.24,"
-        "unsharp=3:3:0.8:3:3:0.0"
-    ),
-    "nordic-cold": (
-        "colorlevels=rimin=0.03:gimin=0.03:bimin=0.05:rimax=0.96:gimax=0.96:bimax=0.98,"
-        "colorbalance=rs=-0.05:gs=0.01:bs=0.08:rm=-0.03:bm=0.04,"
-        "eq=gamma=1.02:contrast=1.10:saturation=0.85,"
-        "unsharp=3:3:0.5:3:3:0.0"
-    ),
-    "studio-clean-balanced": (
-        "colorbalance=rs=0.01:gs=-0.02:bs=0.01:rm=0.02:gm=-0.01:bm=0.0:rh=0.0:gh=-0.01:bh=0.0,"
-        "colortemperature=temperature=5800,"
-        "eq=gamma=1.04:gamma_weight=0.5:contrast=1.08:saturation=1.08,"
-        "unsharp=3:3:0.5:3:3:0.0"
+    "neutral-true": (
+        "colortemperature=temperature=5650,"
+        "colorlevels=rimin=0.002:gimin=0.002:bimin=0.002:rimax=0.998:gimax=0.998:bimax=0.998,"
+        "eq=contrast=1.03:saturation=1.02"
     ),
 }
 
-# Backward compatibility alias
-PRESET_FILTERS["commercial-clean"] = PRESET_FILTERS["studio-clean-balanced"]
-PRESET_FILTERS["cinematic-warm"] = PRESET_FILTERS["kodak-portra-warm"]
-PRESET_FILTERS["neutral-correct"] = PRESET_FILTERS["studio-clean-balanced"]
+# Compatibility aliases
+PRESET_FILTERS["studio-clean-balanced"] = PRESET_FILTERS["enhanced-natural"]
+PRESET_FILTERS["kodak-portra-warm"] = PRESET_FILTERS["enhanced-natural"]
+PRESET_FILTERS["commercial-clean"] = PRESET_FILTERS["enhanced-natural"]
+PRESET_FILTERS["neutral-correct"] = PRESET_FILTERS["neutral-true"]
+PRESET_FILTERS["hollywood-teal-orange"] = PRESET_FILTERS["vibrant-enhanced"]
+PRESET_FILTERS["vox-documentary"] = PRESET_FILTERS["enhanced-natural"]
+PRESET_FILTERS["magnates-gold"] = PRESET_FILTERS["vibrant-enhanced"]
+PRESET_FILTERS["fuji-pro-cinematic"] = PRESET_FILTERS["enhanced-natural"]
+PRESET_FILTERS["moody-film"] = PRESET_FILTERS["enhanced-natural"]
+PRESET_FILTERS["nordic-cold"] = PRESET_FILTERS["neutral-true"]
+PRESET_FILTERS["vibrant-pop"] = PRESET_FILTERS["vibrant-enhanced"]
+
 
 
 # -----------------------------------------------------------------------------
@@ -144,16 +68,6 @@ def build_tone_formula(
     sharpness: float = 0.5,
     tint: float = 0.0,
 ) -> str:
-    """Calculates a custom 3-way color grade filter string from acoustic/visual tone parameters.
-
-    shadows:    -1.0 (deep crush) to +1.0 (lifted film black)
-    midtones:    0.5 (darker mood) to 1.8 (bright exposure)
-    highlights: -1.0 (soft rolloff/protect) to +1.0 (specular pop)
-    contrast:    0.8 to 1.5
-    saturation:  0.0 to 2.0
-    temperature: Kelvin (e.g. 5600 daylight, 6400 warm)
-    sharpness:   0.0 to 1.5 unsharp mask
-    """
     parts = []
 
     # 1. Color Levels (Black Floor & White Ceiling)
@@ -189,11 +103,187 @@ def build_tone_formula(
     return ",".join(parts)
 
 
-def get_filter_string(preset: str, custom_params: dict | None = None) -> str:
-    """Returns the FFmpeg video filter string for the preset or custom parameters."""
+def is_hlg_hdr(video_path: str | None) -> bool:
+    if not video_path or not os.path.exists(video_path):
+        return False
+    try:
+        cmd = ["ffprobe", "-v", "error", "-select_streams", "v:0",
+               "-show_entries", "stream=color_transfer,color_primaries,pix_fmt",
+               "-of", "json", video_path]
+        r = subprocess.run(cmd, capture_output=True, text=True, check=True)
+        data = json.loads(r.stdout)
+        s = data.get("streams", [{}])[0]
+        trc = s.get("color_transfer", "").lower()
+        pri = s.get("color_primaries", "").lower()
+        return "arib-std-b67" in trc or "bt2020" in pri
+    except Exception:
+        return False
+
+
+def get_base_format_filter(input_video: str | None = None) -> str:
+    if input_video and is_hlg_hdr(input_video):
+        return "colorspace=all=bt709:iprimaries=bt2020:ispace=bt2020nc:itrc=bt2020-10:format=yuv420p"
+    return "format=yuv420p"
+
+
+def calculate_dynamic_color_correction(
+    video_path: str,
+    timestamps: list[float] | None = None
+) -> dict:
+    default_res = {
+        "vf": PRESET_FILTERS["enhanced-natural"],
+        "params": {"imin": 0.005, "imax": 0.995, "gamma": 1.02, "contrast": 1.05, "saturation": 1.05, "temperature": 5650, "sharpness": 0.12},
+        "metrics": {"p1_shadow": 1.0, "p50_mid": 128.0, "p99_highlight": 254.0, "mean_saturation": 0.30}
+    }
+    if not video_path or not os.path.exists(video_path):
+        return default_res
+
+    try:
+        import cv2
+        import numpy as np
+    except ImportError:
+        return default_res
+
+    cap = cv2.VideoCapture(video_path)
+    if not cap.isOpened():
+        return default_res
+
+    total_frames = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
+    fps = cap.get(cv2.CAP_PROP_FPS) or 30.0
+    duration = max(1.0, total_frames / fps)
+
+    if not timestamps:
+        timestamps = [duration * p for p in [0.15, 0.35, 0.60, 0.85]]
+
+    all_y = []
+    all_sat = []
+    all_r, all_g, all_b = [], [], []
+    lap_vars = []
+
+    for ts in timestamps:
+        cap.set(cv2.CAP_PROP_POS_MSEC, ts * 1000)
+        ret, frame = cap.read()
+        if not ret or frame is None:
+            continue
+        h, w = frame.shape[:2]
+        # Crop center 70% width, 80% height (speaker/subject focus)
+        cy0, cy1 = int(h * 0.1), int(h * 0.9)
+        cx0, cx1 = int(w * 0.15), int(w * 0.85)
+        crop = frame[cy0:cy1, cx0:cx1]
+
+        b, g, r = cv2.split(crop)
+        yuv = cv2.cvtColor(crop, cv2.COLOR_BGR2YUV)
+        y = yuv[:, :, 0]
+        hsv = cv2.cvtColor(crop, cv2.COLOR_BGR2HSV)
+        sat = hsv[:, :, 1] / 255.0
+
+        all_y.append(y.flatten())
+        all_sat.append(sat.flatten())
+        all_r.append(r.flatten())
+        all_g.append(g.flatten())
+        all_b.append(b.flatten())
+
+        gray = cv2.cvtColor(crop, cv2.COLOR_BGR2GRAY)
+        lap_vars.append(cv2.Laplacian(gray, cv2.CV_64F).var())
+
+    cap.release()
+
+    if not all_y:
+        return default_res
+
+    concat_y = np.concatenate(all_y)
+    concat_sat = np.concatenate(all_sat)
+    concat_r = np.concatenate(all_r)
+    concat_g = np.concatenate(all_g)
+    concat_b = np.concatenate(all_b)
+
+    # 1. Luminance & Dynamic Range
+    p1 = float(np.percentile(concat_y, 1.0))
+    p99 = float(np.percentile(concat_y, 99.0))
+    p50 = float(np.median(concat_y))
+    std_y = float(np.std(concat_y))
+
+    # Black floor lift / White ceiling clamp
+    imin = round(max(0.004, min(0.08, (p1 / 255.0) * 0.85)), 3)
+    imax = round(min(0.998, max(0.92, (p99 / 255.0) + (1.0 - p99 / 255.0) * 0.3)), 3)
+
+    # 2. Midtones (Gamma) & Contrast
+    curr_mid = p50 / 255.0
+    gamma = round(max(0.92, min(1.15, (0.48 / max(0.2, curr_mid)) ** 0.5)), 2)
+
+    if std_y < 45.0:
+        contrast = 1.08
+    elif std_y > 65.0:
+        contrast = 1.02
+    else:
+        contrast = round(1.0 + (55.0 - std_y) * 0.002, 2)
+        contrast = max(1.02, min(1.10, contrast))
+
+    # 3. Saturation & Vibrance
+    mean_sat = float(np.mean(concat_sat))
+    if mean_sat < 0.24:
+        sat_boost = round(min(1.25, max(1.04, 0.28 / max(0.12, mean_sat))), 2)
+    elif mean_sat > 0.38:
+        sat_boost = 0.98
+    else:
+        sat_boost = 1.05
+
+    # 4. Color Balance (Temperature / Tint)
+    mean_r, mean_g, mean_b = float(np.mean(concat_r)), float(np.mean(concat_g)), float(np.mean(concat_b))
+    rb_ratio = mean_r / max(1.0, mean_b)
+    if rb_ratio > 1.08:
+        temp = 5400  # cool down warm cast
+    elif rb_ratio < 0.92:
+        temp = 6200  # warm up cool cast
+    else:
+        temp = 5650  # neutral balanced daylight
+
+    # 5. Clarity
+    mean_lap = float(np.mean(lap_vars)) if lap_vars else 100.0
+    sharpness = 0.12 if mean_lap < 300 else 0.08
+
+    vf = (
+        f"colortemperature=temperature={temp},"
+        f"colorlevels=rimin={imin}:gimin={imin}:bimin={imin}:rimax={imax}:gimax={imax}:bimax={imax},"
+        f"eq=gamma={gamma}:gamma_weight=0.5:contrast={contrast}:saturation={sat_boost},"
+        f"unsharp=3:3:{sharpness}:3:3:0.0"
+    )
+
+    metrics = {
+        "p1_shadow": round(p1, 1),
+        "p50_mid": round(p50, 1),
+        "p99_highlight": round(p99, 1),
+        "std_y_contrast": round(std_y, 1),
+        "mean_saturation": round(mean_sat, 3),
+        "mean_r": round(mean_r, 1),
+        "mean_g": round(mean_g, 1),
+        "mean_b": round(mean_b, 1),
+        "rb_ratio": round(rb_ratio, 2),
+        "laplacian_clarity": round(mean_lap, 1)
+    }
+
+    params = {
+        "imin": imin,
+        "imax": imax,
+        "gamma": gamma,
+        "contrast": contrast,
+        "saturation": sat_boost,
+        "temperature": temp,
+        "sharpness": sharpness
+    }
+
+    return {
+        "vf": vf,
+        "params": params,
+        "metrics": metrics
+    }
+
+
+def get_filter_string(preset: str = "dynamic", custom_params: dict | None = None, input_video: str | None = None) -> str:
+    base = get_base_format_filter(input_video)
     if custom_params:
         if custom_params.get("formula"):
-            return build_tone_formula(
+            tone = build_tone_formula(
                 shadows=custom_params.get("shadows", 0.0),
                 midtones=custom_params.get("midtones", 1.0),
                 highlights=custom_params.get("highlights", 0.0),
@@ -202,6 +292,7 @@ def get_filter_string(preset: str, custom_params: dict | None = None) -> str:
                 temperature=custom_params.get("temperature"),
                 sharpness=custom_params.get("sharpness", 0.5),
             )
+            return f"{base},{tone}"
         parts = []
         c = custom_params.get("contrast", 1.0)
         s = custom_params.get("saturation", 1.0)
@@ -218,94 +309,116 @@ def get_filter_string(preset: str, custom_params: dict | None = None) -> str:
         if unsharp:
             parts.append(f"unsharp=3:3:{unsharp}:3:3:0.0")
         if parts:
-            return ",".join(parts)
-    return PRESET_FILTERS.get(preset, PRESET_FILTERS["kodak-portra-warm"])
+            return f"{base},{','.join(parts)}"
+
+    # If dynamic calculation is requested or input_video provided with dynamic/enhanced-natural
+    if preset in ("dynamic", "auto") or (input_video and preset in ("enhanced-natural", "dynamic")):
+        if input_video and os.path.exists(input_video):
+            dyn = calculate_dynamic_color_correction(input_video)
+            return f"{base},{dyn['vf']}"
+
+    filt = PRESET_FILTERS.get(preset, PRESET_FILTERS["enhanced-natural"])
+    return f"{base},{filt}"
 
 
 def extract_frame(video: str, at_sec: float, out_path: str, vf: str | None = None) -> bool:
-    """Extracts a single frame from video at the given timestamp with optional filter."""
     cmd = ["ffmpeg", "-y", "-ss", f"{at_sec:.3f}", "-i", video]
+    base = get_base_format_filter(video)
     if vf:
-        cmd += ["-vf", vf]
+        full_vf = vf if ("format=" in vf or "colorspace=" in vf) else f"{base},{vf}"
+        cmd += ["-vf", full_vf]
+    else:
+        cmd += ["-vf", base]
     cmd += ["-vframes", "1", "-q:v", "2", out_path]
     r = subprocess.run(cmd, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
     return r.returncode == 0 and os.path.exists(out_path) and os.path.getsize(out_path) > 0
 
 
-def generate_preview_grid(video: str, out_image: str, at_sec: float = 3.0) -> str:
-    """Generates a labeled comparison grid showing raw footage vs curated presets."""
+def generate_frame_correction_sheet(video: str, out_image: str, timestamps: list[float] | None = None,
+                                    preset: str = "dynamic") -> str:
     try:
         from PIL import Image, ImageDraw, ImageFont
     except ImportError:
-        sys.exit("generate_preview_grid requires pillow (python3 -m pip install pillow)")
+        sys.exit("generate_frame_correction_sheet requires pillow (python3 -m pip install pillow)")
 
-    presets_to_show = [
-        ("Raw Footage (Unadjusted)", None),
-        ("Kodak Portra Warm (Golden Skin & Soft Lift)", "kodak-portra-warm"),
-        ("Hollywood Teal & Orange (Cinema Depth)", "hollywood-teal-orange"),
-        ("Vox Documentary (Crisp Micro-Clarity & Neutral)", "vox-documentary"),
-        ("Magnates Gold (Luxury Wealth Breakdown)", "magnates-gold"),
-        ("Fuji Pro Cinematic (Pastel Film Tones)", "fuji-pro-cinematic"),
-        ("Modern Tech (Clean 5800K & High Vibrance)", "modern-tech"),
-        ("Moody Film (35mm Analog Print & Soft Grain)", "moody-film"),
-        ("Vibrant Pop (Social Media High-Energy)", "vibrant-pop"),
-        ("Nordic Cold (Cool Cyan Drama & Muted)", "nordic-cold"),
-    ]
+    if not timestamps:
+        timestamps = [3.0, 15.0, 30.0, 45.0]
+
+    dyn_info = None
+    if preset in ("dynamic", "enhanced-natural", "auto"):
+        dyn_info = calculate_dynamic_color_correction(video, timestamps=timestamps)
+        vf = dyn_info["vf"]
+    else:
+        vf = PRESET_FILTERS.get(preset, PRESET_FILTERS["enhanced-natural"])
 
     with tempfile.TemporaryDirectory() as tmpdir:
-        rendered_images = []
-        for label, preset in presets_to_show:
-            tmp_img = os.path.join(tmpdir, f"{preset or 'raw'}.jpg")
-            vf = PRESET_FILTERS.get(preset) if preset else None
-            ok = extract_frame(video, at_sec, tmp_img, vf)
-            if not ok:
-                extract_frame(video, 0.5, tmp_img, vf)
-            if os.path.exists(tmp_img):
-                rendered_images.append((label, Image.open(tmp_img).convert("RGB")))
+        pairs = []
+        for idx, ts in enumerate(timestamps):
+            raw_img = os.path.join(tmpdir, f"raw_{idx}.jpg")
+            enh_img = os.path.join(tmpdir, f"enh_{idx}.jpg")
 
-        if not rendered_images:
-            sys.exit(f"Failed to extract frames from {video}")
+            extract_frame(video, ts, raw_img, vf=None)
+            extract_frame(video, ts, enh_img, vf=vf)
 
-        # Tile images into a responsive grid
-        cols = 3 if len(rendered_images) >= 6 else 2
-        rows = (len(rendered_images) + cols - 1) // cols
+            if os.path.exists(raw_img) and os.path.exists(enh_img):
+                pairs.append((ts, Image.open(raw_img).convert("RGB"), Image.open(enh_img).convert("RGB")))
 
-        orig_w, orig_h = rendered_images[0][1].size
-        cell_w = 460
+        if not pairs:
+            sys.exit(f"Failed to extract frames for color correction comparison from {video}")
+
+        orig_w, orig_h = pairs[0][1].size
+        cell_w = 480
         cell_h = int(cell_w * (orig_h / orig_w))
-        header_h = 36
+        header_h = 42
         padding = 16
+
+        cols = 2
+        rows = len(pairs)
 
         total_w = cols * cell_w + (cols + 1) * padding
         total_h = rows * (cell_h + header_h) + (rows + 1) * padding
 
-        grid = Image.new("RGB", (total_w, total_h), color="#0e121a")
-        draw = ImageDraw.Draw(grid)
+        sheet = Image.new("RGB", (total_w, total_h), color="#0f172a")
+        draw = ImageDraw.Draw(sheet)
 
         try:
             font = ImageFont.truetype("/System/Library/Fonts/Helvetica.ttc", 17)
         except Exception:
             font = ImageFont.load_default()
 
-        for idx, (label, img) in enumerate(rendered_images):
-            r = idx // cols
-            c = idx % cols
-            x = padding + c * (cell_w + padding)
-            y = padding + r * (cell_h + header_h + padding)
+        for r_idx, (ts, img_raw, img_enh) in enumerate(pairs):
+            y = padding + r_idx * (cell_h + header_h + padding)
 
-            # Draw header banner
-            header_color = "#1f2937" if "Raw" not in label else "#b45309"
-            draw.rectangle([x, y, x + cell_w, y + header_h], fill=header_color)
-            draw.text((x + 12, y + 8), label, fill="#FFFFFF" if "Raw" not in label else "#FEF08A", font=font)
+            # Left: Raw
+            x_raw = padding
+            draw.rectangle([x_raw, y, x_raw + cell_w, y + header_h], fill="#334155")
+            draw.text((x_raw + 14, y + 10), f"Frame at {ts:.1f}s · Original Camera Take", fill="#f1f5f9", font=font)
+            thumb_raw = img_raw.resize((cell_w, cell_h), Image.Resampling.LANCZOS)
+            sheet.paste(thumb_raw, (x_raw, y + header_h))
+            draw.rectangle([x_raw, y + header_h, x_raw + cell_w, y + header_h + cell_h], outline="#475569", width=1)
 
-            thumb = img.resize((cell_w, cell_h), Image.Resampling.LANCZOS)
-            grid.paste(thumb, (x, y + header_h))
-            draw.rectangle([x, y + header_h, x + cell_w, y + header_h + cell_h], outline="#374151", width=1)
+            # Right: Dynamic Corrected & Enhanced
+            x_enh = padding + cell_w + padding
+            draw.rectangle([x_enh, y, x_enh + cell_w, y + header_h], fill="#047857")
+            if dyn_info and "params" in dyn_info:
+                p = dyn_info["params"]
+                title_enh = f"Frame at {ts:.1f}s · Dynamic Correction ({p['imin']}-{p['imax']}, γ{p['gamma']}, {p['saturation']}x)"
+            else:
+                title_enh = f"Frame at {ts:.1f}s · Color Corrected & Enhanced"
+            draw.text((x_enh + 14, y + 10), title_enh, fill="#ecfdf5", font=font)
+            thumb_enh = img_enh.resize((cell_w, cell_h), Image.Resampling.LANCZOS)
+            sheet.paste(thumb_enh, (x_enh, y + header_h))
+            draw.rectangle([x_enh, y + header_h, x_enh + cell_w, y + header_h + cell_h], outline="#059669", width=2)
 
         os.makedirs(os.path.dirname(os.path.abspath(out_image)), exist_ok=True)
-        grid.save(out_image, quality=92)
-        print(f"Color grading comparison preview generated: {out_image}")
+        sheet.save(out_image, quality=94)
+        print(f"Dynamic color correction comparison sheet generated: {out_image}")
         return out_image
+
+
+# Alias for backward compatibility
+generate_preview_grid = generate_frame_correction_sheet
+
 
 
 def apply_grade(
@@ -316,7 +429,6 @@ def apply_grade(
     crf: int = 16,
     preset_speed: str = "fast"
 ) -> bool:
-    """Applies the selected color grade to the video with full BT.709 metadata tagging."""
     vf = get_filter_string(preset, custom_params)
     os.makedirs(os.path.dirname(os.path.abspath(out_video)), exist_ok=True)
 

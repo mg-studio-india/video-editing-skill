@@ -323,5 +323,22 @@
  },
  "quality_score": 1,
  "brand_prompt": "Use /video-pipeline with /video-captions on videos/<project>. Apply style blueprint B28 (video-reference-match/references/blueprints/B28.json) to this brand.\n\nBRAND TOKENS (use the brand's colour for each role; keep the contrast relationship — text and accent must stay >= 4.5:1 / >= 3:1 against what sits behind them on the footage):\n- {{TEXT}}      default #F7D312 (headline yellow)\n- {{ACCENT}}    default #F7D312 (same; single-colour style)\n- {{ACCENT_2}}  default none\n- {{SURFACE}}   default none (headline sits on a dark area of the footage)\n- {{CARD_BG}}   default none\n- {{FONT_DISPLAY}} default Instrument Serif Regular (condensed high-contrast serif); local fallback Playfair Display 500 at scaleX ~0.6\n- {{FONT_BODY}}    default same\n- {{HANDLE}}    default @handle\n- {{LOGO}}      default the brand's logo file (transparent PNG/SVG)\nThe headline needs a dark band of footage behind it: {{TEXT}} must stay >= 4.5:1 there; a bright brand colour works, a dark one does not.\nCanvas 1080x1920, 24 fps.\n\nCAPTIONS\n1. No captions (the audio is a dialogue / trend track).\n\nOTHER TEXT\n2. One persistent 2-line headline for the whole clip, sentence case, no full stop (placeholder 'Headline here, lead words' / 'KEY WORD here'). {{FONT_DISPLAY}} at ~80 px with line 2 slightly bigger, {{TEXT}}, tracking -0.01 em, no stroke / shadow / box.\n3. Placement: band 14.2-25.2 % H on the empty dark wall / ceiling above the heads; line 1 cap top 15.0 %, baseline 19.4 %; line 2 baseline 25.2 % (baseline pitch ~5.8 % H, descenders touching ascenders); centred block, centre x ~46 %.\n4. Animation: none — on from frame 0 to the last frame.\n5. No {{LOGO}}, watermark or end card.\n6. Edit: one locked-off two-shot, no cuts; let the audio carry the joke.\n\nGRADE\nGrade from the user's footage (video-style / grade.py); target look: moody low-key, warm skin, deep shadows, slight magenta/purple corner cast.\n\nVERIFY before rendering\na) Render the headline with 'Another' on line 1 and measure: python3 video-reference-match/scripts/caption_probe.py <test-render> --out <dir> --at <t> --box 0.1,0.14,0.85,0.26 --ink \"{{TEXT}}:60\"\n   Expected (±0.5 % H, ±2 % W): 'Another' ink 4.45 % H / 21.1 % W. Playfair cannot hit both (it is ~40 % too wide); with Instrument Serif solve the px for height, then check width.\nb) Any word / font: python3 video-reference-match/scripts/fit_font.py --font \"<font weight>\" --word \"<word>\" --ink 4.45 --width 21.1 --tracking -0.01 gives the matching px for the calibration word; for other words pass --ink only. Re-check line 2 at ~5.0 % H for a 2-word line with ascenders. (fit_font.py needs a target: --ink and/or --width; it returns the px that reproduces that ink for YOUR word plus the width it will read at that px. Requires Pillow.)\nc) Positions within ±1 % H: line 1 baseline 19.4 %, line 2 baseline 25.2 %.",
- "caption_family": "title-only"
+ "caption_family": "title-only",
+ "hyperframes_compositions": [
+  {
+   "name": "lt-dark-card",
+   "role": "Moody dialog label card",
+   "type": "block"
+  },
+  {
+   "name": "caption-blend-difference",
+   "role": "Inverted difference-blend subtitles",
+   "type": "component"
+  },
+  {
+   "name": "vignette",
+   "role": "Cinematic moody vignette",
+   "type": "component"
+  }
+ ]
 }

@@ -401,5 +401,27 @@
  },
  "quality_score": 4,
  "brand_prompt": "Use /video-pipeline with /video-captions on videos/<project>. Apply style blueprint B26 (video-reference-match/references/blueprints/B26.json) to this brand.\nCanvas 1080x1920, 30 fps (reference 29.97). All positions are % of frame; px are at 1080x1920.\n\nBRAND TOKENS (use the brand's colour/font for each role; keep the contrast relationship: {{TEXT}} >= 7:1 on {{CARD_BG}}; the tier ramp must stay a clear hot-to-cool order from {{ACCENT}} (top tier) to {{ACCENT_2}} (bottom tier) with dark letters >= 4.5:1 on each tile)\n- {{TEXT}}      captions, title text, icon cards       default #FFFFFF\n- {{ACCENT}}    top-tier (S) label tile                default #FC7E7E (A #FEBD7E, B #FCDC7F, C #FCFC7F, D #BEFD7F interpolate)\n- {{ACCENT_2}}  bottom-tier (E) label tile             default #80FE81\n- {{SURFACE}}   tier board panel                       default #1A1A17\n- {{CARD_BG}}   title box                              default #060606\n- {{FONT_DISPLAY}} title                               default Inter 700 (tight neo-grotesque, -0.05em)\n- {{FONT_BODY}}    captions, card labels               default Inter 600 (-0.05em)\n- {{HANDLE}}    not shown\n- {{LOGO}}      optional small mark inside the board's corner; item icons are the brand's own illustrations\n\nCAPTIONS\n1. English as spoken, sentence case as transcribed; keep full stops and other punctuation.\n2. 1-2 words per caption, one line, replaced as a unit.\n3. Type: {{FONT_BODY}} at 60 px, letter-spacing -0.05em (letters nearly touch), {{TEXT}}, no stroke, no box, faint shadow 0 2px 6px rgba(0,0,0,.25).\n4. Position: centred, centre at 50.2 % of height (y ~964 px), in the gap between the chin and the board top (54.6 %). Same spot on the clean CTA shot.\n5. Animation: hard cut in on the word (up to 2 frames early), hard cut out on the next caption. No fade, pop, slide, highlight or idle motion.\n\nOTHER TEXT\n6. Persistent title for the whole main shot: 2 centred lines (\"Question Title / Goes Here?\") in {{FONT_DISPLAY}} at 70 px, tracking -0.05em, {{TEXT}}, Title Case, on a solid {{CARD_BG}} square-cornered rectangle x 23-76 %, y 7.5-16.8 % (~18 px padding), line pitch 4.7 % H; on from frame 0, static, removed at the cut to the CTA shot.\n7. Tier board: {{SURFACE}} rounded panel x 11.4-87.5 %, y 54.6-92.0 %, six equal rows separated by thin dark lines; left label column (to x 25.3 %) with flat tiles from {{ACCENT}} (S) through A/B/C/D to {{ACCENT_2}} (E), each with a small dark letter. Items are white rounded icon cards (~9.5 % W) with a tiny dark label, placed left to right in their row.\n8. Card animation: rise from below the board into the centre at ~2x size with strong vertical motion blur over ~8 frames, hold until the tier is spoken, then shrink and fly into its row slot in 2-3 frames; next card every ~66 frames.\n9. CTA: hard cut to the same framing with all graphics removed for the final ~7 %; captions only.\n\nEDIT DEVICES\n10. One static MCU for the main shot; no punch-ins. Script cadence: item, tier, reason of 6 words or fewer; include one or two spicy ratings; the last item gets the longest reason.\n\nGRADE\n11. Grade from the user's footage (video-style / grade.py); target look: warm, high-contrast, muted, lamp-lit, natural skin.\n\nAUDIO\n12. Voice only; soft pop on each card arrival and a short tick as it lands in its row. Master to about -14.1 LUFS, true peak <= -1 dBTP.\n\nVERIFY before rendering\na) Render a test frame with the caption \"in the\" over a dark area (not a white shirt) and measure:\n   python video-reference-match/scripts/caption_probe.py <test.mp4> --out <dir> --at <t> --box 0.3,0.47,0.7,0.535 --ink \"{{TEXT}}:20\"\n   Required at the default font: \"in the\" ink 2.34 % ±0.5 of height and 12.1 % ±2 of width; centre y 50.2 % ±0.5. With a brand font, compute the expected ink with video-reference-match/scripts/fit_font.py ({{FONT_BODY}}, 60 px, -0.05em).\nb) Title: render \"KEY WORD\" on each line; expected ink 2.89 % H per caps-height line at the default font (or the fit_font.py value for {{FONT_DISPLAY}} at 70 px); box edges within ±1 %.\n",
- "caption_family": "phrase-plain"
+ "caption_family": "phrase-plain",
+ "hyperframes_compositions": [
+  {
+   "name": "ai-answer-rank",
+   "role": "Animated tier ranking list with rank shifts",
+   "type": "block"
+  },
+  {
+   "name": "badge-pop",
+   "role": "S / A / B / C / D tier badge pop",
+   "type": "component"
+  },
+  {
+   "name": "grid-card-assemble",
+   "role": "Interactive tier list board grid assembly",
+   "type": "component"
+  },
+  {
+   "name": "card-resize",
+   "role": "Item card expanding from board to center spotlight",
+   "type": "component"
+  }
+ ]
 }

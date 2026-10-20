@@ -1,9 +1,5 @@
 #!/usr/bin/env python3
-"""phrase-times.py: where is it said? Finds each phrase in a transcript.json and prints the start of its
-first word and the end of its last word (seconds), so storyboard beats can be timed to word starts without reading
-the whole transcript. Fuzzy on punctuation and case; --after T restricts the search to after T seconds.
-Usage: python3 phrase-times.py --transcript W/transcript.json "most important part" "driving force" ... [--after 30]
-"""
+"""phrase-times.py: where is it said? Finds each phrase in a transcript.json and prints the start of its"""
 import argparse, json, re
 ap = argparse.ArgumentParser(); ap.add_argument("--transcript", required=True); ap.add_argument("phrases", nargs="+"); ap.add_argument("--after", type=float, default=0.0)
 a = ap.parse_args()

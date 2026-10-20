@@ -360,5 +360,22 @@
  },
  "quality_score": 2,
  "brand_prompt": "Use /video-pipeline with /video-captions on videos/<project>. Apply style blueprint B42 (video-reference-match/references/blueprints/B42.json) to this brand.\nThis blueprint has NO captions: one 2-line title on a still opener, then a textless highlight burst. Canvas 1080x1920, 30 fps.\n\nBRAND TOKENS (use the brand's colour for each role; keep the contrast relationship: {{ACCENT}} must stay >= 3:1 on the sky/background behind the title; {{TEXT}} must sit on a non-white area)\n- {{TEXT}}: lead-in line, default #FFFFFF\n- {{ACCENT}}: key phrase, default #FF0021\n- {{ACCENT_2}}: unused, default none\n- {{SURFACE}}: unused (no cards), default none\n- {{CARD_BG}}: unused, default none\n- {{FONT_DISPLAY}}: key phrase brush italic, default Playfair Display 700 italic (Merienda 700 closer in feel)\n- {{FONT_BODY}}: lead-in condensed serif, default Playfair Display 500 (Instrument Serif closer)\n- {{HANDLE}}: not shown in the source\n- {{LOGO}}: not shown in the source\n\nOTHER TEXT (opener only)\n1. First shot near-static, ~44 % of runtime, title in clean sky/background above the subjects' heads. Two centred lines, no stroke/shadow/box:\n   a. Lead-in (\"Lead words\", ~12 characters): {{FONT_BODY}} 63 px, {{TEXT}}, centre y 23.8 % H (x 35-65 %, ink ~4.14 % H). With a condensed serif size it to that ink.\n   b. Key phrase ending in \" :\" (\"KEY WORD :\"): {{FONT_DISPLAY}} 78 px, {{ACCENT}}, centre y 28.7 % H (x 18-82 %), 0.9 % H under line 1; first word regular weight, key word bold, same size (ink ~4.06 % H / 63.3 % W at ~17 characters).\n2. Both lines on from frame 0, static, hard-cut out with the opener shot. No text in the burst.\n\nEDIT\n3. Burst: 16 clips of 6-13 frames (median ~10, ~110 cuts/min, peak ~190) on the music beats, 44 % as 2-3-frame blends and the rest hard cuts; order by intensity and end on the biggest visual so the loop restarts high. No punch-ins.\n\nSOUND: short trend voice line or sting over the opener, then the music drop on the first burst cut. Master to about -14 LUFS, true peak <= -1 dBTP.\nGRADE: Grade from the user's footage (video-style / grade.py); target look: warm, softly faded opener; burst clips kept saturated and natural.\n\nVERIFY before rendering: render the title with the brand's lines (or \"Lead words\" / \"KEY WORD :\") and measure:\n  video-reference-match/scripts/caption_probe.py <render-file> --out <dir> --at 1.0 --box 0.15,0.26,0.85,0.31 --ink \"#FF0021:90\"\n  video-reference-match/scripts/caption_probe.py <render-file> --out <dir> --at 1.0 --box 0.3,0.205,0.7,0.26 --ink \"#FFFFFF:35\"\nSwap the --ink colours to {{ACCENT}} / {{TEXT}}. Compute the expected ink of the actual lines with video-reference-match/scripts/fit_font.py (63 px {{FONT_BODY}}, 78 px {{FONT_DISPLAY}}); a ~17-character key phrase should read ~4.06 % H / 63.3 % W. Line centres within +-1 % of frame height of 23.8 / 28.7 %.",
- "caption_family": "title-only"
+ "caption_family": "title-only",
+ "hyperframes_compositions": [
+  {
+   "name": "char-slam-explode",
+   "role": "Serif title card reveal",
+   "type": "component"
+  },
+  {
+   "name": "flash-through-white",
+   "role": "Flash cut into highlight burst",
+   "type": "block"
+  },
+  {
+   "name": "beat-freeze-cut",
+   "role": "Freeze-frame beat sync on group poses",
+   "type": "block"
+  }
+ ]
 }

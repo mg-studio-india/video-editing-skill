@@ -86,3 +86,12 @@ fixed ffmpeg `crop`, not face tracking. The reframed file becomes that compositi
 
 Record framings, origins, matte windows and reframe plans (aspect, mode, face rate) in `project.json`; a new cut makes
 `jump-frames.json` and every reframe stale.
+
+## 6. Multi-Layout Framing Geometry & Active Backgrounds (Zero Black Voids)
+
+- **Bottom Split Card (70% Standard):** In 9:16 vertical video, the speaker occupies the bottom ~44% of the canvas (`y = H - h`, ~1075px) with rounded top corners (`border-radius: 24px 24px 0 0`) and upward elevation drop-shadow (`0 -18px 45px rgba(0,0,0,.6)`).
+- **Head-Area Focus Crop (Top & Bottom Crop):** Inside the split card, the speaker video is cropped at the top (eliminating dead ceiling headroom) and bottom (cropping out torso/lap) with 1.15x scale and vertical focus centered at 24% ($y \approx 460px$), ensuring the head, eyes, and facial expressions remain prominently visible.
+- **Top Split Card (Alternative):** Used when explicitly requested (speaker occupies top 44% with rounded bottom corners `0 0 24px 24px`).
+- **Floating Corner Squircle (`pip`):** The speaker is enclosed in a floating corner squircle window (`border-radius: 24px`, glass ring border `rgba(255,255,255,.92)`, drop-shadow `0 18px 50px rgba(0,0,0,.45)`).
+- **Studio Mesh Backdrop:** The non-speaker canvas NEVER falls back to an empty black void. It utilizes a deep studio mesh gradient (`radial-gradient(circle at 50% 25%, #1e293b 0%, #0f172a 65%, #020617 100%)`).
+- **HyperFrames Motion Canvas:** The opened graphic space above the speaker is filled with active HyperFrames motion scenes (`b_cards`, `b_drawer`, `b_block` proof components, data counters).
