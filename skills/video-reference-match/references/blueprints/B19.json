@@ -564,5 +564,37 @@
  },
  "quality_score": 4,
  "brand_prompt": "Use /video-pipeline with /video-captions on videos/<project>. Apply style blueprint B19 (video-reference-match/references/blueprints/B19.json) to this brand.\n\nBRAND TOKENS (use the brand's colour/font for each role; keep the contrast relationship: {{ACCENT}} text must stay >= 4.5:1 on its white box, captions >= 3:1 on the footage)\n- {{TEXT}} caption text on footage - default #FFFFFF (navy #0B1327 on light layouts)\n- {{ACCENT}} key-phrase text / headline key words / STEP tags - default royal blue #1F4FD6\n- {{ACCENT_2}} hook title highlight bar - default lime #BDF806 (black text on it)\n- {{SURFACE}} light UI background - default #EEF4FB with a faint dot grid; cards white with soft shadow\n- {{CARD_BG}} dark-mode layout / end card - default navy #091E47 (key box inverts to an {{ACCENT}} box with a thin white outline and white text)\n- {{FONT_DISPLAY}} captions, key box, headlines - default Inter 800 (ExtraBold)\n- {{FONT_BODY}} UI mono labels - default JetBrains Mono, uppercase, letter-spaced, grey, ~1 % H\n- {{HANDLE}} - @handle (end card, under the logo)\n- {{LOGO}} - brand lockup on the navy end card\n\nCanvas 1080x1920, 30 fps.\n\nLAYOUT (rotate on almost every cut; only ~1 in 12 cuts keeps the same layout)\n1. Full-face selfie MCU (~20 % of runtime, 48-117 frames per shot), static, no punch-ins.\n2. Split (~36 %): rounded face card x 8-92 %, y 4-46 %; caption centred in the gap at y ~48-50 %; UI mock-up card from y ~56 % down on {{SURFACE}}.\n3. Full-screen UI explainer (~44 %) on {{SURFACE}} (or {{CARD_BG}} for mechanism / CTA): headline at the top, centre y ~14 %, UI cards below with animated cursor, check marks, bar fills, link lines; blue 'STEP N · TOOL' mono tags at y ~64 %.\n\nCAPTIONS\n4. Latin script, UPPERCASE (English translation of Hinglish speech is fine). 1-6 words on ONE line, never wraps.\n5. Caption: {{FONT_DISPLAY}} 46 px, {{TEXT}}, tracking 0, no stroke/box, faint shadow 0 2px 4px rgba(0,0,0,.35). Face shots: centred at y 75.9 %. Split shots: centred at y ~48-50 % (navy on light).\n6. Reveal in place: typeset the full line centred first, then switch words on one by one at their final x (hard cut, no fade/scale), ~4-12 frames apart; hard cut out, then a 1-frame gap before the next caption.\n7. Key phrase (one per sentence, the noun phrase that names the idea): small lead-in word in {{TEXT}} at y 75.9 %, then 5 frames later the key phrase in a solid white rounded box (r ~8 px, padding ~27 px L/R, ~24 px top, ~30 px bottom) at x 27.4-72.6 %, y 77.7-84.1 %, text {{ACCENT}} {{FONT_DISPLAY}} 88 px, tracking -0.04em, wiped left-to-right over 2 frames, no overshoot. On split layouts ~75 px. On {{CARD_BG}} layouts invert: {{ACCENT}} box, thin white outline, white text.\n8. Explainer headline: {{FONT_DISPLAY}} 74-86 px, -0.04em, navy on {{SURFACE}} (key words {{ACCENT}}), centre y 13.7-14.3 %, revealed word by word in place.\n\nOTHER TEXT / EDIT DEVICES\n9. Hook frame 1: a white stat card proving the pain at the top + 'Headline here' in black heavy rounded type on an {{ACCENT_2}} bar at y 28-31 %; first cut at frame ~57 into an animated mock-up of the slow current method.\n10. 'Stop doing this' beat: grey old-method button, {{ACCENT}} X drawing across, tilted 'OLD METHOD' tag, small handwritten aside.\n11. Comparison: two stat cards 'small VS big' with large {{ACCENT}} / navy numerals; caveat as 'X ≠ Y' white and navy pills with an {{ACCENT}} ≠.\n12. CTA (last ~19 %): locked framework card with padlock 'IN YOUR DM' (~280 frames), a comment bar (white pill, '+ KEYWORD', {{ACCENT}} 'Post') at y ~90 % typing the keyword, then {{CARD_BG}} end card with {{LOGO}}, {{HANDLE}} and an {{ACCENT}} 'Comment \"KEYWORD\"' pill (~78 frames).\n13. Cuts: hard cuts only, on caption-phrase boundaries (mid-sentence is fine).\n\nGRADE: Grade from the user's footage (video-style / grade.py); target look: high-contrast, muted, neutral-warm face footage set against cool off-white and navy graphics.\nSOUND: voice at about -14 LUFS, optional low bed under voice and end card, optional click on cursor taps.\n\nVERIFY before rendering (px values were render-verified with Inter; if the brand font differs, adjust px until the numbers match):\na) Render test frames: \"EASY WAY\" ({{ACCENT}} in the white box, 88 px, -0.04em), \"BECAUSE\" (navy headline, 74 px, -0.04em on {{SURFACE}}), and \"KEY WORD\" as a caption line (46 px {{TEXT}} over a dark area).\nb) Measure: python video-reference-match/scripts/caption_probe.py <test render or snapshot> --out <dir> --at <t> --box 0.28,0.775,0.72,0.835 --ink \"{{ACCENT}}:90\" (key box); --box 0.15,0.11,0.85,0.165 --ink \"#0B1327:80\" (headline); --box 0.1,0.745,0.9,0.775 --ink \"{{TEXT}}:60\" (caption).\nc) Required: \"EASY WAY\" ink 3.67 % +-0.5 of H and 40.1 % +-2 of W; \"BECAUSE\" 2.89 % +-0.5 and 30.4 % +-2; caption caps ink ~1.8 % H - compute the expected width of \"KEY WORD\" at 46 px with python video-reference-match/scripts/fit_font.py --font \"<{{FONT_DISPLAY}}>\" --word \"KEY WORD\". Box edges within +-1 % of the numbers above.",
- "caption_family": "boxed-pill"
+ "caption_family": "boxed-pill",
+ "hyperframes_compositions": [
+  {
+   "name": "browser-device-stage",
+   "role": "Browser mockup frame scrolling through live SaaS UI",
+   "type": "component"
+  },
+  {
+   "name": "app-showcase",
+   "role": "Mobile app walkthrough showcase",
+   "type": "block"
+  },
+  {
+   "name": "agent-cursor",
+   "role": "AI cursor typing and clicking interface buttons",
+   "type": "component"
+  },
+  {
+   "name": "code-terminal-run",
+   "role": "Live shell terminal executing commands",
+   "type": "component"
+  },
+  {
+   "name": "card-resize",
+   "role": "Feature card expanding into detail panel",
+   "type": "component"
+  },
+  {
+   "name": "split-tilt-cards",
+   "role": "3D tilted dual cards comparing workflows",
+   "type": "component"
+  }
+ ]
 }

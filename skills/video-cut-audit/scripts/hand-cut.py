@@ -1,19 +1,5 @@
 #!/usr/bin/env python3
-"""hand-cut.py: rebuild cut-list.json from an explicit list of kept lines, for the cases paper-cut.py gets
-wrong (a list it read as restarts, a slate it kept, a "last take" that carries a wrong word, retakes merged
-into one ASR sentence).
-
-Each --keep is "A-B": A = start time of the FIRST kept word, B = start time of the LAST kept word, both
-straight from the transcript (dump the words for the region first). "A-B!" keeps the stretch whole, with its
-internal pauses (a visual gag, a pause that carries meaning). Starts trust the transcript; ends
-trust the audio: the kept stretch runs to the end of the auto-editor speech chunk that holds B, unless the
-next word follows closely, in which case it stops just before that word.
-
-Usage:
-  python3 hand-cut.py --transcript W/transcript-raw.json --speech W/speech.v1 --duration 125.1 --out-dir W \
-      --keep 5.20-9.9 --keep 10.96-15.4 ...   [--label "C0001 first idea"]
-Writes cut-list.json (same shape as paper-cut.py, plus hand_cut:true) and PAPER-CUT.md listing the kept lines.
-"""
+"""hand-cut.py: rebuild cut-list.json from an explicit list of kept lines, for the cases paper-cut.py gets"""
 import argparse, json, os
 
 ap = argparse.ArgumentParser()

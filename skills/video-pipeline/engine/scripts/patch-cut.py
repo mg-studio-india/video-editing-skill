@@ -1,18 +1,5 @@
 #!/usr/bin/env python3
-"""patch-cut.py: small fixes to an existing cut-list.json without rebuilding it by hand.
-  --add A-B        put a stretch back (A = start of its first word, B = start of its last word, from the transcript);
-                   the audio runs from A-0.15 s to the end of the speech chunk holding B (or just before the next word).
-                   Needs --transcript and --speech.
-  --drop T         remove the kept segment that starts within 0.3 s of T (a dangling fragment, a lone "Um").
-  --drop-flat A-B  remove A-B given in FLAT-CUT time (what stutter-scan.py and CUT-REVIEW.html report). Mapped back to
-                   the source through cut-map.json (src = src_start + (t - flat_start)), so the raw is cut once instead
-                   of re-cutting input-video.mp4. Splits a segment when the range falls inside it; a range across a
-                   join trims both sides. A remnant under --min-keep (0.10 s) goes too (it would be a flash frame).
-                   Every range needs finite numeric start < end inside the flat duration, or nothing is written.
-Then re-run apply-cut.py and re-transcribe the flat cut.
-Usage: python3 patch-cut.py --cut-list W/cut-list.json --transcript W/transcript.json --speech W/speech.v1 --add 83.60-92.88 --drop 200.68
-       python3 patch-cut.py --cut-list W/cut-list.json --drop-flat 41.20-41.62 --drop-flat 97.05-97.40 [--cut-map W/cut-map.json]
-"""
+"""patch-cut.py: small fixes to an existing cut-list.json without rebuilding it by hand."""
 import argparse, json, math, os, re, sys
 ap = argparse.ArgumentParser()
 ap.add_argument("--cut-list", required=True); ap.add_argument("--transcript"); ap.add_argument("--speech")

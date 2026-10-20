@@ -1,36 +1,9 @@
 #!/usr/bin/env python3
-"""teardown.py: measure any video for the editing teardown loop (every two videos: two reference videos you admire vs
-your own last two edits: cuts per minute, overlay density, camera moves, cutaway types, sound, captions).
-
-Video mode writes into --out: sheet_NN.png contact sheets (4x4 tiles, 480x270, one tile every --every s), report.json
-and TEARDOWN.md (the numbers, the sheet list, a "count by eye" block and a worksheet seeded with the spoken lines).
-One ffmpeg decode does the sheets, the per-frame difference (64x36 gray, tblend difference, signalstats) and the
-luminance; a second pass reads the audio RMS. Python never touches a full frame.
-  hard cuts       a same-framing jump cut is a SPIKE against the local median difference, not a fixed threshold
-                  (a fixed 40/255 misses every jump cut): a run of 1-2 frames at >= --cut-ratio (4) x the median
-                  of the 0.5 s either side and >= 2 x the frames around it. Calibrated on real jump cuts made from
-                  talking-head footage: full frame 5.5-17x, a face in a PiP 4.1-12x (0.45/255 absolute). The only
-                  absolute bar is a 0.3/255 noise floor, so encoder flicker on a frozen screen never counts.
-                  A graphic that snaps in or out in one frame also counts; check the list against the sheets.
-  bursts          3-15 frame runs above the same bar: animated entrances, fast layout switches, big gestures.
-  quietest        the lowest-change windows of >= --static s (15) against the video's own median change energy:
-                  the "feels static" proxy.
-  --transcript    words per minute and one spoken line every ~10 s in the worksheet (word-level JSON: a list,
-                  {words:[...]} or whisper {segments:[{words}]}; segment-only JSON is spread evenly per segment).
-Storyboard mode counts one of OUR storyboard.json files exactly (overlays, camera moves, cutaways, on-screen words
-per minute, events per 90 s against a target of about 7 + 7). Compare mode puts reports side by side.
-
-Usage:
-  python3 teardown.py --video ref-1.mp4 --out teardowns/ref-1 [--every 2] [--transcript ref-1.json]
-  python3 teardown.py --storyboard videos/<p>/storyboard.json [--out teardowns/<p>]
-  python3 teardown.py --compare teardowns/ref-1/report.json teardowns/ref-2/report.json teardowns/<p>/report.json --out teardowns/COMPARE.md
-"""
+"""teardown.py: measure any video for the editing teardown loop (every two videos: two reference videos you admire vs"""
 import argparse, glob, json, os, re, shutil, statistics as st, subprocess, sys, tempfile, time
 
 
 def ff_filter_path(path):
-    """(as in the engine's runtime.py) A file path for a filter option, to be wrapped in single quotes: f"file='{ff_filter_path(p)}'".
-    Forward slashes and an escaped drive colon, so C:\\Users\\... survives both levels of FFmpeg filter parsing."""
     s = os.path.abspath(str(path)).replace("\\", "/")
     return s.replace(":", "\\:").replace("'", "\\'")
 
@@ -136,7 +109,6 @@ def compare(paths):
 
 # ================================================================================================================
 def meta(path, key):
-    """ffmpeg metadata=print file -> [(pts_time, value)]."""
     out, t = [], None
     for line in open(path):
         m = re.search(r"pts_time:([-\d.e]+)", line)

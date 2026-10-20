@@ -319,5 +319,22 @@
  },
  "quality_score": 1,
  "brand_prompt": "Use /video-pipeline with /video-captions on videos/<project>. Apply style blueprint B24 (video-reference-match/references/blueprints/B24.json) to this brand.\n\nBRAND TOKENS (use the brand's colour for each role; keep the contrast relationship — text and accent must stay >= 4.5:1 / >= 3:1 against what sits behind them on the footage):\n- {{TEXT}}      default #FFFFFF (set-up text)\n- {{ACCENT}}    default #FFFFFF (no accent in this style)\n- {{ACCENT_2}}  default none\n- {{SURFACE}}   default none\n- {{CARD_BG}}   default none\n- {{FONT_DISPLAY}} default Anton 400 (closer: a bold semi-condensed grotesque such as Barlow Semi Condensed SemiBold)\n- {{FONT_BODY}}    default same\n- {{HANDLE}}    default @handle\n- {{LOGO}}      default the brand's logo file (transparent PNG/SVG)\nThe text is small and has no shadow: place it on a mid/dark wall area so it stays >= 4.5:1; never add a box.\nCanvas 1080x1920, 30 fps.\n\nCAPTIONS\n1. No speech captions.\n\nOTHER TEXT\n2. Set-up text, first shot only: 2 centred lines of Roman Hinglish, sentence case — line 1 a situation line ending in a spaced hyphen, line 2 a short question (placeholder 'Headline here -' / 'KEY WORD here?'). {{FONT_DISPLAY}} ~41 px (line 2 ~42 px), {{TEXT}}, tracking -0.01 em, no stroke / shadow / box. Line 1 centre 18.4 % H, line 2 centre 21.2 % H (pitch 2.8 % H), block centre x ~50.6 %, on the empty wall above the head.\n3. Timing: on from frame 0 with no animation; hard off ~4 frames before the first cut; the payoff shot has no text.\n4. No {{LOGO}}, watermark or end card.\n5. Edit: shot 1 = medium shot of the questioner (~22 % of runtime); hard cut mid-question to a static low over-the-shoulder wide held to the end; let a body crossing the lens close it.\n\nGRADE\nGrade from the user's footage (video-style / grade.py); target look: high-contrast, muted, neutral-warm; natural office light.\n\nVERIFY before rendering\na) Render both lines with the placeholders and measure: python3 video-reference-match/scripts/caption_probe.py <test-render> --out <dir> --at <t> --box 0.25,0.165,0.75,0.235 --ink \"{{TEXT}}:50\"\nb) python3 video-reference-match/scripts/fit_font.py --font \"Anton 400\" --word \"<line 2, lowercase with ascenders>\" --ink 2.19 --tracking -0.01 -> ~41-42 px (the reference 3-word line 2 read 24.9 % W; line 1 of ~24 characters ~36 % W at ~40 px). Tolerance ±0.5 % H, ±2 % W. (fit_font.py needs a target: --ink and/or --width; it returns the px that reproduces that ink for YOUR word plus the width it will read at that px. Requires Pillow.)\nc) Positions within ±1 % H: line 1 centre 18.4 %, line 2 centre 21.2 %.",
- "caption_family": "other:meme-text"
+ "caption_family": "other:meme-text",
+ "hyperframes_compositions": [
+  {
+   "name": "lt-dark-card",
+   "role": "Two-line scenario setup card",
+   "type": "block"
+  },
+  {
+   "name": "caption-pill-karaoke",
+   "role": "Clean conversational subtitles",
+   "type": "component"
+  },
+  {
+   "name": "confetti",
+   "role": "Ironic celebration particle burst",
+   "type": "component"
+  }
+ ]
 }

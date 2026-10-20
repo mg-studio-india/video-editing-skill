@@ -455,5 +455,27 @@
  },
  "quality_score": 4,
  "brand_prompt": "Use /video-pipeline with /video-captions on videos/<project>. Apply style blueprint B47 (video-reference-match/references/blueprints/B47.json) to this brand.\nCanvas 1080x1920, 30 fps. Off-white editorial canvas; footage lives in a card.\n\nBRAND TOKENS (use the brand's colour/font for each role; keep the contrast relationship: {{TEXT}} >= 7:1 on {{SURFACE}}; {{ACCENT}} >= 4.5:1 on {{SURFACE}}; the preview grey {{ACCENT_2}} must read clearly lighter than {{TEXT}})\n- {{TEXT}}: default #2F2E2C (running lines)\n- {{ACCENT}}: default #C34479 (giant key phrases, list totals)\n- {{ACCENT_2}}: default #CECBC7 (next-word preview grey)\n- {{SURFACE}}: default #F3F1ED (off-white canvas)\n- {{CARD_BG}}: default #000000 (proof inserts; running line turns white there)\n- {{FONT_DISPLAY}}: default Inter 800 (key phrases)\n- {{FONT_BODY}}: default Inter 600 (running lines)\n- {{HANDLE}}: not on screen\n- {{LOGO}}: optional, only inside the web-page proof inserts\n\nCAPTIONS (editorial build)\n1. Latin, as spoken, lowercase (sentence case after a full stop); no punctuation in running lines; no emoji.\n2. Left-aligned block, left edge 7.6 % W, first line centre ~17.4 % H, line pitch 5.2 % H, max width 78 % W; 2-4 words per line, up to 4 lines; the block clears at each layout change.\n3. {{FONT_BODY}} at 80 px, tracking -0.02em, no stroke/shadow/box. The NEXT word appears early in {{ACCENT_2}}; on its spoken word it turns {{TEXT}} and lands with a 1-frame horizontal motion blur sliding ~2 % W from the right.\n4. One key phrase per ~8-10 s in {{FONT_DISPLAY}} at 166 px (smaller when sharing the top with the card), {{ACCENT}}, tracking -0.04em, always ending with a full stop, stacked directly under the dark lines on the same left edge; lands ~4 frames before its word with the same blur.\n5. On {{CARD_BG}} inserts the running line turns white.\n\nLAYOUT AND EDIT DEVICES\n6. Footage in a rounded card x 7.5-92.5 %, y 45-93 %, radius ~24 px, soft drop shadow, on {{SURFACE}}.\n7. Spoken numbers -> stat list replacing the card for ~3 s: rows of a big number (~5 % H) at x 7.5 % + label at x ~22 %; earlier rows mid-grey, the new total in {{ACCENT}} bold with a thin dark rule above it.\n8. Proof inserts (~3-4 s): {{CARD_BG}} screen with the brand's web page / stat tiles under the running caption.\n9. Every transition is a soft layout crossfade (~8-12 frames); no hard cuts, no punch-ins.\n10. End on a text-only frame on {{SURFACE}}: lead line at 36 % H, the hook's KEY WORD phrase in {{ACCENT}} at 39.5-58 % H, left 8 %.\n\nGRADE: Grade from the user's footage (video-style / grade.py); target look: muted warm studio footage with natural skin under a clean off-white, high-contrast editorial frame.\nSOUND: voice-led and compressed; any bed at least ~20 dB under speech; -14 LUFS.\n\nVERIFY\na) Render the running line \"it's always been\" at 80 px on {{SURFACE}} and measure:\n   python video-reference-match/scripts/caption_probe.py <test_render> --out <dir> --at <t> --box 0.05,0.14,0.9,0.21 --ink \"{{TEXT}}:60\"   (default ink #2F2E2C)\n   Required: 3.91 % ±0.5 of H, 50.0 % ±2 of W.\nb) Key phrase: render \"KEY WORD.\" in {{FONT_DISPLAY}} at 166 px with --ink \"{{ACCENT}}:70\"; expected ink from video-reference-match/scripts/fit_font.py --font \"{{FONT_DISPLAY}}\" --word <word> (a 9-letter lowercase word should be ~6.9 % H, ~66 % W).\nc) If {{FONT_BODY}} is not Inter 600, re-solve with fit_font.py --font \"{{FONT_BODY}}\" --word \"it's always been\" --ink 3.91 --width 50.0 --tracking -0.02.",
- "caption_family": "other:editorial-build"
+ "caption_family": "other:editorial-build",
+ "hyperframes_compositions": [
+  {
+   "name": "caption-editorial-emphasis",
+   "role": "Top-left progressive editorial word build",
+   "type": "component"
+  },
+  {
+   "name": "yt-lower-third",
+   "role": "Minimalist editorial guest identification",
+   "type": "block"
+  },
+  {
+   "name": "testimonial-proof-card",
+   "role": "Giant accent pull-quote callout",
+   "type": "component"
+  },
+  {
+   "name": "card-resize",
+   "role": "Editorial reference card expanding on side margin",
+   "type": "component"
+  }
+ ]
 }

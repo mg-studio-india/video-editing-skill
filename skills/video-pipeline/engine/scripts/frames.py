@@ -1,12 +1,4 @@
-"""Frames for Claude to look at.
-
-Shot detection (shots.py) already measured every cut. This module only decides
-WHICH moments to show and packs them into labelled contact sheets, so one image
-read covers 12-18 moments instead of one.
-
-Contact sheets need Pillow (`pip install pillow`). Without it everything still
-works: Claude just reads the individual frames instead.
-"""
+"""Frames for Claude to look at."""
 from __future__ import annotations
 
 import math
@@ -27,10 +19,6 @@ DEDUP_THRESHOLD = 2.0
 # ---------------------------------------------------------------- choosing moments
 def pick_times(shots: list[dict], t0: float, t1: float, budget: int,
                hook_seconds: float = 10.0, pinned: list[float] | None = None) -> list[dict]:
-    """Return [{'t', 'kind', 'shot'}] sorted by time.
-
-    kinds: shot (one per shot), extra (inside long shots), uniform (static footage), cue (pinned).
-    """
     pinned = [p for p in (pinned or []) if t0 <= p <= t1]
     budget = max(1, budget)
     items: list[dict] = []
@@ -113,7 +101,6 @@ def _extract_one(video: str, t: float, out: Path, width: int) -> bool:
 
 def extract_frames(video: str, items: list[dict], out_dir: Path, width: int = 640,
                    workers: int = 4) -> list[dict]:
-    """Write one JPEG per item (in parallel). Adds 'path'. Drops items that failed."""
     out_dir.mkdir(parents=True, exist_ok=True)
     for old in out_dir.glob("*.jpg"):
         old.unlink()
@@ -128,9 +115,6 @@ def extract_frames(video: str, items: list[dict], out_dir: Path, width: int = 64
 
 
 def dedupe(items: list[dict], threshold: float = DEDUP_THRESHOLD) -> tuple[list[dict], int]:
-    """Drop near-identical consecutive frames of kind extra/uniform (static footage).
-    Needs Pillow; silently does nothing without it. Subtle on-screen text changes can be
-    missed, so the CLI exposes --no-dedup."""
     try:
         from PIL import Image
     except ImportError:
@@ -162,7 +146,6 @@ def dedupe(items: list[dict], threshold: float = DEDUP_THRESHOLD) -> tuple[list[
 
 # ---------------------------------------------------------------- contact sheets
 def sheet_layout(aspect: float) -> tuple[int, int, int]:
-    """(cols, rows, cell_width) chosen so a sheet stays around 1400px wide."""
     if aspect >= 1.4:
         return 4, 3, 320
     if aspect >= 0.9:
@@ -180,7 +163,6 @@ def label_for(item: dict, with_shot: bool = True) -> str:
 
 def make_sheets(items: list[dict], out_dir: Path, aspect: float, prefix: str = "sheet",
                 with_shot: bool = True) -> list[dict] | None:
-    """Pack items into labelled grids. Returns None when Pillow is unavailable."""
     try:
         from PIL import Image, ImageDraw, ImageFont
     except ImportError:
@@ -226,8 +208,6 @@ def make_sheets(items: list[dict], out_dir: Path, aspect: float, prefix: str = "
 
 
 def cell_ref(sheets: list[dict] | None, prefix: str, shot_id: int, shot: dict | None = None) -> str:
-    """'S2·5' = sheet 2, cell 5 for the first cell showing this shot.
-    If the shot has no frame of its own, '~S2·5' points at the nearest cell in time."""
     best = None
     for sh in sheets or []:
         for c in sh["cells"]:

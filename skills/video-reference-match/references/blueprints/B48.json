@@ -566,5 +566,27 @@
  },
  "quality_score": 3,
  "brand_prompt": "Use /video-pipeline with /video-captions on videos/<project>. Apply style blueprint B48 (video-reference-match/references/blueprints/B48.json) to this brand.\nCanvas 1080x1920, 30 fps. Static single-take talking head; all visual change is text on the chest (61-77 % H).\n\nBRAND TOKENS (use the brand's colour for each role; keep the contrast relationship: {{TEXT}} on {{ACCENT}} boxes >= 7:1, {{ACCENT}} boxes >= 3:1 against the clothing, {{ACCENT}} text on {{CARD_BG}} >= 7:1)\n- {{TEXT}}: caption and pill text, default #FFFFFF\n- {{ACCENT}}: active-word box, hook-title boxes, list pills, save-pill text, default #000000\n- {{ACCENT_2}}: unused, default none\n- {{SURFACE}}: unused, default none\n- {{CARD_BG}}: save sticker pill fill, default #FFFFFF\n- {{FONT_DISPLAY}}: default Poppins 700\n- {{FONT_BODY}}: default Poppins 700\n- {{HANDLE}}: not shown in the source; optional in the follow ask\n- {{LOGO}}: not shown in the source\n\nCAPTIONS\n1. As spoken, sentence case; keep sentence-final full stops, drop commas.\n2. Chunks of 1-4 words over 2 short lines (1-2 on line 1, 1-3 on line 2); a sentence-final word may stand alone (\"KEY WORD.\"). Whole chunk hard-cuts in ~2 frames after its first word.\n3. {{FONT_DISPLAY}} 55 px, {{TEXT}}, tracking 0, no stroke/shadow. Calibration: \"connection\" ink 2.27 % H / 29.3 % W; \"recruitment\" 2.27 % / 31.9 %.\n4. Active word: sits in a {{ACCENT}} box, radius 6 px, padding 13 px left/right, 12 px top, 15 px bottom (~3.67 % H tall); text stays {{TEXT}}, same size. The box hard-jumps to each word on its start (0-2 frames); no box during short gaps.\n5. Position: lines centred at x ~48 % W; line 1 ink 66.7-69.6 % H, line 2 70.2-73.1 % H (block centre ~70 %), tight line gap, below the chin.\n6. Hard cuts only: no fade, pop, scale or idle motion.\n\nOTHER TEXT\n7. Hook title (frames 0-~83, replaces captions): hook sentence in 2 centred lines (x ~46 %), {{FONT_DISPLAY}} 57 px {{TEXT}} on merged {{ACCENT}} per-line boxes (~6 px rounded corners) spanning x 11.9-81.2 %, y 61.6-70.4 %; the one viewer word in CAPS; end with \"..\". Line ink ~2.97 % H; a ~24-character line spans ~63.5 % W.\n8. Save sticker (frames ~31-73): {{CARD_BG}} rounded pill (radius ~9 px) x 17.9-70.7 %, y 71.1-76.5 %, 0.7 % H under the title; {{ACCENT}} {{FONT_BODY}} 56 px 3-word save prompt + green check emoji, left-aligned from x 20.1 %. Hard cut in/out, no pop.\n9. List items (replace captions while items are named, ~29-48 % of runtime): {{ACCENT}} pills, radius ~6 px, {{TEXT}} {{FONT_BODY}} \"N. Item\", left-aligned, each hard-cut in under the previous ~2 frames after its item is spoken. Stack 1 (items 1-3): 53 px text, pills 5.1 % H, left edge x 23.4 %, rows 64.7-69.8 % and 71.1-76.2 %. Stack 2 (items 4-6): 40 px text, pills 3.7 % H, left edge x 33.1 %, row tops 61.6 / 66.0 / 71.2 %.\n\nSTRUCTURE: hook ~10 %, setup ~17 %, list ~21 %, why/proof ~24 %, comment-keyword CTA then follow ask ~28 %.\nSOUND: voice only, no bed. Master to about -14.5 LUFS, true peak <= -1 dBTP.\nGRADE: Grade from the user's footage (video-style / grade.py); target look: low-contrast, saturated, warm soft indoor light, natural skin.\n\nVERIFY before rendering: render the calibration words and measure them:\n  video-reference-match/scripts/caption_probe.py <render-file> --out <dir> --at <t_connection> --box 0.2,0.700,0.8,0.728 --ink \"#FFFFFF:60\"\n  video-reference-match/scripts/caption_probe.py <render-file> --out <dir> --at <t_recruitment> --box 0.2,0.700,0.8,0.733 --ink \"#FFFFFF:60\"\n\"connection\" must read ink 2.27 % +-0.5 of H and width 29.3 % +-2 of W; \"recruitment\" 2.27 % +-0.5 / 31.9 % +-2; the active box measured with --ink \"#000000:25\" over --box 0.2,0.64,0.8,0.75 must be 3.67 % +-0.5 tall. Swap --ink colours to {{TEXT}} / {{ACCENT}}. Expected ink for other words: video-reference-match/scripts/fit_font.py with {{FONT_DISPLAY}} at 55 px. Positions within +-1 % of frame height.",
- "caption_family": "boxed-pill"
+ "caption_family": "boxed-pill",
+ "hyperframes_compositions": [
+  {
+   "name": "ai-answer-rank",
+   "role": "Top-N itemized ranking card with animated reordering",
+   "type": "block"
+  },
+  {
+   "name": "badge-pop",
+   "role": "Numbered listicle counter badge (1, 2, 3)",
+   "type": "component"
+  },
+  {
+   "name": "caption-pill-karaoke",
+   "role": "Hopping black word box chest captions",
+   "type": "component"
+  },
+  {
+   "name": "marker-checklist-card",
+   "role": "Summary checklist card marking all items",
+   "type": "component"
+  }
+ ]
 }

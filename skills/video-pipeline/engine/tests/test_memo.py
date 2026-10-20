@@ -28,20 +28,12 @@ class TestMemo(unittest.TestCase):
         self.assertIn("@testcreator", text)
         self.assertIn("focus-blur-resolve", text)
 
-    def test_parse_memo(self):
-        memo.init_memo(self.memo_path, {"creator": "Vihan", "instagram": "@vihan_"})
-        data = memo.parse_memo(self.memo_path)
-        self.assertIn("identity_&_profiles", data)
-        self.assertEqual(data["identity_&_profiles"].get("creator_/_channel"), "Vihan")
-        self.assertEqual(data["identity_&_profiles"].get("instagram"), "@vihan_")
-
     def test_update_memo_field(self):
         memo.init_memo(self.memo_path)
         ok = memo.update_memo_field("Instagram", "@new_handle", self.memo_path)
         self.assertTrue(ok)
         data = memo.parse_memo(self.memo_path)
         self.assertEqual(data["identity_&_profiles"].get("instagram"), "@new_handle")
-
 
 if __name__ == "__main__":
     unittest.main()

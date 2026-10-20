@@ -1,33 +1,5 @@
 #!/usr/bin/env python3
-"""assemble.py: put finished segments in order and deliver one 4K master. Replaces iMovie.
-
-Input : assembly.json (the manifest; a segment is a local MP4: a HyperFrames render, a screen recording, a cutaway)
-Output: <out>.mp4 (3840x2160, 30 fps, H.264, BT.709 tags, AAC 48 kHz stereo), ASSEMBLY.md next to it
-        (segment table with start times = YouTube chapter list, loudness per segment, md5), chapters.txt
-
-Manifest:
-{
-  "project": "my-video",
-  "width": 3840, "height": 2160, "fps": 30,
-  "loudness": -14,                       # LUFS target applied per segment (null = leave levels alone)
-  "music": {"file": "bed.mp3", "db": -26, "fade": 2.0},   # optional, loops under the whole video
-  "segments": [
-    {"name": "Hook",            "file": "~/Movies/YouTube Renders/my-video/hook-4k.mp4"},
-    {"name": "1 · Setup",       "file": "~/Movies/YouTube Renders/my-video/01-setup-4k.mp4"},
-    {"name": "1 · Tutorial",    "file": "screen/01-setup-tutorial-4k.mp4", "trim": [0.0, 71.4], "chapter": false}
-  ]
-}
-Relative paths resolve against the manifest's folder. "trim" is [start, end] seconds (null = to the end).
-"chapter": false hides a segment from the chapter list (a tutorial that continues the previous chapter).
-
-Every segment is conformed to the master spec with one libx264 CRF 16 pass (or --gpu: VideoToolbox at
-45 Mbit/s, ~4x faster, same setting the render step uses), loudness-normalised in two passes, then the
-pieces are joined with the concat demuxer and stream copy. Mixed sources (a 45 Mbit/s HyperFrames render,
-a 9 Mbit/s screen export, a 720p cutaway) come out as one clean file with no level jumps between them.
-
-Usage:
-  python3 assemble.py --manifest videos/<project>/assembly.json --out "$HOME/Movies/YouTube Renders/<project>/<project>-full-4k.mp4" [--gpu] [--keep-work]
-"""
+"""assemble.py: put finished segments in order and deliver one 4K master. Replaces iMovie."""
 import argparse, hashlib, json, os, shutil, subprocess, sys, tempfile
 
 ap = argparse.ArgumentParser()

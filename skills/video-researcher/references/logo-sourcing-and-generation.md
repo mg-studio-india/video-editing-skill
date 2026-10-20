@@ -99,7 +99,7 @@ Query the HyperFrames catalog for pre-built, elegant badge components:
 npx hyperframes catalog --query "brand lockup badge pill" --json
 ```
 Install and customize:
-- `badge-pill-pill`: A sleek pill badge containing a FontAwesome icon + bold typographic title.
+- `badge-pill-pill`: A sleek pill badge containing a vector icon + bold typographic title.
 - `logo-cloud`: Sleek floating squircle with gradient rim.
 - `kinetic-text-brand`: Stylized typography mark with subtle glowing drop-shadow.
 

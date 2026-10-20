@@ -1,30 +1,4 @@
-"""treatments.py: the seven treatments (plus hero text and registry blocks) as beat builders for any canvas size.
-
-Each builder takes a beat (resolved times) and a context, and returns (html, css, js_lines, placement):
-  placement "front"  -> a host on the root, above the camera
-            "behind" -> inside the camera, between the footage and the subject matte (layered-head)
-            "root"   -> media that must be a direct child of the root (videos, sub-composition hosts)
-Timeline lines use the shared paused timeline `tl`. Hosts carry class="clip" with data-start/data-duration and are never
-tweened themselves (HyperFrames lint: gsap_animates_clip_element); only their children move.
-
-Context: {"W", "H", "style": style.json dict, "track": int}. Used by stage.py (any canvas) and by compose.py (16:9,
-types its own library does not have).
-
-Beat types
-  layout   the speaker's video moves: {"type":"layout","id","mode":"stack|pip|hide|full","corner":"tl|tr|bl|br",
-           "size":0.32,"focus":[x%,y%],"transition":0.6,"in","out"} (stage.py only; handled by layout_js, not build)
-  banner   headline band, full width: {"type":"banner","id","text","em":[i],"in","out","y":0.095,"size":0.068,"bg":"#000"}
-  hero     big text on its word:      {"type":"hero","id","text","em":[i],"in","out","y":0.3,"size":0.11,"anim":"rise|slam|fade"}
-  cards    items, one per word:       {"type":"cards","id","title":"","items":[[text,t],...],"in","out","y":0.22,"marker":"num|dot|check"}
-  whiteout flash to white and back:   {"type":"whiteout","id","in","out","peak":0.25,"hold":0.10,"back":0.35}
-  drawer   paper panel from an edge:  {"type":"drawer","id","edge":"left|right|bottom","title","lines":[..],"img":"img/x.png","in","out","w":0.62}
-  split    two pictures:              {"type":"split","id","layout":"sbs|stack","a":{"src","focus":[x%,y%],"media_start"},
-                                       "b":{"src",...},"in","out","divider":true}   (a = left/top; the base video's audio plays)
-  behind   text behind the subject:   {"type":"behind","id","text","em":[i],"in","out","y":0.32,"size":0.18}   (needs "matte")
-  clip     full-frame B-roll:         {"type":"clip","id","src","in","out","media_start":0,"focus":[50,50],"drift":true,"label":""}
-  block    a registry block:          {"type":"block","id","comp_id","src":"compositions/x.html","in","out","w","h","x":0,"y":0,"vars":{}}
-  captions the caption rail:          {"type":"captions","id","groups":[...from captions.group...]} (stage.py fills groups)
-"""
+"""treatments.py: the seven treatments (plus hero text and registry blocks) as beat builders for any canvas size."""
 from __future__ import annotations
 
 import json
@@ -34,7 +8,8 @@ TYPES = {"banner", "hero", "cards", "whiteout", "drawer", "split", "behind", "cl
 
 DEFAULT_STYLE = {
     "colors": {"text": "#ffffff", "accent": "#ffd400", "accent2": "#00e0ff", "money": "#22e07a",
-               "dark": "#0b0b0f", "paper": "#f4ecd8", "paper_ink": "#1d1a16"},
+               "dark": "#0b0b0f", "paper": "#f4ecd8", "paper_ink": "#1d1a16",
+               "canvas_bg": "radial-gradient(circle at 50% 20%, rgba(56, 189, 248, 0.16) 0%, transparent 55%), radial-gradient(ellipse 90% 65% at 50% 25%, #1e2c48 0%, #0d1526 60%, #040710 100%)"},
     "fonts": {"display": {"family": "Poppins", "files": {}}},
     "motion": {"in": 0.35, "out": 0.25, "ease_in": "power3.out", "ease_out": "power2.in"},
     "cards": {"bg": "rgba(12,12,16,.78)", "text": "#ffffff", "radius": 22, "border": "rgba(255,255,255,.14)"},
@@ -59,11 +34,21 @@ def tok(style: dict, *path, default=None):
 
 
 def family_stack(style: dict) -> str:
-    """The display family plus an optional fallback family, written to sit inside one pair of
-    quotes in the builders' "font-family:'%s',sans-serif": Hindi is always rendered in Roman Hinglish."""
-    fams = [tok(style, "fonts", "display", "family")]
-    fb = ((style.get("fonts") or {}).get("fallback") or {}).get("family")
-    if fb:
+    disp = (style.get("fonts") or {}).get("display")
+    if isinstance(disp, dict):
+        disp_family = disp.get("family") or "Poppins"
+    elif isinstance(disp, str):
+        disp_family = disp
+    else:
+        disp_family = tok(style, "fonts", "display", "family") or "Poppins"
+    
+    fams = [disp_family]
+    fb = ((style.get("fonts") or {}).get("fallback") or {})
+    if isinstance(fb, dict):
+        fb_family = fb.get("family")
+        if fb_family:
+            fams.append(fb_family)
+    elif isinstance(fb, str):
         fams.append(fb)
     return "','".join(fams)
 
@@ -86,8 +71,6 @@ def host(bid: str, t_in: float, t_out: float, track: int, inner: str, z: int = 3
 
 
 def outline(style: dict, size_px: int) -> str:
-    """Dark outline under display text (style "text_stroke": fraction of the font size, 0 = off). Keeps bright
-    accent words readable over bright footage, where a shadow alone failed HyperFrames' 3:1 contrast check."""
     k = float(style.get("text_stroke", 0) or 0)
     if k <= 0:
         return ""
@@ -159,10 +142,10 @@ def b_cards(b, ctx):
     fs = int(W * (0.052 if portrait else 0.026))
     default_y = 0.58 if portrait else 0.16
     y_val = float(b.get("y", default_y))
-    # Safety guard: cards should never float directly over speaker's face in portrait unless explicitly allowed
-    if portrait and y_val < 0.40 and not b.get("allow_top", False):
+    # Safety guard: cards should never float directly over speaker's face in portrait unless explicitly allowed or in top graphic canvas
+    if portrait and y_val < 0.40 and not b.get("allow_top", False) and b.get("pos") not in ("top", "upper"):
         y_val = 0.58
-    top = int(H * y_val)   # portrait: under the face (reframe eye line 38%)
+    top = int(H * y_val)   # portrait: under the face or in top canvas when speaker is at bottom
     left = int((W - cw) / 2) if portrait or b.get("pos") == "center" else (int(W * 0.05) if b.get("pos", "tl") == "tl" else W - cw - int(W * 0.05))
     fam, accent = family_stack(st), tok(st, "colors", "accent")
     bg, rad, brd = tok(st, "cards", "bg"), tok(st, "cards", "radius"), tok(st, "cards", "border")
@@ -351,7 +334,6 @@ def build(b: dict, ctx: dict):
 
 
 def resolve_font(path: str, style_dir: str) -> str:
-    """Font paths in style.json: absolute, relative to the style file, or "@engine/..." (the engine's own assets)."""
     import os
     if path.startswith("@engine/"):
         return os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), path[len("@engine/"):])
@@ -367,13 +349,20 @@ LAYOUT_DUR = 0.6
 
 
 def layout_box(mode: str, W: int, H: int, corner: str | None = None, size: float | None = None) -> tuple[int, int, int, int]:
-    """Pure (tested): the video's (x, y, w, h) for a layout. Portrait pip defaults to top-left, below the platform's
-    top bar and clear of the action buttons on the right; landscape pip to bottom-right."""
     portrait = H > W
     if mode in ("full", "hide"):
         return 0, 0, W, H
-    if mode in ("stack", "split"):
-        return 0, 0, W, int(round(H * (0.44 if portrait else 0.52)))
+    if mode == "stack":
+        h = int(round(H * (size or (0.44 if portrait else 0.52))))
+        if corner in ("bottom", "b", "br", "bl"):
+            return 0, H - h, W, h
+        return 0, 0, W, h
+    if mode == "split":
+        h = int(round(H * (size or (0.44 if portrait else 0.50))))
+        # Split-screen standard: speaker takes bottom (70% of the time); top when explicitly requested
+        if corner in ("top", "t", "tl", "tr"):
+            return 0, 0, W, h
+        return 0, H - h, W, h
     if mode == "pip":
         w = int(round(W * (size or (0.32 if portrait else 0.22))))
         h = int(round(w * (4 / 3 if portrait else 3 / 4)))
@@ -388,21 +377,42 @@ def layout_box(mode: str, W: int, H: int, corner: str | None = None, size: float
 
 
 def layout_js(beats: list[dict], W: int, H: int, style: dict) -> list[str]:
-    """Timeline lines moving #cam-wrap between layouts. Each layout beat holds from its in to its out, then returns to
-    full frame, unless the next layout starts within one transition of it (then it moves straight on)."""
     lb = sorted((b for b in beats if b.get("type") == "layout"), key=lambda b: float(b["in"]))
     js = []
     radius = int(round(W * 0.03))
     ring = "0 0 0 %dpx rgba(255,255,255,.92), 0 18px 50px rgba(0,0,0,.45)" % max(3, int(round(W * 0.004)))
+    portrait = H > W
     for i, b in enumerate(lb):
         t0, t1, mode = float(b["in"]), float(b["out"]), b.get("mode", "stack")
-        x, y, w, h = layout_box(mode, W, H, b.get("corner"), b.get("size"))
+        pos = b.get("pos") or b.get("corner")
+        x, y, w, h = layout_box(mode, W, H, pos, b.get("size"))
         d = float(b.get("transition", LAYOUT_DUR))
-        focus = b.get("focus", [50, 35] if mode in ("stack", "pip") else [50, 50])
-        # pip floats above full-frame content (B-roll z 25, split 20-22) but stays under panels (40+) and captions (60)
-        chrome = ("%dpx" % radius, ring, 35) if mode == "pip" else ("0px", "none", 1)
+        
+        # Split-screen: speaker takes bottom (70% of the time), crop top/bottom to focus on head area
+        if mode in ("stack", "split"):
+            if y > 0:  # Speaker at bottom
+                chrome = ("24px 24px 0 0", "0 -18px 45px rgba(0,0,0,.6)", 10)
+                focus = b.get("focus", [50, 24] if portrait else [50, 30])
+            else:      # Speaker at top
+                chrome = ("0 0 24px 24px", "0 18px 45px rgba(0,0,0,.6)", 10)
+                focus = b.get("focus", [50, 30] if portrait else [50, 40])
+        elif mode == "pip":
+            chrome = ("%dpx" % radius, ring, 35)
+            focus = b.get("focus", [50, 30] if portrait else [50, 40])
+        else:
+            chrome = ("0px", "none", 1)
+            focus = b.get("focus", [50, 50])
+
         js.append("tl.set('#cam-wrap', { borderRadius: '%s', boxShadow: '%s', zIndex: %d }, %.3f);" % (chrome + (t0,)))
         js.append("tl.set('#base, #matte', { objectPosition: '%s%% %s%%' }, %.3f);" % (focus[0], focus[1], t0))
+
+        # Crop speaker video (top and bottom) to keep head area clearly visible
+        scale_val = float(b.get("scale", 1.15 if (mode in ("stack", "split") and b.get("crop_head", True)) else 1.0))
+        origin_val = b.get("origin", "50% 25%" if mode in ("stack", "split") else "50% 50%")
+        if scale_val != 1.0:
+            js.append("tl.set('#base', { transformOrigin: '%s' }, %.3f);" % (origin_val, t0))
+            js.append("tl.to('#base', { scale: %.3f, duration: %.2f, ease: 'power2.inOut' }, %.3f);" % (scale_val, d, t0))
+
         if mode == "hide":
             js.append("tl.to('#cam-wrap', { opacity: 0, duration: %.2f, ease: 'power2.inOut' }, %.3f);" % (min(d, 0.4), t0))
         else:
@@ -414,6 +424,8 @@ def layout_js(beats: list[dict], W: int, H: int, style: dict) -> list[str]:
         if nxt is None or float(nxt["in"]) - t1 >= d + 0.05:
             js.append("tl.to('#cam-wrap', { x: 0, y: 0, width: %d, height: %d, opacity: 1, duration: %.2f, ease: 'power2.inOut' }, %.3f);"
                       % (W, H, d, t1))
+            if scale_val != 1.0:
+                js.append("tl.to('#base', { scale: 1.0, duration: %.2f, ease: 'power2.inOut' }, %.3f);" % (d, t1))
             js.append("tl.set('#cam-wrap', { borderRadius: '0px', boxShadow: 'none', zIndex: 1 }, %.3f);" % (t1 + d))
             js.append("tl.set('#base, #matte', { objectPosition: '50%% 50%%' }, %.3f);" % (t1 + d))
     return js
@@ -428,9 +440,10 @@ def font_faces(style: dict) -> str:
     out = []
     for role in ("display", "body", "fallback"):
         f = (style.get("fonts") or {}).get(role)
-        if not f:
+        if not f or not isinstance(f, dict):
             continue
+        family = f.get("family", "")
         for weight, path in sorted((f.get("files") or {}).items()):
             out.append("@font-face{font-family:'%s';src:url('%s');font-weight:%s;font-style:normal;font-display:block}"
-                       % (f["family"], path, weight))
+                       % (family, path, weight))
     return "\n".join(out)

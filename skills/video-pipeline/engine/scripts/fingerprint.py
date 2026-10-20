@@ -1,9 +1,4 @@
-"""Style fingerprint: a compact, reusable profile of how a video is edited.
-
-The numbers come from analysis.json (measured). The `qualitative` block is a
-template Claude fills in after looking at the frames (hook type, framing,
-caption style...), because those need eyes, not ffmpeg.
-"""
+"""Style fingerprint: a compact, reusable profile of how a video is edited."""
 from __future__ import annotations
 
 import json
@@ -144,7 +139,6 @@ def compare_markdown(rows: list[dict]) -> str:
 
 
 def count_unfilled(fp: dict) -> int:
-    """How many qualitative fields are still null (Claude has not filled them)."""
     def walk(node) -> int:
         if isinstance(node, dict):
             return sum(walk(v) for v in node.values())

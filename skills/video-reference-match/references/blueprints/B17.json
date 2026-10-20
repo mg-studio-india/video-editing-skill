@@ -299,5 +299,22 @@
  },
  "quality_score": 2,
  "brand_prompt": "Use /video-pipeline with /video-captions on videos/<project>. Apply style blueprint B17 (video-reference-match/references/blueprints/B17.json) to this brand.\nNative canvas 1920x1080, 30 fps (for 1080x1920: reframe to the speaker, keep the same px, centre the caption at x 50 %, ~50 % H).\n\nBRAND TOKENS (use the brand's colour/font for each role; keep the contrast relationship: light-weight {{TEXT}} needs >= 7:1 on the dark area beside the speaker because it has no box)\n- {{TEXT}}: default #FFFFFF\n- {{ACCENT}}: none (no emphasis colour)\n- {{ACCENT_2}}: none\n- {{SURFACE}}: none (footage)\n- {{CARD_BG}}: none\n- {{FONT_DISPLAY}}: none\n- {{FONT_BODY}}: default Inter 300 (Mulish Light / Nunito Sans Light closer)\n- {{HANDLE}}: not on screen\n- {{LOGO}}: none (optional branded microphones in shot)\n\nCAPTIONS\n1. Latin, as spoken, ALL lowercase (including sentence starts and 'i'); apostrophes kept; no other punctuation; no emoji.\n2. 1-4 words per phrase (median ~3), one line; hold single words on slow speech.\n3. {{FONT_BODY}} at 81 px on 1920x1080, {{TEXT}}, tracking 0, no stroke, no box, at most a very faint soft shadow.\n4. 16:9: line centre x ~39 % W (in the empty space beside the speaker; ~44 % on a centred framing), centre y 50.5 %, line top 47 %, max width 41 % W. 9:16 reframe: centred x 50 %, ~50 % H, same px.\n5. Hard cut in ~1 frame after the first word, hard cut out on the next phrase; captions continue through the whip and do not move with the punch-in.\n\nEDIT DEVICES\n6. Host asks the question in the first ~20 % of runtime; ~10-frame motion-blur whip to the guest; the answer follows immediately.\n7. One soft ~110 % punch-in on the answer's second sentence; 3 shots total; end on the quotable line. No titles, lower-thirds, b-roll or end card.\n\nGRADE: Grade from the user's footage (video-style / grade.py); target look: dark low-key, warm practicals, deep blacks, muted saturation, skin as the brightest element.\nSOUND: voice only, -14 LUFS, true peak <= -1 dBTP (do not let peaks clip).\n\nVERIFY\na) Render \"KEY WORD\" in lowercase-style light weight at 81 px on 1920x1080 at the caption position and measure:\n   python video-reference-match/scripts/caption_probe.py <test_render> --out <dir> --at <t> --box 0.18,0.44,0.6,0.58 --ink \"{{TEXT}}:70\"   (default ink #FFFFFF)\n   Expected ink for any phrase from video-reference-match/scripts/fit_font.py --font \"{{FONT_BODY}}\" --word \"<phrase>\" --canvas 1920x1080; a 4-word lowercase line with descenders should be ~7 % H and ~38 % W, a 2-word line ~5.6 % H.\nb) Line centre ~39 % W, ~50.5 % H on 16:9.",
- "caption_family": "phrase-plain"
+ "caption_family": "phrase-plain",
+ "hyperframes_compositions": [
+  {
+   "name": "whip-pan",
+   "role": "Fast whip pan from question to answer",
+   "type": "block"
+  },
+  {
+   "name": "yt-lower-third",
+   "role": "Speaker name and social handle",
+   "type": "block"
+  },
+  {
+   "name": "caption-clip-wipe",
+   "role": "Clean lowercase answer subtitles",
+   "type": "component"
+  }
+ ]
 }

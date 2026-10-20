@@ -1,14 +1,5 @@
 #!/usr/bin/env python3
-"""jump-frames.py: the exact frame where each jump cut happens, measured from the picture.
-
-cut-map.json times are not frame-aligned: a camera reset written at 10.34 lands on the frame at 10.367 while the
-footage jumped at 10.333, a one-frame double cut that reads as a glitch. This decodes the flat cut small and grey,
-finds the biggest frame-to-frame change within +-4 frames of each listed cut, and gives the time to write the reset
-at: jump_frame / fps - 0.003.
-
-Usage:
-  python3 jump-frames.py --video W/public/input-video.mp4 --cut-map W/cut-map.json --out W/jump-frames.json [--fps 30]
-"""
+"""jump-frames.py: the exact frame where each jump cut happens, measured from the picture."""
 from __future__ import annotations
 
 import argparse
@@ -35,8 +26,6 @@ def frame_diffs(video: str, fps: int) -> np.ndarray:
 
 
 def locate(cuts: list[float], diffs: np.ndarray, fps: int) -> list[dict]:
-    """Pure function (tested): for each cut time, the frame index (first frame of the new shot) with the largest change
-    in the window, how sure we are (that change against the window's median), and the time to write a reset at."""
     out = []
     for c in cuts:
         i = int(round(c * fps))

@@ -412,5 +412,22 @@
  },
  "quality_score": 3,
  "brand_prompt": "Use /video-pipeline with /video-captions on videos/<project>. Apply style blueprint B39 (video-reference-match/references/blueprints/B39.json) to this brand.\nCanvas 1080x1920, 30 fps. One continuous take; all editing is in the text layers.\n\nBRAND TOKENS (use the brand's colour for each role; keep the contrast relationship: {{ACCENT}} must stay >= 3:1 on the footage in the top band, {{ACCENT_2}} >= 7:1 on {{CARD_BG}})\n- {{TEXT}}: already-spoken caption words, default #FFFFFF\n- {{ACCENT}}: the word being spoken, default #FECC00\n- {{ACCENT_2}}: CTA bar text, default #000000\n- {{SURFACE}}: unused, default none\n- {{CARD_BG}}: CTA bar fill, default #FDFDFD\n- {{FONT_DISPLAY}}: captions, default Poppins 600\n- {{FONT_BODY}}: CTA bar text, default Poppins 600\n- {{HANDLE}}: contact on the CTA bar (email, site or \"@handle\")\n- {{LOGO}}: not shown in the source\n\nCAPTIONS\n1. Script & case: as spoken; lowercase except the first word of the video and proper nouns. Drop all punctuation (keep '@' and '.' inside {{HANDLE}}).\n2. Grouping: segments of 4-7 words over at most 2 lines. Lay out the WHOLE segment first (each line centred on x ~51 %, max line width 71 % W), then reveal its words word by word in their final slots; the first word is not re-centred alone. When the 2 lines are full, hard-cut to the next segment (breaks may fall mid-sentence). Leave the band empty during pauses longer than ~15 frames.\n3. {{FONT_DISPLAY}} 56 px for every word (no size change on the active word), tracking 0, no stroke, no box, soft shadow 0 1px 4px rgba(0,0,0,.35). Calibration: \"positions\" ink 3.05 % H / 24.6 % W; \"locations\" 2.19 % / 24.3 %.\n4. Colours: word being spoken {{ACCENT}}; spoken words {{TEXT}}; unspoken words hidden.\n5. Position: upper fifth, block centred at ~20 % H: line 1 ink 16.7-19.7 %, line 2 20.5-23.4 % (baseline pitch 3.6 % H); a 1-line segment centred in the band (~20.5 %). Keep the face (~38-55 %) and the CTA bar (~73 %) clear.\n6. Animation: hard cut per word on its transcript start (0 frames); the highlight hops to the new word and the previous word turns {{TEXT}} on the same frame; no fade, pop, slide or idle motion; segment change is a hard cut.\n\nOTHER TEXT\n7. Persistent CTA bar, whole video: {{CARD_BG}} rounded rectangle (radius ~6 px), x 17.2-78.5 %, y 72.1-74.2 % (2.1 % H); centred {{ACCENT_2}} text \"Headline here <heart emoji> {{HANDLE}}\" (~8 words) in {{FONT_BODY}} 26 px (a 5-letter word reads ~0.86 % H; full line spans x 18.3-77.4 %). Static, not tracked.\n\nEDIT\n8. Single unbroken take, no cuts or punch-ins. Stage the opening as a scene (e.g. hands with phones and a mic pushed toward the speaker from the foreground); first word within 2-3 frames. Beat split: hook ~19 %, claim ~35 %, invitation question ~11 %, CTA ~20 %, sign-off ~15 %.\n\nSOUND: voice only (any bed must be inaudible, > 25 dB under speech). Master to about -14.5 LUFS, true peak <= -1 dBTP.\nGRADE: Grade from the user's footage (video-style / grade.py); target look: natural office daylight, high-contrast but muted, slightly warm with cool overheads, neutral skin.\n\nVERIFY before rendering: render the calibration words and measure them (yellow state):\n  video-reference-match/scripts/caption_probe.py <render-file> --out <dir> --at <t_positions> --box 0.03,0.11,0.97,0.26 --ink \"#FECC00:60\"\n  video-reference-match/scripts/caption_probe.py <render-file> --out <dir> --at <t_locations> --box 0.03,0.11,0.97,0.26 --ink \"#FECC00:60\"\n\"positions\" must read ink 3.05 % +-0.5 of H and width 24.6 % +-2 of W; \"locations\" 2.19 % +-0.5 / 24.3 % +-2. Swap the --ink colour to {{ACCENT}}. Expected ink for any other word: video-reference-match/scripts/fit_font.py with {{FONT_DISPLAY}} at 56 px. Positions within +-1 % of frame height.",
- "caption_family": "karaoke-highlight"
+ "caption_family": "karaoke-highlight",
+ "hyperframes_compositions": [
+  {
+   "name": "caption-pill-karaoke",
+   "role": "Top-band karaoke captions above press mics",
+   "type": "component"
+  },
+  {
+   "name": "lower-third-bild",
+   "role": "Breaking news ticker lower third",
+   "type": "block"
+  },
+  {
+   "name": "camera-shake",
+   "role": "Authentic press scrum camera movement",
+   "type": "component"
+  }
+ ]
 }

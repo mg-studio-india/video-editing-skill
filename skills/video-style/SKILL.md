@@ -65,13 +65,15 @@ A production-grade `style.json` governs five interdependent visual pillars:
       "color": "rgba(255, 255, 255, 0.70)"
     }
   },
-  "color_grading": {
-    "preset": "commercial-clean",
-    "contrast": 1.12,
-    "saturation": 1.12,
-    "temperature": 6200,
-    "skin_tone_protection": true,
-    "preview_sheet": "grade-preview.jpg"
+  "color_grade": "dynamic",
+  "dynamic_color_params": {
+    "imin": 0.04,
+    "imax": 0.93,
+    "gamma": 1.05,
+    "contrast": 1.02,
+    "saturation": 1.05,
+    "temperature": 5650,
+    "sharpness": 0.12
   },
   "captions": {
     "mode": "phrase",
@@ -96,24 +98,27 @@ A production-grade `style.json` governs five interdependent visual pillars:
 
 ---
 
-## 2. Professional Color Grading Engine (`grade.py`)
+## 2. Dynamic Frame-Accurate Color Correction Engine (`grade.py`)
 
-Raw camera/phone footage is almost always flat, slightly green/yellow-tinted, or washed out. Use `grade.py` to generate side-by-side preview comparisons and apply calibrated color grading:
+Raw camera/phone footage is almost always flat, slightly green/yellow-tinted, or washed out. The color correction engine calculates optimal enhancement parameters **directly and dynamically from the statistical distribution of the video's actual frame pixels**:
 
 ```bash
-# Generate 6-preset comparison contact sheet
-python3 "$ENG/scripts/grade.py" preview --input "$W/raw/<clip>.mp4" --out "$W/grade-preview.jpg" --at 3.0
+# Calculate dynamic parameters and generate frame-by-frame before/after comparison sheet
+python3 "$ENG/scripts/grade.py" dynamic-preview --input "$W/raw/<clip>.mp4" --out "$W/preview/grade-preview.jpg"
 ```
 
-### The 6 Core Grading Presets:
-| Preset | Characteristics & Look | Best For |
+### Dynamic Frame Parameter Formulation:
+| Parameter | Statistical Basis & Formula | Purpose |
 |---|---|---|
-| **`commercial-clean`** | S-curve contrast, warm skin tone protection, +12% vibrance, lifted blacks, subtle clarity. | E-commerce, fashion hauls, unboxings, lifestyle reels. |
-| **`cinematic-warm`** | Golden highlights (+300K), rich film contrast, subtle cyan shadow tint, organic depth. | Storytelling, founder journeys, high-production documentaries. |
-| **`modern-tech`** | Clean 5600K neutral daylight, deep blacks, high clarity, vivid saturated accents. | SaaS product tours, coding, AI reviews, electronics. |
-| **`moody-film`** | Analog film print curve, softened highlights, lifted deep blacks, warm shadows, fine 35mm grain. | Aesthetic vlogs, cinematic mood pieces, moody commentary. |
-| **`vibrant-pop`** | High-energy social feed look, rich color saturation, dynamic contrast punch, warm skin tones. | High-tempo entertainment, street interviews, viral TikToks. |
-| **`neutral-correct`** | Corrects green/yellow phone sensor cast, normalizes exposure and natural white balance. | Corporate interviews, medical, educational lectures. |
+| **Shadow Floor (`imin`)** | 1st percentile luma ($P_1$) of sampled frame pixels | Anchors clean true blacks without crushing shadow detail. |
+| **Highlight Ceiling (`imax`)** | 99th percentile luma ($P_{99}$) of sampled frame pixels | Recovers specular dynamic range without blown-out clipping. |
+| **Midtone Exposure (`gamma`)** | $\gamma = \log_{10}(0.45) / \log_{10}(P_{50} / 255.0)$ | Normalizes scene exposure around perceptual 18% middle-grey. |
+| **Adaptive Contrast** | Tuned via standard deviation of luminance ($\sigma_Y$) | Applies a natural S-curve proportionate to lighting depth. |
+| **Natural Skin Vibrance** | Evaluated from HSV saturation channel mean ($\mu_S$) | Gently lifts healthy skin tones without radioactive oversaturation. |
+| **White Balance Calibration** | Red-to-Blue channel ratio ($R / B$) calibrated to 5650K | Neutralizes camera sensor green/yellow tint to daylight neutral. |
+| **Micro-Clarity** | Laplacian edge variance filtered at 1080p | Restores subtle micro-detail and edge contrast. |
+
+> **Dynamic Engine Guarantee:** 100% computed from actual frame distributions. Zero artificial stylized filter presets.
 
 ---
 

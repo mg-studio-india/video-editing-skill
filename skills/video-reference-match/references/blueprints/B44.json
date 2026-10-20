@@ -413,5 +413,22 @@
  },
  "quality_score": 3,
  "brand_prompt": "Use /video-pipeline with /video-captions on videos/<project>. Apply style blueprint B44 (video-reference-match/references/blueprints/B44.json) to this brand.\nCanvas 1080x1920, 29.97/30 fps. Two-camera conversation as a 50/50 vertical split: speaker top, listener bottom, seam at 50 % H.\n\nBRAND TOKENS (use the brand's colour/font for each role; keep the contrast relationship: {{ACCENT}} key word must stay >= 3:1 and be the brightest saturated element on the footage; thin {{TEXT}} lead words need a dark area behind them)\n- {{TEXT}}: default #FFFFFF (lead and small words)\n- {{ACCENT}}: default #EAB827 (key word + its glow)\n- {{ACCENT_2}}: none\n- {{SURFACE}}: none (footage)\n- {{CARD_BG}}: none\n- {{FONT_DISPLAY}}: default Poppins 900 (key word; Montserrat Black is the original feel)\n- {{FONT_BODY}}: default Inter 300 (lead words; Montserrat Light preferred); small words Poppins 800\n- {{HANDLE}}: not on screen\n- {{LOGO}}: none\n\nCAPTIONS (three-tier seam stack)\n1. Latin, as spoken; lead words sentence case, key and small words lowercase; no punctuation except apostrophes; no emoji.\n2. Per phrase: 1-3 lead words, 0-1 key word (the stressed word), 0-2 small follow-on words.\n3. Lead: {{FONT_BODY}} at 65 px, {{TEXT}}, soft white glow 0 0 15px rgba(255,255,255,.55), centred at 45.1 % H.\n4. Key: {{FONT_DISPLAY}} at 133 px, {{ACCENT}}, tracking -0.01em, soft halo 0 0 21px of {{ACCENT}} at 60 % opacity, centred ON the seam at 50.1-50.7 % H.\n5. Small: Poppins 800 at 47 px, {{TEXT}}, soft glow, centred at 54.1 % H.\n6. Motion (30 fps): lead words fade in ~3 frames with light blur on their words; key word blur+fade in over ~6 frames (no scale); small word fades in ~4 frames after the key; the stack clears with a left-to-right letter-by-letter fade over ~4 frames before the next phrase. No hard text cuts, no idle motion.\n\nLAYOUT AND EDIT DEVICES\n7. No picture cuts: keep the split for the whole piece. At ~60 % of runtime swap the top panel to a second voice/angle (cut inside the panel only).\n8. No titles, lower-thirds, b-roll, punch-ins or end card.\n\nGRADE: Grade from the user's footage (video-style / grade.py); target look: dark, warm, moody low-key, saturated warm walls, deep blacks, natural skin.\nSOUND: voice only, trimmed to the first word (~4 frames), -14 LUFS (source sits slightly under, -14.6).\n\nVERIFY\na) Render the key word \"not\" at 133 px on the seam and measure:\n   python video-reference-match/scripts/caption_probe.py <test_render> --out <dir> --at <t> --box 0.3,0.47,0.7,0.54 --ink \"{{ACCENT}}:70\"   (default ink #EAB827)\n   Required: 4.61 % ±0.5 of H, 21.5 % ±2 of W, centre y ~50.4 %.\nb) Small word \"person\" at 47 px: --box 0.3,0.52,0.7,0.565 --ink \"{{TEXT}}:60\" -> 1.72 % ±0.5 H, 16.8 % ±2 W.\nc) Lead line: render \"KEY WORD\" in {{FONT_BODY}} at 65 px at 45.1 % H; expected ink from video-reference-match/scripts/fit_font.py --font \"{{FONT_BODY}}\" --word <word> (a 3-word lowercase-ish line ~2.2 % H).",
- "caption_family": "stacked-kinetic"
+ "caption_family": "stacked-kinetic",
+ "hyperframes_compositions": [
+  {
+   "name": "comparison-split",
+   "role": "Speaker-over-listener horizontal split layout",
+   "type": "component"
+  },
+  {
+   "name": "yt-lower-third",
+   "role": "Speaker credential pills on split seam",
+   "type": "block"
+  },
+  {
+   "name": "caption-gradient-fill",
+   "role": "Glowing three-tier seam caption rail",
+   "type": "component"
+  }
+ ]
 }

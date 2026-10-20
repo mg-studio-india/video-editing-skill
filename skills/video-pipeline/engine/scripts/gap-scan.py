@@ -1,17 +1,5 @@
 #!/usr/bin/env python3
-"""gap-scan.py: coverage scan of a composition for long-form pacing.
-
-Lists every timed overlay (card-host, cutaway) and every camera move in public/index.html by start time and
-reports the stretches where nothing changes: no overlay on screen and no camera move. A camera move is a GSAP
-tl.to / tl.fromTo on '#video-zoom' or '#video-wrap' with a literal time; a tl.set (the snap back at a jump cut)
-is not a move. The test is whether any 15-20 second stretch feels static, so the defaults are: first 90 s
-flag > 15 s, main body flag > 20 s, hard ceiling 30 s. Also prints the density: overlays and camera moves per
-90 s against a target of about 7 + 7. Hooks under 60 s ignore the gaps; their budget is ~6 overlay moments
-per 40 s (video skills).
-
-Usage:
-  python3 gap-scan.py --index videos/<p>/public/index.html [--early 15 --body 20 --max 30]
-"""
+"""gap-scan.py: coverage scan of a composition for long-form pacing."""
 import argparse, re, sys
 
 ap = argparse.ArgumentParser()

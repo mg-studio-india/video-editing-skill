@@ -414,5 +414,27 @@
  },
  "quality_score": 4,
  "brand_prompt": "Use /video-pipeline with /video-captions on videos/<project>. Apply style blueprint B20 (video-reference-match/references/blueprints/B20.json) to this brand.\nCanvas 1080x1920, 30 fps. All positions are % of frame; px are at 1080x1920.\n\nBRAND TOKENS (use the brand's colour/font for each role; keep the contrast relationship: {{ACCENT}} must stay >= 3:1 on the dark set and visibly brighter than skin; {{ACCENT_2}} is a lighter tint of {{ACCENT}} for the sheen)\n- {{TEXT}}      lead / trailing words                    default #FFFFFF\n- {{ACCENT}}    keyword fill and glow                    default #9EC43A (lime)\n- {{ACCENT_2}}  diagonal sheen band across the keyword   default #B6D372\n- {{SURFACE}}   black band below the picture / set       default #000000\n- {{CARD_BG}}   none                                     default none\n- {{FONT_DISPLAY}} keyword                               default Inter 900 (black-weight neo-grotesque, wide caps)\n- {{FONT_BODY}}    lead / trailing words                 default Inter 700\n- {{HANDLE}}    not shown (optional: add a guest name lower third only if the brand needs it)\n- {{LOGO}}      not shown\n\nCAPTIONS\n1. English as spoken. Lead words in sentence case; the keyword in UPPERCASE. Drop commas, question marks and quotes; keep apostrophes.\n2. Per phrase: 1-3 small lead words, then ONE keyword (the topic word: a strong noun or verb, about one every 60-90 frames), then 0-2 small trailing words. Max 3 lines. Phrases without a strong keyword show only the small white line (at ~60-62 % height).\n3. Lead/trailing words: {{FONT_BODY}} at 54 px, tracking +0.05em, {{TEXT}}, no stroke, no box, faint soft glow.\n4. Keyword: {{FONT_DISPLAY}} at 114 px (~2.1x the lead), tracking +0.03em, {{ACCENT}} with a lighter diagonal {{ACCENT_2}} sheen band across the middle letters, soft glow 0 0 40px of {{ACCENT}} at 35 % opacity, no stroke, no box.\n5. Layout: stack tightly. The lead line sits directly on the keyword's cap height, left-aligned with its left edge; the trailing line goes under the keyword, indented (right-aligned to it when it fits). Keyword centre at 63.7 % of height (y ~1223 px); block roughly centred (x 42-50 %), nudged over the speaker's chest so it never covers the face.\n6. Animation: build word by word; each word (small or keyword) hard-cuts in at full size and opacity on the audible word; placed words never move. No pop, scale, fade or colour sweep. The whole stack hard-cuts out when the next phrase starts or on a speaker cut. Leave pure reaction shots uncaptioned.\n\nOTHER TEXT\n7. None: no title, name lower thirds or logo bug. If the source is not 9:16, place the picture in the top ~83 % with {{SURFACE}} below.\n\nEDIT DEVICES\n8. Open mid-conversation on a question (first word in the first ~2 frames) and cut to the other person's laughing reaction within ~50 frames. Cut only on speaker change or reaction (median shot ~70 frames, J-leads, never mid-sentence). First shot a wider MS, later shots tighter MCUs; hold the quotable payoff in the longest shot; no CTA so it loops.\n\nGRADE\n9. Grade from the user's footage (video-style / grade.py); target look: crushed-black set, faces pop, cool teal rim light, warm skin; no heavy sharpening.\n\nAUDIO\n10. Low music bed under the conversation (optional); no SFX. Master to about -14.1 LUFS, true peak <= -1 dBTP.\n\nVERIFY before rendering\na) Render a test frame with the stack \"KEY WORD / MEET / with you\" and one with \"LOVE\" as the keyword, over a dark area, and measure:\n   python video-reference-match/scripts/caption_probe.py <test.mp4> --out <dir> --at <t> --box 0.05,0.55,0.95,0.72 --ink \"{{ACCENT}}:30,{{TEXT}}:60\"\n   Required at the default fonts: \"MEET\" ink 4.38 % ±0.5 of height and 30.6 % ±2 of width; \"LOVE\" 4.53 % and 28.5 % ±2; \"with you\" 2.66 % ±0.5 and 20.8 % ±2; keyword centre y 63.7 % ±0.5. With brand fonts, compute the expected ink with video-reference-match/scripts/fit_font.py ({{FONT_DISPLAY}} 114 px +0.03em; {{FONT_BODY}} 54 px +0.05em) and match within ±0.5 % H.\n",
- "caption_family": "giant-keyword"
+ "caption_family": "giant-keyword",
+ "hyperframes_compositions": [
+  {
+   "name": "caption-gradient-fill",
+   "role": "Giant glowing accent keyword caption stack",
+   "type": "component"
+  },
+  {
+   "name": "yt-lower-third",
+   "role": "Host and guest identification badge",
+   "type": "block"
+  },
+  {
+   "name": "whip-pan-cut",
+   "role": "Rapid angle handoff between speakers",
+   "type": "component"
+  },
+  {
+   "name": "waveform",
+   "role": "Subtle audio activity visualizer",
+   "type": "block"
+  }
+ ]
 }

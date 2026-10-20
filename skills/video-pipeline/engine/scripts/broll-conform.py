@@ -1,19 +1,5 @@
 #!/usr/bin/env python3
-"""broll-conform.py: turn one AI b-roll result (a generated clip, or a still) into a cutaway the composer can use.
-
-Generated clips arrive at 720p / 1080p, 24 fps, often with sound, in whatever colour the model liked. Format 20's rules
-want 30 fps, dense keyframes (a clip that seeks badly freezes in the render), no audio, BT.709 tags. A still (a Nano Banana
-frame, when a video generation is not worth the credits) becomes a slow push-in of the same length.
-
-Usage:
-  python3 broll-conform.py --in gen/desk.mp4 --out videos/<p>/public/broll/desk.mp4 [--start 0.4] [--dur 4] [--grade]
-  python3 broll-conform.py --in gen/desk.png --out videos/<p>/public/broll/desk.mp4 --dur 4 [--push 1.08]
-  add --4k to write 3840x2160 (the composition is 1920x1080 and renders at 2x, so 1080p is the default; 4K stock
-  keeps its detail only with --4k)
-  add --vf "<ffmpeg filters>" to clean a stock clip first, in source pixels: crop a readable logo out
-  ("crop=3490:1964:175:0") or soften a browser bar ("split[a][b];[b]crop=1480:170:1080:600,boxblur=18[bb];[a][bb]overlay=1080:600")
-Writes the clip, <out>.sheet.png (first, middle, last frame) and prints the storyboard beat to paste.
-"""
+"""broll-conform.py: turn one AI b-roll result (a generated clip, or a still) into a cutaway the composer can use."""
 import argparse, json, os, subprocess, sys
 
 ap = argparse.ArgumentParser()

@@ -20,7 +20,6 @@ def _input_range(start: float | None, end: float | None) -> list[str]:
 
 
 def loudness(video: str, start: float | None = None, end: float | None = None) -> dict:
-    """Integrated loudness (LUFS), loudness range (LU) and true peak (dBTP)."""
     cmd = ["ffmpeg", "-hide_banner", "-nostats", "-loglevel", "info",
            *_input_range(start, end), "-i", str(Path(video).resolve()),
            "-vn", "-af", "ebur128=peak=true", "-f", "null", "-"]
@@ -46,7 +45,6 @@ def loudness(video: str, start: float | None = None, end: float | None = None) -
 def silences(video: str, start: float | None = None, end: float | None = None,
              noise_db: float = -35.0, min_duration: float = 0.4,
              total_duration: float | None = None) -> list[dict]:
-    """Stretches quieter than noise_db for at least min_duration seconds."""
     cmd = ["ffmpeg", "-hide_banner", "-nostats", "-loglevel", "info",
            *_input_range(start, end), "-i", str(Path(video).resolve()),
            "-vn", "-af", f"silencedetect=noise={noise_db}dB:d={min_duration}", "-f", "null", "-"]

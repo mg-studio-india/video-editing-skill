@@ -1,15 +1,5 @@
 #!/usr/bin/env python3
-"""sliver.py --cut-list W/cut-list.json --audio <the raw clip's audio wav> [--fix]: the glitches edge-audit's 300-RMS
-window lets through (breath or tail fragments, and heads carrying a previous word's tail; a long take can hold a handful
-of each). Run it after tighten-cut and before edge-audit; --fix rewrites the cut list.
-  1. a segment with no 10 ms frame above 300 RMS: a breath or the decaying tail of a dropped take that tighten-cut split off
-     (it keeps an ASR word start inside, so edge-audit's fragment check misses it) -> drop
-  2. a HEAD that continues the sound before it (30 ms before and after the cut both over 100 RMS) and decays into a quiet run
-     (>= 50 ms under 70 RMS) inside its first 0.35 s: the tail of the dropped word rides in -> start moves into the quiet run,
-     LEAD s before the next sound
-  3. a TAIL whose last 0.35 s holds a quiet run followed by rising sound up to the cut, while the sound continues after the cut:
-     the onset of the next dropped word leaks out -> end moves into the quiet run, TAIL s after the last sound
-  4. a lead or tail under 40 ms with quiet room outside it -> widened into the room (max 0.10 s)"""
+"""sliver.py --cut-list W/cut-list.json --audio <the raw clip's audio wav> [--fix]: the glitches edge-audit's 300-RMS"""
 import json, os, sys, wave, numpy as np
 import argparse
 ap = argparse.ArgumentParser(); ap.add_argument("--cut-list", required=True); ap.add_argument("--audio", required=True)

@@ -1,7 +1,4 @@
-"""Speech analysis from the word-level transcript.
-
-All pure functions over plain dicts, so they are easy to unit-test.
-"""
+"""Speech analysis from the word-level transcript."""
 from __future__ import annotations
 
 import bisect
@@ -46,7 +43,6 @@ def find_pauses(words: list[dict], min_gap: float = PAUSE_MIN) -> list[dict]:
 
 
 def speech_stats(words: list[dict], t0: float, t1: float) -> dict:
-    """Pace, pauses, fillers and where speech begins/ends."""
     duration = max(0.0, t1 - t0)
     if not words:
         return {"has_speech": False}
@@ -76,7 +72,6 @@ def speech_stats(words: list[dict], t0: float, t1: float) -> dict:
 
 
 def assign_words_to_shots(shots: list[dict], words: list[dict]) -> None:
-    """Annotate each shot with the words spoken inside it (by word midpoint)."""
     mids = [(w["start"] + w["end"]) / 2 for w in words]
     for s in shots:
         lo = bisect.bisect_left(mids, s["start"])
@@ -93,14 +88,6 @@ EDGE = 0.03
 
 
 def cut_alignment(shots: list[dict], segments: list[dict], silences: list[dict]) -> dict:
-    """Classify how each cut relates to speech. Heuristic: judged from timing only,
-    since we do not have separate audio and picture tracks.
-
-      on_pause    cut falls between sentences or inside silence
-      j_lead      the next sentence starts just BEFORE the cut (audio leads picture)
-      l_trail     the current sentence ends just AFTER the cut (audio trails picture)
-      mid_speech  cut lands in the middle of a sentence with neither pattern
-    """
     counts = {"on_pause": 0, "j_lead": 0, "l_trail": 0, "mid_speech": 0}
     if not segments:
         return {"counts": counts, "total": 0, "has_speech": False}

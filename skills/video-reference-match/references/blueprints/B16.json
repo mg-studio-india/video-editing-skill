@@ -322,5 +322,22 @@
  },
  "quality_score": 2,
  "brand_prompt": "Use /video-pipeline with /video-captions on videos/<project>. Apply style blueprint B16 (video-reference-match/references/blueprints/B16.json) to this brand.\nThis blueprint has NO speech captions: one fixed 2-line offer title over a locked-off same-mark team lineup. Canvas 1080x1920, 30 fps.\n\nBRAND TOKENS (use the brand's colour for each role; keep the contrast relationship: {{TEXT}} has no stroke or box, so it must stay >= 3:1 against the clothing/backdrop behind it; add a 2 px dark outline only if it drops below)\n- {{TEXT}}: offer lines, default #FFDF00\n- {{ACCENT}}: same as {{TEXT}} (no emphasis word in the source), default #FFDF00\n- {{ACCENT_2}}: unused, default none\n- {{SURFACE}}: unused (backdrop is the real location: one strong single-colour wall/facade), default none\n- {{CARD_BG}}: unused, default none\n- {{FONT_DISPLAY}}: condensed transitional serif, default Playfair Display 400 (Instrument Serif closer)\n- {{FONT_BODY}}: same as {{FONT_DISPLAY}}\n- {{HANDLE}}: not shown in the source\n- {{LOGO}}: not shown in the source\n\nTITLE\n1. Copy: the offer in the audience's register (source: Roman-script Hinglish), 2 lines, ~5 + 3 words, sentence case, no punctuation (\"Lead words here\" / \"KEY WORD\").\n2. {{FONT_DISPLAY}} in {{TEXT}}, tracking 0, no stroke/shadow/box. Line 1 76 px, line 2 88 px (~1.2x). Exact narrow look: Playfair 95 / 115 px with transform: scaleX(0.74), or Instrument Serif sized to the measured ink.\n3. Layout: both lines centred; line 1 centre 52.0 % H (x 13-88 %, ink ~4.8 % H at ~24 characters), line 2 centre 57.7 % H (x 20-82 %, ink ~5.82 % H at ~17 characters), across the chest of a centred medium shot. Optional slight bulge warp.\n4. Timing: on from frame 0 to the last frame, static, untouched by the dissolves.\n\nEDIT\n5. Locked camera, identical medium framing, one strong single-colour backdrop. 5 people on the same mark, ~42 frames each; swaps are ~6-frame cross-dissolves, the last change a hard cut. Each person: eyes closed / looking down, then eyes open + small smile within ~24 frames. No punch-ins, no end card.\n\nSOUND: one trending/upbeat song, no voice, steady level. Master to about -14 LUFS, true peak <= -1 dBTP.\nGRADE: Grade from the user's footage (video-style / grade.py); target look: mid-contrast, natural saturation, cool daylight with true skin.\n\nVERIFY before rendering: render the two lines and measure:\n  video-reference-match/scripts/caption_probe.py <render-file> --out <dir> --at 1.0 --box 0.08,0.48,0.92,0.545 --ink \"#FFDF00:75\"\n  video-reference-match/scripts/caption_probe.py <render-file> --out <dir> --at 1.0 --box 0.08,0.548,0.92,0.61 --ink \"#FFDF00:75\"\nSwap the --ink colour to {{TEXT}}. Compute the expected ink height/width of the brand's actual lines with video-reference-match/scripts/fit_font.py (76 / 88 px, or 95 / 115 px x scaleX 0.74); if height fits but width is too wide, apply the scaleX. Line centres within +-1 % of frame height of 52.0 / 57.7 %.",
- "caption_family": "title-only"
+ "caption_family": "title-only",
+ "hyperframes_compositions": [
+  {
+   "name": "avatar-group-hover",
+   "role": "Team member roster showcase",
+   "type": "component"
+  },
+  {
+   "name": "headline-slam",
+   "role": "Persistent team title banner",
+   "type": "component"
+  },
+  {
+   "name": "fade-through",
+   "role": "Smooth dissolve between team member marks",
+   "type": "component"
+  }
+ ]
 }

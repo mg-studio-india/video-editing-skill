@@ -1,10 +1,4 @@
-"""Shot detection with ffmpeg.
-
-Why this is separate from frame extraction: cuts are measured across the
-WHOLE range, with no cap, so cuts/min and shot lengths are accurate even for
-very fast-cut videos. How many frames Claude gets to *look at* is decided later
-(frames.py) and never feeds back into these numbers.
-"""
+"""Shot detection with ffmpeg."""
 from __future__ import annotations
 
 import re
@@ -31,7 +25,6 @@ def _input_range(start: float | None, end: float | None) -> list[str]:
 
 def detect_cuts(video: str, start: float | None = None, end: float | None = None,
                 threshold: float = 0.20, width: int = ANALYSIS_WIDTH) -> list[dict]:
-    """Return [{'t': seconds, 'score': 0..1}] for every scene change in range."""
     vf = f"scale={width}:-2,select='gt(scene,{threshold})',metadata=mode=print:file=-"
     cmd = ["ffmpeg", "-hide_banner", "-loglevel", "error", "-nostats",
            *_input_range(start, end), "-i", str(Path(video).resolve()),
@@ -53,7 +46,6 @@ def detect_cuts(video: str, start: float | None = None, end: float | None = None
 
 
 def build_shots(cuts: list[dict], t0: float, t1: float, min_shot: float = MIN_SHOT) -> list[dict]:
-    """Turn cut timestamps into a shot list covering [t0, t1] with no gaps."""
     if t1 <= t0:
         return []
     bounds: list[tuple[float, float | None]] = [(t0, None)]
@@ -84,7 +76,6 @@ def build_shots(cuts: list[dict], t0: float, t1: float, min_shot: float = MIN_SH
 def detect_black_freeze(video: str, start: float | None = None, end: float | None = None,
                         width: int = ANALYSIS_WIDTH, black_min: float = 0.1,
                         freeze_min: float = 1.0) -> dict:
-    """Black frames and frozen/static stretches. Freeze = picture unchanged for >= freeze_min s."""
     vf = (f"scale={width}:-2,blackdetect=d={black_min}:pix_th=0.10,"
           f"freezedetect=n=-60dB:d={freeze_min}")
     cmd = ["ffmpeg", "-hide_banner", "-loglevel", "info", "-nostats",
@@ -107,7 +98,6 @@ def detect_black_freeze(video: str, start: float | None = None, end: float | Non
 
 
 def close_open_freezes(freeze: list[dict], t1: float) -> list[dict]:
-    """A freeze that runs to the end of the clip has no freeze_end; close it at t1."""
     out = []
     for f in freeze:
         end = t1 if f["end"] is None else f["end"]

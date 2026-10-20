@@ -1,12 +1,5 @@
 #!/usr/bin/env python3
-"""build_index.py: publish the style blueprints and regenerate the index files.
-
-  build_index.py                      rebuild index.json, INDEX.md, PROMPTS.md from references/blueprints/B*.json
-  build_index.py --ingest SRC_DIR     one-time import of SRC_DIR/*/blueprint.json: shuffled into B01..Bnn with an
-                                      unstored random order, source ids stripped, {{BID}} filled, then rebuild
-
-Edit a blueprint directly in references/blueprints/ and run the rebuild; check_blueprints.py must pass afterwards.
-"""
+"""build_index.py: publish the style blueprints and regenerate the index files."""
 import argparse
 import glob
 import json
@@ -69,6 +62,7 @@ def rebuild():
                      "look_intent": b.get("style", {}).get("look_intent"), "music": b.get("sound", {}).get("music"),
                      "signature": s.get("one_line"), "unique_devices": s.get("unique_devices", []),
                      "catalog_styles": [c.get("id") for c in b.get("catalog_styles", [])],
+                     "hyperframes_compositions": b.get("hyperframes_compositions", []),
                      "tags": b.get("match", {}).get("tags", []), "needs": b.get("match", {}).get("needs", {}),
                      "quality_score": b.get("quality_score"), "file": "blueprints/%s.json" % b["id"]})
     json.dump({"schema": "blueprint-index/1", "count": len(rows), "blueprints": rows},
@@ -95,10 +89,11 @@ def rebuild():
          "blueprints only state a look intent.", "", "## Blueprints by caption family", ""]
     order = list(FAMILY_DESC)
     for f in sorted(fams, key=lambda x: (order.index(x) if x in order else len(order) - 2.5, x)):
-        L += ["### %s — %s" % (f, fam_desc(f)), "", "| ID | Format | Lang | Duration | Score | Signature |", "|---|---|---|---|---|---|"]
+        L += ["### %s — %s" % (f, fam_desc(f)), "", "| ID | Format | Lang | Duration | Score | Linked HyperFrames Compositions | Signature |", "|---|---|---|---|---|---|---|"]
         for r in sorted(fams[f], key=lambda r: -(r["quality_score"] or 0)):
-            L.append("| [%s](blueprints/%s.json) | %s %s | %s | %s | %s | %s |" % (r["id"], r["id"], r["format"], r["aspect"], r["language"],
-                     (r["duration_class"] or "").split(" ")[0], r["quality_score"], (r["signature"] or "").replace("|", "/")))
+            hf_comps = ", ".join("`%s`" % c["name"] for c in r.get("hyperframes_compositions", [])) or "none"
+            L.append("| [%s](blueprints/%s.json) | %s %s | %s | %s | %s | %s | %s |" % (r["id"], r["id"], r["format"], r["aspect"], r["language"],
+                     (r["duration_class"] or "").split(" ")[0], r["quality_score"], hf_comps, (r["signature"] or "").replace("|", "/")))
         L.append("")
     tags = Counter(t for r in rows for t in r["tags"])
     L += ["## Tags", "", ", ".join("%s (%d)" % kv for kv in tags.most_common(60)), ""]

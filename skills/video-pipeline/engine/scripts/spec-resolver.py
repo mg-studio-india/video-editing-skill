@@ -1,18 +1,5 @@
 #!/usr/bin/env python3
-"""spec-resolver.py: Context-driven creative dimension extractor and missing-step resolver.
-
-Features:
-1. Dynamic Context-Driven Format Selection: Formats are never hardcoded. Evaluates transcript,
-   metadata, and prompt context to recommend the optimal layout from the 225-Style Taxonomy.
-2. Caption Styling Standard: Defaults to either `weight-shift` or `caption-highlight` with
-   punch word(s) emphasis.
-3. 3-Way Formula Tone Grading: Integrates with grade.py formula engine (shadows, midtones,
-   highlights, contrast, and saturation) with 10 cinema & digital creator presets.
-4. Master Catalog Options (max 10): Populates up to 10 rich curated choices per dimension.
-5. Proactive Quality Flags Check: Proactively checks with the user whether high-impact
-   output enhancement flags (neural road denoiser, YuNet face reframe, 4K master) should be turned on.
-6. Streamlined Pipeline Gates: Renames verification gates into Gates 1 through 6.
-"""
+"""spec-resolver.py: Context-driven creative dimension extractor and missing-step resolver."""
 from __future__ import annotations
 
 import argparse
@@ -140,10 +127,6 @@ def detect_video_context(
     transcript_text: str = "",
     metadata: dict | None = None
 ) -> dict:
-    """Analyze video context from prompt, transcript, and metadata to derive dynamic defaults.
-
-    Nothing is hardcoded. Evaluates content topic, pacing, screen recordings, and tone.
-    """
     combined = f"{prompt} {transcript_text}".lower()
     meta = metadata or {}
 
@@ -211,7 +194,6 @@ def detect_video_context(
 # -----------------------------------------------------------------------------
 
 def extract_prompt_specs(prompt: str) -> dict[str, dict]:
-    """Scan the user prompt and extract any declared specifications across the 6 dimensions."""
     p = prompt.lower()
     extracted: dict[str, dict] = {}
 
@@ -396,7 +378,6 @@ def audit_specifications(
     transcript_text: str = "",
     metadata: dict | None = None
 ) -> dict:
-    """Compare extracted prompt specs against context-driven defaults, brand memory, and master catalogs."""
     extracted = extract_prompt_specs(prompt)
     context = detect_video_context(prompt, transcript_text, metadata)
     brand_memo = memo.parse_memo(memo_path) if memo_path else {}
@@ -485,7 +466,6 @@ def audit_specifications(
 # -----------------------------------------------------------------------------
 
 def generate_quality_flags_check(context: dict, audit: dict) -> list[dict]:
-    """Proactively checks with the user whether high-impact output settings should be enabled."""
     checks = []
 
     # 1. Noise Suppression: Active for indoor (HVAC hum, room reverb, fan noise) as well as outdoor (traffic, vehicle rumble)
@@ -524,7 +504,6 @@ def generate_quality_flags_check(context: dict, audit: dict) -> list[dict]:
 # -----------------------------------------------------------------------------
 
 def format_interactive_summary(spec_audit: dict) -> str:
-    """Generate Markdown report detailing extracted vs missing dimensions."""
     ctx = spec_audit.get("context", {})
     lines = [
         "# 📋 Gate 1: Creative Dimensions & Context-Driven Specification",
@@ -573,12 +552,6 @@ def format_interactive_summary(spec_audit: dict) -> str:
 
 
 def format_ask_questions(spec_audit: dict, max_options: int = 10) -> list[dict]:
-    """Format structured questions for ask_question tool or interactive CLI prompt.
-
-    Ensures:
-    1. Option 1 is ALWAYS: '(Recommended) Choose automatically based on video context & brand memory (<auto_default>)'
-    2. Master catalog options are dynamically populated up to a maximum of 10 items.
-    """
     questions = []
 
     for dim_key, item in spec_audit["dimensions"].items():
@@ -614,7 +587,6 @@ def resolve_specs(
     transcript_text: str = "",
     out_path: Path | str | None = None
 ) -> dict:
-    """Resolve all dimensions into a final project specification file (resolved-spec.json)."""
     audit = audit_specifications(prompt, memo_path, transcript_text)
     user_choices = user_choices or {}
     resolved: dict[str, dict] = {}

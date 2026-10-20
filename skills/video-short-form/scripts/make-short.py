@@ -1,17 +1,5 @@
 #!/usr/bin/env python3
-"""make-short.py: cut one Short out of the flat cut, every edge snapped to a word boundary.
-
-A Short can be one stretch or several stitched together (a hook line from later, then the explanation). Ranges are
-flat-cut seconds ("A-B") or phrases ("@first words..@last words"). Each start moves to the first word starting at or
-after it, minus a 0.08 s lead-in (never into the previous word); each end to the last word ending at or before it,
-plus a 0.15 s tail (never into the next word). Then apply-cut.py makes the file, so the Short gets the same
-frame-accurate encode and its own cut-map.json.
-
-Usage:
-  python3 make-short.py --flat W/public/input-video.mp4 --transcript W/transcript.json --out-dir W/shorts/01 \
-      --range 412.3-438.9 [--range "@the real reason..@nobody tells you"] [--max 60]
-Writes: <out-dir>/cut-list.json, <out-dir>/cut-map.json, <out-dir>/public/input-video.mp4, <out-dir>/short.json
-"""
+"""make-short.py: cut one Short out of the flat cut, every edge snapped to a word boundary."""
 from __future__ import annotations
 
 import argparse
@@ -25,7 +13,6 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 
 
 def _engine_scripts():
-    """The shared engine scripts (video-pipeline/engine/scripts): $VIDEO_ENGINE, the sibling skill, or ~/.agents/skills."""
     env = os.environ.get("VIDEO_ENGINE")
     for c in ((os.path.join(env, "scripts") if env else ""), os.path.join(HERE, "..", "..", "video-pipeline", "engine", "scripts"),
               os.path.expanduser("~/.agents/skills/video-pipeline/engine/scripts")):
@@ -66,7 +53,6 @@ def parse_range(spec: str, W) -> tuple[float, float]:
 
 
 def snap(a: float, b: float, words: list[dict], duration: float) -> tuple[float, float]:
-    """Pure function (tested). Word-boundary snap with lead-in and tail, never into a neighbouring word."""
     inside = [w for w in words if w["start"] >= a - 1e-6 and w["end"] <= b + 1e-6]
     if not inside:
         raise SystemExit(f"no whole word inside {a:.2f}-{b:.2f}")

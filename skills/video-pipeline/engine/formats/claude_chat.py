@@ -1,18 +1,4 @@
-"""claude_chat.py: the full-screen Claude chat cutaway (format 24), one function for every build.
-
-Why: a typed prompt runs past the composer when every space is an &nbsp; (no line-break opportunity).
-Here each word is a nowrap group of character spans and the spaces between words
-are real, breakable spaces, so the prompt wraps like the real app; the composer is bottom-anchored with a min-height
-and grows upward if a prompt needs a third line. Attachments (image thumbnails) can drop into the composer before the
-typing and ride along into the sent message.
-
-Usage (inside a build script that has host() and js() helpers and the glassIn-free full-frame "cut" style):
-    import sys; sys.path.insert(0, "<project>/.claude/skills/youtube-edit/formats"); from claude_chat import chat_css, chat_scene
-    html, lines = chat_scene("chat", prompt, t_in, t_out, type_t0, type_t1, send, think_end, head, items, attachments=[...], att_times=[...])
-    host("chat", t_in, t_out, html, "<anchor>"); [js(l) for l in lines]; and add chat_css() to the page CSS once.
-items: list of (bold, rest) rows revealed from item_t0 every item_gap seconds (rest may be ""). attachments: image paths
-relative to public/ (thumbnails, cover-cropped). att_times: when each thumbnail drops in (one per attachment).
-"""
+"""claude_chat.py: the full-screen Claude chat cutaway (format 24), one function for every build."""
 import html as _h
 
 def chat_css():
@@ -59,7 +45,6 @@ def _typed(prompt):
 
 def chat_scene(p, prompt, t_in, t_out, type_t0, type_t1, send, think_end, head, items, item_t0=None, item_gap=0.42,
                attachments=(), att_times=(), resp_top=220, logo="img/claude.svg"):
-    """Returns (html, js_lines). Times are composition seconds."""
     thumbs = "".join('<div class="cc-thumb" id="%s-a%d" style="background-image:url(%s)"></div>' % (p, k, src) for k, src in enumerate(attachments))
     uthumbs = "".join('<div class="cc-thumb" style="background-image:url(%s)"></div>' % src for src in attachments)
     rows = "".join('<div class="cc-item" id="%s-i%d"><span class="rn">%d.</span><span><b>%s%s</b>%s</span></div>'

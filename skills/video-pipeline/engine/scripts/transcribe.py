@@ -1,25 +1,5 @@
 #!/usr/bin/env python3
-"""transcribe.py: word-level transcript of a clip with whisper.cpp, in the shape every engine script reads.
-
-Replaces `npx hyperframes transcribe --engine parakeet`. Output (transcript.json):
-  {"engine": "whisper.cpp", "model": ..., "language": ..., "duration": ...,
-   "words": [{"text": "today", "w": "today", "start": 0.70, "end": 1.10}, ...],
-   "segments": [...], "sound_cues": [...], "loops_collapsed": N, "windows": [[a, b], ...]}
-Every word carries both "text" (the cut tools: paper-cut, hand-cut, edge-audit, beat-check, phrase-times, dead-air,
-stutter-scan) and "w" (the watch tools), so one file serves both.
-
-Usage:
-  python3 transcribe.py MEDIA --out W/transcript.json                 # one pass
-  python3 transcribe.py MEDIA --out W/transcript-raw.json --window 25 # long raw takes: windows split at silences
-  python3 transcribe.py MEDIA --out W/transcript.json --no-fillers    # drop the filler-keeping prompt
-
-Why windows: on long raw takes whisper can skip a retake that repeats the previous sentence, and it can loop on long
-silences. Windows of ~25 s that start and end inside silences keep each retake in view. Windows are chosen by
-ffmpeg silencedetect; a stretch with no silence is split hard at the limit.
-
-Fillers: whisper drops "um" and "uh" by default, and the cut tools need them to find restarts. Unless --no-fillers (or
-WATCH_WHISPER_PROMPT is set), the prompt "Um, uh, you know, I mean, like." is passed, which keeps them.
-"""
+"""transcribe.py: word-level transcript of a clip with whisper.cpp, in the shape every engine script reads."""
 from __future__ import annotations
 
 import argparse
@@ -53,8 +33,6 @@ def silences(media: str, noise_db: float = -35.0, min_len: float = 0.3) -> list[
 
 
 def plan_windows(duration: float, quiet: list[tuple[float, float]], limit: float) -> list[tuple[float, float]]:
-    """Split [0, duration] into windows no longer than `limit`, each boundary at the middle of a silence when one
-    falls in the back half of the window; otherwise a hard split at the limit. Pure function (tested)."""
     mids = sorted((s + e) / 2 for s, e in quiet)
     out, a = [], 0.0
     while duration - a > limit:

@@ -454,5 +454,22 @@
  },
  "quality_score": 3,
  "brand_prompt": "Use /video-pipeline with /video-captions on videos/<project>. Apply style blueprint B15 (video-reference-match/references/blueprints/B15.json) to this brand.\nCanvas 1080x1920, 25 fps. Two handheld cameras (host + guest), location sound.\n\nBRAND TOKENS (use the brand's colour/font for each role; keep the contrast relationship: {{ACCENT}} key word >= 7:1 on the black pill; white subtitle >= 4.5:1 on its faint box over the footage; {{ACCENT_2}} tag >= 4.5:1 behind white text)\n- {{TEXT}}: default #FFFFFF (subtitles, pill text)\n- {{ACCENT}}: default #EEFB1F (title key word; CTA keyword #E8F582)\n- {{ACCENT_2}}: default #2771B3 (lower-third role tag and offset bar)\n- {{SURFACE}}: default #000000 (title and CTA pills); subtitle box rgba(0,0,0,.25)\n- {{CARD_BG}}: default #FCFCFD (name box, logo tile)\n- {{FONT_DISPLAY}}: default Playfair Display 400 (serif name and role)\n- {{FONT_BODY}}: default Noto Sans 400/700 (subtitles, title pill)\n- {{HANDLE}}: default @handle\n- {{LOGO}}: company logo tile + sponsor logo pill\n\nCAPTIONS (subtitles)\n1. Latin, as spoken, sentence case with full punctuation (commas, full stops, ?, !, ellipsis when continuing); correct proper nouns; no emoji.\n2. A sentence or clause per subtitle (1-10 words, ~6), up to 2 centred lines, max line width 57 % W (margins >= 20 % W).\n3. {{FONT_BODY}} 400 at 38 px, {{TEXT}}, no stroke/shadow, on a translucent rgba(0,0,0,.25) box, padding ~1.5 % W, small radius.\n4. Centre y 76.2 % H (2-line block ~75.5 %).\n5. Hard cut in ~1 frame before the first word; hard cut out on the next subtitle.\n\nOTHER TEXT AND EDIT DEVICES\n6. Promise title pill (first ~10 % of runtime, static): {{SURFACE}} rounded box x 16-83 %, y 8-20.5 %, radius ~3 % W; line 1 'Headline here' {{FONT_BODY}} 400 65 px {{TEXT}} at 12.1 % H; line 2 with the KEY WORD in {{FONT_BODY}} 700 74 px {{ACCENT}} at 16.4 % H.\n7. Lower third once at the name reveal (~11-14 % of runtime, ~75 frames): {{ACCENT_2}} tag x 16-60 %, y 59.4-62.3 % with small white serif 'Role, Company'; {{CARD_BG}} box x 15.5-77 %, y 62.7-67 % with black {{FONT_DISPLAY}} 'Name Surname' (~58 px) and an offset {{ACCENT_2}} bar; tag wipes L->R ~5 frames, role types on ~8 frames, name box wipes ~3 frames, name fades ~3 frames. {{LOGO}} on a white rounded tile x 35.8-64 %, y 79.4-90.2 %.\n8. Sponsor (~60 % of runtime, ~150 frames): 'Link in Bio' white bold on a dark grey rounded pill at 13.6 % H (~5.8 % H tall); sponsor logo on a white rounded pill x 25.6-74.2 % at 67.5 % H (~7.3 % H tall).\n9. CTA over the last ~8 % (during the payoff, not after): {{SURFACE}} rounded pill x 20-78 % at 67.4 % H (~6.2 % H tall): 'Comment' Inter 500 ~57 px white + '“KEYWORD”' Inter 700 ~59 px {{ACCENT}}.\n10. Cold open: handheld approach with one whip (~6 frames), ~5 cuts in the first ~2 %; then cut host/guest on nearly every sentence (median ~1 s), easing to 20-45 cuts/min. One ~1 s emotional photo insert before the closing lesson. No punch-ins.\n\nGRADE: Grade from the user's footage (video-style / grade.py); target look: natural, slightly warm, mid-high contrast, rich exterior greens, tungsten interiors.\nSOUND: location dialogue up front, low bed (~5 dB under speech gaps), hits on ~half the cuts; -14 LUFS, true peak <= -2 dBTP.\n\nVERIFY\na) Render a 7-word subtitle at 38 px at 76.2 % H over dark clothing and measure:\n   python video-reference-match/scripts/caption_probe.py <test_render> --out <dir> --at <t> --box 0.15,0.735,0.85,0.785 --ink \"{{TEXT}}:60\"   (default ink #FFFFFF)\n   Expected: ~1.95 % H for mixed-case words with ascenders/descenders and a '?'; compute the exact ink/width for your phrase with video-reference-match/scripts/fit_font.py --font \"Noto Sans Devanagari 400\" --word \"<phrase>\".\nb) Title pill: render \"KEY WORD\" in {{FONT_BODY}} 700 at 74 px, --box 0.43,0.14,0.82,0.19 --ink \"{{ACCENT}}:90\"; compare with fit_font.py output for that word.",
- "caption_family": "other:subtitle-box"
+ "caption_family": "other:subtitle-box",
+ "hyperframes_compositions": [
+  {
+   "name": "lower-third-bild",
+   "role": "Broadcast news lower third banner",
+   "type": "block"
+  },
+  {
+   "name": "lt-clean-bar",
+   "role": "Subject name and occupation bar",
+   "type": "block"
+  },
+  {
+   "name": "camera-shake",
+   "role": "Subtle handheld documentary camera motion",
+   "type": "component"
+  }
+ ]
 }

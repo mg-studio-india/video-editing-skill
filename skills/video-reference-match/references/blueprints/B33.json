@@ -374,5 +374,37 @@
  },
  "quality_score": 4,
  "brand_prompt": "Use /video-pipeline with /video-captions on videos/<project>. Apply style blueprint B33 (video-reference-match/references/blueprints/B33.json) to this brand.\n\nBRAND TOKENS (use the brand's colour for each role; keep the contrast relationship — text and accent must stay >= 4.5:1 / >= 3:1 against what sits behind them on the footage):\n- {{TEXT}}      default #FFFFFF (captions)\n- {{ACCENT}}    default #FDF677 (split divider bar)\n- {{ACCENT_2}}  default #EBE97E (screenshot card border)\n- {{SURFACE}}   default #EAEADE (light-grey panel behind screenshot cards)\n- {{CARD_BG}}   default #DADEE4 (light-grey ground behind full-screen post captures)\n- {{FONT_DISPLAY}} default Inter 600\n- {{FONT_BODY}}    default Inter 600\n- {{HANDLE}}    default @handle\n- {{LOGO}}      default the brand's logo file (transparent PNG/SVG)\nDivider and border are chrome, not text: keep them clearly visible (>= 3:1) against both the B-roll and the face below.\nCanvas 1080x1920, 25 fps (scale frame counts if the project fps differs).\n\nCAPTIONS\n1. Roman script / English as spoken, sentence case (capitals at sentence starts and for names); full stops at sentence ends; numbers as digits. No emoji, no key-word colour.\n2. One line of 2-4 words per caption, whole phrase at once; break at phrase / sentence boundaries.\n3. Type: {{FONT_BODY}} at 65 px, {{TEXT}}, tracking +0.02 em, no stroke / box, soft drop shadow 0 2px 6px rgba(0,0,0,.5). Centred, ink centre at 80.3 % H, max ~66 % W. Same position on every layout.\n4. Animation: none — hard cut on, hard cut off. Mid-sentence chunks replace each other directly; 4-5 empty frames between sentences; sentence-start captions may land ~8 frames after the spoken word.\n\nOTHER TEXT / LAYOUT\n5. Split screen while talking (~54 % of runtime): B-roll window 0-35 % H, talking head below, separated by a solid {{ACCENT}} bar 8 px tall at 35.1-35.5 % H. Swap the top visual every ~25-50 frames in the hook.\n6. Screenshot proof: {{SURFACE}} panel in the top third with the screenshot framed by a ~6 px {{ACCENT_2}} border, x 7-95 %, y 6-27 %.\n7. Post-capture montage (~65-91 % of runtime): full-screen {{CARD_BG}} with each capture in a rounded card (radius ~3 % W), x 7-93 %, y 7-90 %, original UI kept; 8-75 frames per card, accelerating; ~44 % short soft swaps. Captions stay on top at 80.3 %.\n8. Payoff: back to full-frame face for the last ~9 % with a comment question. No {{LOGO}} or end card ({{HANDLE}} optional).\n\nGRADE\nGrade from the user's footage (video-style / grade.py); target look: high-contrast, natural-saturation, warm front-camera look.\n\nVERIFY before rendering\na) Render a test caption 'KEY WORD here now' and measure: python3 video-reference-match/scripts/caption_probe.py <test-render> --out <dir> --at <t> --box 0.08,0.765,0.92,0.835 --ink \"{{TEXT}}:50\"\nb) python3 video-reference-match/scripts/fit_font.py --font \"Inter 600\" --word \"<line with ascenders and descenders>\" --ink 3.12 --tracking 0.02 -> ~64-65 px; a ~23-character 4-word line reads ~62 % W. Tolerance ±0.5 % H, ±2 % W; measure over dark clothing. (fit_font.py needs a target: --ink and/or --width; it returns the px that reproduces that ink for YOUR word plus the width it will read at that px. Requires Pillow.)\nc) Positions within ±1 % H: caption centre 80.3 %, divider 35.1-35.5 %.",
- "caption_family": "phrase-plain"
+ "caption_family": "phrase-plain",
+ "hyperframes_compositions": [
+  {
+   "name": "comparison-split",
+   "role": "Top proof window over bottom selfie divider with accent bar",
+   "type": "component"
+  },
+  {
+   "name": "x-post",
+   "role": "Social proof screenshot cards in top panel",
+   "type": "block"
+  },
+  {
+   "name": "chart-story",
+   "role": "Metric and revenue breakdown data narrative",
+   "type": "component"
+  },
+  {
+   "name": "count-up",
+   "role": "Animated stat counter on revenue metrics",
+   "type": "component"
+  },
+  {
+   "name": "card-resize",
+   "role": "Screenshot card expanding to full detail view",
+   "type": "component"
+  },
+  {
+   "name": "marker-checklist-card",
+   "role": "3-step framework checklist with checkmarks",
+   "type": "component"
+  }
+ ]
 }

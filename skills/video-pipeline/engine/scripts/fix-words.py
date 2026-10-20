@@ -1,21 +1,5 @@
 #!/usr/bin/env python3
-"""fix-words.py: correct misheard words in a transcript without touching its timing, and remember the fix.
-
-Whisper mishears names, products and jargon ("cap cut" for CapCut, "hyper frames" for HyperFrames, a Hindi name spelled
-three ways). Every transcription pass after a cut would bring the same errors back, so corrections live in the project's
-corrections.json ({"misheard phrase": "Correct form"}) and transcribe.py applies them on every pass automatically (and
-feeds the correct forms to whisper as spelling hints).
-
-Timing is kept: a phrase replaced word for word keeps each word's times; several words merged into one ("cap cut" ->
-"CapCut") span from the first start to the last end; one word split into several shares its span evenly. Punctuation
-attached to the original words is kept ("cut." -> "CapCut.").
-
-Usage:
-  python3 fix-words.py --transcript W/transcript.json --add "cap cut=CapCut" --add "hyper frames=HyperFrames"
-      (adds to W/corrections.json next to the transcript, then applies it in place)
-  python3 fix-words.py --transcript W/transcript.json            # re-apply W/corrections.json
-  python3 fix-words.py --transcript W/transcript.json --dry-run  # show what would change
-"""
+"""fix-words.py: correct misheard words in a transcript without touching its timing, and remember the fix."""
 import argparse
 import json
 import os
@@ -41,7 +25,6 @@ def _edges(text: str) -> tuple[str, str]:
 
 
 def apply(words: list[dict], corrections: dict[str, str]) -> tuple[list[dict], list[str]]:
-    """Pure (tested). words: [{text|w, start, end}]. Returns new words and a list of human-readable changes."""
     rules = sorted(((norm(k), v.split()) for k, v in corrections.items() if norm(k) and v.strip()),
                    key=lambda r: -len(r[0]))                     # longest phrase first
     out, changes, i = [], [], 0

@@ -17,6 +17,8 @@ video-pipeline itself (multi-clip / multi-camera intake).
 | `assemble.py` | multi-skill tool | motion-graphics, plan-storyboard, render | — | — | put finished segments in order and deliver one 4K master. Replaces iMovie. |
 | `audio-chain.py` | multi-skill tool | audio, pipeline, render | render.py, spec-resolver.py | yes | voice processing in the right order, with ffmpeg only, measured before and after. |
 | `broll-conform.py` | multi-skill tool | format, generate, omni-restyle | generate.py | yes | turn one AI b-roll result (a generated clip, or a still) into a cutaway the composer can use. |
+| `parallel_pipeline.py` | multi-skill tool | pipeline, reference-match, cut-audit, plan-storyboard, render | — | yes | High-speed parallel video editing pipeline: parallel ingest, whisper.cpp ASR, dynamic color correction, preset matching, and master render. |
+| `install-compositions.mjs` | multi-skill tool | format, pipeline | install.sh | yes | High-speed concurrent installer for all 447 HyperFrames catalog compositions into engine sandbox. |
 | `captions.py` | multi-skill tool | captions, pipeline | compose.py, stage.py, treatments.py | yes | word-exact captions from the flat-cut transcript, two ways. |
 | `clean-temp.py` | multi-skill tool | captions, pipeline, review-gate | — | — | Safely removes transient scratch files, intermediate audio stems, |
 | `compose.py` | multi-skill tool | format, take-geometry | captions.py, snap-beats.py, stage.py, teardown.py … | yes | build public/index.html for a talking-head edit from a storyboard.json, using the proven |

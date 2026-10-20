@@ -1,22 +1,5 @@
 #!/usr/bin/env python3
-"""heygen-sound.py: sound effects from local sound-palette and HeyGen's sound library, through HyperFrames' audio engine.
-
-The plan names sounds, not files: storyboard.plan.json -> "sfx": [{"id": "click1", "name": "mouse click", "at": "@I clicked", "volume": 0.28}]
-This script:
-  1. checks local sound-palette first (sound-palette/sound-palette.json) for matching cues (by id, name, triggers, or stems).
-     Matched effects are resolved offline from the curated sound palette (pre-trimmed, peak-normalized to -3 dBFS).
-  2. for any remaining unmatched sounds or music, checks the HeyGen sign-in (npx hyperframes auth status).
-     Not signed in -> stops and says how to sign in, unless --allow-bundled was passed.
-  3. retrieves named effects, and the music mood with mode "retrieve" via media-use's audio engine.
-  4. prepares each effect with sfx-prep.py (peak to -3 dBFS, leading silence trimmed) into <public>/sfx/,
-     copies the bed to <project>/music/, and writes "src" and "dur" back into the plan's sfx entries.
-  5. records each file's source ("sound-palette", "heygen", or "bundled") in <project>/sound-ledger.json.
-
-Usage:
-  python3 heygen-sound.py --plan W/storyboard.plan.json --public W/public [--music "calm lo-fi under voice"] [--allow-bundled]
-  python3 heygen-sound.py --check          # only report the sign-in state, sound-palette, and where media-use is
-Then resolve the plan as usual; render with --music W/music/<file>.
-"""
+"""heygen-sound.py: sound effects from local sound-palette and HeyGen's sound library, through HyperFrames' audio engine."""
 from __future__ import annotations
 
 import argparse
@@ -38,7 +21,6 @@ runtime.ensure_project_venv()
 
 
 def find_sound_palette() -> str | None:
-    """Locate the sound-palette directory from environment or known paths."""
     cands = [
         os.environ.get("VIDEO_SOUND_PALETTE", ""),
         os.path.join(os.getcwd(), "sound-palette"),
@@ -55,7 +37,6 @@ def find_sound_palette() -> str | None:
 
 
 def find_media_use() -> str | None:
-    """media-use is installed by `npx hyperframes skills update media-use` (project or home skills folder)."""
     cands = [os.environ.get("HF_MEDIA_USE_DIR", ""),
              os.path.join(os.environ.get("VIDEO_SKILLS", ""), "media-use") if os.environ.get("VIDEO_SKILLS") else "",
              os.path.join(os.getcwd(), ".agents", "skills", "media-use"),
@@ -83,9 +64,6 @@ def slug(name: str) -> str:
 
 
 def resolve_from_palette(sfx_list: list[dict], public_dir: str) -> tuple[list[dict], list[dict], list[dict]]:
-    """Check local sound palette for matching effects before calling external APIs.
-    Returns: (unmatched_sfx, resolved_sfx, ledger_entries)
-    """
     palette_dir = find_sound_palette()
     if not palette_dir:
         return sfx_list, [], []
@@ -152,7 +130,6 @@ def resolve_from_palette(sfx_list: list[dict], public_dir: str) -> tuple[list[di
 
 
 def build_request(sfx: list[dict], music: str | None) -> dict:
-    """Pure (tested): one engine line per distinct effect name; the music bed as a strict retrieve."""
     names = []
     for s in sfx:
         n = s.get("name")
@@ -163,7 +140,6 @@ def build_request(sfx: list[dict], music: str | None) -> dict:
 
 
 def apply_results(plan: dict, by_name: dict[str, dict]) -> tuple[dict, list[str]]:
-    """Pure (tested): write src/dur into the plan's sfx entries; list names nothing matched."""
     missing = []
     for s in plan.get("sfx", []):
         hit = by_name.get(s.get("name"))

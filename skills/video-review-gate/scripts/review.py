@@ -1,25 +1,11 @@
 #!/usr/bin/env python3
-"""review.py: gate 4. Everything a reviewer needs on one page, from the FINAL file, not the composition.
-
-Checks (each PASS / FAIL / SKIP, written to REVIEW.md next to the file):
-  structure   verify-render.py: resolution, BT.709 tags, bitrate, duration, A/V offset, black frames
-  loudness    integrated LUFS within 1 LU of the preset, true peak under its ceiling
-  captions    words heard in the final vs the flat-cut transcript (needs --render-words, from transcribe.py on the final)
-  frames      a contact sheet of the final at every beat midpoint and around every jump cut, for eyes
-Then the notes table: each note the user gives is mapped to the step that owns it.
-
-Usage:
-  python3 review.py --final W/output/p-v1.mp4 --preset shorts [--storyboard W/storyboard.json] [--cut-map W/cut-map.json]
-      [--transcript W/transcript.json --render-words W/output/p-v1-words.json] [--res 1080x1920]
-Exit 1 when any check fails.
-"""
+"""review.py: gate 4. Everything a reviewer needs on one page, from the FINAL file, not the composition."""
 import argparse, importlib.util, json, os, subprocess, sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 
 
 def _engine_scripts():
-    """The shared engine scripts (video-pipeline/engine/scripts): $VIDEO_ENGINE, the sibling skill, or ~/.agents/skills."""
     env = os.environ.get("VIDEO_ENGINE")
     for c in ((os.path.join(env, "scripts") if env else ""), os.path.join(HERE, "..", "..", "video-pipeline", "engine", "scripts"),
               os.path.expanduser("~/.agents/skills/video-pipeline/engine/scripts")):
@@ -47,7 +33,6 @@ def mod(name):
 
 
 def loudness_verdict(m, preset):
-    """Pure (tested)."""
     lufs, tp = TARGETS[preset]
     ok = m.get("integrated_lufs") is not None and abs(m["integrated_lufs"] - lufs) <= 1.0 \
         and m.get("true_peak_dbtp") is not None and m["true_peak_dbtp"] <= tp + 0.1
@@ -55,7 +40,6 @@ def loudness_verdict(m, preset):
 
 
 def moments(storyboard, cut_map, duration):
-    """Pure (tested): beat midpoints plus a frame either side of each jump cut, inside the file."""
     ts = set()
     for b in (storyboard or {}).get("beats", []):
         if isinstance(b.get("in"), (int, float)) and isinstance(b.get("out"), (int, float)):

@@ -1,24 +1,5 @@
 #!/usr/bin/env python3
-"""verify-render.py: unattended checks on the RENDERED file, before it goes to the Renders folder.
-
-The pre-render snapshot sheet cannot see render-only failures (a long render once painted the footage black for
-long stretches and the sheet passed). This reads the encoded MP4 itself and writes VERIFY.md next to it:
-  black       blackdetect pix_th=0.08 on a downscaled decode. Any black run is a FAIL: an interval of 0.1 s or more
-              (the usual rule) and a shorter flash too (d=0.1 alone misses a 2-frame flash, 0.067 s at 30 fps)
-  probe       width x height (--res, default 3840x2160); color_primaries / color_transfer / color_space all bt709;
-              video bitrate >= 40 Mb/s at 4K (floor scaled by pixel count); video duration within one frame of the
-              composition's data-duration (--index); video vs audio stream durations within 0.12 s
-  sheet       render-sheet.png from the MP4 at the beat moments (first frame, every card-host data-start + 0.9 s,
-              last frame), 4 columns at 480 px, each tile's time written on it when ffmpeg has drawtext
-  words       with --words DELIVERED.json --kept FLAT.json: a transcript of the render's audio vs the flat-cut
-              transcript (lowercase tokens, difflib). A word in the flat cut but not in the render was clipped at
-              a join: FAIL. Words heard differently are listed, not failed.
-
-Usage:
-  python3 verify-render.py --render videos/<p>/output-4k.mp4 [--index videos/<p>/public/index.html] [--res 3840x2160]
-                           [--words videos/<p>/delivered-transcript.json --kept videos/<p>/transcript.json] [--out VERIFY.md]
-Exit 1 on any FAIL.
-"""
+"""verify-render.py: unattended checks on the RENDERED file, before it goes to the Renders folder."""
 import argparse, difflib, json, os, re, shutil, subprocess, sys, tempfile, time
 
 ap = argparse.ArgumentParser()
@@ -135,7 +116,6 @@ tmp = tempfile.mkdtemp(prefix="verify-render-")
 has_text = "Unknown filter" not in subprocess.run(["ffmpeg", "-hide_banner", "-h", "filter=drawtext"], capture_output=True, text=True).stdout
 
 def grab(t, dst, label):
-    """One frame at t, 480 px wide, its time drawn on it when drawtext works (fonts can be missing: fall back)."""
     global has_text
     run = lambda vf: subprocess.run(["ffmpeg", "-y", "-v", "error", "-ss", "%.3f" % t, "-i", R, "-frames:v", "1", "-vf", vf, dst],
                                     capture_output=True).returncode == 0 and os.path.exists(dst)

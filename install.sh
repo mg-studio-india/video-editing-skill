@@ -623,6 +623,13 @@ for s in "${HF_SKILLS[@]}"; do
 done
 ok "HyperFrames skills suite updated"
 
+# Install all compositions from HyperFrames into engine sandbox
+echo "  installing all compositions from HyperFrames into sandbox"
+if [ -f "$ENG/scripts/install-compositions.mjs" ]; then
+  node "$ENG/scripts/install-compositions.mjs" --target "$ENGINE_DIR" --concurrency 12 || warn "Some compositions could not be downloaded; local catalog cached"
+  ok "all HyperFrames compositions installed in $(tilde "$ENGINE_DIR/compositions")"
+fi
+
 # --------------------------------------------------------------------------------------------- 6. Accounts and API keys
 step "6/8 Accounts and API keys (stored globally in ~/.config/video-skills/.env)"
 mkdir -p "$HOME/.config/video-skills"
@@ -693,6 +700,7 @@ LANG_CHOICE="${REPLY:-auto}"; setenv WATCH_WHISPER_LANG "$LANG_CHOICE"; ok "WATC
 setenv VIDEO_SKILLS "$(nativepath "$SKILLS_DIR")"
 setenv VIDEO_ENGINE "$(nativepath "$ENG")"
 setenv VIDEO_ENGINE_DIR "$(nativepath "$ENGINE_DIR")"
+setenv VIDEO_COMPOSITIONS "$(nativepath "$ENGINE_DIR/compositions")"
 setenv VIDEO_SOUND_PALETTE "$(nativepath "$PROJECT/sound-palette")"
 setenv RNNOISE_MODEL "$(nativepath "$HOME/.config/video-skills/rnnoise/sh.rnnn")"
 setenv YUNET_MODEL "$(nativepath "$HOME/.config/video-skills/models/face_detection_yunet_2023mar.onnx")"
@@ -707,6 +715,7 @@ ENGINE_PATH="$(dirname "$VENV_PY"):$ENGINE_DIR/node_modules/.bin"
 {
   echo "# Autonomous Video Editing Environment"
   echo "export VIDEO_ENGINE_DIR=\"$ENGINE_DIR\""
+  echo "export VIDEO_COMPOSITIONS=\"$ENGINE_DIR/compositions\""
   echo "export VIDEO_SKILLS=\"$SKILLS_DIR\""
   echo "export VIDEO_ENGINE=\"$ENG\""
   echo "export VIDEO_SOUND_PALETTE=\"$PROJECT/sound-palette\""

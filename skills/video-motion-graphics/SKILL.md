@@ -77,3 +77,10 @@ Because HyperFrames renders on headless Chromium frame-by-frame:
 1. **Never use non-deterministic properties:** No `Math.random()`, no unseeded particle generators, no `setTimeout` or `setInterval`.
 2. **Timeline Control:** Every animation must live on a paused GSAP timeline tied to the master composition clock (`data-start` and `data-duration`).
 3. **Hardware Acceleration:** Animate transform properties (`transform: translate3d(x, y, 0) scale(s) rotate(r)`) and `opacity` only; never animate layout reflow properties (`width`, `height`, `top`, `left`, `margin`).
+
+---
+
+## 4. Multi-Layout Motion Scenes (Split & PiP)
+
+- **Active Canvas Integration:** In split-screen (top 44% speaker) and corner PiP formats, the opened canvas is never left bare or black. It is populated with active HyperFrames motion scenes tailored to the speaker's words.
+- **Composition Staging:** Verified HyperFrames blocks and components (e.g. `chart-story`, `comparison-split`, `marker-checklist-card`, `x-post`) are staged into `hyperframes/compositions/` and animated deterministically via GSAP to sync with speech beats.

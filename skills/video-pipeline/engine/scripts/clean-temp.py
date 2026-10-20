@@ -1,11 +1,5 @@
 #!/usr/bin/env python3
-"""clean-temp.py: Safely removes transient scratch files, intermediate audio stems,
-temporary whisper dumps, and un-mastered raw video renders from a project directory,
-preserving essential deliverables, master compositions, and project state.
-
-Usage:
-  python3 clean-temp.py videos/<project> [--dry-run] [--verbose]
-"""
+"""clean-temp.py: Safely removes transient scratch files, intermediate audio stems,"""
 import argparse, os, glob, shutil, sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))

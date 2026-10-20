@@ -451,5 +451,32 @@
  },
  "quality_score": 1,
  "brand_prompt": "Use /video-pipeline with /video-captions on videos/<project>. Apply style blueprint B01 (video-reference-match/references/blueprints/B01.json) to this brand.\nThis blueprint has NO speech captions: it is a footage-free kinetic title / follow-CTA sequence. If the edit has speech, caption it with its own spec; use this for the title cards and end card. Canvas 1080x1920, 30 fps.\n\nBRAND TOKENS (use the brand's colour for each role; keep the contrast relationship: text vs card >= 7:1, {{ACCENT}} >= 3:1 on {{CARD_BG}}, light cards stay light and the dark card stays dark)\n- {{TEXT}}: text on light cards, default #000000 (white #FFFFFF on the dark card)\n- {{ACCENT}}: the one key noun on the dark card, default #F7D328\n- {{ACCENT_2}}: second light card (CTA card, end-card flashes), default #E4FEA3\n- {{SURFACE}}: first light card (hook), default #B2F4B5\n- {{CARD_BG}}: dark card, default #161616\n- {{FONT_DISPLAY}}: default Anton 400 (look: Bebas Neue-like condensed caps)\n- {{FONT_BODY}}: default Inter 700 (profile-row account name)\n- {{HANDLE}}: account name on the mock profile row, default \"@handle\"\n- {{LOGO}}: wordmark text or logo on the end card and the avatar circle image\n\nTITLE CARDS\n1. {{FONT_DISPLAY}}, ALL CAPS, one word per beat, no punctuation/emoji, tracking 0, no stroke/shadow/box on filled words.\n2. Size: beat words 166 px (calibration \"HEY\" ink 7.19 % H x 21.2 % W; \"SCROLLING\" 7.34 % / 59.7 %; \"PROMOTE\" 7.58 % / 53.5 %). CTA word and wordmark 138 px (\"FOLLOW\" 6.17 % H / 36.9 % W). If {{FONT_DISPLAY}} is not Anton, re-solve px with VERIFY.\n3. Position: every word horizontally centred, block centre 49.5-50 % H. Two-line blocks use fixed slots (line 1 centre 44.6 %, line 2 centre 55 %); line 1 does not move when line 2 lands (+8 frames).\n4. Hook stack (first ~24 % of runtime): repeat the hook word in a 5-row stack, pitch 9.93 % H (gap 2.7 % H), row centres 29.7 / 39.6 / 49.5 / 59.5 / 69.4 %. Rows alternate FILL / OUTLINE / FILL / OUTLINE / FILL on {{SURFACE}}: fill rows {{TEXT}}, outline rows transparent with a white ~7-8 px stroke outside the glyph (same 166 px size). Build order: centre fill, outline above, outline below, fill above, fill below; each row hard-cuts in, one every 8-10 frames. Then hard-cut to a two-word imperative on the 2-line slots.\n5. Dark card: {{CARD_BG}} with white text; function words as white outline stacks, the verb in white fill, the ONE key noun in {{ACCENT}}. One word every 9-10 frames, each hard-cutting in place of the previous; no fades, scale or idle motion.\n6. Transitions: light -> dark is a left-to-right wipe of the new card over ~6 frames, text static under it. Key-noun exit: the word hard-cuts into a full-height column of ~11 copies (pitch ~3.4 % H) that scrolls up out of frame in ~6 frames (power2.in). Then hard cut to the {{ACCENT_2}} CTA card; the CTA verb lands 6 frames after the background.\n\nOTHER TEXT / END CARD (last ~36 % of runtime)\n7. {{LOGO}} wordmark (138 px, {{TEXT}}, centre 49.4 % H) on white; 1 frame later a profile row reveals from below in 2-3 frames: gradient avatar circle with {{LOGO}} (diameter 6.3 % W, x 25.5-31.8 %, centre y 56.8 %), {{HANDLE}} in {{FONT_BODY}} #343434 (cap height ~1.1 % H, x 33.8-48.8 %), white \"Follow\" pill with 1 px #BBBBBB outline (14.1 % W x 1.9 % H at x 60.3-74.4 %, y 55.8-57.7 %, radius ~3 px).\n8. A hand cursor appears below the pill ~9 frames after the card, glides onto it in ~9 frames (power2.out), clicks ~33 frames later: the pill hard-switches to filled #343434 with white \"Following\". Background flashes {{ACCENT_2}} for ~7 frames twice before the click, then stays white to the end.\n\nSOUND: music only, beat-driven; place word and row steps on beats; optional soft click on the cursor click. Master to about -14 LUFS, true peak <= -1 dBTP.\nGRADE: Grade from the user's footage (video-style / grade.py); target look: flat graphic colour fields, high contrast, muted pastels against near-black (no footage in this blueprint, so only inserted footage would be graded).\n\nVERIFY before rendering: render the calibration words and measure them:\n  video-reference-match/scripts/caption_probe.py <render-file> --out <dir> --at <t_hook_stack> --box 0.1,0.2,0.9,0.8 --ink \"#000000:30\"\n  video-reference-match/scripts/caption_probe.py <render-file> --out <dir> --at <t_cta_word> --box 0.1,0.2,0.9,0.8 --ink \"#000000:30\"\nFilled \"HEY\" must read ink 7.19 % +-0.5 of H and width 21.2 % +-2 of W; \"FOLLOW\" 6.17 % +-0.5 / 36.9 % +-2. For the brand's own words, compute the expected ink with video-reference-match/scripts/fit_font.py at 166 px / 138 px in {{FONT_DISPLAY}}. Positions within +-1 % of frame height of the values above.",
- "caption_family": "title-only"
+ "caption_family": "title-only",
+ "hyperframes_compositions": [
+  {
+   "name": "instagram-follow",
+   "role": "Mock profile row with follow pill and state switch",
+   "type": "block"
+  },
+  {
+   "name": "tiktok-follow",
+   "role": "Follow card animation on flat color card",
+   "type": "block"
+  },
+  {
+   "name": "cta-close",
+   "role": "Display-scale action line and CTA capsule",
+   "type": "component"
+  },
+  {
+   "name": "char-slam-explode",
+   "role": "Headline glyphs reassembling with overshooting slam",
+   "type": "component"
+  },
+  {
+   "name": "colorama-wipe",
+   "role": "Color-mapped sweep wipe transition between background cards",
+   "type": "component"
+  }
+ ]
 }

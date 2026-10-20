@@ -1,22 +1,5 @@
 #!/usr/bin/env python3
-"""beat-check.py: transcript-sync gate for our compositions (Gate 0: every card lands on its spoken word).
-
-Every card-host / cutaway that carries data-anchor="exact spoken phrase" is checked against transcript.json:
-the element must enter between --late seconds AFTER the anchor word (default 0.10) and --early seconds
-BEFORE it (default 0.60). Our entrances are 0.4 s, so a data-start ~0.25 s before the word lands the card
-exactly as the word is spoken. Run after authoring and after every retime; a miss here is a card on the wrong word.
-
-Also FAILS on:
-  NO-ANCHOR  a card-host div or a cutaway <video> (any video but bg-video / fg-matte) with no data-anchor.
-             Mark a deliberate one (a chapter tag at 0.2 s, a vignette) with data-unanchored.
-  items      any element with data-at="T" and data-anchor (list / bullet items) is checked with T as its entry.
-  stale      transcript.json older than the video (default input-video.mp4 next to the index, --video to point
-             elsewhere): the words are from another cut. Re-transcribe the flat cut, or --allow-stale.
-
-Usage:
-  python3 beat-check.py --index videos/<p>/public/index.html --transcript videos/<p>/transcript.json [--suggest]
-Exit 1 on any EARLY / LATE / MISS / NO-ANCHOR or a stale transcript.
-"""
+"""beat-check.py: transcript-sync gate for our compositions (Gate 0: every card lands on its spoken word)."""
 import argparse, html as H, json, os, re, sys
 
 ap = argparse.ArgumentParser()

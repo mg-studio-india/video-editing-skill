@@ -46,10 +46,12 @@ Keeps the project 100% editable, composable, and verifiable via command line.
 
 ---
 
-## 3. Automated Lifecycle Cleanup & Report Purge
+## 3. Data Integrity & Workspace Preservation
 
-Once verification and review are completed successfully and approved, purge all intermediate scratch files and temporary review reports:
+By default, core project directories (`preview/`, `audio_processing/`, and `hyperframes/`) are preserved intact inside the project directory so the creator can inspect color grade sheets, audio waveforms, Whisper ASR outputs, and editable compositions.
+
+Only when the creator explicitly requests a production disk purge:
 ```bash
 "$PROJECT/.venv/bin/python3" "$ENG/scripts/clean-temp.py" "$W" --clean-reports
 ```
-Purges intermediate WAVs, un-mastered raw renders, auto-editor dumps, verification reports (`*-VERIFY.md`), acoustic audits (`*-audio.json`), review summaries (`*-REVIEW.md`), and review contact sheets (`*-review-sheet.png`), leaving strictly the clean final deliverable (`processed/<project>-v<N>.mp4`) and the editable `hyperframes/` project files.
+This safely removes transient scratch dumps while protecting the master video deliverable (`processed/<project>-v<N>.mp4`).

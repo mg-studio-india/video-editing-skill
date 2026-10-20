@@ -1,8 +1,4 @@
-"""Configuration: environment > ~/.config/watch/.env > defaults.
-
-Everything here is a local path or a tuning number. There are no API keys in
-this skill on purpose: nothing is ever uploaded anywhere.
-"""
+"""Configuration: environment > ~/.config/watch/.env > defaults."""
 from __future__ import annotations
 
 import os

@@ -1,20 +1,5 @@
 #!/usr/bin/env python3
-"""caption_probe.py: measure how captions / on-screen text look and move in a reference video.
-
-  caption_probe.py <video> --out <dir> --at 1.0,8.9 [--box 0.05,0.45,0.95,0.62] [--ink "#FFFFFF:60,#7404E6:70"] [--strip 0.7]
-  caption_probe.py <video> --scan --box 0.05,0.45,0.95,0.62      list the moments the caption region changes (entries/exits)
-  caption_probe.py <snapshot.png> --out <dir> --at 0 --box ... --ink ...   a still image works too (VERIFY on a snapshot)
-
-For every --at time T it writes into <dir>:
-  grid_T.jpg    full-resolution frame with a labelled 5 % grid (read position, line height, margins from it)
-  anim_T.jpg    every source frame from T-0.10 s for --strip seconds, tiled 6 wide, each tile stamped with its time and
-                frame offset (read the entry / exit animation and its duration in frames from it)
-  crop_T.jpg    --box region at 2x (read the font: letter shapes, stroke, shadow, box corners)
-and, when --box is given, measure.json: per frame, the bounding box of text-like pixels inside the box (near-white,
-near-black on light, or saturated accent), in px and % of frame height, plus the dominant colours (k-means) of the
-box, so sizes and hex colours are measured, not guessed.
-Times are seconds. Run with the project venv (numpy + Pillow).
-"""
+"""caption_probe.py: measure how captions / on-screen text look and move in a reference video."""
 import argparse
 import json
 import os
@@ -97,8 +82,6 @@ def hexrgb(h):
 
 
 def text_bbox(img, box, ink=None):
-    """Bounding box + text lines of pixels matching one ink colour (hex:tolerance). Without --ink: near-white or
-    saturated pixels (unreliable over saturated backgrounds: pass --ink)."""
     W, H = img.size
     x0, y0, x1, y1 = int(box[0] * W), int(box[1] * H), int(box[2] * W), int(box[3] * H)
     a = np.asarray(img.crop((x0, y0, x1, y1))).astype(int)
@@ -135,7 +118,6 @@ def text_bbox(img, box, ink=None):
 
 
 def line_extent(mask, a_, b_, x0, y0, W, H):
-    """One text line: top and height (% of H), left and width (% of W) of its ink."""
     cols = np.where(mask[a_:b_ + 1].sum(0) > 0)[0]
     return {"top_pct": round(100 * (y0 + a_) / H, 1), "height_pct_of_H": round(100 * (b_ - a_ + 1) / H, 2),
             "left_pct": round(100 * (x0 + cols[0]) / W, 1) if len(cols) else None,
@@ -172,8 +154,6 @@ def tile(frames, t0, fps, cols=6, tw=240):
 
 
 def scan(video, box, top=14, gap=0.35):
-    """Mean absolute change inside the box between consecutive frames (scaled 2x down), minus the change outside it,
-    so cuts and camera moves rank below text entries. Prints the top moments."""
     W, H, fps = probe(video)
     w, h = W // 4, H // 4
     raw = subprocess.run(["ffmpeg", "-v", "error", "-i", video, "-vf", "scale=%d:%d,format=gray" % (w, h), "-f", "rawvideo", "-"],

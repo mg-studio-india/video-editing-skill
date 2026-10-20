@@ -381,5 +381,22 @@
  },
  "quality_score": 2,
  "brand_prompt": "Use /video-pipeline with /video-captions on videos/<project>. Apply style blueprint B18 (video-reference-match/references/blueprints/B18.json) to this brand.\nThis blueprint has NO speech captions: one static 3-line hook overlay plus a credential sub-line held over 1-2 phone clips. If the edit has speech, caption it with its own spec and keep this overlay as the only title. Canvas 1080x1920, 30 fps.\n\nBRAND TOKENS (use the brand's colour for each role; keep the contrast relationship: {{TEXT}} must stay >= 3:1 on the footage behind it, and {{ACCENT_2}} outline must be the darkest brand neutral so the text survives bright lights)\n- {{TEXT}}: overlay and sub-line fill, default #FFCA00\n- {{ACCENT}}: same as {{TEXT}} unless the brand wants one key word recoloured, default #FFCA00\n- {{ACCENT_2}}: outline + halo, default #110503\n- {{SURFACE}}: unused (no cards), default none\n- {{CARD_BG}}: unused, default none\n- {{FONT_DISPLAY}}: heavy condensed sans, default Anton 400 (original ~21 % narrower)\n- {{FONT_BODY}}: credential sub-line, default Poppins 600\n- {{HANDLE}}: not shown in the source; optional \"@handle\" can replace the credential sub-line\n- {{LOGO}}: not shown in the source\n\nOVERLAY\n1. Copy: a 3-line audience + ask hook, ~8-10 words, broken long / short / long (\"Headline here, lead words\" / \"KEY WORD\" / \"(short aside here)\"). Sentence case; parentheses and curly quotes allowed.\n2. {{FONT_DISPLAY}} in {{TEXT}}, tracking 0, 72 px (balanced). For the exact narrow look set Anton at ~85 px with transform: scaleX(0.79). Thin {{ACCENT_2}} outline ~3 px plus a faint {{ACCENT_2}} halo; no box.\n3. Layout: centred; line centres at 41.0 %, 46.0 %, 52.2 % H (block 38.5-54.5 %); line 1 spans x 21.9-77.9 % (ink 5.08 % H), line 2 x 37.5-62.4 % (4.14 % H), line 3 x 21.2-78.5 % (4.3 % H). In the source the block sits over the face; if face-safe rules apply, move the whole block up to 18-34 % H keeping the same spacing.\n4. Warp: slight bulge/arc (glyphs at the line ends a little smaller, leaning outward). Subtle; skip if unavailable.\n5. Sub-line: ~3-word credential in quote marks, {{FONT_BODY}} 30 px, {{TEXT}} with a thin {{ACCENT_2}} outline, centred at 56.3 % H (x 33.5-62.5 %, ink ~1.41 % H).\n6. Timing: both layers on screen from frame 0 to the last frame, completely static (no entry, exit or tracking), across every cut.\n\nEDIT\n7. Two clips: a low-angle selfie (~45 % of runtime, slow tilt down) then one hard cut to a handheld wide that proves the setting; reach the payoff view with an in-camera fast swing (~15 frames of motion blur) rather than an edit transition. No punch-ins, no end card.\n\nSOUND: music only, steady bed (low loudness range); optional whoosh on the swing. Master to about -14 LUFS, true peak <= -1 dBTP.\nGRADE: Grade from the user's footage (video-style / grade.py); target look: mid-contrast, natural saturation, neutral-warm night event light (cool stage whites, warm bulbs).\n\nVERIFY before rendering: render the overlay with \"KEY WORD\" on line 2 at the stated px and measure:\n  video-reference-match/scripts/caption_probe.py <render-file> --out <dir> --at 1.0 --box 0.15,0.499,0.85,0.546 --ink \"#FFCA00:70\"\n  video-reference-match/scripts/caption_probe.py <render-file> --out <dir> --at 1.0 --box 0.15,0.439,0.85,0.482 --ink \"#FFCA00:70\"\nCompute the expected ink height/width for the brand's actual lines with video-reference-match/scripts/fit_font.py ({{FONT_DISPLAY}} 72 px, or 85 px x scaleX 0.79); line 3 at the reference length should read ~4.3 % H, line 2 ~4.14 % H. Swap the --ink colour to {{TEXT}}. Line centres within +-1 % of frame height of 41.0 / 46.0 / 52.2 %.",
- "caption_family": "title-only"
+ "caption_family": "title-only",
+ "hyperframes_compositions": [
+  {
+   "name": "comparison-split",
+   "role": "Dual vertical event phone clip split",
+   "type": "component"
+  },
+  {
+   "name": "headline-slam",
+   "role": "Persistent 3-line headline card",
+   "type": "component"
+  },
+  {
+   "name": "cta-lockup",
+   "role": "Event registration CTA button",
+   "type": "component"
+  }
+ ]
 }

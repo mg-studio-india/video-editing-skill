@@ -482,5 +482,27 @@
  },
  "quality_score": 2,
  "brand_prompt": "Use /video-pipeline with /video-captions on videos/<project>. Apply style blueprint B43 (video-reference-match/references/blueprints/B43.json) to this brand.\nThis blueprint has NO speech captions: the kinetic type is the content. Cover only the text cards and edit devices below.\n\nBRAND TOKENS (use the brand's colour/font for each role; keep the contrast relationship: {{TEXT}} on {{SURFACE}} and {{SURFACE}}-coloured text on {{CARD_BG}} >= 7:1, {{ACCENT}} on {{SURFACE}} >= 3:1)\n- {{TEXT}} word-card ink on light cards - default near-black #09080A\n- {{ACCENT}} punchline word / payoff line / recurring 3D object - default signal orange #FD5815\n- {{ACCENT_2}} logo-hold field - default electric blue #1A39EF (render #162CB3-like)\n- {{SURFACE}} light card - default warm cream #F0E7D2\n- {{CARD_BG}} dark card - default near-black #0A090B\n- {{FONT_DISPLAY}} word cards - default Inter 900 (geometric Black faces like Gilroy/Outfit are closer); manifesto - Poppins 900; held brand word - Anton 400\n- {{FONT_BODY}} handle watermark - default JetBrains Mono\n- {{HANDLE}} - @handle, tiny, top-left\n- {{LOGO}} - the brand mark for the final hold (3D extruded tiles in {{SURFACE}} / {{ACCENT}} on {{ACCENT_2}})\n\nCanvas 1080x1920, 30 fps. Music-only; cut to the beat.\n\n1. Hook burst (first ~17 % of runtime): 8 one-word cards, a new card every 6-12 frames on the beat, background flipping {{CARD_BG}} <-> {{SURFACE}} on every cut. Word lowercase with punctuation, centred at y 50 %, {{FONT_DISPLAY}} ~324 px for a 5-letter word (ink 12.5 % H, ~70 % W; not fit-to-width - a 7-letter word ~236 px), tracking -0.03em, {{TEXT}} on {{SURFACE}} / {{SURFACE}} on {{CARD_BG}}; ONE punchline word in solid {{ACCENT}}. Entry over 2-4 frames: tracking collapse (spread letters -> normal) or scale 1.25 -> 1 with a 15 % H rise, power3.out, no overshoot. No shadow, stroke or box.\n2. Recurring object: one glossy {{ACCENT}} 3D object in every early shot that interacts with the type (bounce, pendulum swing, knocks letters out, becomes a light source).\n3. Manifesto (next ~23 %): {{SURFACE}} card, two centred UPPERCASE lines, Poppins 900 ~172 px, -0.06em, line centres y 35.4 % / 44.8 % (pitch 9.4 % H); line 1 {{TEXT}} holds while line 2 ('ANSWER.') swaps in {{ACCENT}} every ~15-24 frames; the pendulum ball knocks letters of the last line out with motion trails.\n4. Slow section (next ~27 %): ~12-frame dark wipe, then the object glows and a {{SURFACE}} light cone sweeps across navy; only 2 shots.\n5. Word over montage (next ~16 %): the brand word in Anton ~296 px, white, centred (y 49.9 %, x 14-86 %), hard dark shadow (0 6px 0 rgba(0,0,0,.6)), held still while ~10 full-screen 3D backgrounds hard-cut underneath every 6-12 frames.\n6. Logo hold (last ~18 %, ~105 frames): {{LOGO}} assembled from extruded {{SURFACE}}/{{ACCENT}} tiles on {{ACCENT_2}}.\n7. {{HANDLE}} tiny mono, top-left x 5 %, y ~13.5 %, ~1 % H, colour flipping with the card, until the montage.\n\nGRADE: Grade from the user's footage (video-style / grade.py) if any footage is used; target look: high-contrast, natural-saturation, cool graphic palette with glossy soft-shadow 3D.\nSOUND: music only, mastered to about -14 LUFS with true peak <= -1 dBTP; cuts on beats; optional impact on letter knock-outs and a riser into the montage.\n\nVERIFY before rendering (px values were render-verified with local fonts; if the brand font differs, adjust px until the numbers match):\na) Render test frames: \"don’t\" ({{FONT_DISPLAY}} 324 px, -0.03em, {{TEXT}} on {{SURFACE}}), \"MADE\" (Poppins 900 177 px, -0.06em), and \"KEY WORD\" as the held brand word (Anton 296 px, white over a dark area).\nb) Measure: python video-reference-match/scripts/caption_probe.py <test render or snapshot> --out <dir> --at <t> --box 0.1,0.41,0.9,0.6 --ink \"{{TEXT}}:80\" (word card); --box 0.2,0.3,0.8,0.395 --ink \"{{TEXT}}:80\" (manifesto line 1); --box 0.08,0.41,0.92,0.59 --ink \"#FEFDFD:60\" (held word).\nc) Required: \"don’t\" ink 12.66 % +-0.5 of H and 70.0 % +-2 of W; \"MADE\" 6.48 % +-0.5 and 45.7 % +-2. For the held brand word compute the expected ink with python video-reference-match/scripts/fit_font.py --font \"Anton 400\" --word \"<brand word>\" at 296 px.",
- "caption_family": "title-only"
+ "caption_family": "title-only",
+ "hyperframes_compositions": [
+  {
+   "name": "char-slam-explode",
+   "role": "Headline slam landing with screen impact",
+   "type": "component"
+  },
+  {
+   "name": "colorama-wipe",
+   "role": "Vibrant color sweep wipe between manifesto statements",
+   "type": "component"
+  },
+  {
+   "name": "morph-text",
+   "role": "Seamless typography morphing between nouns",
+   "type": "component"
+  },
+  {
+   "name": "cta-close",
+   "role": "Manifesto conclusion call-to-action",
+   "type": "component"
+  }
+ ]
 }

@@ -362,5 +362,22 @@
  },
  "quality_score": 2,
  "brand_prompt": "Use /video-pipeline with /video-captions on videos/<project>. Apply style blueprint B34 (video-reference-match/references/blueprints/B34.json) to this brand.\nCanvas 1080x1920, 30 fps. All positions are % of frame; px are at 1080x1920.\n\nBRAND TOKENS (use the brand's colour/font for each role; keep the contrast relationship: header text must stay >= 4.5:1 on its own box, and the two boxes must read as light-over-dark)\n- {{TEXT}}      line 1 text on the light box      default #101010\n- {{ACCENT}}    line 2 box fill (dark bar)        default #010101\n- {{ACCENT_2}}  line 2 text on the dark bar       default #FFFFFF\n- {{SURFACE}}   not used (footage fills the frame) default none\n- {{CARD_BG}}   line 1 box fill (light box)       default #FDFDFD\n- {{FONT_DISPLAY}} header font                    default Poppins 500 (Poppins Light 300 / Jost Light if available; the look is a light geometric sans)\n- {{FONT_BODY}}    same as display                default Poppins 500\n- {{HANDLE}}    not shown on screen (spoken DM CTA only)\n- {{LOGO}}      not used\n\nCAPTIONS\n1. Add NO running speech captions.\n\nOTHER TEXT\n2. One static 2-line header, on screen for 100 % of the runtime (frame 0 to last frame, no entry/exit animation):\n   - Line 1 (topic, Title Case, e.g. \"Headline here\"): {{FONT_DISPLAY}} at 51 px, {{TEXT}}, centred on a square {{CARD_BG}} box spanning x 5.1-94.9 %, y 12.5-18.9 % (text centre y 16.0 %).\n   - Line 2 (value / price range, Title Case, e.g. \"(Range) Key Word\"): same font at 51 px, {{ACCENT_2}}, centred on a square {{ACCENT}} box spanning x 10.1-87.5 %, y 19.8-25.6 % (text centre y 22.8 %), 0.9 % of height below the light box.\n   - Each box is ~2-5 % W wider than its text on each side. No radius, stroke or shadow. Tracking 0em. Proof-read both lines.\n\nEDIT DEVICES\n3. Keep the take whole: no cuts, punch-ins, b-roll or transitions. Only trim the head/tail.\n4. Structure: numbered promise in the first ~9 % of runtime; deliver all list items but the last; in the final ~4 % withhold the last (\"best\") item behind a spoken \"DM me\" CTA.\n\nGRADE\n5. Grade from the user's footage (video-style / grade.py); target look: cool, high-contrast, natural saturation, teal-leaning background against warm skin.\n\nAUDIO\n6. Master speech to about -15 LUFS integrated with true peak <= -1 dBTP. No SFX. An optional faint music bed sits ~17 dB under speech.\n\nVERIFY before rendering\na) Render a test frame with the user's header text (or \"KEY WORD\" on both lines) at 51 px and measure (thin strokes: use a 2-px row threshold):\n   python video-reference-match/scripts/caption_probe.py <test.mp4> --out <dir> --at <t> --box 0.07,0.13,0.93,0.188 --ink \"{{TEXT}}:90\"\n   python video-reference-match/scripts/caption_probe.py <test.mp4> --out <dir> --at <t> --box 0.11,0.2,0.86,0.255 --ink \"{{ACCENT_2}}:90\"\nb) Expected ink for the actual words: video-reference-match/scripts/fit_font.py with {{FONT_DISPLAY}} at 51 px (reference ink height ~2.7-2.8 % of H for a Title Case line). Required: measured ink within ±0.5 % H of the fit_font.py value; box edges within ±1 % of the geometry above; colours equal to the tokens.\n",
- "caption_family": "title-only"
+ "caption_family": "title-only",
+ "hyperframes_compositions": [
+  {
+   "name": "headline-slam",
+   "role": "Two-box persistent header card with topic title",
+   "type": "component"
+  },
+  {
+   "name": "lt-clean-bar",
+   "role": "Speaker credibility and channel badge",
+   "type": "block"
+  },
+  {
+   "name": "marker-highlight",
+   "role": "Accent color callout on core thesis",
+   "type": "component"
+  }
+ ]
 }

@@ -1,12 +1,4 @@
-"""Turn analysis of the user's OWN footage into concrete edit decisions.
-
-Outputs (all deterministic, all suggestions for Claude and the user to review):
-  * QA flags            what is likely to hurt the edit, with plain-language fixes
-  * keep ranges         a tight cut: fillers, long pauses and retakes removed
-  * edit-plan.json      clips / captions / zoom slots on tracks, in seconds, ready to be
-                        mapped onto a Hyperframes composition (see references/hyperframes-mapping.md)
-  * preview.mp4         optional quick ffmpeg render of the keep ranges
-"""
+"""Turn analysis of the user's OWN footage into concrete edit decisions."""
 from __future__ import annotations
 
 import difflib
@@ -34,8 +26,6 @@ DEFAULT_OPTS = {
 
 # ---------------------------------------------------------------- retakes
 def detect_retakes(segments: list[dict], max_gap: float = 20.0, ratio: float = 0.72) -> list[dict]:
-    """Find an earlier sentence that the speaker immediately re-did.
-    Keeps the LATER take, flags the earlier one. Heuristic: review before trusting."""
     flagged: dict[int, dict] = {}
     toks = [[norm(w) for w in s["text"].split() if norm(w)] for s in segments]
     for i, a in enumerate(segments):
@@ -67,7 +57,6 @@ def _merge(intervals: list[tuple[float, float, set]]) -> list[tuple[float, float
 
 
 def dynamic_edit_opts(words: list[dict]) -> dict:
-    """Derive cut padding, pause thresholds, and caption grouping dynamically from transcript speech velocity."""
     if not words:
         return {}
     dur = max(w["end"] for w in words) - min(w["start"] for w in words)
@@ -82,7 +71,6 @@ def dynamic_edit_opts(words: list[dict]) -> dict:
 
 def build_keep_ranges(words: list[dict], segments: list[dict], t0: float, t1: float,
                       opts: dict | None = None) -> tuple[list[dict], list[dict]]:
-    """Return (keep, removed). keep=[{'in','out'}]; removed=[{'start','end','reasons','text'}]."""
     dyn = dynamic_edit_opts(words)
     o = {**DEFAULT_OPTS, **dyn, **(opts or {})}
     if not words:
@@ -171,7 +159,6 @@ def map_time(t: float, tmap: list[tuple[float, float, float]]) -> float | None:
 
 
 def build_captions(words: list[dict], tmap, words_per_caption: int = 3) -> list[dict]:
-    """Group kept words into short on-screen captions with per-word timing (timeline seconds)."""
     mapped = []
     for w in words:
         mid = (w["start"] + w["end"]) / 2

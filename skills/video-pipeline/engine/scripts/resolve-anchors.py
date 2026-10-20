@@ -1,30 +1,5 @@
 #!/usr/bin/env python3
-"""resolve-anchors.py: storyboard.plan.json (phrases) + transcript.json (flat cut) -> storyboard.json (seconds).
-
-The plan is written before the cut, so it names phrases, not times. This fills every time from the flat-cut
-transcript, and is re-run after every new cut: the plan file is the source, storyboard.json is derived.
-
-What it resolves
-  beats[]          "anchor": the phrase. "in" missing or "auto" -> anchor start - lead (default 0.20 s, or the beat's
-                   "lead"). "out" missing or "auto" -> in + hold (the beat's "hold", else a default for its type).
-                   "after": "@phrase" or seconds picks a later occurrence of a phrase said more than once.
-  items[]          list/bullet items [text, time, anchor]: a missing or "@" time -> start of the anchor (or the text).
-  "@phrase"        in a time field (in, out, pop, planted, payoff, *_at...) or a camera op: the phrase's start;
-                   "@phrase:end" its end. Text fields are never resolved, so "@handle" copy stays as written.
-  sfx[].at         "@phrase" -> the phrase's start ("@phrase:end" its end): sound cues land on words too.
-  "duration"       "auto" -> cut-map.json flat_duration (next to the transcript) or the last word's end.
-
-Phrases are searched in order: each beat looks from shortly before the previous beat's anchor, so a phrase said twice
-resolves to the occurrence that fits the plan's order. Unresolved anchors are reported, the beat is marked
-"unresolved": true with null times, and the exit code is 1: fix the plan (a shorter phrase, an "after") or tell the user
-the line was cut.
-
-  --jump-frames    adds ["set", t, 1.0] at every measured jump cut (take-geometry), so no zoom crosses a cut.
-
-Usage:
-  python3 resolve-anchors.py --plan W/storyboard.plan.json --transcript W/transcript.json --out W/storyboard.json \
-      [--jump-frames W/jump-frames.json]
-"""
+"""resolve-anchors.py: storyboard.plan.json (phrases) + transcript.json (flat cut) -> storyboard.json (seconds)."""
 from __future__ import annotations
 
 import argparse
@@ -68,7 +43,6 @@ class Words:
 
 
 def parse_ref(value) -> tuple[str, str] | None:
-    """'@three tools' -> ('three tools', 'start'); '@three tools:end' -> ('three tools', 'end')."""
     if not isinstance(value, str) or not value.startswith("@") or len(value) < 2:
         return None
     body = value[1:]
@@ -95,8 +69,6 @@ class Resolver:
         return round(hit[0] if r[1] == "start" else hit[1], 3)
 
     def walk(self, node, after: float, where: str, timed: bool = False):
-        """Resolve '@phrase' strings, but only in time fields (TIME_KEYS) and camera ops, so on-screen text that
-        starts with '@' (a social handle) is never mistaken for an anchor."""
         if isinstance(node, dict):
             return {k: self.walk(v, after, f"{where}.{k}", timed or k in TIME_KEYS) for k, v in node.items()}
         if isinstance(node, list):
@@ -205,8 +177,6 @@ def resolve(plan: dict, words: list[dict], duration: float) -> tuple[dict, Resol
 
 
 def add_resets(camera: list, jumps: list[dict]) -> list:
-    """Pure (tested): a ["set", t, 1.0] at every measured jump frame, so no zoom is carried across a cut. Skips a jump
-    when the plan already has an op within 0.05 s of it. Returns the ops sorted by time."""
     ops = [list(c) for c in camera or []]
     have = [c[1] for c in ops if len(c) > 1 and isinstance(c[1], (int, float))]
     for j in jumps:

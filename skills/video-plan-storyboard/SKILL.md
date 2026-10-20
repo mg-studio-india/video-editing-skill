@@ -9,7 +9,11 @@ description: Plans the narrative, creative hook, visual storyboard, video effect
 
 Professional videos succeed or fail in the storyboard. **Storyboarding must happen BEFORE cutting raw footage or generating edits.** Cutting without a storyboard results in disjointed, mechanical clips that lack retention, context, and emotional pull.
 
-Before writing a single beat of the storyboard, the creative dimensions must be resolved in **Gate 1** (`resolved-spec.json`) and speech verified in **Gate 2**. Never assume a generic video format or force a cookie-cutter template.
+**Mandatory Visual Storyboard & Rendered Mockups Requirement:**
+Never present an abstract text-only plan. Every storyboard must be generated and saved to `$W/STORYBOARD.md` embedded with:
+1. **Rendered Keyframe Screenshots:** Real video frames extracted at each narrative beat transition showing framing, safe zones, and speaker clearance.
+2. **Dynamic Frame-Accurate Color Correction Sheet:** A side-by-side comparison sheet (`preview/grade-preview.jpg`) dynamically calculated from actual frame pixel distributions (shadow floor $P_1$, specular ceiling $P_{99}$, midtone gamma $P_{50}$, adaptive contrast, natural vibrance, and 5650K daylight calibration) so the user can verify skin tones and look before cutting. Zero artificial static filter presets.
+3. **Tight Cut Plan:** Duration metrics comparing raw footage vs tight cut, highlighting trimmed dead air.
 
 ```bash
 ENG="${VIDEO_ENGINE:-$HOME/.agents/skills/video-pipeline/engine}"
@@ -23,19 +27,26 @@ W="videos/<project>"
 The storyboard generator directly ingests `$W/resolved-spec.json` (resolved in Gate 1) across the 6 core pillars:
 - **Format & Multi-Layout:** Context-derived format (Choreographed multi-dynamic, 40/60 Split View, Screen-plus-Facecam, Corner PiP, Speaker Cutout)
 - **Sounds & Music Bed:** Tactile whooshes, paper tears, clicks, ducked lofi or synth bed
-- **Caption Styling:** `weight-shift` or `caption-highlight` with punch words in badge pills
-- **Color Grading Preset:** Kodak Portra Warm, Hollywood Teal & Orange, Vox Documentary, Magnates Gold, etc.
-- **Motion Graphics:** Researcher articles, kinetic data charts, 3D depth cards
-- **Audio Processing:** Neural DeepFilterNet3 for road/car rumble, RNNoise, standard gate
+- **Caption Styling:** Single-row vibrant captions (`0.048 * W`, 1-4 words max, `#ffffff` white, `#ffe600` active word, `#00f59b` punch word)
+- **Dynamic Color Correction:** Statistically calculated directly from frame pixel distributions (shadow floor, specular ceiling, midtone gamma, adaptive contrast, natural vibrance, daylight calibration). Zero static filter presets.
+- **Motion Graphics:** Active HyperFrames motion scenes, researcher articles, kinetic data charts, 3D depth cards
+- **Audio Processing:** 80Hz rumble cut, EBU R128 loudness normalization, whisper.cpp ASR with Hinglish transliteration
 
 Every beat in `storyboard.plan.json` must be grounded in these resolved choices.
+
+### User Direction Protocol (Gate Q before Storyboard):
+If the user did not explicitly specify their editing preferences (e.g. preset choice, layout mode, proof requirements) in their initial prompt, the agent invokes `ask_question` **before running `video-plan-storyboard`**. The user chooses:
+- Preferred proven video-preset (ranked by `video-reference-match` from the transcript)
+- Layout choreography (Split-Screen, Floating Squircle PiP, Full-Frame with punch-ins)
+- Evidence & proof elements to highlight
+This choice directly dictates how the storyboard and motion scenes are structured.
 
 ### Collaborative Storyboard Pillars:
 
 1. **Creative, Innovative & Trendy Multi-Layout Architecture:**
    - **Never default to a static full-screen talking head.** Actively choreograph A-roll layout transitions across narrative beats:
      - *Hook:* Full camera shot with snap punch-in (1.10x) for personal impact.
-     - *Proof & Comparison Beats:* A-roll minimizes into a floating corner PiP squircle/circle, or shifts into a 40/60 split view, opening the screen for research articles, animated data charts, and 3D mockups.
+     - *Proof & Comparison Beats:* A-roll minimizes into a floating corner PiP squircle/circle, or shifts into a split view where the speaker takes the bottom pane (70% standard) with top/bottom crop focusing on head area visibility, opening the upper canvas for active HyperFrames motion scenes, research articles, and animated data charts.
      - *Core Breakdown Beats:* Speaker cutout/matte or framed card on a modern graphical, neutral dark (#0f172a, #111116), clean white, or cinematic gradient canvas.
    - **Empty Space Utilization:** Every non-full-frame beat MUST specify the visual asset occupying the opened space:
      - *Researcher Articles:* News headlines, financial journal tear-outs, and tweets with animated highlighter sweeps.
@@ -49,8 +60,8 @@ Every beat in `storyboard.plan.json` must be grounded in these resolved choices.
    - Identify retakes, stumbles, and tangent lines to cut or keep.
 4. **Effects & Optical Transitions:**
    - Agree on transition styles: hard cuts, light leaks, white flashes, film grain, or camera punches.
-5. **References & Inspirations:**
-   - Incorporate reference reels from `references/` or specific creator benchmarks from Gate 0 (`research.md`).
+5. **References & Inspirations (References Take Precedence):**
+   - **References Precedence:** User-supplied references in `references/` or `videos/<project>/references/` always take absolute precedence over catalog blueprints. Incorporate the reference reel's measured pacing, framing, and visual devices first; catalog blueprints supply the matching HyperFrames compositions to execute that aesthetic.
    - If Gate R chose a style blueprint, build the storyboard from `$W/reference-match/ROADMAP.md` (`video-reference-match`): its structure, pacing, elements and catalog style IDs, with the brand tokens filled; the grade still comes from this footage.
 6. **Input Folder Inventory & Strict Raw Ingestion:**
    - **Audit the raw input folder:** Inspect `videos/<project>/raw/` and list every provided file (face camera, screen recordings, b-roll, audio, photos).
@@ -59,11 +70,11 @@ Every beat in `storyboard.plan.json` must be grounded in these resolved choices.
      > *"You discuss [X] at [timestamp]. We don't have b-roll for it in the raw input folder. Would you like to record a quick 5-10 second b-roll / screen capture of [X] and drop it into raw/? It will make this moment significantly more compelling! Otherwise, we can design an animated graphic card or generate an image."*
 7. **Generative Assets vs HyperFrames Animations:**
    - Discuss whether AI stills (Gemini Flash), AI video inserts (Veo), or HyperFrames/Remotion programmatic animations are needed.
-8. **Color Grading Intent & Preview:**
-   - Run `python3 "$ENG/scripts/grade.py" preview --input "$W/raw/<clip>" --out "$W/grade-preview.jpg"` to generate a side-by-side comparison sheet.
-   - Present the 6 curated presets (`commercial-clean`, `cinematic-warm`, `modern-tech`, `moody-film`, `vibrant-pop`, `neutral-correct`) and agree on the look.
+8. **Dynamic Color Correction & Frame Comparison Sheet:**
+   - Execute `grade.py` to statistically calculate dynamic parameters ($P_1$ black floor, $P_{99}$ specular ceiling, $P_{50}$ midtone gamma, adaptive contrast, saturation, and 5650K daylight calibration).
+   - Generate `preview/grade-preview.jpg` comparing raw frames vs dynamically graded frames for the user to review. Zero static filter presets.
 9. **Autonomous Caption Styling (Zero User Burden):**
-   - The user does not need to specify caption styles. The editor autonomously pairs the optimal caption flow (`focus-blur-resolve` + badged punch pills + kinetic accent punches) to match the chosen format and energy level.
+   - The user does not need to configure complex caption styles. The pipeline autonomously enforces small, vibrant, single-row captions (1-4 words max, `#ffffff` with `#ffe600` active word and `#00f59b` punch word) positioned safely below the speaker's chin.
 
 ---
 
@@ -77,10 +88,10 @@ Specify the optical treatment for transitions and overlays:
 - **Atmospheric FX:** Film grain overlay (8-12% opacity, fine 35mm), vignette edge falloff (15-20% black curve).
 - **Surface & Texture:** Glassmorphism frosted backdrops (`backdrop-filter: blur(16px)`, border: 1.5px solid rgba(255,255,255,0.15)), paper tear edges, glow drop-shadows.
 
-### B. Color Grading & Lighting Intent
-Set the mood and color palette per scene:
-- **Grade Style:** Calibrated preset from `grade.py` (e.g. `commercial-clean`, `cinematic-warm`, `modern-tech`).
-- **Contrast & Exposure:** Contrast ratio 1.15, highlights restrained, warm skin-tone protection, shadows crushed for depth.
+### B. Dynamic Color Correction & Tone Balance
+Ground the lighting and color balance directly in the frame pixels:
+- **Dynamic Calculation:** Statistically derived from frame histogram ($P_1$ black point, $P_{99}$ white point, $P_{50}$ midtone normalization).
+- **Tone & Balance:** Daylight white-balance calibration (5650K neutral grey), adaptive contrast tuned to scene lighting, and healthy natural skin vibrance. Zero static color LUTs or artificial filters.
 
 ### C. Exact Typography & Font Hierarchy
 No generic fonts. Explicitly specify font families, weights, sizing, and stroke parameters:

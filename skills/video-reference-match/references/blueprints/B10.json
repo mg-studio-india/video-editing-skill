@@ -368,5 +368,22 @@
  },
  "quality_score": 2,
  "brand_prompt": "Use /video-pipeline with /video-captions on videos/<project>. Apply style blueprint B10 (video-reference-match/references/blueprints/B10.json) to this brand.\nNo speech captions: a one-take meme skit whose editing is two text layers plus a badge. Canvas 1080x1920, 30 fps.\n\nBRAND TOKENS (use the brand's colour for each role; keep the contrast relationship: {{TEXT}} and {{ACCENT}} >= 4.5:1 on {{SURFACE}} boxes; the pain phrase must stay a warning-type hue distinct from the brand colours)\n- {{TEXT}}: title and 'Meanwhile' text, default #000000\n- {{ACCENT}}: competitor pain phrase, default #E00006\n- {{ACCENT_2}}: brand name word 1 on the pill, default #0C3248 (word 2 default #60261B)\n- {{SURFACE}}: title boxes and pills, default #FFFFFF\n- {{CARD_BG}}: unused, default none\n- {{FONT_DISPLAY}}: default Poppins 800 italic\n- {{FONT_BODY}}: default Poppins 800 italic\n- {{HANDLE}}: not shown in the source\n- {{LOGO}}: round badge top-right for the whole clip\n\nTITLE\n1. Copy: \"Other <competitors>: <pain phrase> / <rest of line>\" in the audience's register (source: Roman Hinglish), 2 lines, ~10 words, sentence case; the pain phrase in {{ACCENT}} (\"Other brands: KEY WORD here / lead words here\").\n2. {{FONT_DISPLAY}} 58 px, tracking 0; text {{TEXT}}, key phrase {{ACCENT}}; no stroke or shadow.\n3. Box: {{SURFACE}} behind each line, merged into one shape with ~10 px rounded corners (line 1 box x 9.3-90.1 %, line 2 box x 5.6-93.9 %, together y 15.8-25.7 %). Lines centred: line 1 ink 16.7-19.1 %, line 2 ink 20.8-23.8 % H (a ~31-character line spans ~83.9 % W at 3.0 % H).\n4. Timing: on from frame 0 to the end, static.\n\nOTHER TEXT\n5. Turn pills at the joke's turn (~30 % of runtime), both hard-cut in together, static to the end: {{SURFACE}} pills (radius ~8 px) on the right. Pill 1 x 68.8-91.2 %, y 46.1-49.1 % with \"Meanwhile :\" in {{TEXT}} {{FONT_BODY}} 33 px; pill 2 x 66.4-93.5 %, y 50.9-53.8 % with the brand name, first word {{ACCENT_2}}, second word the brand's second colour. Gap 1.8 % H.\n6. {{LOGO}} round badge top-right (x ~78-94 %, y ~5.5-14.5 %), static, whole clip. Deliver the punchline as a physical printed one-word prop (\"KEY WORD !!\") lifted to face height while both people point at it; no typed punchline.\n\nEDIT\n7. One locked medium two-shot, deadpan to camera, no cuts or zooms; keep the right side at 45-55 % H clear for the pills.\n\nSOUND: a non-speech trend sound or comedic sting with gaps; optional pop on the pills. Master to about -14 LUFS, true peak <= -1 dBTP.\nGRADE: Grade from the user's footage (video-style / grade.py); target look: high-contrast, muted, warm office light, neutral skin.\n\nVERIFY before rendering: render the title and pills and measure:\n  video-reference-match/scripts/caption_probe.py <render-file> --out <dir> --at 1.0 --box 0.05,0.2,0.95,0.24 --ink \"#000000:90\"\n  video-reference-match/scripts/caption_probe.py <render-file> --out <dir> --at 3.0 --box 0.66,0.46,0.93,0.49 --ink \"#000000:90\"\nTitle line 2 (run the {{TEXT}} and {{ACCENT}} inks, e.g. --ink \"#E00006:90\", and combine): compute the expected ink for the brand's line with video-reference-match/scripts/fit_font.py at 58 px (a ~31-character line reads ~3.0 % H / 83.9 % W); \"Meanwhile :\" must read 1.33 % +-0.5 of H and 19.3 % +-2 of W. Box/pill positions within +-1 % of frame height.",
- "caption_family": "title-only"
+ "caption_family": "title-only",
+ "hyperframes_compositions": [
+  {
+   "name": "lt-dark-card",
+   "role": "Boxed competitor pain title card",
+   "type": "block"
+  },
+  {
+   "name": "marker-highlight",
+   "role": "Hand-drawn accent highlighter over key pain point",
+   "type": "component"
+  },
+  {
+   "name": "caption-pill-karaoke",
+   "role": "Minimal boxed dialogue pill",
+   "type": "component"
+  }
+ ]
 }

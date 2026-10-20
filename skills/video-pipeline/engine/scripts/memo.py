@@ -1,10 +1,5 @@
 #!/usr/bin/env python3
-"""memo.py: Brand memory manager (brand/MEMO.md).
-
-Reads, populates, and updates the creator's persistent styling preferences,
-social handles, logo assets, layout preferences, and thinking process at runtime.
-Prioritized across all subsequent video edits.
-"""
+"""memo.py: Brand memory manager (brand/MEMO.md)."""
 from __future__ import annotations
 
 import argparse
@@ -85,7 +80,6 @@ DEFAULT_MEMO_TEMPLATE = """# Brand Memory & Creative Preferences (MEMO.md)
 
 
 def find_brand_dir(start: Path | str | None = None) -> Path:
-    """Locate brand/ directory by climbing up from start or cwd."""
     p = Path(start or os.getcwd()).resolve()
     for d in [p] + list(p.parents):
         cand = d / "brand"
@@ -95,13 +89,11 @@ def find_brand_dir(start: Path | str | None = None) -> Path:
 
 
 def find_memo(start: Path | str | None = None) -> Path:
-    """Find brand/MEMO.md or return default target path."""
     b = find_brand_dir(start)
     return b / "MEMO.md"
 
 
 def init_memo(target: Path | str | None = None, values: dict | None = None) -> Path:
-    """Ensure brand/MEMO.md exists with slim optimized values."""
     memo_file = Path(target) if target else find_memo()
     memo_file.parent.mkdir(parents=True, exist_ok=True)
     if memo_file.exists():
@@ -151,7 +143,6 @@ def init_memo(target: Path | str | None = None, values: dict | None = None) -> P
 
 
 def parse_memo(memo_path: Path | str | None = None) -> dict:
-    """Parse brand/MEMO.md into structured dict."""
     p = Path(memo_path) if memo_path else find_memo()
     if not p.is_file():
         return {}
@@ -182,7 +173,6 @@ def parse_memo(memo_path: Path | str | None = None) -> dict:
 
 
 def update_memo_field(key: str, value: str, memo_path: Path | str | None = None) -> bool:
-    """Update a specific field in brand/MEMO.md in place."""
     p = Path(memo_path) if memo_path else find_memo()
     if not p.is_file():
         init_memo(p)
@@ -202,7 +192,7 @@ def update_memo_field(key: str, value: str, memo_path: Path | str | None = None)
         p.write_text(new_text, encoding="utf-8")
         return True
 
-    # Pattern 3: Key: Value inside sub-bullets (e.g. Instagram: @vihan_)
+    # Pattern 3: Key: Value inside sub-bullets (e.g. Instagram)
     pat3 = re.compile(rf"(\s*-\s*{re.escape(key)}:\s*)(.*)", re.IGNORECASE)
     if pat3.search(text):
         new_text = pat3.sub(rf"\g<1>{value}", text)

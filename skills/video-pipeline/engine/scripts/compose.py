@@ -1,104 +1,5 @@
 #!/usr/bin/env python3
-"""compose.py: build public/index.html for a talking-head edit from a storyboard.json, using the proven
-formats of the youtube-edit skill exactly as the reference builds render them (the format library in SKILL.md).
-
-The storyboard is the review artifact AND the source of truth; retiming a beat is editing one number.
-Formats covered here (the ones every segment intro / hook uses): progress tag (9, with 1-of-N pips),
-lower line (2), logo card (4a), glass list card (3a), extended-left bullets (3b), punchline chip (5),
-vignette + grain (17), description pointer (11), camera moves, and the one earned sound. Anything else
-(big number, cutaways, diagrams, subscribe bar) is hand-authored: drop it into "raw_html" / "raw_js".
-
-Usage:
-  python3 compose.py --spec videos/<p>/storyboard.json --out videos/<p>/public --shared videos/<p>/../_shared
-  (then: npx hyperframes check <out>; snapshot every beat; render)
-  --shared (optional) is a folder of reusable assets: img/* and img/thumbs/* are copied to <out>/img, sfx/* to <out>/sfx
-  (sfx/pop.mp3 for a logo "pop", sfx/typing.mp3 for a search "sound"). The DM Sans fonts come from the skill's own
-  assets/fonts. GSAP comes from a local copy when one is found (the skill's assets/vendor/gsap.min.js, or the HyperFrames
-  talking-head-recut skill's bundled copy), else the page loads it from the jsDelivr CDN.
-
-storyboard.json:
-{
-  "id": "C0001", "duration": 38.0, "video": "input-video.mp4", "origin": "52% 0%",
-  "tag":   {"n": 1, "of": 5, "label": "Thumbnails", "in": 0.2, "out": 5.3, "pos": "tr"},
-  "beats": [
-    {"type": "line",    "id": "l1", "text": "You clicked on a thumbnail", "em": [4], "color": "cyan|amber", "in": 8.5, "out": 11.6, "anchor": "clicked on a thumbnail"},
-    {"type": "logo",    "id": "yt", "src": "img/youtube.svg", "in": 11.85, "out": 14.9, "pop": 11.92, "pos": "tl|tr", "anchor": "YouTube"},
-    {"type": "list",    "id": "ls", "eyebrow": "", "items": [["Candles", 6.24], ["Soap", 7.12]], "in": 6.0, "out": 10.4, "pos": "tl|tr"},
-    {"type": "bullets", "id": "bu", "items": [["Marketing", 38.48], ["Product catalog", 41.12]], "in": 37.9, "out": 44.9},
-    {"type": "chip",    "id": "ch", "text": "let's be honest", "em": [0,1,2], "in": 24.9, "out": 27.0},
-    {"type": "vignette","id": "vg", "in": 10.35, "out": 12.85},
-    {"type": "pointer", "id": "pt", "in": 27.5, "out": 29.98}
-  ],
-  "camera": [["creep", 0.3, 5.4, 1.10], ["set", 9.70, 1.0], ["punch", 18.30, 1.18], ["release", 21.0, 0.5]],
-  "raw_html": "", "raw_js": ""
-}
-B-roll beats (full-frame takeovers on the brand wash, hard cut in/out, optional "transition": "zoomthrough" | "punch"):
-    {"type":"site",  "id":"st", "src":"img/site.png", "domain":"example.com/pricing", "scroll":500, "in":..,"out":..}
-    {"type":"grid",  "id":"th", "images":["img/thumbs/a.jpg", ...6], "click_index":4, "click_at":8.9, "in":..,"out":..}
-    {"type":"scene", "id":"mo", "kind":"money|catalog|room|plate|profile", "steps":{"drop":18.3}, "label":"Hundreds of dollars each", "label_em":[0,1,2], "label_color":"amber", "label_at":18.3, "in":..,"out":..}
-      steps by kind: money drop | catalog fill, shine | room furnish, shine | plate snap, spice | profile card, headshot
-A line can carry "shimmer": true (format 16).
-Lists and bullets can carry "marker": "check" (a cyan check draws on each item); an item may be [text, t, "anchor phrase"].
-DRAFT formats (each needs the creator's yes on a snapshot before it ships in a delivery):
-    {"type":"browser3d","id":"b3","src":"img/site.png","domain":"example.com","scroll":600,"near":"right|left",
-       "callout":{"at":..,"x":..,"y":..,"w":..,"h":..},"label":..,"in":..,"out":..}                       4c. 3D floating browser
-    {"type":"fan3d","id":"fn","images":["img/a.png","img/b.png","img/c.png"],"frame":"card|phone","at":[t,t,t],
-       "focus":{"index":1,"at":..},"label":..,"in":..,"out":..}                                               4d. 3D fan of screenshots
-    {"type":"stats","id":"st","layout":"row|stack","pos":"tl|tr","title":"The numbers","em":[1],
-       "items":[{"value":250,"prefix":"","suffix":"+","label":"Videos","at":..}],"in":..,"out":..}           24. stat tiles, count-up
-    {"type":"growth","id":"gr","pos":"tl|tr","eyebrow":"Weekly views","value":248,"prefix":"+","suffix":"%",
-       "sub":"since the switch","bars":[20,34,52,70,100],"count_at":..,"bars_at":..,"in":..,"out":..}         25. growth card
-    {"type":"bars","id":"br","title":"Hours to ship one video","em":[3,4],
-       "rows":[{"label":"Editor","value":6.5,"text":"6.5 hrs","at":..},{"label":"Claude Code","value":0.3,"text":"20 min","hi":true,"at":..}],
-       "in":..,"out":..}                                                                                      26. bar comparison
-    {"type":"pipeline","id":"pl","title":"","steps":[{"label":"Idea","sub":"one line","icon":"chat","at":..},
-       {"label":"Paid","icon":"money","at":..,"payoff":true}],"in":..,"out":..}                               27. pipeline
-    {"type":"hub","id":"hb","center":"Trust","ring_at":..,"spokes":[["Earned",t],["Inherited",t]],"resolve_at":..,"in":..,"out":..}   28. hub
-    {"type":"equation","id":"eq","pos":"bottom|top","terms":[["Skills",t],["+",t],["Workflows",t],["=",t],["40 hrs saved",t,"em"]],"in":..,"out":..}   29. equation
-    {"type":"wall","id":"wl","slots":["Thumbnails","Hooks","Scripts"],"filled":1,"now":1,"fill_at":..,"recap":false,"in":..,"out":..}   9c. slot wall
-    {"type":"popout","id":"po","title":"What you need","items":[["A camera",t],["One script",t]],"marker":"dot|check","in":..,"out":..}   3c. glass pop-out
-Icons for pipeline steps: doc browser bolt chat money check user code video mail gear chart search.
-More DRAFT formats (same rule: the creator's yes on a snapshot first):
-    {"type":"flow","id":"fl","title":"One video, four places","em":[3],"source":{"label":"One video","at":..},
-       "outputs":[{"label":"Email","at":..},...up to 4],"result":{"label":"New subscribers","at":..},"repeat":true,"in":..,"out":..}   30. flowing paths
-    {"type":"dashzoom","id":"dz","src":"img/studio.png","size":[w,h],"focus":{"x":..,"y":..,"w":..,"h":..},"find_at":..,"lift_at":..,
-       "card":{"label":"Views","value":48210,"prefix":"","suffix":"","delta":"+18%","spark":[..]},"in":..,"out":..}  31. dashboard zoom
-    {"type":"lens","id":"ln","title":"Welcome email","rows":[["Open rate","48%"],...up to 6],"stops":[[row,t],...],"in":..,"out":..}   32. glass focus
-    growth + "morph": true, "badge": "Best week"                                                                  25. bars turn into the line
-    {"type":"search","id":"sr","query":"customer discovery questions","sound":true,"cps":16,"type_at":..,
-       "results":[{"title":..,"sub":..,"color":"cyan|amber|magenta|white","logo":"img/x.svg","at":..}],"in":..,"out":..}   33. search → results
-    {"type":"dock","id":"dk","title":"My stack","items":[["img/claude.svg","Claude",t],...up to 7],"in":..,"out":..}   34. magnetic dock
-    {"type":"masktitle","id":"mt","eyebrow":"PART 2","text":"Distribution","sub":"where the first ten come from","sub_em":[3],"in":..,"out":..}   35. masked title
-    {"type":"player","id":"pv","pos":"tr|tl","label":"Watch this next","thumb":"img/thumbs/x.jpg","title":"..","length":754,
-       "progress":0.3,"morph_at":..,"in":..,"out":..}                                                                36. button → player
-    {"type":"image","id":"im","src":"img/x.jpg","frame":"card|full","slats":7,"reveal_at":..,"close":true,"label":..,"in":..,"out":..}   37. image reveal
-    {"type":"layers","id":"ly","title":"What is inside an app","layers":[{"label":"Interface","src":"img/ui.png"},{"label":"Logic"},{"label":"Data"}],
-       "split_at":..,"in":..,"out":..}                                                                              38. exploded layers
-Approved formats (a camera over one canvas, numbered parts, pills, chat, doc read, video cutaway):
-    {"type":"world","id":"wd","title":"","rings":[{"x":960,"y":540,"r":[200,330,460],"at":..}],
-       "window":{"x":..,"y":..,"w":..,"h":..,"title":"","at":..},"dock":{"x":..,"y":..,"items":["img/a.svg"],"at":..},
-       "nodes":[{"id":"pol","kind":"card|pill|orb|hex|stat|text|img","x":..,"y":.. (or "polar":[cx,cy,r,deg]),"icon":"shield",
-                 "label":"..","sub":"..","no":"1","at":..,"lit":..,"lit_color":"cyan|amber|magenta","dim":t|[t,level],
-                 "alerts":{"at":..,"n":4,"layout":"ring|corner"},"anchor":"spoken words",
-                 stat: "value":51,"suffix":"%","bar":0.51,"to":[93,t,0.93] | text: "size":220 | img: "src","w","h"}],
-       "links":[{"from":"biz","to":"pol","at":..,"dash":false,"run":true,"color":"cyan|amber|magenta"}],
-       "cam":[[t,cx,cy,zoom],[t,cx,cy,zoom,dur,ease]],"label":..,"in":..,"out":..}                           39. world (camera over a canvas)
-    {"type":"deck","id":"dk","head":"3 PREDICTIONS","cards":[{"title":"..","icon":"user"},...up to 4],"now":1,
-       "focus_at":..,"recap_at":..,"zoom":1.5,"in":..,"out":..}                                               40. deck (numbered parts)
-    {"type":"pills","id":"pl","layout":"sides|left|right|row","top":290,
-       "items":[["Codebase",t],{"text":"Wrong price","at":t,"icon":"alert","tone":"cyan|amber","mark":"x","anchor":".."}],"in":..,"out":..}   41. pills
-    {"type":"chat","id":"ch","frame":"float|window|phone","pos":"tl|tr","name":"Client","icon":"user",
-       "messages":[["them","Did this work?",t],["me","Yes.",t,"anchor phrase"]],"in":..,"out":..}            42. chat
-    {"type":"doc","id":"dc","domain":"anthropic.com/news/..","theme":"paper|dark","kicker":"","title":"..","date":"..",
-       "paras":["verbatim paragraph", ...],"marks":[{"text":"verbatim passage","at":t,"p":0,"anchor":"..","focus":true}],
-       "zoom":1.3,"focus":true,"in":..,"out":..}                                                              18b. doc read (format 18 + focus)
-    {"type":"clip","id":"ai1","src":"broll/desk.mp4","media_start":0,"drift":true,"label":"..",
-       "items":[["Fine-tune",t,"-"]],"marker":"check|dot","in":..,"out":..,"anchor":".."}                   20c. clip (video cutaway, AI b-roll)
-Icons (pipeline, world, deck, pills): doc browser bolt chat money check user code video mail gear chart search shield lock robot globe
-    cloud key alert folder eye bank chip.
-Camera ops: set t scale | creep t0 t1 scale (power1.inOut) | punch t scale (0.32 s power2.out) | release t dur (to 1.0) | reveal t (1.10 to 1.00 as a card enters).
-Positions: tl = left:70 top:96 (desk framing, clears the mic), tr = right:70 top:96.
-"""
+"""compose.py: build public/index.html for a talking-head edit from a storyboard.json, using the proven"""
 import argparse, json, os, shutil, glob, math, struct, sys
 from html import escape as _esc
 
@@ -672,7 +573,6 @@ CSS = """
 """.replace("ORIGIN", origin)
 
 def attr_anchor(anchor):
-    """'-' marks a beat that is deliberately not tied to a spoken word (beat-check skips it)."""
     if anchor == "-":
         return ' data-unanchored="1"'
     return ' data-anchor="%s"' % anchor.replace('"', "&quot;") if anchor else ""
@@ -688,8 +588,6 @@ def words_html(text):   # words kept in data-text; spans are built at load (seek
 
 
 def item_attrs(it):
-    """List/bullet items carry their own entry time and spoken anchor so beat-check.py can prove each one.
-    it = [text, t] (the anchor is the text) or [text, t, "anchor phrase"] ("-" = not spoken)."""
     anchor = it[2] if len(it) > 2 else it[0]
     return ' data-at="%.3f"%s' % (float(it[1]), attr_anchor(anchor))
 
@@ -697,7 +595,6 @@ CHECK_SVG = ('<div class="mk"><svg viewBox="0 0 44 44"><circle class="ring" cx="
              '<path class="tick" d="M13 22.5 L19.5 29 L31 16" style="stroke-dasharray:30;stroke-dashoffset:30"/></svg></div>')
 
 def check_in(sel, t):
-    """The check marker: the ring fills cyan and the tick draws, a beat after the item lands."""
     js("tl.to('%s .ring', { fill: 'rgba(10,240,240,1)', stroke: 'rgba(10,240,240,1)', duration: 0.26, ease: 'power2.out' }, %.3f);" % (sel, t + 0.22))
     js("tl.to('%s .tick', { strokeDashoffset: 0, duration: 0.30, ease: 'power2.out' }, %.3f);" % (sel, t + 0.32))
 
@@ -731,7 +628,6 @@ ICONS = {
 }
 
 def icon_svg(name, size=None):
-    """A line icon from ICONS as an inline SVG (white stroke; .lit turns it cyan)."""
     if not name:
         return ""
     if name not in ICONS:
@@ -744,7 +640,6 @@ def em_spans(text, em):
     return " ".join('<span class="em">%s</span>' % w if i in set(em or []) else w for i, w in enumerate(ws))
 
 def image_size(path):
-    """(width, height) of a PNG or JPEG without extra libraries."""
     with open(path, "rb") as f:
         head = f.read(26)
         if head[:8] == b"\x89PNG\r\n\x1a\n":
@@ -762,7 +657,6 @@ def image_size(path):
     raise SystemExit('give "size": [w, h] for %s' % path)
 
 def smooth_path(pts):
-    """Catmull-Rom through the points as cubic Beziers (the curve the chart morph draws)."""
     d = "M%.1f %.1f" % pts[0]
     for i in range(len(pts) - 1):
         p0, p1, p2 = pts[i - 1] if i else pts[i], pts[i], pts[i + 1]
@@ -779,8 +673,6 @@ CURSOR_SVG = ('<svg class="cursor" id="%s" viewBox="0 0 24 24" style="left:0;top
               'fill="#1c1c1c" stroke="#ffffff" stroke-width="1.4" stroke-linejoin="round"/></svg>')
 
 def transition(b, t_in, t_out):
-    """Dress the cut into and out of a full-frame cutaway. zoomthrough: the footage pushes in and blurs for 0.22 s
-    before the cut, and settles back from 1.08/6px on the return. punch: the 2-frame scale pop on the return only."""
     tr = b.get("transition", "none")
     if tr == "zoomthrough":
         js("tl.to('#video-wrap', { scale: 1.12, filter: 'blur(8px)', duration: 0.22, ease: 'power2.in' }, %.3f);" % (t_in - 0.22))
@@ -790,7 +682,6 @@ def transition(b, t_in, t_out):
         js("tl.fromTo('#video-wrap', { scale: 1.04 }, { scale: 1.0, duration: 0.12, ease: 'power2.out', immediateRender: false }, %.3f);" % t_out)
 
 def scene_label(bid, b, t_out):
-    """Optional caption on a scene: same voice as a lower line, 88 px, rises in on its own word."""
     if not b.get("label"):
         return ""
     em = set(b.get("label_em", []))

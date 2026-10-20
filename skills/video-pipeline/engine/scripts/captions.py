@@ -1,25 +1,5 @@
 #!/usr/bin/env python3
-"""captions.py: word-exact captions from the flat-cut transcript, two ways.
-
-1. catalog   inject the words into an installed HyperFrames caption component (npx hyperframes add caption-highlight),
-             resized to the canvas, timed to the video, optionally re-fonted with the style's local font (needed for
-             Hindi: most catalog fonts have no Devanagari). Writes a sub-composition and prints the host <div>.
-             Works with the components that keep their words in WORDS (+ RAW_GROUPS or GROUPS) or TRANSCRIPT:
-             caption-highlight, -clip-wipe, -particle-burst, -gradient-fill, -matrix-decode, -neon-glow,
-             -kinetic-slam, -texture, -pill-karaoke, -emoji-pop, -glitch-rgb, -neon-accent, -weight-shift.
-2. builtin   a caption layer this engine writes itself (pop / karaoke / block), styled from style.json. Used by
-             stage.py and compose.py as the "captions" beat; also printed here as JSON groups for inspection.
-
-Grouping (HyperFrames caption rules): 2 to 5 words by energy, break at sentence ends, at pauses of 150 ms or more, at
-a max character count, and never across a jump cut; fillers (um, uh) are dropped; one group on screen at a time;
-each group ends at its last word + a short hold, or just before the next group.
-
-Usage:
-  python3 captions.py groups  --transcript W/transcript.json [--cut-map W/cut-map.json] [--max-words 3] [--max-chars 18]
-  python3 captions.py catalog --component W/public/compositions/components/caption-highlight.html \
-      --transcript W/transcript.json --out W/public/compositions/captions.html --width 1080 --height 1920 \
-      [--cut-map W/cut-map.json] [--style W/style.json] [--y 0.68] [--max-words 3]
-"""
+"""captions.py: word-exact captions from the flat-cut transcript, two ways."""
 from __future__ import annotations
 
 import argparse
@@ -56,9 +36,8 @@ def load_words(transcript: str) -> list[dict]:
 
 
 def dynamic_group_params(words: list[dict]) -> tuple[int, int, float]:
-    """Calculate adaptive max_words, max_chars, and pause threshold dynamically from transcript speech velocity."""
     if not words:
-        return 4, 26, PAUSE_BREAK
+        return 3, 18, PAUSE_BREAK
     dur = max(w["end"] for w in words) - min(w["start"] for w in words)
     wpm = (len(words) / dur * 60.0) if dur > 0 else 140.0
     
@@ -67,24 +46,21 @@ def dynamic_group_params(words: list[dict]) -> tuple[int, int, float]:
     if pauses:
         sorted_p = sorted(pauses)
         pause_val = sorted_p[len(sorted_p) // 3] if len(sorted_p) >= 3 else sorted_p[len(sorted_p) // 2]
-        pause = max(0.20, min(0.45, round(pause_val, 2)))
+        pause = max(0.20, min(0.40, round(pause_val, 2)))
     else:
         pause = PAUSE_BREAK
         
-    if wpm >= 175:       # fast-tempo speech: longer phrase chunks prevent stroboscopic text
-        return 5, 32, max(pause, 0.25)
-    elif wpm >= 135:     # conversational tempo
-        return 4, 26, pause
-    else:                # deliberate, punchy tempo: fewer words per chunk for impact
-        return 3, 20, max(pause, 0.35)
+    if wpm >= 170:       # fast-tempo speech
+        return 4, 18, max(pause, 0.22)
+    elif wpm >= 120:     # conversational tempo
+        return 3, 16, pause
+    else:                # deliberate, punchy tempo
+        return 2, 14, max(pause, 0.30)
 
 
 def group(words: list[dict], cuts: list[float] | None = None, max_words: int | None = None, max_chars: int | None = None,
           pause: float | None = None, hold: float = HOLD, keep_punct: bool = False,
           emphasis: list[str] | None = None, auto_emphasis: bool = True) -> list[dict]:
-    """Pure (tested). Returns natural flowing phrase groups [{start, end, words: [{text, start, end, em}]}].
-    When max_words, max_chars, or pause are not explicitly provided, they are dynamically calculated from the transcript.
-    """
     if max_words is None or max_chars is None or pause is None:
         dyn_words, dyn_chars, dyn_pause = dynamic_group_params(words)
         if max_words is None:
@@ -155,16 +131,22 @@ def group(words: list[dict], cuts: list[float] | None = None, max_words: int | N
         nxt = groups[gi + 1][0]["start"] if gi + 1 < len(groups) else None
         end = g[-1]["end"] + hold
         if nxt is not None:
-            end = min(end, nxt - 0.02)
-            if nxt - end < 0.6:          # a tiny gap reads as a flicker: hold until the next group
+            if nxt - end < 0.35 and (nxt - 0.02) > g[-1]["end"]:
                 end = nxt - 0.02
+            else:
+                end = min(end, nxt - 0.02)
         ws = []
         for w in g:
             txt = clean(w["text"], keep_punct)
             key = re.sub(r"[^\w₹$%']", "", txt.lower())
             em = key in emph or (auto_emphasis and bool(NUMERIC.search(txt)))
             ws.append({"text": txt, "start": round(w["start"], 3), "end": round(w["end"], 3), "em": em})
-        out.append({"start": round(g[0]["start"], 3), "end": round(max(end, g[-1]["end"]), 3), "words": ws})
+        g_end = round(end, 3)
+        start_t = round(g[0]["start"], 3)
+        safe_end = max(round(start_t + 0.05, 3), g_end)
+        if nxt is not None and safe_end >= nxt:
+            safe_end = round(nxt - 0.02, 3)
+        out.append({"start": start_t, "end": safe_end, "words": ws})
     return out
 
 
@@ -185,7 +167,6 @@ def _replace_array(src: str, name: str, payload: str) -> tuple[str, bool]:
 
 
 def font_face_css(style: dict, base_dir: str) -> tuple[str, str] | None:
-    """The style's family stack and @font-face rules (display + fallback), files staged by the caller."""
     import treatments
     if not (style.get("fonts") or {}).get("display"):
         return None
@@ -195,7 +176,6 @@ def font_face_css(style: dict, base_dir: str) -> tuple[str, str] | None:
 def inject(html: str, groups: list[dict], width: int, height: int, duration: float, y: float | None = None,
            font: tuple[str, str] | None = None, upper: bool | None = None,
            sets: dict[str, str] | None = None) -> tuple[str, list[str]]:
-    """Pure-ish (tested): returns the new document and a list of what was changed."""
     notes = []
     # the host page already loads GSAP (locally); a second copy from the CDN fails offline and can replace window.gsap
     html, n = re.subn(r'\s*<script[^>]+src="https://cdn\.jsdelivr\.net/npm/gsap[^"]*"[^>]*>\s*</script>', "", html)
@@ -263,7 +243,6 @@ def comp_id(html: str) -> str:
 
 
 def probe_video(video_path: str) -> dict:
-    """Dynamically probe video stream width, height, and duration via ffprobe."""
     import subprocess
     try:
         p = subprocess.run(["ffprobe", "-v", "error", "-select_streams", "v:0", "-show_entries",
@@ -285,7 +264,6 @@ def probe_video(video_path: str) -> dict:
 
 # ---------------------------------------------------------------- builtin layer (used by treatments.py)
 def builtin_layer(groups: list[dict], ctx: dict, cfg: dict) -> tuple[str, str, list[str]]:
-    """HTML, CSS and timeline lines for a caption rail. cfg comes from style.json "captions"."""
     W, H = ctx["W"], ctx["H"]
     cfg = {**{k: v for k, v in cfg.items() if k not in ("portrait", "landscape")},
            **(cfg.get("portrait" if H > W else "landscape") or {})}      # orientation-specific values win
@@ -300,17 +278,12 @@ def builtin_layer(groups: list[dict], ctx: dict, cfg: dict) -> tuple[str, str, l
                     if seen > int(cap_em):
                         w["em"] = False
 
-    # Dynamic font size: calculated from canvas width, phrase character count, and speech velocity without rigid clamps
+    # Small, clean font size: 0.048 * W (~52px on 1080p) to keep captions elegant and prevent multi-line overflow
     if "size" in cfg:
         raw_size = float(cfg["size"])
         size = int(raw_size if raw_size > 1.0 else raw_size * W)
     else:
-        avg_chars = (sum(sum(len(w['text']) for w in g['words']) for g in groups) / max(len(groups), 1)) if groups else 18
-        maxw = int(W * float(cfg.get("max_width", 0.86)))
-        ideal_size = int(maxw / (max(avg_chars, 8) * 0.54))
-        min_sz = int(W * (0.045 if H > W else 0.030))
-        max_sz = int(W * (0.110 if H > W else 0.065))
-        size = max(min_sz, min(max_sz, ideal_size)) if ideal_size > 0 else int((0.075 if H > W else 0.045) * W)
+        size = int((0.048 if H > W else 0.034) * W)
 
     # Dynamic vertical position: calculated from speaker face/chin in raw video frames or safe visual zones
     if "y" in cfg:
@@ -323,19 +296,19 @@ def builtin_layer(groups: list[dict], ctx: dict, cfg: dict) -> tuple[str, str, l
             y = 0.68 if H > W else 0.86
 
     fam = cfg.get("family", ctx.get("font_family", "sans-serif"))
-    weight = cfg.get("weight", 800)
+    weight = cfg.get("weight", 700)
     color = cfg.get("color", "#ffffff")
-    inactive_color = cfg.get("inactive_color", "rgba(255,255,255,0.70)")
-    active = cfg.get("active_color", ctx.get("accent", "#ffd400"))
-    em_color = cfg.get("emphasis_color", active)
+    inactive_color = cfg.get("inactive_color", "#ffffff")
+    active = cfg.get("active_color", ctx.get("accent", "#ffe600"))
+    em_color = cfg.get("emphasis_color", "#00f59b")
     pill = cfg.get("pill_color", "")
     upper = cfg.get("case", "upper") == "upper"
     stroke = cfg.get("stroke", 0)
-    shadow = cfg.get("shadow", "0 6px 22px rgba(0,0,0,.55)")
-    maxw = int(W * float(cfg.get("max_width", 0.86)))
+    shadow = cfg.get("shadow", "0 3px 14px rgba(0,0,0,.85)")
+    maxw = int(W * float(cfg.get("max_width", 0.90)))
     top = int(H * y - size * 0.6)
     css = (".cap-rail{position:absolute;left:0;right:0;top:%dpx;display:flex;justify-content:center;z-index:60;pointer-events:none}"
-           ".cap-g{position:absolute;left:0;right:0;display:flex;flex-wrap:wrap;justify-content:center;align-items:baseline;"
+           ".cap-g{position:absolute;left:0;right:0;display:flex;flex-wrap:nowrap;white-space:nowrap;justify-content:center;align-items:baseline;"
            "gap:0 %dpx;padding:0 %dpx;max-width:%dpx;margin:0 auto;opacity:0;visibility:hidden}"
            ".cap-w{display:inline-block;font-family:'%s',sans-serif;font-weight:%s;font-size:%dpx;line-height:1.15;color:%s;"
            "text-shadow:%s;%s%s padding:%s;border-radius:%dpx;transform-origin:center center}"
@@ -353,6 +326,8 @@ def builtin_layer(groups: list[dict], ctx: dict, cfg: dict) -> tuple[str, str, l
                         w["text"].replace("&", "&amp;").replace("<", "&lt;")) for wi, w in enumerate(g["words"]))
         gy = ' style="top:%dpx"' % int(H * (float(g["y"]) - y)) if g.get("y") is not None else ""
         html.append('<div class="cap-g" id="cg-%d"%s>%s</div>' % (gi, gy, spans))
+        if gi > 0:
+            js.append("tl.set('#cg-%d', { opacity: 0, visibility: 'hidden' }, %.3f);" % (gi - 1, g["start"] - 0.02))
         js.append("tl.set('#cg-%d', { visibility: 'visible' }, %.3f);" % (gi, g["start"] - 0.02))
         if mode in ("phrase", "flow", "block"):
             js.append("tl.fromTo('#cg-%d', { opacity: 0, y: 8 }, { opacity: 1, y: 0, duration: 0.18, ease: 'power2.out' }, %.3f);"
@@ -373,8 +348,9 @@ def builtin_layer(groups: list[dict], ctx: dict, cfg: dict) -> tuple[str, str, l
                     js.append("tl.to('%s', { color: '%s', duration: 0.10 }, %.3f);" % (sel, color if mode not in ("phrase", "flow") else inactive_color, w["end"]))
             elif w["em"]:
                 js.append("tl.fromTo('%s', { scale: 0.94 }, { scale: 1.06, duration: 0.14, ease: 'back.out(1.4)' }, %.3f);" % (sel, w["start"]))
-                js.append("tl.to('%s', { scale: 1.0, duration: 0.10, ease: 'power2.out' }, %.3f);" % (sel, w["start"] + 0.15))
-        js.append("tl.to('#cg-%d', { opacity: 0, y: -4, duration: 0.12, ease: 'power2.in' }, %.3f);" % (gi, g["end"] - 0.10))
+        dur_out = min(0.10, max(0.04, (g["end"] - g["start"]) * 0.25))
+        t_out = max(g["start"] + 0.05, g["end"] - dur_out)
+        js.append("tl.to('#cg-%d', { opacity: 0, y: -4, duration: %.3f, ease: 'power2.in' }, %.3f);" % (gi, dur_out, t_out))
         js.append("tl.set('#cg-%d', { opacity: 0, visibility: 'hidden' }, %.3f);" % (gi, g["end"]))   # hard kill
     html.append("</div>")
     return "\n".join(html), css, js

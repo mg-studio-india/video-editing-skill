@@ -469,5 +469,32 @@
  },
  "quality_score": 3,
  "brand_prompt": "Use /video-pipeline with /video-captions on videos/<project>. Apply style blueprint B14 (video-reference-match/references/blueprints/B14.json) to this brand.\nCanvas 1080x1920, 30 fps. All positions are % of frame; px are at 1080x1920.\n\nBRAND TOKENS (use the brand's colour/font for each role; keep the contrast relationship: {{TEXT}} must stay >= 3:1 on the footage at mid-frame; place cards over dark product surfaces)\n- {{TEXT}}      running captions and keyword cards       default #FFFFFF\n- {{ACCENT}}    full-frame flash colour                  default saturated yellow (not measured; use the brand's signature colour)\n- {{ACCENT_2}}  light-leak tint                          default warm red (footage effect, low opacity)\n- {{SURFACE}}   none                                     default none\n- {{CARD_BG}}   none (cards have no box)                 default none\n- {{FONT_DISPLAY}} keyword cards                         default Inter 800 (extra-bold neo-grotesque; alt Archivo Black)\n- {{FONT_BODY}}    running captions                      default Syne 400 (wide regular grotesque; alt Archivo SemiExpanded)\n- {{HANDLE}}    not shown\n- {{LOGO}}      the product's own logo, filmed in macro for the final shot\n\nCAPTIONS (two tiers, same centre point)\n1. Running caption: English as spoken, ALL LOWERCASE, no full stops or commas (keep hyphens), 2-5 words, one line. {{FONT_BODY}} at 50 px, tracking 0, {{TEXT}}, no stroke, shadow or box. Centred at x 540 px, centre y 50.2 % (~964 px).\n2. Keyword cards: ~5 per video (the hook claim, each headline feature, the product name) shown INSTEAD of the running line: UPPERCASE, 1-2 words per line, 2-4 lines, {{FONT_DISPLAY}} at 98 px, tracking -0.02em, line pitch 84 px (line-height ~0.86), {{TEXT}}, soft dark shadow 0 2px 10px rgba(0,0,0,.35), no box; block centred at x 540 px, y 50 %; widest line ~49 % W. Keep apostrophes and unit marks.\n3. Animation: both tiers hard-cut in as a whole phrase ~7 frames after the phrase's first word, hard-cut out when the next phrase/card lands; the card replaces the running line on the same frame. Text carries across picture cuts. No fade, pop, slide, highlight or idle motion.\n\nOTHER TEXT\n4. Hook: the claim card from frame 0 over the speaker holding the product; end it with a 12-frame full-frame {{ACCENT}} light flash that washes the card out, then cut to the running caption.\n5. End: the product name as the last keyword card over a slow push into a macro of {{LOGO}}.\n6. No titles, lower thirds, stickers or separate end card.\n\nEDIT DEVICES\n7. One feature = one insert shown in the same second it is named (handheld macro, locked overhead top-down, in-use shot); median shot ~31 frames, never over ~90; ~60 cuts/min in the first ~150 frames, ~36 after. Cut on motion (swings, hands, zips). Prove the boldest claim live (wide demo + macro result). One low-opacity {{ACCENT_2}} light leak early in the body.\n\nGRADE\n8. Grade from the user's footage (video-style / grade.py); target look: cinematic warm-on-cool, tungsten practicals vs cool walls, deep blacks, slightly desaturated.\n\nAUDIO\n9. Continuous VO, no music bed; whoosh/hit on product swings and card swaps (~40 % of cuts), a riser or impact into the flash. Master to about -14.2 LUFS, true peak <= -1 dBTP.\n\nVERIFY before rendering\na) Render a test frame with the card line \"RESISTANT\" and one with a running caption \"key word\", over a dark area, and measure:\n   python video-reference-match/scripts/caption_probe.py <test.mp4> --out <dir> --at <t> --box 0.2,0.40,0.8,0.60 --ink \"{{TEXT}}:60\"\n   Required at the default font: \"RESISTANT\" ink 3.83 % ±0.5 of height and 49.3 % ±2 of width, centred at 50 % ±0.5. Running caption: expected ink from video-reference-match/scripts/fit_font.py ({{FONT_BODY}}, 50 px; reference 2.34 % H for lowercase lines with ascenders and descenders). With brand fonts, compute both with fit_font.py and match within ±0.5 % H.\n",
- "caption_family": "other:running-caption+keyword-cards"
+ "caption_family": "other:running-caption+keyword-cards",
+ "hyperframes_compositions": [
+  {
+   "name": "app-showcase",
+   "role": "Feature-by-feature mobile application showcase",
+   "type": "block"
+  },
+  {
+   "name": "mk-specs-list",
+   "role": "Rapid feature specs cards",
+   "type": "block"
+  },
+  {
+   "name": "badge-pop",
+   "role": "Feature highlight badge pill",
+   "type": "component"
+  },
+  {
+   "name": "vfx-iphone-device",
+   "role": "3D photorealistic phone device render",
+   "type": "block"
+  },
+  {
+   "name": "cta-close",
+   "role": "High-converting product purchase CTA",
+   "type": "component"
+  }
+ ]
 }

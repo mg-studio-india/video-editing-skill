@@ -1,17 +1,5 @@
 #!/usr/bin/env python3
-"""stutter-scan.py: second opinion on the paper cut, using a mechanical mistake finder.
-
-paper-cut.py handles retakes, restarts, markers and false starts at the sentence level. The finder
-(find-cut-candidates.mjs, next to this script; MIT, see LICENSES/MIT-starter-kit.txt) adds word-level
-stutters ("the the", "I- I") and a Jaccard retake pass. Run it on the transcript of the FLAT CUT (after
-apply-cut.py) so any survivor is a real candidate, then read each one in context: emphatic repetition
-("never, never") looks identical to a stutter and must stay. Needs Node.js (node on PATH).
-
-Usage:
-  python3 stutter-scan.py --transcript videos/<p>/transcript.json --out-dir videos/<p>/candidates
-Writes candidates/<stem>.cut-candidates.json + .md (the finder's format) and prints the summary.
-Approved cuts go into a second apply-cut.py pass (cut-list-v2.json), never into the raw cut list.
-"""
+"""stutter-scan.py: second opinion on the paper cut, using a mechanical mistake finder."""
 import argparse, json, os, subprocess, sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))

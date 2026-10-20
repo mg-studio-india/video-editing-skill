@@ -343,5 +343,22 @@
  },
  "quality_score": 1,
  "brand_prompt": "Use /video-pipeline with /video-captions on videos/<project>. Apply style blueprint B49 (video-reference-match/references/blueprints/B49.json) to this brand.\n\nBRAND TOKENS (use the brand's colour for each role; keep the contrast relationship — text and accent must stay >= 4.5:1 / >= 3:1 against what sits behind them on the footage):\n- {{TEXT}}      default #FFFFFF (label text)\n- {{ACCENT}}    default #FA3551 (label pill fill)\n- {{ACCENT_2}}  default none (optionally a second pill colour per role)\n- {{SURFACE}}   default none\n- {{CARD_BG}}   default #FA3551 (pill fill; same as accent)\n- {{FONT_DISPLAY}} default Inter 800\n- {{FONT_BODY}}    default Inter 800\n- {{HANDLE}}    default @handle\n- {{LOGO}}      default the brand's logo file (transparent PNG/SVG)\nPill text must stay >= 4.5:1 on {{CARD_BG}}; the pill itself needs >= 3:1 against the footage behind it (avoid pills that match the sky colour).\nCanvas 1080x1920, 30 fps.\n\nCAPTIONS\n1. No captions.\n\nOTHER TEXT\n2. Two role labels, one per person, Title-case single word (placeholders 'ROLE A' / 'ROLE B' set as e.g. 'Brand' / 'Client'), {{FONT_DISPLAY}} at 57 px, {{TEXT}}, tracking 0, no stroke / shadow, on a solid {{CARD_BG}} rounded rectangle hugging the word (height 4.3-4.5 % H, corner radius ~20 % of its height, padding ~2.5 % W left/right, ~0.9 % H top/bottom).\n3. Pin each pill just above its person's head: foreground person x 12.8-36.8 %, y 36.2-40.5 % (text centre 38.8 %); background person x 65.3-85.1 %, y 41.2-45.7 % (text centre 43.4 %). Further-back people get lower, smaller-looking positions.\n4. Animation: none — both on from frame 0 to the last frame, screen-fixed (the camera is locked off). If the subjects move, track the pills to the heads instead.\n5. No {{LOGO}}, titles or end card ({{HANDLE}} optional, small, bottom).\n6. Edit: one locked-off wide, no cuts.\n\nGRADE\nGrade from the user's footage (video-style / grade.py); target look: high-contrast, muted, neutral-warm; natural golden-hour sky.\n\nVERIFY before rendering\na) Render a pill with 'Client' and one with 'Agency' and measure: python3 video-reference-match/scripts/caption_probe.py <test-render> --out <dir> --at <t> --box 0.6,0.40,0.9,0.47 --ink \"{{TEXT}}:60\"\n   Expected (±0.5 % H, ±2 % W) with Inter 800 at 57 px: 'Client' ink 2.19 % H / 14.9 % W; 'Agency' ~19.2 % W.\nb) Brand role words: python3 video-reference-match/scripts/fit_font.py --font \"Inter 800\" --word \"<Word>\" --ink 2.19 -> ~57 px for a Title-case word without descenders; size the pill around the returned width. (fit_font.py needs a target: --ink and/or --width; it returns the px that reproduces that ink for YOUR word plus the width it will read at that px. Requires Pillow.)\nc) Positions within ±1 % H: pill A y 36.2-40.5 %, pill B y 41.2-45.7 %.",
- "caption_family": "other:role-labels"
+ "caption_family": "other:role-labels",
+ "hyperframes_compositions": [
+  {
+   "name": "lt-soft-pill",
+   "role": "Accent role-label pill pinned above characters",
+   "type": "block"
+  },
+  {
+   "name": "caption-pill-karaoke",
+   "role": "Color-coded character dialogue subtitles",
+   "type": "component"
+  },
+  {
+   "name": "confetti",
+   "role": "Punchline celebration burst",
+   "type": "component"
+  }
+ ]
 }

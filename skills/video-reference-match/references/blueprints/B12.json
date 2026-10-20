@@ -548,5 +548,27 @@
  },
  "quality_score": 4,
  "brand_prompt": "Use /video-pipeline with /video-captions on videos/<project>. Apply style blueprint B12 (video-reference-match/references/blueprints/B12.json) to this brand.\n\nBRAND TOKENS (use the brand's colour/font for each role; keep the contrast relationship: {{TEXT}} on {{SURFACE}} >= 7:1, {{ACCENT}} dots/bar >= 3:1 on {{SURFACE}}, white text on the {{ACCENT}} bar >= 4.5:1)\n- {{TEXT}} captions, titles, years - default #FFFFFF\n- {{ACCENT}} timeline dots, CTA bar - default red #B8070B (dots #AD1217)\n- {{ACCENT_2}} view badges, final 'hero' nodes - default green #117210\n- {{SURFACE}} graphic panel - default near-black #050505 with a faint dot grid\n- {{CARD_BG}} light hook panel - default light grey #E0DFDF (text near-black #0A090A)\n- {{FONT_DISPLAY}} accent word in titles / concept names - default italic old-style serif (Instrument Serif Italic or EB Garamond Italic; local stand-in Playfair Display 400 italic)\n- {{FONT_BODY}} captions, titles, labels - default Inter 700 (Bold)\n- {{HANDLE}} - @handle (optional, small under the CTA)\n- {{LOGO}} - not required; optional small mark on the CTA panel\n\nCanvas 1080x1920, 24 fps.\n\nLAYOUT\n1. Split for ~70 % of runtime: graphic panel y 0-70 % on {{SURFACE}}; speaker in a rounded face card x 6-94 %, y ~73-100 %, radius ~4 % W. Full-face CU/MCU for every opinion or aside (~30 %, 38-180 frames each), alternating crop sizes.\n2. One diagram for the whole video: a horizontal timeline with {{ACCENT}} node dots and big {{TEXT}} bold labels (ink 3.59 % H, centre y 55.7 %) that scrolls with directional motion blur (~10-14 frames, power2.inOut); branches grow into a category tree of small black pills with thin white outlines; pan node to node as each is discussed; recap with the winners in {{ACCENT_2}}.\n3. Example cards (rounded thumbnails, {{ACCENT_2}} count badges like '1.2M') pop in with back.out(1.4) over ~8 frames.\n\nCAPTIONS\n4. Latin script, as spoken, punctuation kept; exactly ONE word on screen at a time; hard 1-frame swap on each spoken word, no fade, no gap, no colour emphasis.\n5. {{FONT_BODY}}, {{TEXT}}, tracking 0, no stroke/box, soft shadow 0 2px 6px rgba(0,0,0,.5). Splits: 58 px, centred, centre y 66.4 % (gap above the face card). Full-face: 68 px, centre y 63 %.\n\nOTHER TEXT\n6. Section title on every split: two centred Title Case lines 'Headline here / Second line here', {{FONT_BODY}} 52 px, -0.02em, {{TEXT}} (near-black on {{CARD_BG}}), line centres y 7.0 % and 9.8 %, width 50-62 % W; one or two key words swapped to {{FONT_DISPLAY}} at the same cap height. Title changes per section.\n7. Concept name on the full-face shot after the hook: {{FONT_DISPLAY}} ~75 px (verify width), x ~18-54 %, centre y 63.5 %.\n8. Hook frame 1: {{CARD_BG}} panel with the title and a 3x3 grid of example thumbnails popping in, count badges by frame ~36; first cut to full-face at ~3 % of runtime.\n9. CTA (last ~8 %): 'Comment' {{FONT_BODY}} + '\"KEYWORD\"' {{FONT_DISPLAY}} (ink 3.36 % H, x 20-81 %, centre y 8 %), then 'To Get The Doc' {{TEXT}} bold (ink 2.89 % H) on a solid {{ACCENT}} bar x 20-80 %, y 10.5-14.5 %, over a grid of document-page thumbnails.\n\nGRADE: Grade from the user's footage (video-style / grade.py); target look: dark low-key studio, high-contrast, muted, warm lamp bokeh, cool desaturated shadows.\nSOUND: voice only at about -14 LUFS (keep true peak <= -1 dBTP); optional soft whoosh on timeline scrolls.\n\nVERIFY before rendering (px values were render-verified with Inter; if the brand font differs, adjust px until the numbers match):\na) Render test frames over {{SURFACE}}: \"education\" ({{FONT_BODY}} 58 px), \"video\" ({{FONT_BODY}} 68 px), a two-line test title \"Headline here\" (52 px) and \"KEY WORD\" in {{FONT_DISPLAY}} at 75 px.\nb) Measure: python video-reference-match/scripts/caption_probe.py <test render or snapshot> --out <dir> --at <t> --box 0.3,0.645,0.7,0.685 --ink \"{{TEXT}}:60\" (split caption); --box 0.3,0.605,0.7,0.65 (full-face caption); --box 0.15,0.055,0.85,0.083 (title line 1); --box 0.15,0.6,0.6,0.655 --ink \"{{TEXT}}:70\" (serif word).\nc) Required: \"education\" ink 2.19 % +-0.5 of H and 24.6 % +-2 of W; \"video\" 2.58 % +-0.5 and 15.7 % +-2. For the title and serif word compute expected ink with python video-reference-match/scripts/fit_font.py --font \"<font>\" --word \"<word>\" at the px above (serif target cap-to-descender ink ~3.9 % H for a 1-word name).",
- "caption_family": "word-by-word-plain"
+ "caption_family": "word-by-word-plain",
+ "hyperframes_compositions": [
+  {
+   "name": "flowchart",
+   "role": "Evolving diagram with animated connectors above speaker",
+   "type": "block"
+  },
+  {
+   "name": "constellation-hub",
+   "role": "Central concept hub branching into sub-nodes",
+   "type": "component"
+  },
+  {
+   "name": "device-frame-stage",
+   "role": "Rounded face card window geometry",
+   "type": "component"
+  },
+  {
+   "name": "grid-card-assemble",
+   "role": "Interactive dot-grid diagram elements assembling",
+   "type": "component"
+  }
+ ]
 }

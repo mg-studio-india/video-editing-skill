@@ -1,14 +1,5 @@
 #!/usr/bin/env python3
-"""tighten-cut.py: trim dead air by the SOUND, not the transcript (a cut built from word starts alone leaves too much
-breathing room). The ASR can put a phrase start up to 0.4 s before the first audible frame after a long pause, so a cut list built
-from word starts keeps that silence at every join. For every kept segment: lead-in down to LEAD s before the first
-audible 10 ms frame, tail down to TAIL s after the last, and every inner silence longer than MAXGAP cut to TAIL + LEAD
-(the segment splits there, one more jump cut). Segments marked "room_tone": true pass through untouched (deliberate air).
-
-Run with a Python that has numpy (python3 with numpy works):
-  python3 tighten-cut.py --audio W/audio-raw.wav --cut-list W/cut-list.json --out W/cut-list-tight.json
-Then apply-cut.py on the tight list. Check a fresh transcription of the flat cut: every word must survive.
-"""
+"""tighten-cut.py: trim dead air by the SOUND, not the transcript (a cut built from word starts alone leaves too much"""
 import argparse, json, subprocess, numpy as np
 ap = argparse.ArgumentParser()
 ap.add_argument("--audio", required=True); ap.add_argument("--cut-list", required=True); ap.add_argument("--out", required=True)
