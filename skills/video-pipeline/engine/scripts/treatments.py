@@ -10,10 +10,16 @@ DEFAULT_STYLE = {
     "colors": {"text": "#ffffff", "accent": "#ffd400", "accent2": "#00e0ff", "money": "#22e07a",
                "dark": "#0b0b0f", "paper": "#f4ecd8", "paper_ink": "#1d1a16",
                "canvas_bg": "radial-gradient(circle at 50% 20%, rgba(56, 189, 248, 0.16) 0%, transparent 55%), radial-gradient(ellipse 90% 65% at 50% 25%, #1e2c48 0%, #0d1526 60%, #040710 100%)"},
-    "fonts": {"display": {"family": "Poppins", "files": {}}},
+    "fonts": {
+        "display": {"family": "Poppins", "files": {}},
+        "captions": {"family": "Google Sans", "files": {
+            "700": "@engine/assets/fonts/google-sans/GoogleSans-700-latin.woff2"}},
+    },
     "motion": {"in": 0.35, "out": 0.25, "ease_in": "power3.out", "ease_out": "power2.in"},
     "cards": {"bg": "rgba(12,12,16,.78)", "text": "#ffffff", "radius": 22, "border": "rgba(255,255,255,.14)"},
-    "captions": {"mode": "pop", "case": "upper", "weight": 800},
+    "captions": {"family": "Google Sans", "mode": "phrase", "case": "upper", "weight": 700,
+                 "shadow": "none", "plate_color": "rgba(8,10,14,.38)",
+                 "plate_border": "rgba(255,255,255,.09)"},
 }
 
 
@@ -438,12 +444,13 @@ def layout_overlaps(beats: list[dict]) -> list[str]:
 
 def font_faces(style: dict) -> str:
     out = []
-    for role in ("display", "body", "fallback"):
+    for role in ("display", "body", "fallback", "captions"):
         f = (style.get("fonts") or {}).get(role)
         if not f or not isinstance(f, dict):
             continue
         family = f.get("family", "")
         for weight, path in sorted((f.get("files") or {}).items()):
-            out.append("@font-face{font-family:'%s';src:url('%s');font-weight:%s;font-style:normal;font-display:block}"
-                       % (family, path, weight))
+            fmt = " format('woff2')" if str(path).lower().split("?", 1)[0].endswith(".woff2") else ""
+            out.append("@font-face{font-family:'%s';src:url('%s')%s;font-weight:%s;font-style:normal;font-display:block}"
+                       % (family, path, fmt, weight))
     return "\n".join(out)

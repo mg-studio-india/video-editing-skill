@@ -11,7 +11,7 @@ DEFAULTS = {
     # whisper.cpp
     "WATCH_WHISPER_CPP_BIN": "",          # path to whisper-cli (auto-detected if empty)
     "WATCH_WHISPER_MODEL": "",            # path to ggml-large-v3.bin (auto-detected if empty)
-    "WATCH_WHISPER_LANG": "auto",         # 'auto' or a code like 'en', 'hi'
+    "WATCH_WHISPER_LANG": "en",           # pipeline uses English decoding to keep Roman-script output
     "WATCH_WHISPER_THREADS": "",          # default: min(8, cpu count)
     "WATCH_WHISPER_DTW": "",              # optional --dtw preset, e.g. large.v3 (see references/macos-setup.md)
     "WATCH_WHISPER_PROMPT": "",           # optional initial prompt: names, jargon

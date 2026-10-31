@@ -412,10 +412,10 @@ if [ "$SKIP_PIP" = 1 ]; then
   ok "pip install skipped (--skip-pip)"
 else
   "$VENV_PY" -m pip install --quiet --upgrade pip
-  "$VENV_PY" -m pip install --quiet numpy pillow "opencv-python-headless>=4.9,<5" auto-editor google-genai scipy soundfile nara_wpe
-  ok "numpy, pillow, opencv, auto-editor, google-genai, scipy, soundfile, nara_wpe installed in sandbox"
+  "$VENV_PY" -m pip install --quiet -r "$ROOT_DIR/skills/video-pipeline/engine/requirements.txt"
+  ok "numpy, Pillow, OpenCV, PDF reader/rendering, auto-editor, google-genai, scipy, soundfile, nara_wpe installed in sandbox"
 fi
-"$VENV_PY" -c "import numpy" 2>/dev/null || die "sandbox virtualenv has no numpy; re-run without --skip-pip"
+"$VENV_PY" -c "import numpy, PIL, cv2, pypdf, pypdfium2" 2>/dev/null || die "sandbox virtualenv is missing a required video or PDF dependency; re-run without --skip-pip"
 
 # --------------------------------------------------------------------------------------------- 4. Skills & clean workspace
 step "4/8 Skills catalog & clean workspace folders"
@@ -588,6 +588,7 @@ step "5/8 HyperFrames CLI ($HF_VERSION) & GSAP in sandbox"
   npm install --save-dev --save-exact --no-fund --no-audit --loglevel=error "hyperframes@$HF_VERSION" "gsap@$GSAP_VERSION"
 )
 ok "hyperframes@$HF_VERSION and gsap@$GSAP_VERSION pinned in $(tilde "$ENGINE_DIR")"
+HF_CLI="$ENGINE_DIR/node_modules/.bin/hyperframes"
 
 mkdir -p "$ENG/assets/vendor"
 if [ -f "$ENGINE_DIR/node_modules/gsap/dist/gsap.min.js" ]; then
@@ -598,17 +599,17 @@ fi
 if [ "$NO_BROWSER" = 1 ]; then
   ok "browser skipped (--no-browser)"
 else
-  if (cd "$ENGINE_DIR" && npx --no-install hyperframes browser ensure); then
+  if "$HF_CLI" browser ensure; then
     # ensure can settle on a system Chromium that does not start (snap stubs, Linux on ARM): ask doctor whether it runs
-    if (cd "$ENGINE_DIR" && npx --no-install hyperframes doctor 2>&1) | grep -qE "✗ +Chrome"; then
+    if "$HF_CLI" doctor 2>&1 | grep -qE "✗ +Chrome"; then
       CH_HINT="install Google Chrome, or Chromium from your package manager, and set HYPERFRAMES_BROWSER_PATH in ~/.config/video-skills/.env"
       [ "$OS-$ARCH_N" = Linux-arm64 ] && CH_HINT="Chrome has no Linux ARM build: install a non-snap Chromium (e.g. 'sudo dnf install chromium', Debian 'sudo apt-get install chromium') and set HYPERFRAMES_BROWSER_PATH in ~/.config/video-skills/.env"
-      warn "Chrome for rendering does not start (npx hyperframes doctor). $CH_HINT"
+      warn "Chrome for rendering does not start (local HyperFrames doctor). $CH_HINT"
     else
       ok "HyperFrames Chrome ready"
     fi
   else
-    warn "HyperFrames could not fetch Chrome; run 'cd $ENGINE_DIR && npx hyperframes browser ensure' later"
+    warn "HyperFrames could not fetch Chrome; run '$HF_CLI browser ensure' later"
   fi
 fi
 
@@ -619,7 +620,7 @@ HF_SKILLS=(
   motion-graphics product-launch-video talking-head-recut
 )
 for s in "${HF_SKILLS[@]}"; do
-  (cd "$ENGINE_DIR" && npx --no-install hyperframes skills update "$s" >/dev/null 2>&1) || true
+  "$HF_CLI" skills update "$s" >/dev/null 2>&1 || true
 done
 ok "HyperFrames skills suite updated"
 
@@ -667,13 +668,13 @@ echo "  HeyGen (the sound library for all SFX and music)"
 HG_CUR="$(getenv HEYGEN_API_KEY)"; HG_CUR="${HG_CUR:-${HEYGEN_API_KEY:-}}"
 if [ -n "$HG_CUR" ]; then
   ok "HEYGEN_API_KEY already configured"; setenv HEYGEN_API_KEY "$HG_CUR"
-elif ! HG_STATUS="$(cd "$ENGINE_DIR" && npx --no-install hyperframes auth status 2>&1)" \
+elif ! HG_STATUS="$("$HF_CLI" auth status 2>&1)" \
      || printf '%s' "$HG_STATUS" | grep -qiE "not (signed|logged) in" \
      || ! printf '%s' "$HG_STATUS" | grep -qiE "signed in|logged in|authenticated"; then   # only a clear yes counts as signed in
   HG_DEFAULT=1; { [ "$YES" = 1 ] || [ ! -r /dev/tty ]; } && HG_DEFAULT=3
   ask "Sign in now? 1 = browser sign-in (recommended), 2 = paste an API key, 3 = later" "$HG_DEFAULT"
   case "$REPLY" in
-    1) (cd "$ENGINE_DIR" && npx --no-install hyperframes auth login < /dev/tty) || warn "HeyGen sign-in incomplete" ;;
+    1) "$HF_CLI" auth login < /dev/tty || warn "HeyGen sign-in incomplete" ;;
     2) ask_secret "HeyGen API key" ""; REPLY="$(api_key "$REPLY" HEYGEN_API_KEY)"; [ -n "$REPLY" ] && setenv HEYGEN_API_KEY "$REPLY" && ok "saved" ;;
     *) warn "HeyGen skipped: SFX will use offline curated sound-palette" ;;
   esac
@@ -691,8 +692,7 @@ O_CUR="$(getenv OPENROUTER_API_KEY)"; O_CUR="${O_CUR:-${OPENROUTER_API_KEY:-}}"
 ask_secret "OPENROUTER_API_KEY (Enter to skip)" "$O_CUR"; REPLY="$(api_key "$REPLY" OPENROUTER_API_KEY)"; setenv OPENROUTER_API_KEY "$REPLY"
 [ -n "$REPLY" ] && ok "OPENROUTER_API_KEY saved" || ok "OpenRouter key skipped"
 
-ask "Main spoken language for transcription: en, hi (Hinglish Roman captions), or auto?" "$(getenv WATCH_WHISPER_LANG)"
-LANG_CHOICE="${REPLY:-auto}"; setenv WATCH_WHISPER_LANG "$LANG_CHOICE"; ok "WATCH_WHISPER_LANG=$LANG_CHOICE"
+setenv WATCH_WHISPER_LANG "en"; ok "WATCH_WHISPER_LANG=en (Roman-script pipeline transcription)"
 
 [ "$MODEL" != "none" ] && setenv WATCH_WHISPER_MODEL "$(nativepath "$MODEL_DIR/ggml-$MODEL.bin")"
 [ -n "$WHISPER_BIN" ] && setenv WATCH_WHISPER_CPP_BIN "$(nativepath "$WHISPER_BIN")"
@@ -700,6 +700,7 @@ LANG_CHOICE="${REPLY:-auto}"; setenv WATCH_WHISPER_LANG "$LANG_CHOICE"; ok "WATC
 setenv VIDEO_SKILLS "$(nativepath "$SKILLS_DIR")"
 setenv VIDEO_ENGINE "$(nativepath "$ENG")"
 setenv VIDEO_ENGINE_DIR "$(nativepath "$ENGINE_DIR")"
+setenv VIDEO_ENGINE_PYTHON "$(nativepath "$VENV_PY")"
 setenv VIDEO_COMPOSITIONS "$(nativepath "$ENGINE_DIR/compositions")"
 setenv VIDEO_SOUND_PALETTE "$(nativepath "$PROJECT/sound-palette")"
 setenv RNNOISE_MODEL "$(nativepath "$HOME/.config/video-skills/rnnoise/sh.rnnn")"
@@ -715,6 +716,7 @@ ENGINE_PATH="$(dirname "$VENV_PY"):$ENGINE_DIR/node_modules/.bin"
 {
   echo "# Autonomous Video Editing Environment"
   echo "export VIDEO_ENGINE_DIR=\"$ENGINE_DIR\""
+  echo "export VIDEO_ENGINE_PYTHON=\"$VENV_PY\""
   echo "export VIDEO_COMPOSITIONS=\"$ENGINE_DIR/compositions\""
   echo "export VIDEO_SKILLS=\"$SKILLS_DIR\""
   echo "export VIDEO_ENGINE=\"$ENG\""
@@ -726,7 +728,7 @@ ENGINE_PATH="$(dirname "$VENV_PY"):$ENGINE_DIR/node_modules/.bin"
 } > "$AGENT_ENV_FILE"
 cp "$AGENT_ENV_FILE" "$HOME/.config/video-skills/agent-env.sh" 2>/dev/null || true
 ok "global agent-env.sh generated at $(tilde "$AGENT_ENV_FILE") and ~/.config/video-skills/agent-env.sh"
-# The private Node only helps if agents' shells find it before an older system node (npx hyperframes needs 22+)
+# Put the pinned engine Node first on PATH for HyperFrames and project tools.
 if [ -d "$NODE_BIN" ]; then
   case "${SHELL:-}" in *zsh) RC="$HOME/.zshrc" ;; *) RC="$HOME/.bashrc" ;; esac
   RC_LINE="[ -d \"$NODE_BIN\" ] && export PATH=\"$NODE_BIN:\$PATH\"  # video-skills: Node.js 22 for the engine"

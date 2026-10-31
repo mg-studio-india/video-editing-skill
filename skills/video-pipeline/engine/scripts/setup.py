@@ -51,10 +51,27 @@ def check() -> dict:
         pillow = True
     except ImportError:
         pillow = False
+    try:
+        import cv2  # noqa: F401
+        opencv = True
+    except ImportError:
+        opencv = False
+    try:
+        import pypdf  # noqa: F401
+        pdf_text = True
+    except ImportError:
+        pdf_text = False
+    try:
+        import pypdfium2  # noqa: F401
+        pdf_preview = True
+    except ImportError:
+        pdf_preview = False
     ready = {
         "core": bool(ffmpeg and ffprobe),
         "transcript": bool(wbin and wmodel and caps.get("word_split", True)),
         "contact_sheets": pillow,
+        "pipeline_visual": pillow and opencv,
+        "pipeline_documents": pillow and pdf_text and pdf_preview,
         "urls": shutil.which("yt-dlp") is not None,
     }
     return {
@@ -65,6 +82,9 @@ def check() -> dict:
         "whisper_model": str(wmodel) if wmodel else None,
         "yt_dlp": shutil.which("yt-dlp"),
         "pillow": pillow,
+        "opencv": opencv,
+        "pypdf": pdf_text,
+        "pypdfium2": pdf_preview,
         "config_file": str(config.CONFIG_FILE) + (" (exists)" if config.CONFIG_FILE.is_file() else " (absent)"),
         "ready": ready,
     }
@@ -81,8 +101,10 @@ def fixes(status: dict) -> list[str]:
     if not status["whisper_model"]:
         out.append("large model missing:  mkdir -p ~/.cache/whisper.cpp && curl -L -o "
                    f"~/.cache/whisper.cpp/ggml-large-v3.bin {MODEL_URL}   (about 3 GB)")
-    if not status["pillow"]:
-        out.append("optional, contact sheets:  python3 -m pip install pillow")
+    if not status["pillow"] or not status["opencv"]:
+        out.append("pipeline visual dependencies missing: install the configured engine requirements with video-skills setup")
+    if not status["ready"]["pipeline_documents"]:
+        out.append("PDF guide/reference support missing: install the configured engine requirements with video-skills setup")
     if not status["yt_dlp"]:
         out.append("optional, URLs:  brew install yt-dlp")
     return out
@@ -92,7 +114,7 @@ ENV_TEMPLATE = """# watch skill config (environment variables override this file
 # Paths are auto-detected on macOS/Homebrew; uncomment only to override.
 #WATCH_WHISPER_CPP_BIN=/opt/homebrew/bin/whisper-cli
 #WATCH_WHISPER_MODEL=~/.cache/whisper.cpp/ggml-large-v3.bin
-#WATCH_WHISPER_LANG=auto
+#WATCH_WHISPER_LANG=en
 # Whisper tends to drop um/uh. A prompt containing them makes it keep them (useful for cut lists):
 #WATCH_WHISPER_PROMPT=Um, uh, you know, I mean, like.
 #WATCH_WHISPER_DTW=large.v3
@@ -132,7 +154,9 @@ def main() -> int:
     print(f"  {mark(r['core'])}  ffmpeg + ffprobe  {status['ffmpeg']['version'] or ''}")
     print(f"  {mark(bool(status['whisper_cli']['path']))}  whisper-cli       {status['whisper_cli']['path'] or ''}")
     print(f"  {mark(bool(status['whisper_model']))}  whisper model     {status['whisper_model'] or ''}")
-    print(f"  {mark(r['contact_sheets'])}  Pillow (contact sheets, optional)")
+    print(f"  {mark(r['contact_sheets'])}  Pillow (source contact sheets)")
+    print(f"  {mark(r['pipeline_visual'])}  OpenCV (caption-safe face measurement)")
+    print(f"  {mark(r['pipeline_documents'])}  pypdf + PDFium (brand/reference PDF text and visual sheets)")
     print(f"  {mark(r['urls'])}  yt-dlp (URL input, optional)")
     print(f"  config: {status['config_file']}")
     print(f"  transcript ready: {'yes' if r['transcript'] else 'NO (analysis still runs, without words)'}")

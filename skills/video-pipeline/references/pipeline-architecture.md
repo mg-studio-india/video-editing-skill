@@ -1,42 +1,39 @@
-# Pipeline Execution Architecture & Style Rule Checklist
+# Pipeline architecture
 
-From the 225-style catalog appendix: how a chosen style flows through the skills, and the rules every builder and
-reviewer enforces.
-
-
-How the styles and presets are processed and rendered through the engine:
+The user's project folder remains the boundary. All generated material is grouped in `.video-pipeline/`; only approved exports appear in `Exports/`.
 
 ```mermaid
 flowchart TD
-    RAW["Raw Footage (HDR/HLG or SDR)"] --> STD["Standard Ingest (SDR Rec.709 H.265 @ 60fps)"]
-    
-    subgraph P1 ["Phase 1: Ingest, Parallel Analysis & Matching (~20s)"]
-        STD --> WA["Audio Worker: 80Hz rumble cut + EBU R128 loudnorm + whisper.cpp ASR"]
-        STD --> WV["Visual Worker: Probe 60fps + 4 Keyframes + Dynamic Frame Color Correction"]
-        WA & WV --> VCA["video-cut-audit: Tight Paper Cut (paper-cut.py --tight)"]
-        VCA --> VRM["video-reference-match: Rank top 3 presets from 50 creator blueprints (match.py)"]
-    end
-    
-    subgraph P2 ["Phase 2: User Direction & Storyboard Gate"]
-        VRM --> ASK{"ask_question (Gate Q)<br>Did user specify preferences in prompt?"}
-        ASK -->|No| PROMPT["Prompt User: Select Preset, Multi-Layout & Proof Elements"]
-        ASK -->|Yes| VPS
-        PROMPT --> VPS["video-plan-storyboard (Gate S)<br>Generate STORYBOARD.md, grade-preview.jpg, Keyframes"]
-        VPS --> GATE_S{"Gate S: User Review & Approval"}
-    end
-    
-    subgraph P3 ["Phase 3: Assembly, Motion Scenes & Master Render (~50s)"]
-        GATE_S -->|Approved| AC["apply-cut.py (Tight Cut + Dynamic Grade in Rec.709)"]
-        AC --> P2T["Pass 2 Transcribe (Direct Word Sync on Conformed Cut)"]
-        P2T --> STG["stage.py (take-geometry + motion-graphics + sound-design + captions)<br>- Studio Mesh Canvas (No Black Backgrounds)<br>- Squircle PiP / Rounded Top Card<br>- Active HyperFrames Motion Scenes<br>- Vibrant Single-Row Captions<br>- Subtle SFX (-20dB)"]
-        STG --> RND["render.py & video-review-gate (60fps BT.709 Master, -14.4 LUFS, Programmatic QA)"]
-        RND --> DELIV["Deliverable: processed/<project>-v1.mp4<br>(Temp folders preview/, hyperframes/, audio_processing/ preserved)"]
-    end
+    ROOT["User-selected folder"] --> SRC["Selected source video"]
+    ROOT --> REF["Project references/ and brand guides"]
+    SRC --> INGEST["SDR standardization if needed"]
+    INGEST --> PAR["Parallel audio and visual analysis"]
+    PAR --> EV["Source evidence: timestamped frames, shots, transcript"]
+    REF --> REFA["Separate reference analysis"]
+    REF --> BRAND["Brand input snapshot"]
+    EV --> IDX["Indexed style candidates from source only"]
+    EV --> PLAN["User direction + footage-led storyboard"]
+    REFA --> PLAN
+    BRAND --> PLAN
+    IDX --> PLAN
+    PLAN --> CUT["Full source remains active; cut proposal is review-only"]
+    CUT --> GATE{"User approves plan and cut?"}
+    GATE -->|No| PLAN
+    GATE -->|Yes| VALID["Validate evidence IDs, times, cut ranges, shared compositions"]
+    VALID --> STAGE["Stage selected HyperFrames blocks and simple captions"]
+    STAGE --> RENDER["Render, then run two sequential audio-master passes"]
+    RENDER --> QA["Review final video, frames and audio"]
+    QA --> OUT["Exports/ final deliverable"]
 ```
 
-### Style Rule Checklist for Editors & Autonomous Agents:
-1. **Never use the same treatment or visual device twice in a row**: Alternate between speaker framing, graphic cards, full-frame cutaways, and split screens.
-2. **Respect the face**: Live-action speakers must never be covered by cards or headlines. Face sits anchored at ~38% canvas height in vertical reframing.
-3. **Contrast floor**: Text and key assets must achieve a minimum 3:1 contrast ratio against underlying footage (enforce dark backing pills or text stroke).
-4. **Phoneme-level lock**: All animated reveals, card lists, and caption highlights must align to speech phonemes within a ±40ms tolerance window.
-5. **Acoustic priority**: Voice intelligibility always takes precedence. Background music must duck cleanly by 12-18dB during vocal activity.
+## Editorial constraints
+
+- No fixed beat count, hook formula, product quarters, CTA, generic card copy, or automatic style selection.
+- Each designed beat cites source evidence. If footage cannot support a graphic, leave it out.
+- A reference influences visual grammar only; the source establishes what happens, and the brand guide constrains execution.
+- Product and silent footage stays intact unless the user approves specific cut ranges.
+- Use local, validated HyperFrames assets only when they serve a source-grounded beat. Missing local dependencies fail clearly; no unpinned package, CDN, Swift package, or alternate framework fallback.
+- Keep reusable tools and the full HyperFrames catalog in the user's shared engine. Copy only the blocks selected for this edit into its hidden workspace, because HyperFrames needs bundled assets inside the project root. FFmpeg stays a system tool on `PATH`, and Whisper's model stays in the shared user cache.
+- Python uses argument-array subprocess calls for media tools and pipeline stages. That is the process boundary, not shell-command generation.
+- When the storyboard has no camera track, HyperFrames adds a restrained centered push/pull up to 1.022×; an authored camera track takes precedence.
+- Strong dereverb is applied before transcription and in both final audio-master passes. Pass two consumes pass one's cleaned audio; retain per-pass measurements and do not claim complete echo cancellation.

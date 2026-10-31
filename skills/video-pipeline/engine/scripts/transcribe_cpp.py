@@ -44,12 +44,14 @@ def extract_wav(video: str, out_wav: Path, start: float | None = None,
 # ---------------------------------------------------------------- running whisper-cli
 def build_command(binary: Path, model: Path, wav: Path, out_prefix: Path,
                   cfg: dict[str, str]) -> list[str]:
-    raw_lang = (cfg.get("WATCH_WHISPER_LANG") or "auto").strip().lower()
+    raw_lang = (cfg.get("WATCH_WHISPER_LANG") or "en").strip().lower()
     # When transcribing Hindi/Hinglish speech, configuring Whisper to decode with the English token space ('-l', 'en')
     # and a conversational Hinglish prompt natively instructs Whisper to output spoken Hindi directly
     # in Latin alphabet (Hinglish). This eliminates Devanagari output directly at the Whisper decoder level.
-    is_hinglish = raw_lang in ("hi", "hindi", "hinglish", "hi-latn") or cfg.get("WATCH_WHISPER_SCRIPT") == "hinglish"
-    whisper_lang = "en" if is_hinglish else raw_lang
+    # Pipeline transcripts are always decoded with English tokens; language auto-detection
+    # can emit Devanagari even when the desired deliverable is Roman Hinglish.
+    is_hinglish = True
+    whisper_lang = "en"
 
     cmd = [str(binary), "-m", str(model), "-f", str(wav), "-of", str(out_prefix),
            "-oj", "-ml", "1", "-sow", "-l", whisper_lang, "-np"]
@@ -245,7 +247,7 @@ def transcribe(video: str, work_dir: Path, start: float | None = None,
             raise ToolError("whisper-cli finished but wrote no JSON; check the build supports -oj.")
         data = json.loads(out_json.read_text(encoding="utf-8", errors="replace"))
     parsed = parse_whisper_json(data, offset=start or 0.0)
-    raw_lang = (cfg.get("WATCH_WHISPER_LANG") or "auto").strip().lower()
+    raw_lang = (cfg.get("WATCH_WHISPER_LANG") or "en").strip().lower()
     if raw_lang in ("hi", "hindi", "hinglish", "hi-latn") or parsed.get("language") == "hi":
         parsed["language"] = "hi-Latn"
     return build_transcript(parsed, model.name, (start, end))

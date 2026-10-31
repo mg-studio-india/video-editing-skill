@@ -48,13 +48,22 @@ def find_media_use() -> str | None:
     return None
 
 
+def local_hyperframes() -> str | None:
+    name = "hyperframes.cmd" if os.name == "nt" else "hyperframes"
+    path = runtime.find_engine_dir() / "node_modules" / ".bin" / name
+    return str(path) if path.is_file() else None
+
+
 def signed_in() -> tuple[bool, str]:
     if os.environ.get("HEYGEN_API_KEY"):
         return True, "HEYGEN_API_KEY is set"
+    binary = local_hyperframes()
+    if not binary:
+        return False, "local HyperFrames CLI is not installed"
     try:
-        r = subprocess.run(["npx", "hyperframes", "auth", "status"], capture_output=True, text=True, timeout=60)
+        r = subprocess.run([binary, "auth", "status"], capture_output=True, text=True, timeout=60)
     except (OSError, subprocess.TimeoutExpired) as e:
-        return False, "could not run `npx hyperframes auth status`: %s" % e
+        return False, "could not run the local HyperFrames auth check: %s" % e
     text = (r.stdout + r.stderr).strip()
     return ("not signed in" not in text.lower() and r.returncode == 0), text.splitlines()[0] if text else "unknown"
 
@@ -173,7 +182,7 @@ def main() -> None:
     pal = find_sound_palette()
     ok, why = signed_in()
     if a.check:
-        print("media-use: %s" % (mu or "NOT FOUND: npx hyperframes skills update media-use"))
+        print("media-use: %s" % (mu or "NOT FOUND: install with the supported video-skills setup"))
         print("sound-palette: %s" % (pal or "NOT FOUND"))
         print("HeyGen: %s (%s)" % ("signed in" if ok else "not signed in", why))
         return
@@ -207,15 +216,15 @@ def main() -> None:
         return
 
     if not mu:
-        sys.exit("media-use is not installed: npx hyperframes skills update media-use")
+        sys.exit("media-use is not installed; use the supported video-skills setup")
     if not ok and not a.allow_bundled:
         if resolved_sfx:
             json.dump(plan, open(a.plan, "w"), indent=1, ensure_ascii=False)
             unmatched_names = [s.get("name") or s.get("id") for s in unmatched_sfx]
             sys.exit("HeyGen is not signed in (%s).\n%d effect(s) were resolved from local sound-palette, but %d were unmatched: %s.\n"
-                     "Sign in with `npx hyperframes auth login` (or set HEYGEN_API_KEY), or name unmatched sounds from the sound-palette." % (
+                     "Sign in with the configured local HyperFrames CLI (or set HEYGEN_API_KEY), or name unmatched sounds from the sound-palette." % (
                          why, len(resolved_sfx), len(unmatched_names), ", ".join(unmatched_names)))
-        sys.exit("HeyGen is not signed in (%s).\nSign in with `npx hyperframes auth login` (or set HEYGEN_API_KEY), then run "
+        sys.exit("HeyGen is not signed in (%s).\nSign in with the configured local HyperFrames CLI (or set HEYGEN_API_KEY), then run "
                  "again. Without HeyGen, music is skipped and effects can only come from local sound-palette or HyperFrames' bundled files "
                  "(--allow-bundled, with the user's agreement)." % why)
 

@@ -17,7 +17,7 @@ video-pipeline itself (multi-clip / multi-camera intake).
 | `assemble.py` | multi-skill tool | motion-graphics, plan-storyboard, render | — | — | put finished segments in order and deliver one 4K master. Replaces iMovie. |
 | `audio-chain.py` | multi-skill tool | audio, pipeline, render | render.py, spec-resolver.py | yes | voice processing in the right order, with ffmpeg only, measured before and after. |
 | `broll-conform.py` | multi-skill tool | format, generate, omni-restyle | generate.py | yes | turn one AI b-roll result (a generated clip, or a still) into a cutaway the composer can use. |
-| `parallel_pipeline.py` | multi-skill tool | pipeline, reference-match, cut-audit, plan-storyboard, render | — | yes | High-speed parallel video editing pipeline: parallel ingest, whisper.cpp ASR, dynamic color correction, preset matching, and master render. |
+| `parallel_pipeline.py` | pipeline entry point | pipeline, reference-match, plan-storyboard, render | pipeline_synthesis.py, apply-cut.py, stage.py, render.py | — | Analyze source/reference/brand evidence, preserve the full cut pending approval, validate the plan gate, then assemble only the approved storyboard with local HyperFrames assets. |
 | `install-compositions.mjs` | multi-skill tool | format, pipeline | install.sh | yes | High-speed concurrent installer for all 447 HyperFrames catalog compositions into engine sandbox. |
 | `captions.py` | multi-skill tool | captions, pipeline | compose.py, stage.py, treatments.py | yes | word-exact captions from the flat-cut transcript, two ways. |
 | `clean-temp.py` | multi-skill tool | captions, pipeline, review-gate | — | — | Safely removes transient scratch files, intermediate audio stems, |
@@ -38,7 +38,7 @@ video-pipeline itself (multi-clip / multi-camera intake).
 | `jump-frames.py` | skill tool | take-geometry | resolve-anchors.py | yes | the exact frame where each jump cut happens, measured from the picture. |
 | `setup.py` | skill tool | transcribe | transcribe_cpp.py, watch.py | — | Preflight for the watch skill. Never installs anything and never touches the network. |
 | `sfx-prep.py` | skill tool | sound-design | audiocraft-gen.py, heygen-sound.py | yes | make a sound effect land on its frame and sit at a known level. |
-| `spec-resolver.py` | skill tool | pipeline | — | yes | Context-driven creative dimension extractor and missing-step resolver. |
+| `spec-resolver.py` | shared legacy helper | — | — | — | Older prompt-dimension resolver; not called by the project-scoped video-pipeline flow. Use the pipeline questionnaire and approved project files for direction. |
 | `stutter-scan.py` | skill tool | pipeline | patch-cut.py | — | second opinion on the paper cut, using a mechanical mistake finder. |
 | `transcribe_cpp.py` | skill tool | transcribe | editplan.py, transcribe.py, watch.py | yes | Word timing recipe: `-ml 1 -sow` makes whisper.cpp emit one entry per word, |
 | `treatments.py` | skill tool | format | captions.py, compose.py, stage.py | yes | Each builder takes a beat (resolved times) and a context, and returns (html, css, js_lines, placement): |

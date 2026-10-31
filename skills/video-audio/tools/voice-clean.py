@@ -14,15 +14,14 @@ import soundfile as sf
 from nara_wpe.utils import istft, stft
 from nara_wpe.wpe import wpe
 
-def find_deep_filter() -> Path:
+def find_deep_filter() -> Path | None:
     import os
     for c in (os.environ.get("VIDEO_DEEPFILTER"), os.path.expanduser("~/.config/video-skills/bin/deep-filter"),
               os.path.expanduser("~/.config/video-skills/bin/deep-filter.exe"),
               str(Path(__file__).resolve().parent / "deep-filter")):
         if c and os.path.isfile(c) and os.access(c, os.X_OK):
             return Path(c)
-    raise SystemExit("deep-filter not found: run `video-skills setup` (it downloads DeepFilterNet into ~/.config/video-skills/bin) "
-                     "or set VIDEO_DEEPFILTER")
+    return None
 
 
 DF = None
@@ -44,6 +43,7 @@ def main() -> None:
     ap.add_argument("--atten", type=float, default=32.0, help="DeepFilterNet attenuation limit dB")
     ap.add_argument("--rt60", type=float, default=0.5, help="late-reverb model RT60 (s)")
     ap.add_argument("--floor-db", type=float, default=-10.0, help="late-reverb gain floor (dB)")
+    ap.add_argument("--no-deep-filter", action="store_true", help="run WPE and late-reverb suppression without neural denoising")
     ap.add_argument("--keep", help="directory to keep the intermediate WAVs in")
     ap.add_argument("--reuse", action="store_true", help="reuse derev.wav in --keep (skip WPE)")
     a = ap.parse_args()
@@ -62,11 +62,16 @@ def main() -> None:
     lr = tmp / "late.wav"
     run([sys.executable, str(Path(__file__).resolve().parent / "late-reverb.py"), str(derev), str(lr),
          "--rt60", str(a.rt60), "--floor-db", str(a.floor_db)])
-    dfo = tmp / "df"
-    if dfo.exists():
-        shutil.rmtree(dfo)
-    run([str(find_deep_filter()), "-D", "-a", str(a.atten), "-o", str(dfo), str(lr)])
-    den = dfo / "late.wav"
+    deep_filter = None if a.no_deep_filter else find_deep_filter()
+    if deep_filter:
+        dfo = tmp / "df"
+        if dfo.exists():
+            shutil.rmtree(dfo)
+        run([str(deep_filter), "-D", "-a", str(a.atten), "-o", str(dfo), str(lr)])
+        den = dfo / "late.wav"
+    else:
+        print("warning: DeepFilterNet is not installed; WPE and late-reverb suppression will still run, with no neural denoise.")
+        den = lr
     finish(a, den)
 
 

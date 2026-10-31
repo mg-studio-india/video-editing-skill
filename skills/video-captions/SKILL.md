@@ -16,7 +16,7 @@ W="videos/<project>"
 
 > [!IMPORTANT]
 > **Virtual Environment (STRICT)**: ALWAYS run caption tools using the project's virtual environment (`"$PROJECT/.venv/bin/python3"`). Never invoke system python.
-> **Zero Devanagari Rule (STRICT)**: Captions must NEVER render in Devanagari script. All Hindi and Hinglish speech must ALWAYS be rendered in Roman Hinglish script. Standard display fonts (Poppins, Inter, Anton) are used.
+> **Zero Devanagari Rule (STRICT)**: Captions must NEVER render in Devanagari script. All Hindi and Hinglish speech must ALWAYS be rendered in Roman Hinglish script. The pipeline's default caption face is locally bundled Google Sans.
 
 
 ---
@@ -45,11 +45,12 @@ Phrase grouping is **calculated dynamically from speech velocity (WPM), acoustic
 Typography and coloring are **strictly selected from verified modern typefaces and high-contrast color tokens**:
 
 - **Approved Font Families Catalog:**
-  Captions and kinetic titles must strictly pair from the verified 5 typefaces:
+  Captions and kinetic titles should use a verified, brand-compatible family:
+  - **`Google Sans`**: Pipeline default for simple phrase captions; use bold weight 700.
   - **`DM Sans`**: Modern, friendly, high-legibility geometric sans; exceptional for tech, creator, and lifestyle.
   - **`Inter`**: Highly articulate grotesque sans designed for screens; perfect for finance, engineering, and documentary authority.
   - **`Poppins`**: Wide geometric display sans; punchy, authoritative, and viral-tested for high-energy reels.
-  - **`Google Sans` / `Open Sans`**: Clean, human-centered product typography; ideal for walkthroughs and education.
+  - **`Open Sans`**: Clean, human-centered product typography; ideal for walkthroughs and education.
   - **`Roboto`**: Balanced industrial sans; neutral, crystal-clear across all screen densities.
 
 - **Systematic Typographical Weight Hierarchy:**
@@ -73,8 +74,9 @@ Typography and coloring are **strictly selected from verified modern typefaces a
 
 ## 3. Kinetic Caption Presets
 
-1. **Natural Clean Phrase (Default Standard):**
-   - Multi-word phrase fades in smoothly, secondary words at 70% opacity white, active word highlights in vibrant brand accent with clean, crisp, unblurred edges (zero shadow).
+1. **Natural Clean Phrase (Pipeline Default):**
+   - Keep transcript-led phrase grouping and a restrained entrance. Use Google Sans at weight 700, about 60–80 px on a 1080-wide canvas, white text, and the supplied brand accent for the currently spoken word.
+   - Give the phrase a single subtle, translucent backing with comfortable horizontal and vertical padding. Keep it clean: no text shadow, box shadow, stroke, glow, or per-word badge by default.
 2. **Hormozi Pop & Badge:**
    - Punch words wrapped in a flat, crisp high-contrast pill backdrop (`background: #ffd700; color: #000; border-radius: 14px; transform: rotate(-2deg); box-shadow: none;`).
    - Micro scale-pop entrance: scales from `0.90` to `1.06` to `1.00` in 0.16s.
@@ -104,9 +106,9 @@ Caption positioning is **calculated dynamically from raw video frames and speake
 
 ---
 
-## 5. Kinetic Caption Standard (`weight-shift` or `caption-highlight` with Punch Words)
+## 5. Optional Kinetic Caption Treatments
 
-The default caption style is **strictly either `weight-shift` or `caption-highlight` with punch word(s) emphasis**:
+Use these only when the user, approved direction, or brand guide selects a kinetic treatment. They do not replace the simple phrase default above.
 
 | Video Pace & Energy | Default Kinetic Style | Typographical & Motion Behavior |
 |---|---|---|
@@ -122,7 +124,7 @@ The editor proactively orchestrates this standard automatically, with zero user 
 
 **Mandatory Pre-Render Review:** Before rendering the master video:
 1. Present an explicit **typography and color review**:
-   - **Font Family Selection:** Verified pairing from the catalog (`DM Sans`, `Inter`, `Poppins`, `Google Sans`, `Roboto`).
+   - **Font Family Selection:** Verified pairing from the catalog (`Google Sans`, `DM Sans`, `Inter`, `Poppins`, `Open Sans`, `Roboto`).
    - **Weight Distribution:** Inactive text weight (400/500), active word weight (600/700), punch word weight (800/900).
    - **Font-Coloring Hierarchy:** Inactive text color, active highlight color, badge pill background & text colors.
 2. Present a **live visual sample phrase** demonstrating:

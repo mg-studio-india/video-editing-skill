@@ -30,47 +30,32 @@ def find_engine_dir() -> Path:
     if env_dir and Path(env_dir).is_dir():
         return Path(env_dir)
 
-    # 2. Project-level isolated sandbox (.engine/)
+    # 2. Prefer the shared user engine. A leftover .engine in one project must not
+    # silently make every pipeline command use that project's duplicate tools.
+    global_dir = Path.home() / ".video-skills" / "engine"
+    if global_dir.is_dir():
+        return global_dir
+
+    # 3. Standard XDG / config engine path (~/.config/video-skills/engine)
+    config_engine = Path.home() / ".config" / "video-skills" / "engine"
+    if config_engine.is_dir():
+        return config_engine
+
+    # 4. Preserve explicitly created, older project sandboxes only when no shared
+    # installation exists. New installs use the shared engine by default.
     cwd = Path.cwd()
     for parent in [cwd] + list(cwd.parents):
         cand = parent / ".engine"
         if cand.is_dir():
             return cand
 
-    # 3. Global user engine sandbox (~/.video-skills/engine)
-    global_dir = Path.home() / ".video-skills" / "engine"
-    if global_dir.is_dir():
-        return global_dir
-
-    # 4. Standard XDG / config engine path (~/.config/video-skills/engine)
-    config_engine = Path.home() / ".config" / "video-skills" / "engine"
-    if config_engine.is_dir():
-        return config_engine
-
     # 5. Fallback default
     return Path.home() / ".video-skills" / "engine"
 
 
 def find_project_venv() -> Path | None:
-    # 1. Active virtual environment from VIRTUAL_ENV env var
-    venv_env = os.environ.get("VIRTUAL_ENV")
-    if venv_env and Path(venv_env).is_dir():
-        if _find_python_in_venv(Path(venv_env)):
-            return Path(venv_env)
-
-    # 2. Check if current sys.prefix is a venv
-    if sys.prefix != sys.base_prefix:
-        if _find_python_in_venv(Path(sys.prefix)):
-            return Path(sys.prefix)
-
-    # 3. Project Isolated Sandbox: .engine/.venv (CWD and parents)
-    cwd = Path.cwd()
-    for parent in [cwd] + list(cwd.parents):
-        cand = parent / ".engine" / ".venv"
-        if cand.is_dir() and _find_python_in_venv(cand):
-            return cand
-
-    # 4. Global Engine Sandbox: ~/.video-skills/engine/.venv or ~/.config/video-skills/engine/.venv
+    # 1. Prefer the configured shared engine, even if the agent shell happens to
+    # have activated a separate project virtual environment.
     engine_venv = find_engine_dir() / ".venv"
     if engine_venv.is_dir() and _find_python_in_venv(engine_venv):
         return engine_venv
@@ -84,13 +69,28 @@ def find_project_venv() -> Path | None:
         if g.is_dir() and _find_python_in_venv(g):
             return g
 
-    # 5. Check CWD and parent directories for .venv
+    # 2. Preserve a caller-selected venv only when no shared video engine exists.
+    venv_env = os.environ.get("VIRTUAL_ENV")
+    if venv_env and Path(venv_env).is_dir() and _find_python_in_venv(Path(venv_env)):
+        return Path(venv_env)
+    if sys.prefix != sys.base_prefix and _find_python_in_venv(Path(sys.prefix)):
+        return Path(sys.prefix)
+
+    # 3. Project Isolated Sandbox: .engine/.venv (CWD and parents).
+    # Kept as a compatibility path for users who deliberately installed one.
+    cwd = Path.cwd()
+    for parent in [cwd] + list(cwd.parents):
+        cand = parent / ".engine" / ".venv"
+        if cand.is_dir() and _find_python_in_venv(cand):
+            return cand
+
+    # 4. Check CWD and parent directories for .venv
     for parent in [cwd] + list(cwd.parents):
         cand = parent / ".venv"
         if cand.is_dir() and _find_python_in_venv(cand):
             return cand
 
-    # 6. Check relative to this file's hierarchy
+    # 5. Check relative to this file's hierarchy
     here = Path(__file__).resolve()
     for parent in here.parents:
         cand = parent / ".venv"
@@ -103,14 +103,13 @@ def find_project_venv() -> Path | None:
         if sib.is_dir() and _find_python_in_venv(sib):
             return sib
 
-    # 7. Check sibling and parent video-editing directories if any
+    # 6. Check sibling and parent video-editing directories if any
     for parent in here.parents:
         sib = parent / ".venv"
         if sib.is_dir() and _find_python_in_venv(sib):
             return sib
 
     return None
-
 
 
 def get_project_venv_python() -> str:

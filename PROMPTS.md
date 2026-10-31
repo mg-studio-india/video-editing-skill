@@ -1,102 +1,131 @@
-# The Prompts to Type
+# Creative prompts for video edits
 
-Copy them and change the parts in [brackets]. Plain words work at every step; these are just the shapes that get the
-right skill moving first time. Start every new video in a new thread.
+Choose one prompt, replace the bracketed details, and start a fresh conversation for each project. Give the agent the folder that should own the edit. Put source footage in that folder's `raw/`, visual references in `references/`, and brand guides and assets in `brand/`.
 
-## Setup
+Each prompt is a creative brief, not a prewritten storyboard. The video pipeline should inspect the footage, references, and brand materials; use the actual project evidence to shape the edit; and follow its review and approval gates. If no reference is supplied, it should offer a few relevant directions from the bundled style index and wait for your choice. References guide visual language, while the brand guide sets requirements. Keep the two separate from facts about the footage.
 
-> Run the video-pipeline setup check and fix anything it finds.
+The pipeline should ask one concise batch of only unanswered decisions: what to keep or cut, platform and aspect ratio, creative direction, framing, captions, and sound. The current simple phrase captions and strong dereverb are defaults. Assembly waits for your approval. Project work stays in `.video-pipeline/`; verified exports go to `Exports/`.
 
-Then start a new thread.
+## 1. Visual-first product showcase
 
-## Start an Edit (Context & Format First)
+For product footage with little or no dialogue. This prompt directly protects visual-only product footage from being cut just because it is silent.
 
-**Context-driven edit (Recommended - agent analyzes transcript, proposes formats, and discusses every step):**
+```text
+Edit the project `[PROJECT FOLDER]` as a visual-first product showcase using `[SOURCE CLIP OR raw/]` for `[PLATFORM / ASPECT, or ask me]`.
 
-> Watch and transcribe videos/[project]/raw/[clip].mp4. Analyze the content context, propose 3-4 suitable video formats from the 225-Style Taxonomy, and let's discuss visuals, cuts, pacing, b-roll, color grading, and captions before storyboarding.
+Inspect the full sequence, including quiet and silent sections, and build the edit around the product actions and details that are actually visible. Preserve the product demonstration and its meaningful sequence unless I approve specific removals. No dialogue is not a reason to delete a shot. Do not invent product features, benefits, claims, specs, testimonials, labels, or missing b-roll. Use supplied references only for visual direction and follow the brand guide. Keep negative space clean; use a local HyperFrames composition only if it serves a real, approved moment. Show me the evidence-based plan and proposed cuts, then wait for approval before assembly.
+```
 
-**Suggesting additional content to record:**
+## 2. Product launch with presenter or voiceover
 
-> What additional b-roll or demonstrations should I record to make videos/[project] significantly better?
+For a launch piece where speech and product footage both matter.
 
-**Several clips or multi-take footage:**
+```text
+Create a `[LENGTH, if known]` product launch edit in `[PROJECT FOLDER]` from `[SOURCE CLIP(S)]` for `[PLATFORM / ASPECT]`.
 
-> Analyze the clips in videos/[project]/raw/. Propose the best narrative structure, suggest any missing b-roll I should film, and let's align on the video format.
+Let the presenter's verified words and the actual product footage determine the structure. Pair a spoken point with a product shot only when that shot genuinely illustrates it; do not imply an unshown capability or result. Keep useful product detail shots even when no one is speaking. Inspect the brand guide and references before proposing color, type, pacing, or motion. Do not force a hook, feature list, verdict, or CTA. Ask me about missing creative and technical choices together, then show a source-linked plan and wait for approval.
+```
 
-**Face camera plus a screen recording:**
+## 3. Talking-head explainer or lesson
 
-> Edit videos/[project]/raw/[face].mp4 with the screen recording [screen].mov. Use split-screen when I'm demoing, full screen when the screen matters.
+For a single-speaker educational video, either full-length or as a short excerpt.
 
-**Shorts from a longer video:**
+```text
+Edit `[SOURCE CLIP]` in `[PROJECT FOLDER]` into a `[FULL EXPLAINER / SHORT EXCERPT]` for `[PLATFORM / ASPECT]`.
 
-> Find the best 3 to 5 Shorts in videos/[project] and show me the list before cutting anything.
+Preserve the speaker's intended meaning and enough context to understand each point. Use verified transcript wording; do not rewrite speech into claims, add unsupported statistics, or impose a fixed hook / numbered-points / verdict structure. Tighten only false starts and pauses that harm the flow, preserving natural emphasis and breaths. Keep the speaker as the visual focus. Add an overlay only when it clarifies a specific spoken idea and is supported by the footage or supplied materials. Follow the brand and any selected reference; keep current simple phrase captions unless I choose otherwise. Show proposed cuts before assembly.
+```
 
----
+## 4. Interview or podcast segment
 
-## At the Verification Gates
+For conversations where question, answer, and listener reaction depend on one another.
 
-The edit stops at key verification points and waits for your confirmation.
+```text
+Shape `[SOURCE CLIP(S)]` in `[PROJECT FOLDER]` into a `[LENGTH / PLATFORM / ASPECT]` interview or podcast edit.
 
-**Gate 0: Research & Reference Direction (`video-researcher`)**
-Review topic facts, logos, and market benchmarks:
+Build around the strongest complete exchange supported by the recording. Preserve enough of each question and answer to keep its meaning; do not splice separate statements into a new claim or remove context to manufacture conflict. Use reaction shots and alternate angles only when they are present and belong at that moment. Keep conversational pauses when they carry emotion or turn-taking. Avoid decorative cards and invented speaker labels. Review the references and brand guide before choosing the visual treatment, then show me the selected passage and proposed cut for approval.
+```
 
-> Approved. The Stacked Split-Screen layout and electric cyber palette look great. Use the second reference reel's hook style.
-> Change the logo for [tool]: use their dark mode icon. Focus the hook on [specific insight].
+## 5. Tutorial or screen recording
 
-**Gate 0.5: Pre-Storyboarding Collaborative Alignment**
-Discuss all dimensions before locking the storyboard:
+For software demos, walkthroughs, and how-to videos where screen legibility is central.
 
-> Let's go with the Clean Authority Talking-Head format. Keep the headroom clean (no floating boxes over my head). Let's use 1.8s cuts, smooth light leak transitions, and the Commercial Clean color grade. I'll record a 5-second b-roll clip of the app to insert at 0:20.
+```text
+Turn `[SCREEN RECORDING AND OPTIONAL CAMERA CLIP]` in `[PROJECT FOLDER]` into a `[TUTORIAL / WALKTHROUGH]` for `[PLATFORM / ASPECT]`.
 
-**Gate 1: Storyboard & Technical Matrix (`video-plan-storyboard`)**
-Review the hook, visual scenes, and scene order:
+Keep the real interface, cursor actions, and step order legible. Base any callout on text or controls that are actually visible, and use the narration only for instructions that are actually spoken. Never fabricate interface states, results, values, or steps. Crop or zoom only when it improves readability without hiding context; use a split view only if both supplied views help explain the same moment. Preserve the brand's visual rules, keep the treatment restrained, and show me the proposed structure and any reframing before assembly.
+```
 
-> Approved. Change one thing: replace the card list at "[phrase]" with a full-frame b-roll cutaway.
-> Make the hook punchier: cut directly to the claim at "[phrase]".
+## 6. Mini-documentary or founder profile
 
-**Gate 2: Flat Cut & Color Grade (`video-cut-audit` & `grade.py`)**
-Inspect cut pacing and choose the color grade:
+For an observational, personal, or documentary-style story.
 
-> Show me the color grading preview comparison sheet for this video.
-> Use the Commercial Clean color grade. The cuts feel great; keep the 200ms breath after "[phrase]".
+```text
+Edit `[SOURCE CLIPS]` in `[PROJECT FOLDER]` as a `[LENGTH]` mini-documentary about `[SUBJECT, if known]` for `[PLATFORM / ASPECT]`.
 
-**Gate 3: Theme, Typography & Surface Palette (`video-style`)**
+Find the narrative in what the footage and verified speech actually establish. Respect chronology when it matters; do not invent a turning point, motivation, stakes, or resolution. Use supplied archival or supporting footage only for what it shows, and distinguish it from the interview or present-day footage. Let meaningful pauses and visual moments breathe. Use references for visual grammar and the brand guide for constraints, without borrowing their claims or story structure. Present the evidence and proposed sequence before cutting.
+```
 
-> The Poppins Black + Syne pairing looks sharp. Make the accent color emerald green (#10B981) and use frosted glass cards in the lower third.
+## 7. Before-and-after or comparison demo
 
-**Gate 4: Caption Sample (`video-captions`)**
+Use only when the source actually contains both states or both items being compared.
 
-> Captions look good. Keep the natural phrase flow mode with smooth active word highlighting. No single orphan words.
+```text
+Make a `[PLATFORM / ASPECT]` comparison edit from `[SOURCE CLIP(S)]` in `[PROJECT FOLDER]`, comparing `[ITEMS OR STATES, if established by the source]`.
 
-**Gate 5: Final Review & Master (`video-review-gate`)**
+First verify that both sides of the comparison are present and identifiable in the footage or supplied materials. Keep the comparison fair: align like with like where possible, preserve relevant context, and do not invent measurements, improvements, causes, or a winner. If the evidence does not support a clear comparison, tell me what is missing and propose a footage-led edit instead. Use split-screen, labels, or a local HyperFrames composition only if they make the actual comparison easier to understand. Show me the evidence and plan for approval.
+```
 
-> At 0:14 the caption covers my chin. At 0:31 the cards come in late. The music is too loud after 0:50.
-> Everything looks clean and polished. Deliver the final master!
+## 8. Social cutdown from a longer video
 
----
+For selecting a self-contained passage from a long source before reframing it for social.
 
-## Color Grading & Visuals
+```text
+Find a `[DURATION]` cutdown in `[SOURCE VIDEO]` inside `[PROJECT FOLDER]` for `[PLATFORM / ASPECT]`.
 
-**Preview color grades:**
+Review the full source and suggest up to `[NUMBER]` self-contained passages with source timecodes, a short description of what each passage says or shows, and any context that would be lost. Do not cut yet. After I choose, preserve the chosen passage's meaning and continuity; do not stitch distant phrases into a new claim. Check every proposed crop against the actual frames so faces, hands, products, and important screen text remain visible. Keep current simple phrase captions unless I request another treatment. Wait for my selection and approval before assembly.
+```
 
-> Run grade.py preview on videos/[project] and show me the comparison contact sheet.
+## 9. Silent or natural-sound montage
 
-**Apply specific grade:**
+For visual sequences where speech is absent or should not drive the edit.
 
-> Apply the Cinematic Warm color grade with +10% contrast.
+```text
+Create a `[LENGTH / PLATFORM / ASPECT]` visual montage from `[SOURCE CLIP(S)]` in `[PROJECT FOLDER]`.
 
-**HyperFrames Catalog components:**
+Use the actual images, movement, and changes in the source to find the rhythm. Preserve product demonstrations and other important visual actions even when they have no dialogue. Do not add voiceover, explanatory text, or a narrative the footage cannot support. Keep useful original sound; ask before adding supplied or licensed music or effects. Let a shot hold when its detail needs time, and avoid dividing the runtime into arbitrary equal sections. Show me the selected source moments and proposed order before assembly.
+```
 
-> Search HyperFrames catalog for animated metric counters and feature pill cards for videos/[project].
+## 10. Reference-led brand film
 
----
+For an edit where the user supplies an example video, image, or PDF brand guide.
 
-## Make it Learn
+```text
+Create a `[FORMAT / LENGTH / PLATFORM / ASPECT]` edit in `[PROJECT FOLDER]` from `[SOURCE CLIP(S)]`, using `[REFERENCE FILES]` for visual direction and the supplied brand guide for brand rules.
 
-After every round of notes that should apply to future videos:
+Analyze the source and each reference separately. Describe the reference's usable visual language—such as pacing, framing, typography, color, or motion—then adapt only the parts that fit the actual footage and brand. Do not transfer reference copy, products, claims, logos, story beats, or layouts automatically. Make the brand guide's requirements and exclusions explicit in the proposal. Select local HyperFrames assets only when their purpose fits an approved source moment. Show the references, source evidence, and proposed treatment together; wait for my approval before assembly.
+```
 
-> Save this to the skill.
+## Useful follow-up notes
 
-Or be specific:
+Use these after reviewing a plan or preview:
 
-> Save this to the skill: never place floating checklist cards over the speaker's forehead; keep all cards in the lower third.
+```text
+Keep `[time range / action]`; it is essential to the product demonstration. Remove only `[specific range]`.
+```
+
+```text
+The crop at `[timecode]` hides `[face / hand / product detail / screen text]`. Preserve the full frame there and show me a revised preview.
+```
+
+```text
+Keep the current simple phrase captions. Move them clear of `[specific visible detail]`; do not add other titles or cards.
+```
+
+```text
+Use the selected reference for `[specific visual quality]` only. Keep the source's actual story and the brand guide's requirements.
+```
+
+```text
+Keep strong dereverb, but compare the processed audio with the original around `[timecode]`. Use the cleaner-sounding version if the processing damages a word ending.
+```

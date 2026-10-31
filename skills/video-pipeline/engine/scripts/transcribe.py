@@ -65,7 +65,7 @@ def main() -> None:
     ap.add_argument("media")
     ap.add_argument("--out", required=True, help="transcript.json to write")
     ap.add_argument("--window", type=float, default=0.0, help="window length in seconds (0 = one pass)")
-    ap.add_argument("--lang", help="force a language code (en, hi, ...); default from config or auto")
+    ap.add_argument("--lang", choices=["en"], default="en", help="pipeline transcription is fixed to English decoding for Roman-script output")
     ap.add_argument("--prompt", help="initial prompt: names, jargon (fillers prompt is added unless --no-fillers)")
     ap.add_argument("--no-fillers", action="store_true", help="do not ask whisper to keep um/uh")
     ap.add_argument("--fix", help="corrections.json to apply (default: corrections.json next to --out, when present)")
@@ -94,9 +94,8 @@ def main() -> None:
     if a.lang:
         cfg["WATCH_WHISPER_LANG"] = a.lang
     raw_lang = (cfg.get("WATCH_WHISPER_LANG") or "").strip().lower()
-    is_hi = raw_lang in ("hi", "hindi", "hinglish", "hi-latn")
-    if is_hi:
-        cfg["WATCH_WHISPER_LANG"] = "hi"
+    is_hi = False
+    cfg["WATCH_WHISPER_LANG"] = "en"
     prompt = a.prompt or cfg.get("WATCH_WHISPER_PROMPT") or ""
     names = [v for v in dict.fromkeys(corrections.values()) if v.lower() not in prompt.lower()][:20]
     if names:                                  # the correct spellings as hints, so whisper gets them right more often

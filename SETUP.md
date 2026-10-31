@@ -26,7 +26,7 @@ and points you to https://brew.sh: install that, open a new terminal, and run it
 |---|---|
 | 1. System tools | `node` (22+), `ffmpeg`, `whisper-cpp` via Homebrew |
 | 2. Whisper model | `ggml-large-v3.bin` (~3 GB) in `~/.cache/whisper.cpp`, shared by all projects |
-| 3. Python | `./.venv` with numpy, Pillow, OpenCV 4, auto-editor, google-genai |
+| 3. Python | `./.venv` with numpy, Pillow, OpenCV 4, pypdf/PDFium, auto-editor, google-genai |
 | 4. Skills and folders | the 19 skills (`video-*`, with business-reels-style integrated into `video-style`) in `~/.agents/skills/`, shared by every project and agent, linked into `~/.claude/skills/` when Claude Code is installed and into any `--link` folders; `./videos/`, `./videos/_shared/`, `./references/`, `./LICENSES/` |
 | 5. HyperFrames | the CLI pinned in `./package.json`, its Chrome, all skills (full suite of 21 core and workflow skills: `hyperframes`, `hyperframes-core`, `hyperframes-animation`, `hyperframes-audio`, `hyperframes-cli`, `hyperframes-creative`, `hyperframes-keyframes`, `hyperframes-registry`, `hyperframes-studio`, `media-use`, `embedded-captions`, `faceless-explainer`, `figma`, `general-video`, `motion-graphics`, `music-to-video`, `pr-to-video`, `product-launch-video`, `remotion-to-hyperframes`, `slideshow`, `talking-head-recut`), a local GSAP copy for offline renders |
 | 6. Accounts and keys | HeyGen sign-in, `GEMINI_API_KEY`, `OPENROUTER_API_KEY`, your main spoken language, all in `./.env` |
@@ -56,7 +56,7 @@ skipped, your keys are kept, and installed skills are never overwritten.
 
 | What | Needed for | How |
 |---|---|---|
-| HeyGen | all sound effects and music (HeyGen's sound library) | the installer offers a browser sign-in; later: `npx hyperframes auth login` |
+| HeyGen | all sound effects and music (HeyGen's sound library) | the installer offers a browser sign-in; later, source `agent-env.sh` and run `"$VIDEO_ENGINE_DIR/node_modules/.bin/hyperframes" auth login` |
 | Google Gemini key | generated shots: Veo video, Gemini Flash Image stills | https://aistudio.google.com/apikey |
 | OpenRouter key | fallback for generated images | https://openrouter.ai/keys |
 
@@ -100,7 +100,7 @@ E="$VIDEO_ENGINE/scripts"
 python $E/watch.py check              # ffmpeg, whisper-cli and the model all OK
 python $E/heygen-sound.py --check     # media-use found, HeyGen signed in
 python $E/generate.py models          # the Veo and Gemini image models exist on your key
-npx hyperframes doctor                # HyperFrames' own checks
+"$VIDEO_ENGINE_DIR/node_modules/.bin/hyperframes" doctor  # HyperFrames' own checks
 ```
 
 ## Troubleshooting
@@ -111,11 +111,11 @@ npx hyperframes doctor                # HyperFrames' own checks
 | "engine not found" / `VIDEO_ENGINE` empty | `source agent-env.sh` in the agent's terminal, or re-run the installer |
 | `whisper-cli` missing | `brew install whisper-cpp` |
 | Whisper model missing | run the installer again (or `--model large-v3-turbo` for a smaller download) |
-| Transcript in the wrong language, or translated | set `WATCH_WHISPER_LANG` in `.env` (`en`, `hi`) and re-run the installer with `--skip-pip --skip-tests` |
+| Transcript in the wrong language or script | Pipeline Whisper is fixed to English decoding for Roman-script captions; remove any stale `WATCH_WHISPER_LANG` setting and rerun transcription |
 | `generate.py models` says NOT FOUND | Google renamed a model: add `VEO_MODEL="<a listed name>"` (or `GEMINI_IMAGE_MODEL`) to `.env`, re-run the installer |
-| HeyGen not signed in | `npx hyperframes auth login`, then `heygen-sound.py --check` |
+| HeyGen not signed in | source `agent-env.sh`, run `"$VIDEO_ENGINE_DIR/node_modules/.bin/hyperframes" auth login`, then `heygen-sound.py --check` |
 | "no Haar face detector" when making a Short | OpenCV 5 got installed: `.venv/bin/python -m pip install "opencv-python-headless>=4.9,<5"` |
-| HyperFrames cannot render or snapshot | `npx hyperframes browser ensure`, then `npx hyperframes doctor` |
+| HyperFrames cannot render or snapshot | source `agent-env.sh`, then run `"$VIDEO_ENGINE_DIR/node_modules/.bin/hyperframes" browser ensure` and `doctor` |
 | Keys missing inside the agent | Claude Code: re-run the installer with `--skip-pip --skip-tests`; other agents: `source agent-env.sh` before starting them |
 | Tests fail at the end | open `/tmp/video-skills-tests.log` and paste it into Claude Code |
 | A render is very slow | that is normal on CPU for 4K; use `--resolution portrait` for Shorts, and see the render skill for long videos |
@@ -125,8 +125,8 @@ npx hyperframes doctor                # HyperFrames' own checks
 - **A new version of this package:** unzip it and run its `install.sh --update-skills` from your project folder. Your
   old skills are backed up to `~/.agents/skills-backup-<date>`; ask your agent to merge any rules you had saved
   back in. Installs from before the `video-` names are moved to `*-legacy-backup-<date>` automatically.
-- **HyperFrames:** `npx hyperframes@latest upgrade --project . --check` reports whether a newer version exists. Upgrade
-  only when you want to, then run `npx hyperframes check` on a recent project.
+- **HyperFrames:** the engine keeps a pinned local CLI. To change its version, rerun the installer with `--hf-version V`,
+  then run `"$VIDEO_ENGINE_DIR/node_modules/.bin/hyperframes" check` after sourcing `agent-env.sh`.
 
 ## Removing it
 

@@ -37,8 +37,13 @@ for spec in args.project:
     for b in s.get("beats", []):
         tr = (" · " + b["transition"] + " cut") if b.get("transition") else ""
         out.append("| %.1f - %.1f | %s%s | %s |" % (b["in"], b["out"], WHAT.get(b["type"], lambda b: b["type"])(b), tr, text_of(b)))
-    moves = [op for op in s.get("camera", []) if op[0] != "set"]
-    out.append("| camera | %d moves | %s |" % (len(moves), ", ".join("%s %.1f" % (op[0], float(op[1])) for op in moves)))
+    if "camera" not in s:
+        note = "centered push/pull, up to 1.022×" if float(s["duration"]) >= 2.0 else "no default move (clip under 2 s)"
+        out.append("| camera | default | %s |" % note)
+    else:
+        moves = [op for op in (s.get("camera") or []) if op[0] != "set"]
+        note = ", ".join("%s %.1f" % (op[0], float(op[1])) for op in moves) if moves else "explicitly static"
+        out.append("| camera | %d moves | %s |" % (len(moves), note))
     out.append("")
 open(args.out, "w").write("\n".join(out))
 print("wrote", args.out, len(out), "lines")

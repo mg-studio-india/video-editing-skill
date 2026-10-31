@@ -1,57 +1,35 @@
 ---
 name: video-review-gate
-description: Final quality gate on the rendered deliverable - checks structure, speech alignment, loudness, and frame sheets. Verifies CLI check report and renders, keeping composition fully editable via CLI tools, and automatically purges transient temp files. Owns Gate 6.
+description: Reviews the final render, audio, captions, frames and editable HyperFrames project before delivery.
 ---
 
-# Review Gate & Delivery (Final Quality Assurance)
-
-Inspects the final deliverable from the viewer's perspective. Guarantees visual polish, acoustic fidelity, CLI composability, and complete temp file cleanup.
+# Final review
 
 ```bash
+ROOT="<user-selected-video-folder>"
+W="$ROOT/.video-pipeline"
 ENG="${VIDEO_ENGINE:-$HOME/.agents/skills/video-pipeline/engine}"
-W="videos/<project>"
-F="$W/processed/<project>-v<N>.mp4"
+PY="$ENG/.venv/bin/python3"
+F="$ROOT/Exports/<project>-v1.mp4"
 ```
 
----
+Read the approved `storyboard.json` canvas and `resolved-spec.json` to determine the expected aspect, platform and audio target. Do not assume every project is a vertical Short.
 
-> [!IMPORTANT]
-> **Virtual Environment (STRICT)**: ALWAYS execute scripts using the project's virtual environment (`"$PROJECT/.venv/bin/python3"`). Never invoke system python.
+Run the render review and keep its reports inside the hidden workspace:
 
-Run verification on the rendered MP4 file:
 ```bash
-"$PROJECT/.venv/bin/python3" "${VIDEO_SKILLS:-$HOME/.agents/skills}/video-review-gate/scripts/review.py" --final "$F" --preset shorts --res 1080x1920 \
-  --storyboard "$W/storyboard.json" --transcript "$W/transcript.json"
+"$PY" "${VIDEO_SKILLS:-$HOME/.agents/skills}/video-review-gate/scripts/review.py" \
+  --final "$F" --preset <youtube|shorts|longform|broadcast> \
+  --res <expected-WxH> --storyboard "$W/storyboard.json" \
+  --transcript "$W/transcript.json" --report-dir "$W/review"
 ```
 
-Must verify:
-1. **Structure & Resolution:** Exact 1080x1920 vertical canvas, 12+ Mb/s bitrate, BT.709 color tags.
-2. **Audio Loudness:** `-14.0 LUFS` integrated, `<= -1.0 dBTP` true peak.
-3. **No Black Frames or Glitches:** 0 frame dropouts, 0 flash artifacts.
-4. **Platform Safe Zones:** Text clear of bottom 320px and top 180px.
+Inspect the generated review sheet and watch the complete export with sound. Check the source-led story, crop safety, graphic readability, caption wording/timing, audio transitions, echo/reverb residuals, clipping, black frames, and whether every added visual has a source or approved-asset basis. Do not call dereverb complete echo cancellation.
 
----
+If the local HyperFrames CLI is installed, validate the editable project with its configured binary:
 
-## 2. CLI Composition Inspection & Interactive Preview
-
-Validate the HyperFrames composition using CLI tools without requiring the desktop GUI app:
 ```bash
-npx hyperframes check "$W/hyperframes"
+"$ENG/../node_modules/.bin/hyperframes" check "$W/hyperframes"
 ```
-Optional interactive preview via local browser server (on user request):
-```bash
-npx hyperframes preview "$W/hyperframes"
-```
-Keeps the project 100% editable, composable, and verifiable via command line.
 
----
-
-## 3. Data Integrity & Workspace Preservation
-
-By default, core project directories (`preview/`, `audio_processing/`, and `hyperframes/`) are preserved intact inside the project directory so the creator can inspect color grade sheets, audio waveforms, Whisper ASR outputs, and editable compositions.
-
-Only when the creator explicitly requests a production disk purge:
-```bash
-"$PROJECT/.venv/bin/python3" "$ENG/scripts/clean-temp.py" "$W" --clean-reports
-```
-This safely removes transient scratch dumps while protecting the master video deliverable (`processed/<project>-v<N>.mp4`).
+If that path is unavailable, use the already configured local engine binary path. Do not use `npx` or download a replacement during review. Keep reports and snapshots under `$W/review`; the user-facing `Exports/` folder should contain the deliverable.

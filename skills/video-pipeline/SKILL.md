@@ -1,137 +1,86 @@
 ---
 name: video-pipeline
-description: Runs the professional video editing system with step-based user interaction. Owns project state, interactive verification gates, HyperFrames catalog-first priority, studio-grade audio, kinetic multi-font captions, and automated lifecycle temp cleanup.
+description: Runs a project-scoped, source-grounded video editing pipeline with reference and brand review, explicit user direction, HyperFrames assembly, and organized exports.
 ---
 
-# Video Pipeline (Production-Ready)
+# Video pipeline
 
-> **Scripts:** Engine script inventory and mappings: `references/engine-scripts.md`.  
-> **Architecture:** Engine architecture and style taxonomy: `references/pipeline-architecture.md`.
-
-Orchestrates the complete professional video editing workflow. Transforms raw creator footage into high-retention, studio-grade videos (Reels, Shorts, YouTube) through an optimized **3-phase workflow** with interactive user direction and zero dead black frames.
+The user-selected folder is the project boundary. Keep original inputs and guides in place, put all pipeline working files in its hidden `.video-pipeline/` directory, and write only final exports to `Exports/`.
 
 ```bash
+ROOT="<user-selected-video-folder>"
 ENG="${VIDEO_ENGINE:-$HOME/.agents/skills/video-pipeline/engine}"
-W="videos/<project>"
+ENGINE_ROOT="${VIDEO_ENGINE_DIR:-$HOME/.video-skills/engine}"
+[ -d "$ENGINE_ROOT" ] || ENGINE_ROOT="$HOME/.config/video-skills/engine"
+PY="${VIDEO_ENGINE_PYTHON:-}"
+if [ -z "$PY" ]; then
+  for candidate in "$ENGINE_ROOT/.venv/bin/python3" "$ENGINE_ROOT/.venv/bin/python" "$ENGINE_ROOT/.venv/Scripts/python.exe"; do
+    if [ -x "$candidate" ]; then PY="$candidate"; break; fi
+  done
+fi
 ```
 
----
+## 1. Analyze inside the selected project
 
-## Core Pipeline Principles & Skill Alignment
+Before running, confirm the configured engine environment has `Pillow`, `opencv-python-headless`, `pypdf`, and `pypdfium2` from `engine/requirements.txt`. Use the project `.venv`/engine interpreter; do not install into system Python.
 
-### 1. Standard Ingest First (SDR BT.709 & H.265)
-Before running analysis, cutting, or staging, raw camera footage (including 10-bit HLG/HDR iPhone and ProRes takes) is converted to standard SDR (Rec.709 `yuv420p`) and H.265 (`libx265 -crf 18 -preset fast -tag:v hvc1`) at native 60fps CFR. This eliminates downstream gamma shifts, HDR clipping, and playback incompatibilities.
-
-### 2. Parallel Ingest & Dynamic Color Correction
-Visual and audio tracks are analyzed concurrently:
-- **Audio Worker:** 80Hz rumble high-pass, EBU R128 `loudnorm`, and word-exact `whisper.cpp` ASR with Hinglish dictionary normalization.
-- **Visual Worker:** Native framerate probe, 4 beat keyframe extractions, and **dynamic frame-accurate color correction** (`grade.py`). Statistically calculates shadow floor ($P_1$), highlight ceiling ($P_{99}$), midtone gamma ($P_{50}$), adaptive contrast, natural HSV vibrance, white balance (5650K daylight calibration), and micro-clarity from actual frame pixels. Zero artificial stylized filter presets.
-
-### 3. Tight Acoustic Cuts (`video-cut-audit`)
-`paper-cut.py` (`--tight`) scans acoustic waveform silences, eliminating stumbles, false starts, and hesitation dead air with tight 0.15s rhythm.
-
-### 4. Reference Intelligence & Video Presets (`video-reference-match`)
-Runs immediately after `video-cut-audit`:
-- **References Precedence Contract:** User-supplied references (videos, screenshots, or benchmark files in `references/`, `videos/<project>/references/`, or passed via prompt/CLI) **ALWAYS take absolute precedence over blueprints**. The reference's measured structure, pacing, framing, and visual devices dictate the edit.
-- **Blueprint Presets & HyperFrames Linking:** The 50 creator blueprints evaluate transcript content against proven creator formats to rank the top 3 presets and supply verified HyperFrames compositions (first-class motion scenes, proof cards, charts, and device mockups) to execute the desired aesthetic.
-
-### 5. HyperFrames Composition Library First
-During installation (`install.sh`), **all 447 compositions and components** from the HyperFrames registry are pre-installed into the global engine sandbox (`$ENGINE_DIR/compositions/`). When a video is matched to a blueprint, the pipeline's first priority is to pick and stage the best HyperFrames compositions tailored to the video's beats, eliminating cold network calls and ensuring 100% offline determinism.
-
-### 6. Proof & Asset Sourcing (`video-researcher`)
-When the user's prompt or script asks for logos, articles, evidence for claims, or statement verification, `video-researcher` sources vector marks (SimpleIcons/Svgl) and article evidence screenshots/quotes to display in the motion canvas.
-
-### 7. Interactive User Direction (`ask_question` before Storyboard)
-If the user did not specify their editing preferences in their prompt, the agent invokes `ask_question` **before `video-plan-storyboard`**. The user selects:
-- Their preferred video-preset from `video-reference-match`
-- Layout & framing mode (Bottom Split-Screen, Squircle PiP, Full-Frame)
-- Caption accent colors & proof requirements
-This choice directly dictates how `video-plan-storyboard` constructs the storyboard.
-
-### 8. Framing Geometry & Active Motion Scenes (`video-take-geometry` & `video-motion-graphics`)
-**No Dead Black Backgrounds:**
-- When in `split` or `pip` layouts, the non-speaker canvas utilizes a deep studio mesh gradient (`radial-gradient(circle at 50% 25%, #1e293b 0%, #0f172a 65%, #020617 100%)`).
-- **Bottom Split-Screen Geometry (70% Standard):** In split-screen video, the speaker takes the bottom pane (~44% height) with rounded top corners (`border-radius: 24px 24px 0 0`) and upward elevation drop-shadow (`0 -18px 45px rgba(0,0,0,.6)`).
-- **Head-Area Focus Crop (Top & Bottom Crop):** The speaker video is cropped at the top (dead headroom) and bottom (torso/arms) with 1.15x scale and vertical focus centered at 24% to maximize head and facial visibility.
-- **Floating Corner Squircle (PiP):** Sleek floating squircle window (`border-radius: 24px`, glass border, drop-shadow).
-- **HyperFrames Motion Scenes:** The opened upper graphic canvas is filled with active motion scenes: animated checklist cards (`b_cards`), tactile paper drawers (`b_drawer`), dynamic data highlighters, and proof quotes.
-
-### 9. Subtle Sound Design (`video-sound-design`)
-Tactile sound effects from `sound-palette/audio` create acoustic depth and liveliness:
-- `pop.mp3`: Damped kinetic pop on card and badge pill entrances (`-20 dB`)
-- `whoosh-fast.mp3`: Swift directional whip on layout transitions (`-22 dB`)
-- `click-soft.mp3`: Tactile micro-click on proof checkmarks (`-20 dB`)
-Balanced taste-first so sound effects never mask spoken dialogue.
-
-### 10. Small, Single-Row Vibrant Captions (`video-captions`)
-- Small font size (`0.048 * W`, ~50-52px on 1080p).
-- Strict 1–4 words max per row (`white-space: nowrap; flex-wrap: nowrap;`). Captions never wrap to a second line.
-- Vibrant palette: brilliant pure white (`#FFFFFF`) with heavy drop shadow, Electric Gold (`#FFE600`) active word, and Neon Mint (`#00F59B`) punch word. Zero phrase collisions.
-
-### 11. Pass 2 Transcribe & Master Render (`video-render` & `video-review-gate`)
-- Re-transcribes the conformed flat cut video (`hyperframes/input-video.mp4`) for 0ms audio/video drift.
-- Master renders via HyperFrames and FFmpeg at 60fps BT.709 with -14.4 LUFS loudness mastering.
-- `verify-render.py` validates resolution, bitrate, A/V sync, and zero black frames.
-- Temporary data folders (`preview/`, `audio_processing/`, `hyperframes/`) remain preserved.
-
----
-
-## Pipeline Workflow Diagram
-
-```mermaid
-flowchart TD
-    RAW["Raw Camera Footage\n(HDR/HLG BT.2020 or SDR)"] --> STD["Step 0: Standard Format Ingest\n(Convert to SDR Rec.709 H.265 @ 60fps)"]
-    
-    subgraph Phase1 ["Phase 1: Ingest, Parallel Analysis & Matching (~20s)"]
-        STD --> W_A["Worker A: Audio Track"]
-        STD --> W_B["Worker B: Visual Track"]
-        
-        W_A --> A1["80Hz High-Pass + EBU R128 Loudnorm"]
-        A1 --> A2["whisper.cpp ASR + Hinglish Transliteration"]
-        
-        W_B --> B1["Video Probe & Native 60fps Detection"]
-        B1 --> B2["4 Keyframe Extractions (15%, 35%, 60%, 85%)"]
-        B2 --> B3["Dynamic Frame-Accurate Color Correction\n(grade.py: Luma P1/P99, Gamma, Saturation, White Balance)"]
-        
-        A2 --> VCA["video-cut-audit: Tight Paper Cut\n(paper-cut.py: 0.15s rhythm)"]
-        B3 --> VCA
-        
-        VCA --> VRM["video-reference-match\n(match.py: Rank top 3 proven blueprints B19, B03, B11)"]
-    end
-    
-    subgraph Phase2 ["Phase 2: User Direction & Storyboard Gate"]
-        VRM --> ASK{"ask_question (Gate Q)\nDid user specify editing style in prompt?"}
-        ASK -->|No| PROMPT_USER["Prompt User: Select Blueprint Preset, Layout & Proof Elements"]
-        ASK -->|Yes| VPS
-        PROMPT_USER --> VPS["video-plan-storyboard\n(Generate STORYBOARD.md with Keyframes, Dynamic Grade & Matched Presets)"]
-        VPS --> GATE_S{"Gate S: User Review & Approval\n(Verify Keyframe Framing & Dynamic Color Correction)"}
-    end
-    
-    subgraph Phase3 ["Phase 3: Assembly, Motion Graphics & Master Render (~50s)"]
-        GATE_S -->|Approved| S1["apply-cut.py (Tight Cut + Dynamic Color Correction in Rec.709)"]
-        S1 --> S2["Pass 2 Transcribe (Direct Word Sync on Flat Cut)"]
-        S2 --> S3["stage.py (video-take-geometry & video-motion-graphics)\n- Studio Mesh Backdrop (No Black Background)\n- Squircle PiP / Split Top Card\n- Animated Cards / Drawers\n- Small 1-4 Word Vibrant Captions\n- Subtle SFX (pop, whoosh, click at -20dB)"]
-        S3 --> S4["render.py & video-review-gate\n- 60fps BT.709 Master Encoding\n- Audio Master -14.4 LUFS\n- Programmatic QA Verification"]
-        S4 --> DELIV["Deliverable: processed/<project>-v1.mp4\n(All Temp Folders Preserved)"]
-    end
-```
-
----
-
-## CLI Execution Commands
+Run analysis with the user's selected folder. If it contains one supported video, `--input` may be that folder; if it contains more than one source video, ask which clip(s) to edit rather than picking one silently. Project references are read only from `$ROOT/references/` or explicit `--reference` paths; video, image and PDF references are supported. Brand text, PDF guides and visual assets are read from `$ROOT/brand/` plus recognized root-level brand-guide files.
 
 ```bash
-# 1. Run Parallel Ingest, Analysis, Cutting, Preset Matching & Storyboard Generation
-"$PROJECT/.venv/bin/python3" "$ENG/scripts/parallel_pipeline.py" analyze \
-    --input "$W/raw/<video>.MOV" \
-    --project "$W"
-
-# 2. If prompt lacks direction, run ask_question presenting the matched presets from matches.json
-
-# 3. Present STORYBOARD.md and preview/grade-preview.jpg to user for Gate S approval
-
-# 4. Assemble and Master Render Deliverable (Dynamic Color Correction + Motion Canvas + SFX)
-"$PROJECT/.venv/bin/python3" "$ENG/scripts/parallel_pipeline.py" assemble \
-    --project "$W" \
-    --preset "dynamic"
+"$PY" "$ENG/scripts/parallel_pipeline.py" analyze \
+  --input "$ROOT/<source-video-or-folder>" \
+  --project "$ROOT" \
+  --prompt "<the user's creative brief>" \
+  [--reference "$ROOT/references/<reference-file>"]
 ```
+
+Repeat `--reference` for multiple explicit references. The analyzer also finds supported media in the project's `references/` folder. It analyzes reference videos separately from the source, reads image references, extracts searchable text from PDF references and brand guides into the hidden review packet, snapshots brand assets, and uses the bundled `video-reference-match/references/index.json` when ranking styles. A missing or malformed index is reported and can recover from the bundled blueprint files; never silently skip the index.
+
+Analysis creates timestamped source frames/contact sheets, shot ranges, transcript evidence, a non-active cut proposal, a simple caption template, and a review questionnaire in `.video-pipeline/`. Shot detection marks visual changes; it does not interpret events. No story beats, product claims, split layouts, CTA cards, or sound effects are generated automatically. The active cut preserves the entire source timeline.
+
+## 2. Read source, references and brand rules
+
+Apply `video-plan-storyboard` to inspect `source-evidence.json`, the actual source contact sheet and relevant focused frames, the transcript, every supplied reference, and every listed brand input. Keep source facts, reference style observations, and brand requirements distinct.
+
+The selected creative direction must explain what the footage itself supports. Each proposed beat needs valid source evidence IDs. Use only verified transcript wording for on-screen claims. If a graphic does not clarify an actual source moment, omit it. Product and silent footage remain intact unless the user approves specific removals.
+
+No-reference projects still use the style index to offer a few relevant choices. A match is a suggestion, not automatic direction. A supplied reference is analyzed independently and leads only after the user chooses it; brand requirements still apply.
+
+Ask one compact batch of only the unanswered questions from `QUESTIONNAIRE.md`: footage to keep/cut, platform/aspect, reference or original direction, framing for the actual shots, caption choice, and audio denoise/music/SFX. Default simple phrase captions use bold Google Sans at roughly 60–80 px on a 1080-wide canvas, with a subtle padded backing and no shadows. Apply the supplied brand guide or selected caption treatment when it calls for a different look. Strong dereverb is already selected. Save answers in `resolved-spec.json` → `user_answers` using keys `keep_cut`, `platform_aspect`, `direction`, `framing`, `captions`, and `sound`; carry the answers into `storyboard.plan.json`, `storyboard.json`, and `style.json`. Record concrete audio choices in `resolved-spec.json` → `audio`. Copy the current evidence file's SHA-256 into `storyboard.json` as `source_evidence_sha256`.
+
+## 3. Present and approve the plan
+
+Before assembly, show a concise review of the source evidence, relevant reference frames, brand constraints, selected footage and cuts, framing/aspect, captions, and requested sound. Keep the working documents and analysis files in the hidden folder so the project root stays uncluttered.
+
+Do not assemble or render until the user approves. After explicit approval, record the gate:
+
+```bash
+"$PY" "$ENG/scripts/parallel_pipeline.py" approve \
+  --project "$ROOT" --user-approved --note "<approval summary>"
+```
+
+The gate rejects missing direction answers, unsupported beat references, out-of-range beat times, and invalid kept ranges. Use an empty `beats` array when no extra graphic treatment is appropriate.
+
+## 4. Assemble and render
+
+```bash
+"$PY" "$ENG/scripts/parallel_pipeline.py" assemble \
+  --project "$ROOT" --dereverb strong
+```
+
+The assembly uses the approved cut, transcribes the conformed edit for caption sync, validates every selected HyperFrames block against the shared catalog and its internal composition ID, then stages only the selected blocks inside the project. HyperFrames requires bundled assets to remain inside its project root, so the shared catalog itself stays in the engine while the small set used by this edit is copied into `.video-pipeline/hyperframes/compositions`. Missing local HyperFrames/GSAP assets fail with a setup error; the pipeline must not fall back to `npx`, CDN assets, Swift Package Manager, or another unrequested framework.
+
+The render applies strong late-reflection reduction and the selected denoising/master chain. Dereverberation can reduce room tails but cannot guarantee removal of every echo; the generated audio report records the processing result. Do not claim full echo cancellation.
+
+When `storyboard.json` omits `camera`, HyperFrames adds a centered, gentle push/pull between 1.000× and 1.022×. An authored camera plan takes precedence; use `"camera": []` to keep the frame still. No subject tracking or inferred focal points are added.
+
+Each successful render is published as the next `$ROOT/Exports/<project>-vN.mp4`; the final file is moved there only after render verification completes. Transcripts, audio, review sheets, HyperFrames sources, and render intermediates stay under `$ROOT/.video-pipeline/`.
+
+## Execution boundaries
+
+- Keep work within this video-editing pipeline and the selected project folder.
+- Reuse the user's shared engine, FFmpeg on `PATH`, Whisper binary/model cache, and HyperFrames catalog across projects. Never install or copy those shared tools into each video folder. Keep analysis and project-specific render assets in that project's `.video-pipeline/`; keep originals in place and final videos in `Exports/`.
+- Python invokes FFmpeg, ffprobe, Whisper, HyperFrames, and pipeline stages with argument arrays through `subprocess`; this keeps media tools composable and file paths safe. Use shell only to launch the pipeline commands shown above.
+- Use local, configured pipeline dependencies. Do not improvise package managers, frameworks, or network installs during an edit.
+- Keep user inputs untouched. Do not delete intermediates without an explicit cleanup request.
+- Do not run assembly when the recorded approval gate is missing or stale.

@@ -108,7 +108,7 @@ MASTER_DIMENSIONS = {
             "neural-heavy": "Neural DeepFilterNet3 Heavy (Surgical suppression for heavy road, car, traffic rumble, engine noise)",
             "neural-indoor": "Neural DeepFilterNet3 / RNNoise Indoor (Active suppression for indoor AC hum, room reverb, fan noise, reflections)",
             "auto-adaptive": "Adaptive Auto (Measures SNR & room noise profile and applies calibrated filtering)",
-            "dereverb-wpe": "WPE Neural Dereverberation (Suppresses harsh room echo and hollow acoustics)",
+            "dereverb-wpe": "Spectral Late-Reflection Reduction (Reduces moderate room echo; severe reverb may need source treatment)",
             "transparent-eq-gate": "Transparent Highpass & Gate (80Hz rumble cut + gentle transparent noise gate)",
             "multiband-deess": "Surgical Multiband De-Esser (Tames harsh sibilance 5-8 kHz while preserving air)",
             "broadcast-leveler": "Broadcast Master Leveler (EBU R128 target -14.0 LUFS with -1.0 dBTP ceiling)",

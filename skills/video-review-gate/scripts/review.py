@@ -79,8 +79,11 @@ def main():
     ap.add_argument("--storyboard"); ap.add_argument("--cut-map")
     ap.add_argument("--transcript"); ap.add_argument("--render-words")
     ap.add_argument("--res")
+    ap.add_argument("--report-dir", help="write verification sheet and review reports here instead of beside the export")
     a = ap.parse_args()
-    stem = os.path.splitext(a.final)[0]
+    report_dir = os.path.abspath(a.report_dir) if a.report_dir else os.path.dirname(os.path.abspath(a.final))
+    os.makedirs(report_dir, exist_ok=True)
+    stem = os.path.join(report_dir, os.path.basename(os.path.splitext(a.final)[0]))
     rows = []
     vcmd = [runtime.get_project_venv_python(), os.path.join(ENG, "verify-render.py"), "--render", a.final, "--out", stem + "-VERIFY.md"]
     if a.res:

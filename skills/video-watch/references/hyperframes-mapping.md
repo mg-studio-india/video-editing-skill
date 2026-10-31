@@ -5,7 +5,7 @@ Hyperframes renders a video from an HTML composition: elements are placed on a t
 **Verify first.** This file describes the mapping at the level of concepts. It deliberately does not hard-code Hyperframes attribute names, because they are defined by the Hyperframes project and may change. Before writing a composition:
 
 1. If a Hyperframes skill or its docs are available in this session, read them first (the composition contract: timing attributes, clip classes, tracks, sub-compositions, how media elements are sourced).
-2. If not, ask the user to install them (for example `npx skills add heygen-com/hyperframes`) or to paste a working sample composition, then mirror that sample exactly.
+2. If not, record that no local composition matched and leave the reference unmapped. Do not install or fetch a catalog during an edit. The project pipeline can stage only compositions already present in the configured local registry.
 3. Never guess an attribute name. A wrong guess renders a silent blank video.
 
 ## Field by field

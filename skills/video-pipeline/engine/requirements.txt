@@ -1,0 +1,10 @@
+numpy
+Pillow
+opencv-python-headless>=4.9,<5
+auto-editor
+google-genai
+scipy
+soundfile
+nara_wpe
+pypdf
+pypdfium2

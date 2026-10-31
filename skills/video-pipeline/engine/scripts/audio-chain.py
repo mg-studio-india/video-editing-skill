@@ -12,6 +12,8 @@ import subprocess
 import sys
 import tempfile
 from pathlib import Path
+import soundfile as sf
+from scipy.signal import stft, istft
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from runtime import ToolError, ensure_project_venv, ff_filter_path, run  # noqa: E402
@@ -153,6 +155,14 @@ def find_deep_filter() -> str | None:
     return None
 
 
+def make_scratch_dir(args, prefix: str) -> Path:
+    parent = getattr(args, "scratch_dir", None)
+    if parent:
+        Path(parent).mkdir(parents=True, exist_ok=True)
+        return Path(tempfile.mkdtemp(prefix=prefix, dir=str(parent)))
+    return Path(tempfile.mkdtemp(prefix=prefix))
+
+
 def apply_deep_filter(src_media: str, tmp_dir: Path, atten_db: float = 32.0) -> str:
     df = find_deep_filter()
     if not df:
@@ -179,6 +189,41 @@ def find_rnn_model(explicit: str | None) -> str | None:
     found = [f for f in sorted(glob.glob(os.path.expanduser("~/.config/video-skills/rnnoise/*.rnnn")))
              if os.path.getsize(f) > 1024]
     return found[0] if found else None
+
+
+def apply_dereverb(src_media: str, tmp_dir: Path, strength: str = "medium") -> str:
+    """Reduce late room reflections with a smoothed spectral tail estimate."""
+    amounts = {"light": 0.45, "medium": 0.7, "strong": 0.9}
+    tmp_dir.mkdir(parents=True, exist_ok=True)
+    decoded = tmp_dir / "dereverb-input.wav"
+    run(["ffmpeg", "-y", "-hide_banner", "-loglevel", "error", "-i", str(src_media), "-vn",
+         "-ar", "48000", "-c:a", "pcm_s24le", str(decoded)])
+    x, rate = sf.read(decoded, dtype="float64", always_2d=True)
+    n, hop = 2048, 512
+    channels = []
+    for channel in x.T:
+        _, _, X = stft(channel, rate, nperseg=n, noverlap=n-hop, boundary="zeros")
+        power = np.abs(X) ** 2
+        smooth = np.empty_like(power)
+        smooth[:, 0] = power[:, 0]
+        for k in range(1, power.shape[1]):
+            smooth[:, k] = 0.6 * smooth[:, k-1] + 0.4 * power[:, k]
+        delay = max(1, int(round(0.06 * rate / hop)))
+        late = np.zeros_like(smooth)
+        late[:, delay:] = 0.72 * smooth[:, :-delay]
+        gain = np.maximum(1.0 - amounts[strength] * late / np.maximum(smooth, 1e-12), 10 ** (-12 / 20))
+        for k in range(1, gain.shape[1]):
+            gain[:, k] = 0.55 * gain[:, k] + 0.45 * gain[:, k-1]
+        _, y = istft(X * gain, rate, nperseg=n, noverlap=n-hop, boundary=True)
+        channels.append(y[:len(channel)])
+    result = np.column_stack(channels)
+    before_rms = float(np.sqrt(np.mean(x*x)))
+    after_rms = float(np.sqrt(np.mean(result*result)))
+    if after_rms > 1e-9:
+        result *= before_rms / after_rms
+    out = tmp_dir / "dereverb.wav"
+    sf.write(out, result, rate, subtype="PCM_24")
+    return str(out)
 
 
 def expander(floor_db: float, speech_db: float) -> str:
@@ -230,21 +275,29 @@ def clean(media: str, out: str, args) -> dict:
     before = measure(media)
     level = args.denoise if (args.denoise and args.denoise != "auto") else denoise_level(before["noise_floor_dbfs"])
     src = media
-    tmp_clean = None
-    if level == "neural" and find_deep_filter():
-        tmp_clean = Path(tempfile.mkdtemp(prefix="audio-clean-df-"))
-        src = apply_deep_filter(media, tmp_clean)
-        active_level = "off"
-    else:
-        active_level = "strong" if level == "neural" else level
-    g = gain_to(PEAK_TARGET, before["sample_peak_dbfs"])
-    chain = [f"volume={g}dB", highpass(args.highpass),
-             *denoise_filters(active_level, find_rnn_model(args.rnn_model), before["noise_floor_dbfs"] + g,
-                              before["speech_dbfs"] + g)]
-    render(src, out, chain)
-    if tmp_clean and tmp_clean.exists():
-        shutil.rmtree(tmp_clean, ignore_errors=True)
-    return {"mode": "clean", "denoise": level, "chain": chain, "before": before, "after": measure(out)}
+    scratch_dirs = []
+    try:
+        if args.dereverb != "off":
+            tmp_clean = make_scratch_dir(args, "audio-clean-drv-")
+            scratch_dirs.append(tmp_clean)
+            src = apply_dereverb(src, tmp_clean, args.dereverb)
+        if level == "neural" and find_deep_filter():
+            df_dir = make_scratch_dir(args, "audio-clean-df-")
+            scratch_dirs.append(df_dir)
+            src = apply_deep_filter(src, df_dir)
+            active_level = "off"
+        else:
+            active_level = "strong" if level == "neural" else level
+        g = gain_to(PEAK_TARGET, before["sample_peak_dbfs"])
+        chain = [f"volume={g}dB", highpass(args.highpass),
+                 *denoise_filters(active_level, find_rnn_model(args.rnn_model), before["noise_floor_dbfs"] + g,
+                                  before["speech_dbfs"] + g)]
+        render(src, out, chain)
+        return {"mode": "clean", "denoise": level, "dereverb": args.dereverb,
+                "chain": chain, "before": before, "after": measure(out)}
+    finally:
+        for scratch in scratch_dirs:
+            shutil.rmtree(scratch, ignore_errors=True)
 
 
 def master(media: str, out: str, args) -> dict:
@@ -256,10 +309,12 @@ def master(media: str, out: str, args) -> dict:
         level = denoise_level(before["noise_floor_dbfs"])
     else:
         level = "off"
-    tmp = Path(tempfile.mkdtemp(prefix="audio-chain-"))
+    tmp = make_scratch_dir(args, "audio-chain-")
     src = media
+    if args.dereverb != "off":
+        src = apply_dereverb(src, tmp, args.dereverb)
     if level == "neural" and find_deep_filter():
-        src = apply_deep_filter(media, tmp)
+        src = apply_deep_filter(src, tmp)
         active_level = "off"
     else:
         active_level = "strong" if level == "neural" else level
@@ -300,6 +355,7 @@ def master(media: str, out: str, args) -> dict:
     ok = (after["integrated_lufs"] is not None and abs(after["integrated_lufs"] - p["lufs"]) <= 1.0
           and after["true_peak_dbtp"] is not None and after["true_peak_dbtp"] <= p["tp"] + 0.1)
     rep = {"mode": "master", "preset": args.preset, "target": p, "tone": args.tone, "denoise": level,
+           "dereverb": args.dereverb,
            "music": args.music, "chain": pre + tail, "before": before, "after": after, "pass": ok}
     if tmp and tmp.exists():
         shutil.rmtree(tmp, ignore_errors=True)
@@ -311,6 +367,8 @@ def show(rep: dict) -> None:
         print(json.dumps(rep, indent=1)); return
     b, a = rep["before"], rep["after"]
     print(f"{rep['mode']}: denoise={rep['denoise']}" + (f"  preset={rep['preset']} target={rep['target']}" if rep['mode'] == 'master' else ""))
+    if rep.get("dereverb"):
+        print(f"  dereverb={rep['dereverb']}")
     for k in ("integrated_lufs", "true_peak_dbtp", "range_lu", "sample_peak_dbfs", "noise_floor_dbfs", "speech_dbfs", "snr_db"):
         print(f"  {k:18} {b.get(k)!s:>8} -> {a.get(k)!s:>8}")
     if "pass" in rep:
@@ -325,6 +383,8 @@ def main() -> None:
     ap.add_argument("--preset", choices=sorted(PRESETS), default="youtube")
     ap.add_argument("--tone", choices=sorted(TONES), default="neutral")
     ap.add_argument("--denoise", choices=["auto", "off", "light", "medium", "strong", "neural"])
+    ap.add_argument("--dereverb", choices=["off", "light", "medium", "strong"], default="strong",
+                    help="spectral late-reflection suppression")
     ap.add_argument("--rnn-model", help="RNNoise .rnnn model for strong denoising")
     ap.add_argument("--music", help="music bed to duck under the voice (master only)")
     ap.add_argument("--duck-db", type=float, default=18.0, help="how far the bed drops under speech")
@@ -336,6 +396,7 @@ def main() -> None:
     ap.add_argument("--comp-release", type=float, default=180.0, help="compressor release ms (longer = less pumping)")
     ap.add_argument("--report", help="write the numbers as JSON here")
     ap.add_argument("--force", action="store_true", help="force re-processing even if output already exists")
+    ap.add_argument("--scratch-dir", help="parent folder for disposable audio intermediates")
     a = ap.parse_args()
     if a.mode != "measure" and not a.out:
         ap.error("--out is required for clean and master")
