@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """render.py: one command from a checked composition to a deliverable file, with no step skipped."""
-import argparse, os, subprocess, sys
+import argparse, json, os, subprocess, sys
 from pathlib import Path
 
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -48,7 +48,7 @@ def find_hyperframes_cmd() -> list[str]:
     for c in cands:
         if c.is_file():
             return [str(c)]
-    return ["npx", "hyperframes"]
+    raise RuntimeError("Local HyperFrames CLI not found. Install it in the configured video engine with the pipeline setup; refusing to fetch or run an unpinned package.")
 
 
 def main():
@@ -61,10 +61,13 @@ def main():
     ap.add_argument("--audio-preset", default="shorts", choices=["youtube", "shorts", "longform", "broadcast"])
     ap.add_argument("--denoise", default="auto", choices=["auto", "off", "light", "medium", "strong", "neural"],
                     help="denoising level for audio master (default: auto)")
+    ap.add_argument("--dereverb", default="strong", choices=["off", "light", "medium", "strong"],
+                    help="late-reflection suppression strength for the audio master")
     ap.add_argument("--music")
     ap.add_argument("--raw", help="an existing render to finish (skips the HyperFrames render)")
     ap.add_argument("--gpu", action="store_true")
     ap.add_argument("--workers", default="auto")
+    ap.add_argument("--scratch-dir", help="parent folder for disposable render and verification intermediates")
     ap.add_argument("--bitrate", help="override the preset's video bitrate, e.g. 16M")
     ap.add_argument("--sdr", action="store_true", default=True,
                     help="force SDR output (default: True, matches BT.709 mastering)")
@@ -77,7 +80,9 @@ def main():
     br = a.bitrate or br
     hf_res = ALIAS_TO_HF.get(a.resolution, a.resolution)
     os.makedirs(os.path.dirname(os.path.abspath(a.out)), exist_ok=True)
-    stem = os.path.splitext(a.out)[0]
+    scratch = Path(a.scratch_dir).expanduser().resolve() if a.scratch_dir else Path(os.path.dirname(os.path.abspath(a.out)))
+    scratch.mkdir(parents=True, exist_ok=True)
+    stem = str(scratch / Path(a.out).stem)
     raw, tagged = a.raw or stem + "-raw.mp4", stem + "-tagged.mp4"
     if not a.raw:
         hf_bin = find_hyperframes_cmd()
@@ -91,13 +96,60 @@ def main():
     step("BT.709 tags", ["ffmpeg", "-y", "-v", "error", "-i", raw, "-c", "copy", "-color_primaries", "bt709",
                          "-color_trc", "bt709", "-colorspace", "bt709", "-color_range", "tv",
                          "-movflags", "+write_colr+faststart", tagged])
-    master = [runtime.get_project_venv_python(), os.path.join(HERE, "audio-chain.py"), "master", tagged, "--out", a.out,
-              "--preset", a.audio_preset, "--report", stem + "-audio.json"]
-    if a.denoise:
-        master += ["--denoise", a.denoise]
-    if a.music:
-        master += ["--music", a.music]
-    step("audio master (%s, denoise=%s)" % (a.audio_preset, a.denoise), master)
+    # Keep both mastering passes lossless. Pass one runs the existing audio chain
+    # on the rendered mix; pass two consumes that cleaned WAV and runs the same
+    # chain again. Optional music is mixed only once, during pass one.
+    audio_source = Path(stem + "-audio-source.wav")
+    pass1_audio = Path(stem + "-audio-pass-1.wav")
+    pass2_audio = Path(stem + "-audio-pass-2.wav")
+    pass1_report = Path(stem + "-audio-pass-1.json")
+    pass2_report = Path(stem + "-audio-pass-2.json")
+    report_path = Path(stem + "-audio.json")
+    step("extract lossless audio for two-pass master", [
+        "ffmpeg", "-y", "-hide_banner", "-loglevel", "error", "-i", tagged,
+        "-map", "0:a:0", "-vn", "-ar", "48000", "-c:a", "pcm_s24le", str(audio_source),
+    ])
+
+    def audio_master(media, out, report, pass_scratch, include_music=False):
+        cmd = [runtime.get_project_venv_python(), os.path.join(HERE, "audio-chain.py"), "master",
+               str(media), "--out", str(out), "--preset", a.audio_preset,
+               "--report", str(report), "--scratch-dir", str(pass_scratch)]
+        if a.denoise:
+            cmd += ["--denoise", a.denoise]
+        cmd += ["--dereverb", a.dereverb]
+        if include_music and a.music:
+            cmd += ["--music", a.music]
+        return cmd
+
+    step("audio master pass 1/2 (%s, denoise=%s)" % (a.audio_preset, a.denoise),
+         audio_master(audio_source, pass1_audio, pass1_report, scratch / "audio-chain" / "pass-1",
+                      include_music=True))
+    step("audio master pass 2/2 from pass 1 cleaned audio (%s, denoise=%s)" %
+         (a.audio_preset, a.denoise),
+         audio_master(pass1_audio, pass2_audio, pass2_report, scratch / "audio-chain" / "pass-2"))
+
+    step("attach pass-2 audio to rendered picture", [
+        "ffmpeg", "-y", "-hide_banner", "-loglevel", "error", "-i", tagged, "-i", str(pass2_audio),
+        "-map", "0:v:0", "-map", "1:a:0", "-c:v", "copy", "-c:a", "aac", "-b:a", "320k",
+        "-ar", "48000", "-shortest", "-movflags", "+faststart", a.out,
+    ])
+
+    # Preserve the existing summary report path while retaining each pass's
+    # detailed measurements for review.
+    pass1_data = json.loads(pass1_report.read_text(encoding="utf-8"))
+    pass2_data = json.loads(pass2_report.read_text(encoding="utf-8"))
+    report_path.write_text(json.dumps({
+        "mode": "two-pass-master",
+        "preset": a.audio_preset,
+        "denoise": a.denoise,
+        "dereverb": a.dereverb,
+        "music_mixed_on_pass": 1 if a.music else None,
+        "passes": [
+            {"pass": 1, "input": str(audio_source), "output": str(pass1_audio), "report": pass1_data},
+            {"pass": 2, "input": str(pass1_audio), "output": str(pass2_audio), "report": pass2_data},
+        ],
+        "deliverable": a.out,
+    }, indent=2), encoding="utf-8")
     os.remove(tagged)
     vcmd = [runtime.get_project_venv_python(), os.path.join(HERE, "verify-render.py"), "--render", a.out, "--res", "%dx%d" % (w, h),
             "--out", stem + "-VERIFY.md"]

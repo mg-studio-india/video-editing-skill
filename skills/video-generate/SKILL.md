@@ -7,15 +7,17 @@ description: Generates stills (Gemini Flash Image) and short video shots (Google
 Generated shots cost money per second, and a fake that looks like evidence destroys trust: every shot is planned,
 priced, approved, checked as a still, labelled and recorded.
 
+This skill runs only when the user explicitly requests a generated shot or image. It is not the default source of missing b-roll for the project pipeline.
+
 ```bash
-ENG="${VIDEO_ENGINE:-$HOME/.agents/skills/video-pipeline/engine}"; S="$ENG/scripts"; W="videos/<project>"
+ROOT="<user-selected-video-folder>"
+ENG="${VIDEO_ENGINE:-$HOME/.agents/skills/video-pipeline/engine}"; S="$ENG/scripts"; W="$ROOT/.video-pipeline"
+ENGINE_ROOT="${VIDEO_ENGINE_DIR:-$HOME/.config/video-skills/engine}"; HF="$ENGINE_ROOT/node_modules/.bin/hyperframes"
 ```
 
-**What may be generated:** the speaker or nobody (never another real person; generic background extras only). Never
-proof: no dashboards, revenue, results, screenshots, documents, platform UI, crowds or news banners. The scene the
-sentence describes, 2-8 s, nameable in three words; about one per minute, never two in a row; screens turned away.
+**What may be generated:** only the shot or image the user explicitly requested. Do not generate it as proof of a real event, product feature, result, dashboard, document, platform UI, testimonial or metric. Do not invent a missing source moment or fill unused screen space with generated footage. Keep generated assets clearly labelled in the project ledger.
 
-**Tool order:** HyperFrames first for stills that exist (`npx hyperframes media-use resolve --type image|icon|logo ...`, the catalog).
+**Tool order:** Use a brand asset or reference already supplied in the project first. If the user asks to retrieve a missing, non-evidentiary asset, use the configured local HyperFrames CLI (`"$HF" media-use resolve --type image|icon|logo ...`) and record its source.
 Images: Gemini Flash Image (`GEMINI_IMAGE_MODEL`, default `gemini-2.5-flash-image`) → OpenRouter
 (`OPENROUTER_IMAGE_MODEL`). Video: Veo (`VEO_MODEL`, default `veo-3.1-generate-preview`); OpenRouter only if it lists a
 video model for the key and you have read that model's request format (the script won't guess). No video available:

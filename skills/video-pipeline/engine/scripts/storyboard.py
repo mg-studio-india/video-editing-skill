@@ -43,8 +43,9 @@ def render(analysis: dict, transcript: dict | None, intent: str | None,
 
     out += ["## Intent lens", intent or "General: how is this video built, and what can I reuse in my own edits?", ""]
     out += ["## One-paragraph read", f"{FILL} (what the video is, who for, and the single trick that makes it work)", ""]
-    out += ["## Beat sheet", f"{FILL} Replace this line with 4-8 beats (hook, setup, ..., payoff, CTA), each with a "
-            "timecode range, what happens, and why it works.", ""]
+    out += ["## Source-supported beat sheet",
+            f"{FILL} Add only moments supported by the footage or verified speech; cite source shot/segment IDs. "
+            "There is no required beat count or narrative template. Omit unsupported beats.", ""]
 
     # --- measured pacing
     out += ["## Measured pacing (automatic)"]
@@ -82,22 +83,22 @@ def render(analysis: dict, transcript: dict | None, intent: str | None,
         out += [f"- sound cues heard: {cues}"]
     out += [""]
 
-    # --- hook
-    hook_end = min(rng.get("end", meta["duration"]), rng.get("start", 0) + 10)
-    out += [f"## Hook ({fmt_time(rng.get('start', 0))}-{fmt_time(hook_end)})"]
+    # --- opening passage (measured; not assumed to be a hook)
+    passage_end = min(rng.get("end", meta["duration"]), rng.get("start", 0) + 10)
+    out += [f"## Opening passage ({fmt_time(rng.get('start', 0))}-{fmt_time(passage_end)})"]
     if transcript:
-        opening = " ".join(w["w"] for w in transcript["words"] if w["start"] < hook_end)
+        opening = " ".join(w["w"] for w in transcript["words"] if w["start"] < passage_end)
         out += [f"- words spoken: {_esc(opening) or '(none)'}"]
     h = pacing.get("hook") or {}
     if h:
         out += [f"- first shot {h['first_shot_duration']}s; cuts in first 3s: {h['cuts_in_first_3s']}, "
                 f"in first 10s: {h['cuts_in_first_10s']}"]
-    out += [f"- hook pattern and why it holds attention: {FILL}", ""]
+    out += ["- Describe only what is visible/audible and its observed effect; leave interpretation blank if uncertain.", ""]
 
     # --- shot list
     out += ["## Shot list",
             "Frame = contact-sheet cell (S2·5 = sheet 2, cell 5; labels on the sheet show #shot and time). "
-            "Replace the six marked cells per row with short tags (see references/storyboard-schema.md). "
+            "Replace marked cells only with details you can verify from the source (see references/storyboard-schema.md). "
             "You may merge a run of near-identical shots into one row (e.g. `#14-19`).", "",
             "| # | Time | Dur | In | Frame | Spoken | Framing | Move | On-screen text | Audio | Purpose |",
             "|---|---|---|---|---|---|---|---|---|---|---|"]
@@ -111,7 +112,8 @@ def render(analysis: dict, transcript: dict | None, intent: str | None,
 
     out += ["## Editing style notes", f"{FILL} (cuts, zooms, transitions, captions, text, music, colour: what the editor does)", "",
             "## Reusable takeaways for my edits",
-            f"{FILL} 5-8 concrete, numeric rules I can apply (e.g. 'new visual every ~1.8s', 'first word by 0.4s').", ""]
+            f"{FILL} Add a small set of source-specific observations, with measured examples where available. "
+            "Do not invent general timing rules from a few shots.", ""]
 
     # --- transcript
     out += ["## Transcript"]

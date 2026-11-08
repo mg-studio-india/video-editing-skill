@@ -52,7 +52,7 @@ It prints the first words with their times. They should increase steadily and li
 |---|---|---|
 | `WATCH_WHISPER_CPP_BIN` | auto (`whisper-cli`) | Path to the binary |
 | `WATCH_WHISPER_MODEL` | auto (large-v3) | Path to the ggml model |
-| `WATCH_WHISPER_LANG` | `auto` | Force a language code (`en`, `hi`, ...). Whisper picks one language per file, so set it explicitly for code-switched speech |
+| `WATCH_WHISPER_LANG` | `en` | The pipeline overrides this to English decoding for Roman-script output; Hindi and auto-detection are not selectable pipeline modes |
 | `WATCH_WHISPER_PROMPT` | empty | Initial prompt: names, jargon. Also **keeps fillers**: `Um, uh, you know, I mean, like.` |
 | `WATCH_WHISPER_DTW` | empty | Optional `--dtw` alignment preset such as `large.v3` |
 | `WATCH_WHISPER_THREADS` | min(8, cores) | CPU threads |
@@ -68,6 +68,6 @@ It prints the first words with their times. They should increase steadily and li
 | Filler count is 0 on talky footage | Whisper omits fillers by default; set `WATCH_WHISPER_PROMPT` and re-run with `--fresh` |
 | Words missing in music-heavy sections | Normal for speech models; trust the audio and the sound-cue list over the words there |
 | Transcript repeats the same phrase | Whisper loops on silence/music; the skill collapses obvious loops (`loops_collapsed` in `analysis.json`) |
-| No contact sheets, many single frames | Pillow not installed; `python3 -m pip install pillow` |
+| No contact sheets, many single frames | Pillow is missing from the configured engine environment; run the supported video-skills setup to install `engine/requirements.txt` |
 | URL fails | yt-dlp missing or the site needs cookies; download the file yourself and pass the path |
 | Slow transcription | large-v3 is the most accurate and the slowest; it only runs once per file (cached). Use the turbo model for drafts |

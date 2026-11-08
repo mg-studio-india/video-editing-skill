@@ -265,8 +265,9 @@ def probe_video(video_path: str) -> dict:
 # ---------------------------------------------------------------- builtin layer (used by treatments.py)
 def builtin_layer(groups: list[dict], ctx: dict, cfg: dict) -> tuple[str, str, list[str]]:
     W, H = ctx["W"], ctx["H"]
-    cfg = {**{k: v for k, v in cfg.items() if k not in ("portrait", "landscape")},
-           **(cfg.get("portrait" if H > W else "landscape") or {})}      # orientation-specific values win
+    orientation = "portrait" if H > W else ("landscape" if W > H else "square")
+    cfg = {**{k: v for k, v in cfg.items() if k not in ("portrait", "landscape", "square")},
+           **(cfg.get(orientation) or {})}      # orientation-specific values win
     mode = cfg.get("mode", "phrase")
     cap_em = cfg.get("max_emphasis")
     if cap_em is not None:
@@ -278,12 +279,12 @@ def builtin_layer(groups: list[dict], ctx: dict, cfg: dict) -> tuple[str, str, l
                     if seen > int(cap_em):
                         w["em"] = False
 
-    # Small, clean font size: 0.048 * W (~52px on 1080p) to keep captions elegant and prevent multi-line overflow
+    # Scale the premium phrase-caption default to about 69 px on a 1080 px-wide canvas.
     if "size" in cfg:
         raw_size = float(cfg["size"])
         size = int(raw_size if raw_size > 1.0 else raw_size * W)
     else:
-        size = int((0.048 if H > W else 0.034) * W)
+        size = int((0.064 if H >= W else 0.036) * W)
 
     # Dynamic vertical position: calculated from speaker face/chin in raw video frames or safe visual zones
     if "y" in cfg:
@@ -295,25 +296,31 @@ def builtin_layer(groups: list[dict], ctx: dict, cfg: dict) -> tuple[str, str, l
         else:
             y = 0.68 if H > W else 0.86
 
-    fam = cfg.get("family", ctx.get("font_family", "sans-serif"))
+    fam = cfg.get("family", ctx.get("font_family", "Google Sans"))
     weight = cfg.get("weight", 700)
     color = cfg.get("color", "#ffffff")
     inactive_color = cfg.get("inactive_color", "#ffffff")
     active = cfg.get("active_color", ctx.get("accent", "#ffe600"))
-    em_color = cfg.get("emphasis_color", "#00f59b")
+    em_color = cfg.get("emphasis_color", active)
     pill = cfg.get("pill_color", "")
     upper = cfg.get("case", "upper") == "upper"
     stroke = cfg.get("stroke", 0)
-    shadow = cfg.get("shadow", "0 3px 14px rgba(0,0,0,.85)")
+    shadow = cfg.get("shadow", "none")
+    plate = cfg.get("plate_color", "rgba(8,10,14,.38)")
+    plate_border = cfg.get("plate_border", "rgba(255,255,255,.09)")
+    padding_x = float(cfg.get("padding_x", 0.30))
+    padding_y = float(cfg.get("padding_y", 0.12))
+    radius = float(cfg.get("plate_radius", 0.24))
     maxw = int(W * float(cfg.get("max_width", 0.90)))
     top = int(H * y - size * 0.6)
     css = (".cap-rail{position:absolute;left:0;right:0;top:%dpx;display:flex;justify-content:center;z-index:60;pointer-events:none}"
-           ".cap-g{position:absolute;left:0;right:0;display:flex;flex-wrap:nowrap;white-space:nowrap;justify-content:center;align-items:baseline;"
-           "gap:0 %dpx;padding:0 %dpx;max-width:%dpx;margin:0 auto;opacity:0;visibility:hidden}"
-           ".cap-w{display:inline-block;font-family:'%s',sans-serif;font-weight:%s;font-size:%dpx;line-height:1.15;color:%s;"
+           ".cap-g{position:absolute;left:0;right:0;width:max-content;max-width:%dpx;box-sizing:border-box;display:flex;flex-wrap:nowrap;white-space:nowrap;justify-content:center;align-items:baseline;"
+           "gap:0 %dpx;padding:%.2fem %.2fem;margin:0 auto;background:%s;border:1px solid %s;border-radius:%.2fem;box-shadow:none;opacity:0;visibility:hidden}"
+           ".cap-w{display:inline-block;font-family:'%s',sans-serif;font-weight:%s;font-size:%dpx;line-height:1.12;color:%s;"
            "text-shadow:%s;%s%s padding:%s;border-radius:%dpx;transform-origin:center center}"
            ".cap-w.em{color:%s;%s}"
-           % (top, int(size * 0.28), int((W - maxw) / 2), W, fam, weight, size,
+           % (top, maxw, int(size * 0.22), padding_y, padding_x, plate, plate_border, radius,
+              fam, weight, size,
               inactive_color if mode in ("phrase", "flow", "karaoke") else color, shadow,
               "-webkit-text-stroke:%dpx rgba(0,0,0,.85);paint-order:stroke fill;" % stroke if stroke else "",
               "text-transform:uppercase;" if upper else "", "0.04em 0.18em" if pill else "0", int(size * 0.22), em_color,

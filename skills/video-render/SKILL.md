@@ -1,59 +1,33 @@
 ---
 name: video-render
-description: Renders a checked composition to the delivery file - HyperFrames render at the platform's resolution and bitrate, BT.709 tags, audio master, structural verify; assembles long-form sections. Use when the user says "render", "export", "make the final", "4K", "assemble", or after notes for a new version.
+description: Renders an approved project through the video-pipeline, verifies the master, and publishes a versioned export.
 ---
 
-# render
+# Render and export
 
-> **Styles:** Canvas sizes and safe zones: `video-take-geometry/references/canvas-safe-zones.md`.
-
-Rendering is the slow, expensive step, so nothing reaches it unchecked, and nothing leaves it unverified.
+Use the project-scoped pipeline entry point so approval, selected audio settings, render verification and export publishing stay connected.
 
 ```bash
-ENG="${VIDEO_ENGINE:-$HOME/.agents/skills/video-pipeline/engine}"; S="$ENG/scripts"; W="videos/<project>"
+ROOT="<user-selected-video-folder>"
+ENG="${VIDEO_ENGINE:-$HOME/.agents/skills/video-pipeline/engine}"
+ENGINE_ROOT="${VIDEO_ENGINE_DIR:-$HOME/.config/video-skills/engine}"
+PY="$ENGINE_ROOT/.venv/bin/python3"
+W="$ROOT/.video-pipeline"
 ```
 
 ## Before rendering
 
-- `npx hyperframes check "$W/hyperframes"` passes and the snapshots were read (the `video-format` skill). A snapshot is seconds; a
-  render is minutes.
-- The user saw the snapshot sheet at gate 1 or approved a previous version with the same layout.
-- Free disk: about 2 x minutes x 0.34 GB for 4K; HyperFrames' frame cache lives in the temp folder.
+- Confirm the user approved the current storyboard, cut, framing, captions, brand treatment and sound choices.
+- Confirm `$W/gates.json` contains a current approval fingerprint. Editing the plan, cut, style, source evidence, references or brand inputs requires review and approval again.
+- Review the source contact sheet, relevant reference and brand previews, selected HyperFrames composition and prior render notes.
+- Keep the chosen aspect and audio preset from `resolved-spec.json`; strong dereverb is the default.
 
-## One command
-
-> [!IMPORTANT]
-> **Virtual Environment (STRICT)**: ALWAYS run `render.py` using the project's virtual environment (`"$PROJECT/.venv/bin/python3"`). Never invoke system python.
+## Render
 
 ```bash
-"$PROJECT/.venv/bin/python3" "$S/render.py" --public "$W/hyperframes" --out "$W/processed/<project>-v<N>.mp4" \
-  --resolution portrait --audio-preset shorts [--denoise auto|strong|neural|off] [--music "$W/music/bed.wav"] [--gpu]
+"$PY" "$ENG/scripts/parallel_pipeline.py" assemble --project "$ROOT" --dereverb strong
 ```
 
-It renders with HyperFrames in the most compatible format: **Standard Dynamic Range (SDR) with `--sdr` enabled by default** and adds lossless BT.709 color tags. Never render in HDR by default as HDR triggers gamma shifts, excessive disk consumption, and playback incompatibilities on mobile and web platforms. Masters the audio (`audio-chain.py`: loudness to the
-preset, true-peak limit, adaptive/neural noise filtering, ducked music), and runs `verify-render.py` (resolution, tags, bitrate, duration against the
-composition, A/V offset, black frames and one-frame flashes) into `$W/processed/<project>-v<N>-VERIFY.md`. Exit 1 means do not
-deliver. `--raw FILE` finishes a render made elsewhere. `--denoise auto` (default) automatically applies adaptive multi-band
-denoising (`afftdn` + `arnndn`) when background noise exceeds -50 dBFS; `--denoise neural` engages DeepFilterNet3 for car/road noise.
+The pipeline stages only selected local HyperFrames compositions, renders under `.video-pipeline/scratch/`, runs its output verification, and publishes the next `$ROOT/Exports/<project>-vN.mp4` only after success. It retains earlier exports. Keep the audio report, verification report and HyperFrames project under the hidden workspace.
 
-| Platform | `--resolution` | Bitrate | `--audio-preset` |
-|---|---|---|---|
-| Shorts / Reels / TikTok | `portrait` (or `portrait-4k` from 4K sources) | 12M (45M at 4K) | `shorts` |
-| YouTube long-form | `landscape-4k` | 45M | `youtube` |
-| Podcast-style long talk | `landscape-4k` | 45M | `longform` |
-| Square feed | `square` | 10M | `shorts` |
-
-The composition stays at its authored size; HyperFrames renders at a higher device scale for 4K, so the aspect must
-match the preset.
-
-## Long renders
-
-Over about 2 minutes, compose per section and join with `assemble.py` (one master, each section loudness-normalised,
-chapters listed); over about 5 minutes of 4K, use segmented capture. The traps that cost renders (black footage under
-parallel workers, frame-cache disk use, GPU ignoring CRF) are in `video-motion-graphics/references/kit-motion.md`. A note on a
-long render costs a patch, not a re-render: `window-patch.py` renders only the changed window.
-
-## After
-
-Hand the file to `video-review-gate` before the user sees it. Versions keep counting (v2, v3); keep each version's VERIFY,
-audio report and ledger. Never hand-edit a master; change the source and render again.
+If a render fails, read the stage error and its report, fix that cause, then rerun the approved project. If the change affects content, timing, framing or treatment, update the plan and record user approval again first. Use only the configured local HyperFrames CLI; do not invoke `npx` or fetch an unpinned package during rendering.

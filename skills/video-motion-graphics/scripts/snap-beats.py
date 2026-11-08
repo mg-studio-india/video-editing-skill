@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """snap-beats.py: snapshot every card moment of a composed project and tile them into one contact sheet."""
-import argparse, json, os, subprocess, shutil, glob, math
+import argparse, json, os, subprocess, shutil, glob, math, time
+from pathlib import Path
 
 ap = argparse.ArgumentParser()
 ap.add_argument("--project", required=True)
@@ -32,12 +33,25 @@ moments = sorted(set(round(min(m, float(S["duration"]) - 0.05), 2) for m in mome
 snapdir = os.path.join(P, "snaps"); os.makedirs(snapdir, exist_ok=True)
 pub = os.path.join(P, "public")
 env = dict(os.environ, PRODUCER_BROWSER_GPU_MODE="hardware")
+engine_root = Path(os.environ.get("VIDEO_ENGINE_DIR", Path.home() / ".config" / "video-skills" / "engine"))
+cli_name = "hyperframes.cmd" if os.name == "nt" else "hyperframes"
+hf_cli = engine_root / "node_modules" / ".bin" / cli_name
+if not hf_cli.is_file():
+    raise SystemExit(f"Local HyperFrames CLI not found: {hf_cli}. Run the configured video-skills setup.")
 outs = []
 for t in moments:
-    subprocess.run(["npx", "hyperframes", "snapshot", pub, "--at", str(t)], env=env, capture_output=True)
-    cands = sorted(glob.glob(os.path.join(pub, "snapshots", "frame-00-at-*.png")))
+    command = [str(hf_cli), "snapshot", pub, "--at", str(t)]
+    if os.name == "nt":
+        command = [os.environ.get("COMSPEC", "cmd.exe"), "/d", "/c", *command]
+    started = time.time()
+    snap = subprocess.run(command, env=env, capture_output=True, text=True)
+    if snap.returncode:
+        raise SystemExit(f"HyperFrames snapshot failed at {t}s: {(snap.stderr or snap.stdout).strip()}")
+    cands = [path for path in glob.glob(os.path.join(pub, "snapshots", "frame-00-at-*.png"))
+             if os.path.getmtime(path) >= started - 1.0]
     if not cands:
-        print("no snapshot at", t); continue
+        raise SystemExit(f"HyperFrames reported success but produced no new snapshot at {t}s")
+    cands.sort(key=os.path.getmtime)
     dst = os.path.join(snapdir, "at-%05.2f.png" % t)
     shutil.copy(cands[0], dst); outs.append(dst)
     print("snap", t)

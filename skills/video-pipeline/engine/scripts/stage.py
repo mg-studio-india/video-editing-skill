@@ -15,7 +15,6 @@ import treatments as T  # noqa: E402
 
 ENGINE = os.path.dirname(HERE)
 GSAP_LOCAL = os.path.join(ENGINE, "assets", "vendor", "gsap.min.js")
-GSAP_CDN = "https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"
 
 
 def camera_js(ops: list) -> list[str]:
@@ -37,9 +36,37 @@ def camera_js(ops: list) -> list[str]:
     return out
 
 
+def default_camera_ops(duration: float) -> list[list]:
+    """Slow, centered push/pull cycles for footage without an authored camera plan."""
+    duration = max(0.0, float(duration))
+    if duration < 2.0:
+        return []
+    move_count = max(1, round(duration / 8.0))
+    if duration >= 8.0 and move_count % 2:
+        move_count += 1
+    move_duration = duration / move_count
+    if move_duration < 2.0:
+        return []
+    ops = [["set", 0.0, 1.0]]
+    for index in range(move_count):
+        start = index * move_duration
+        end = duration if index == move_count - 1 else (index + 1) * move_duration
+        target = 1.022 if index % 2 == 0 else 1.0
+        ops.append(["creep", round(start, 3), round(end, 3), target])
+    return ops
+
+
+def resolved_camera_ops(spec: dict) -> tuple[list, bool]:
+    # An omitted camera field gets the subtle default. An authored camera list,
+    # including [], remains authoritative so a storyboard can keep the frame still.
+    if "camera" in spec:
+        return (spec.get("camera") or []), False
+    return default_camera_ops(float(spec.get("duration", 0.0))), True
+
+
 def stage_fonts(style: dict, style_dir: str, out: str) -> dict:
     st = json.loads(json.dumps(style))
-    for role in ("display", "body", "fallback"):
+    for role in ("display", "body", "fallback", "captions"):
         f = (st.get("fonts") or {}).get(role)
         if not f or not isinstance(f, dict):
             continue
@@ -65,6 +92,11 @@ def build(spec: dict, style: dict, out: str, cuts: list[float]) -> str:
     W, H = canvas or [1080, 1920]
     D = float(spec["duration"])
     cid = spec.get("id", "root")
+    camera_ops, camera_is_default = resolved_camera_ops(spec)
+    camera_origin = spec.get("origin") or (
+        "50% 50%" if camera_is_default and camera_ops else
+        ("50% 30%" if H > W else "52% 0%")
+    )
     ctx_base = {"W": W, "H": H, "style": style, "camera_sel": "#cam",
                 "face_box": spec.get("face_box"), "chin_y": spec.get("chin_y")}
     front, behind, root, css, js = [], [], [], [], []
@@ -128,13 +160,11 @@ def build(spec: dict, style: dict, out: str, cuts: list[float]) -> str:
     if spec.get("matte"):
         matte = ('<video id="matte" class="clip" src="%s" muted playsinline data-start="0" data-duration="%.3f" data-track-index="2" '
                  'style="position:absolute;inset:0;width:100%%;height:100%%;object-fit:cover;z-index:6"></video>' % (spec["matte"], D))
-    gsap = "vendor/gsap.min.js" if os.path.isfile(GSAP_LOCAL) else GSAP_CDN
-    if os.path.isfile(GSAP_LOCAL):
-        os.makedirs(os.path.join(out, "vendor"), exist_ok=True)
-        shutil.copyfile(GSAP_LOCAL, os.path.join(out, "vendor", "gsap.min.js"))
-    else:
-        print("note: no local gsap.min.js in %s; the page loads GSAP from the CDN (renders then need internet)"
-              % os.path.dirname(GSAP_LOCAL))
+    if not os.path.isfile(GSAP_LOCAL):
+        raise SystemExit("Local GSAP asset is missing: %s; run the video pipeline setup." % GSAP_LOCAL)
+    gsap = "vendor/gsap.min.js"
+    os.makedirs(os.path.join(out, "vendor"), exist_ok=True)
+    shutil.copyfile(GSAP_LOCAL, os.path.join(out, "vendor", "gsap.min.js"))
     page = """<!doctype html>
 <html lang="en">
 <head>
@@ -180,9 +210,9 @@ html, body { margin: 0; background: #000; }
 </html>
 """
     bg = (style.get("colors") or {}).get("canvas_bg") or T.tok(style, "colors", "canvas_bg") or "radial-gradient(circle at 50% 20%, rgba(56, 189, 248, 0.16) 0%, transparent 55%), radial-gradient(ellipse 90% 65% at 50% 25%, #1e2c48 0%, #0d1526 60%, #040710 100%)"
-    page = page % (T.font_faces(style), cid, bg, W, H, spec.get("origin", "50% 30%" if H > W else "52% 0%"), "\n".join(css), cid, cid, D, W, H,
+    page = page % (T.font_faces(style), cid, bg, W, H, camera_origin, "\n".join(css), cid, cid, D, W, H,
        spec.get("video", "input-video.mp4"), D, "".join(behind), matte, "".join(root), "".join(front), "\n    ".join(audio),
-       gsap, "\n        ".join(camera_js(spec.get("camera"))), "\n        ".join(T.layout_js(lay, W, H, style)),
+       gsap, "\n        ".join(camera_js(camera_ops)), "\n        ".join(T.layout_js(lay, W, H, style)),
        "\n        ".join(js), D, cid)
     os.makedirs(out, exist_ok=True)
     path = os.path.join(out, "index.html")
@@ -208,9 +238,17 @@ def main() -> None:
     path = build(spec, style, a.out, cuts)
     n = len(spec.get("beats", []))
     W, H = spec.get("canvas", [1080, 1920])
-    print("%s: %dx%d, %.2f s, %d beats%s" % (path, W, H, float(spec["duration"]), n, ", captions" if spec.get("captions") else ""))
+    camera_ops, camera_is_default = resolved_camera_ops(spec)
+    camera_moves = sum(op[0] != "set" for op in camera_ops)
+    if camera_is_default:
+        camera_note = "default subtle push/pull" if camera_moves else "no default move (short clip)"
+    else:
+        camera_note = "storyboard camera" if camera_moves else "static per storyboard"
+    print("%s: %dx%d, %.2f s, %d beats%s, %d camera moves (%s)" %
+          (path, W, H, float(spec["duration"]), n, ", captions" if spec.get("captions") else "",
+           camera_moves, camera_note))
     mids = sorted({round((float(b["in"]) + float(b["out"])) / 2, 2) for b in spec.get("beats", []) if b.get("in") is not None})
-    print("snapshot: npx hyperframes snapshot %s --at %s" % (a.out, ",".join(str(m) for m in mids[:12]) or "1"))
+    print("snapshot: hyperframes snapshot %s --at %s" % (a.out, ",".join(str(m) for m in mids[:12]) or "1"))
 
 
 if __name__ == "__main__":

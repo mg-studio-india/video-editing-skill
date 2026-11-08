@@ -15,10 +15,55 @@ STOP = set("a an the and or of to in on for with my our your is are be this that
 
 
 # ------------------------------------------------------------------ blueprints
+INDEX_STATUS = {"status": "not_checked"}
+
+
 def load_blueprints():
     out = []
-    for p in sorted(glob.glob(os.path.join(REF, "blueprints", "B*.json"))):
-        b = json.load(open(p))
+    # index.json is the canonical reference-free catalogue. Recovery from individual blueprint
+    # files is explicit and recorded so a broken index cannot silently change candidate order.
+    index_path = os.path.join(REF, "index.json")
+    indexed = None
+    issue = None
+    if os.path.isfile(index_path):
+        try:
+            index = json.load(open(index_path, encoding="utf-8"))
+            rows = index.get("blueprints")
+            if index.get("schema") != "blueprint-index/1" or not isinstance(rows, list) or not rows:
+                raise ValueError("unsupported schema or empty blueprint list")
+            if index.get("count") != len(rows):
+                raise ValueError("declared count does not match the blueprint list")
+            paths = []
+            ids = set()
+            for row in rows:
+                if not isinstance(row, dict) or not row.get("file") or not row.get("id"):
+                    raise ValueError("a row is missing its file or ID")
+                rel = os.path.normpath(row["file"])
+                if rel.startswith("..") or os.path.isabs(rel):
+                    raise ValueError("an index row points outside the reference catalog")
+                path = os.path.join(REF, rel)
+                if not os.path.isfile(path):
+                    raise ValueError("indexed blueprint is missing: %s" % rel)
+                blueprint = json.load(open(path, encoding="utf-8"))
+                if blueprint.get("id") != row["id"] or row["id"] in ids:
+                    raise ValueError("duplicate or mismatched blueprint ID: %s" % row["id"])
+                ids.add(row["id"])
+                paths.append(path)
+            indexed = paths
+        except (OSError, ValueError, TypeError, KeyError) as exc:
+            issue = str(exc)
+    else:
+        issue = "index.json is missing"
+
+    if indexed is None:
+        print("WARNING: reference index unavailable (%s); recovering from blueprint files." % issue, file=sys.stderr)
+        paths = sorted(glob.glob(os.path.join(REF, "blueprints", "B*.json")))
+        INDEX_STATUS.update({"status": "recovery", "index": os.path.relpath(index_path, REF), "reason": issue})
+    else:
+        paths = indexed
+        INDEX_STATUS.update({"status": "used", "index": os.path.relpath(index_path, REF), "count": len(paths)})
+    for p in paths:
+        b = json.load(open(p, encoding="utf-8"))
         b["_path"] = os.path.relpath(p, os.path.dirname(REF))
         out.append(b)
     if not out:
@@ -279,6 +324,7 @@ def main():
     top = a.top or W.get("top_k", 5)
     thr = W.get("similar_threshold", 0.62)
     res = {"input": {k: (sorted(v) if isinstance(v, set) else v) for k, v in f.items() if k != "text"},
+           "index_status": dict(INDEX_STATUS),
            "threshold": thr, "similar_found": ranked[0][0][0] >= thr,
            "matches": [{"id": b["id"], "score": sc, "similar": sc >= thr, "columns": cs, "one_line": b.get("signature", {}).get("one_line"),
                         "format": b.get("format"), "path": b["_path"],
