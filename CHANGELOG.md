@@ -2,6 +2,15 @@
 
 Every release of video-editing-skill. Update with `video-skills update`.
 
+## [1.1.1] - 2026-11-08
+
+- Fix audio processing and HyperFrames assembly
+- Add pipeline synthesis and evidence collection
+- Bundle Google Sans typography assets
+- Streamline skill definitions and reference documentation
+
+Skills changed: video-audio 1.1.0 -> 1.1.1, video-captions 1.1.0 -> 1.1.1, video-format 1.1.0 -> 1.1.1, video-generate 1.0.0 -> 1.1.1, video-motion-graphics 1.1.0 -> 1.1.1, video-pipeline 1.1.0 -> 1.1.1, video-plan-storyboard 1.1.0 -> 1.1.1, video-reference-match 1.1.0 -> 1.1.1, video-render 1.0.0 -> 1.1.1, video-researcher 1.1.0 -> 1.1.1, video-review-gate 1.1.0 -> 1.1.1, video-sound-design 1.1.0 -> 1.1.1, video-style 1.1.0 -> 1.1.1, video-take-geometry 1.1.0 -> 1.1.1, video-transcribe 1.1.0 -> 1.1.1, video-watch 1.1.0 -> 1.1.1
+
 ## [1.1.0] - 2026-10-20
 
 - User references take precedence over style blueprints

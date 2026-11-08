@@ -1,27 +1,27 @@
 {
  "schema": "video-skills-manifest/1",
- "version": "1.1.0",
- "released": "2026-10-20",
+ "version": "1.1.1",
+ "released": "2026-11-08",
  "repo": "mg-studio-india/video-editing-skill",
  "skills": {
   "video-audio": {
-   "version": "1.1.0",
-   "tree": "829bcd2f6f92fcab93ff0dfef3debbfd034f982258de47dbabce0ffb554a348b",
+   "version": "1.1.1",
+   "tree": "4e2283829b2b53bdb0e08779ecce154bf00a837e4cdc4f86ba6a19ecfb3a2bd7",
    "files": {
     ".video-skills": "3830f5731e3a76df5150309a9f27126f116cff92cd995f16af5553c30db75e12",
-    "SKILL.md": "0fd9616a6a668b8f607112f0af0e20fc2fefdcf3e7f94e1d94ae6025bc599c23",
+    "SKILL.md": "2c5dc4d6af158644a8c156061032731fff9cfd4d8d4e14a928a25000b528bf29",
     "references/tuning.md": "e53321e4764a424ae2d40bd12a8ab2e3e2d910de50956d6a1f9ecd160805853e",
     "scripts/audio-analyze.py": "d43bd3fc37f2cdb15465ab0e21aa1f0e71c49b5c154d2b01f645f05098ff6a35",
     "tools/late-reverb.py": "b0a541c9f220cafbdbe740237420e37a897df837bd868aebee128742be26e331",
-    "tools/voice-clean.py": "4690d945a6ed9d189760683318d08fd54868a9d3cac3c2976f124b3886dcc28d"
+    "tools/voice-clean.py": "2ebb56043ab761f84edfac2b3f15494c0132b9fbe6ecdf692c2d7146e91f551c"
    }
   },
   "video-captions": {
-   "version": "1.1.0",
-   "tree": "34f842ad6a2e2a8ae0c5f22c1fdc568c286da8b61cb1cc90cd0c737bde54f881",
+   "version": "1.1.1",
+   "tree": "674dbe122b8b35cbccccf4cd154dadbf8422ca864d74994d4553508772271f54",
    "files": {
     ".video-skills": "3830f5731e3a76df5150309a9f27126f116cff92cd995f16af5553c30db75e12",
-    "SKILL.md": "7a2cca67cd4ed91c3024f91d132c28b58a30b403ce26e3e2e3cd65f33befbe71",
+    "SKILL.md": "d83f98846e2e8a67e948c94fceb39e74db84b5e08abd595a138e656f0956c61c",
     "references/styles-captions-typography.md": "0fafa63f4539e6b14e4cebac9bb381fde7017c49951672fc7345e6149ddb65b0"
    }
   },
@@ -42,11 +42,11 @@
    }
   },
   "video-format": {
-   "version": "1.1.0",
-   "tree": "169dbc4f22ff7ffcdb5035aeb41e8352bd80077bea6c2752654859341156650c",
+   "version": "1.1.1",
+   "tree": "6ad6e6f0a5b154fb96cf45df161d70ef1f19dea62ba5eb9a376adfd11ca2dc2b",
    "files": {
     ".video-skills": "3830f5731e3a76df5150309a9f27126f116cff92cd995f16af5553c30db75e12",
-    "SKILL.md": "2527863a5b61375ee552d95e9fea94b9e880e068149c5ef1e8d20c346d6f3e00",
+    "SKILL.md": "4fdf918034679b0fe1d1464076bb393ce571c5821349dddcb1ef08f6624e53b8",
     "references/kit-library.md": "d28ad80e5daf450a7b0a0b6b3cf4303abf94fd8a1096b8110f8a5f2fad2aa12f",
     "references/styles-cards-lists.md": "0dedcb8248f80f309c36f0ca8d30472dd8d1d6a94664bebac0a40194858e4b28",
     "references/styles-layout-composition.md": "4c55116f221223ebbf743d1e1947645d69e91abe4901dd3d85ba4220ffa5ef67",
@@ -54,22 +54,22 @@
    }
   },
   "video-generate": {
-   "version": "1.0.0",
-   "tree": "ab60b3c77e0f5081e26f9d536352d56a0f08d94c1ee7a63610d6e6da29e68447",
+   "version": "1.1.1",
+   "tree": "7e1be65f469394916dff6a267b91c28a773815d86073def0a6b46524e4e593dd",
    "files": {
     ".video-skills": "3830f5731e3a76df5150309a9f27126f116cff92cd995f16af5553c30db75e12",
-    "SKILL.md": "d814a1d822491fb08d5c0588d7331bd55d4a801a09afcbb3439021f36f0b5c38"
+    "SKILL.md": "7ed4ac919b95567e435c3a729060d7dad0cb8a454cea46c190ae61dcfdccf678"
    }
   },
   "video-motion-graphics": {
-   "version": "1.1.0",
-   "tree": "77f8fce6decbc13806d3659c68ce5b603a0b468f52acfa27f6222b5b94ed9143",
+   "version": "1.1.1",
+   "tree": "3c6e4c41be8840d2c8c24f03af9415310c2c3d136fb39cb19b4cb43d53406ba0",
    "files": {
     ".video-skills": "3830f5731e3a76df5150309a9f27126f116cff92cd995f16af5553c30db75e12",
-    "SKILL.md": "0ad006732d59f9dcb13bc57898405447545001b496ca975f7906db786517b8ce",
+    "SKILL.md": "cac7f5e7a2717bdbfaf274de51414d1930c1bc3193d4cdcf6fb7ca57a88fa438",
     "references/kit-motion.md": "e14c7fb6f2bc966c3e257f4636e47d4567fdb3add16f5a68c2c7899bb7f5d4b7",
     "references/styles-animation-transitions-vfx.md": "0d0f9fc0b02d9213fb9a79efaac44b9789a9873cfc9c13838a6858abc82e33c0",
-    "scripts/snap-beats.py": "48ac3a88f32d9ae79be6d3cc863cf20a77f6535188adae99bfde1480a6187449"
+    "scripts/snap-beats.py": "9e188a9f36a70d00ffd47ff91d64c7d45017eeffb549f301f4218724b87fd186"
    }
   },
   "video-omni-restyle": {
@@ -81,15 +81,17 @@
    }
   },
   "video-pipeline": {
-   "version": "1.1.0",
-   "tree": "43ffb1079f67941b730c9c5a4af33ed7eadd1b52c51c458814557b16776df523",
+   "version": "1.1.1",
+   "tree": "b7a36db828af5bdaafbff858a426c1dd740e16e801d5fe36fe583074b0a2a593",
    "files": {
     ".video-skills": "3830f5731e3a76df5150309a9f27126f116cff92cd995f16af5553c30db75e12",
-    "SKILL.md": "a84069820155590e1695a6917cad85cce2086e5388bf47340f5ce060ff12c055",
+    "SKILL.md": "54ea2f59eeaafdcaccc6c50ded69b85c300072ae191be5fe1ddaf8c89017434a",
     "engine/assets/fonts/DMSans-400.woff2": "06779986c5bee4a71e6494c56999c0ea6633c74ea2369c1cfc3d5c78ad102a4e",
     "engine/assets/fonts/DMSans-500.woff2": "0ddce392fcf3bd2af83f5d1807c6665a54ad7b5fd78d75bc5bf21d97a434d4aa",
     "engine/assets/fonts/DMSans-700.woff2": "6695df0f65e42f6b4e29fa067a9b4d31ddd2658977342a5e05f1e382ca0ddb8d",
     "engine/assets/fonts/anton/Anton-Regular.ttf": "a4ba3a92350ebb031da0cb47630ac49eb265082ca1bc0450442f4a83ab947cab",
+    "engine/assets/fonts/google-sans/GoogleSans-700-latin.woff2": "29ccab8bf150534999e3577030cca584aad827909106044e9e7e9f74fda2b038",
+    "engine/assets/fonts/google-sans/OFL.txt": "831b6e041705873c3e6efb18c4c96202bc41c8be42a456d3d26c47abf14816d0",
     "engine/assets/fonts/inter/Inter-Variable.ttf": "29160a80ff49ddcab2c97711247e08b1fab27a484a329ce8b813d820dc559031",
     "engine/assets/fonts/jetbrains-mono/JetBrainsMono-Variable.ttf": "48715a42ec242c21e9f02692891e147d022299a52e48d5e413e1a942193ffeda",
     "engine/assets/fonts/noto-devanagari/NotoSansDevanagari-Variable.ttf": "14ec4af41f27482216d1c2229f417ff9b1425e1babb014e57d1d40d03229853e",
@@ -100,27 +102,28 @@
     "engine/assets/fonts/poppins/Poppins-Medium.ttf": "90373e7d838d32468438fc3e152dca0bdb12edcab99ea639f158790b1ba1fd05",
     "engine/assets/fonts/syne/Syne-Variable.ttf": "ce5ac77142a65cab2248a1a2ebb740b1d4d9c20b52488877d3ff664d1356104a",
     "engine/formats/claude_chat.py": "329072020462f4f98fd3de4bda06df943f3cd26b485ed1e307dea7e90749e2cf",
+    "engine/requirements.txt": "6d2d774089b4c1bbc7e34dadc3b016d900f4c0a00de9c6ce2b79a1a886952419",
     "engine/scripts/apply-cut.py": "bf89710eff6775db6ce67634ed7360339ef9d53b7dfd3eceec8a769896905340",
     "engine/scripts/assemble.py": "f458028b0bf0b41a54fdcb7db9cb6e98bdad67a66f58f5295e1deb1a6beef8d0",
-    "engine/scripts/audio-chain.py": "91766bc1543a7ff7409020e6f6866767cd389965d03e6253eb630fb2533a3e2d",
+    "engine/scripts/audio-chain.py": "529158462984ab66fc5e04404094086eef34e94a18fc4df2721bc28c5a18da2b",
     "engine/scripts/audio.py": "c8f0eebd340b28fb4454229c87bd621d208e4970b86974164ed4d53238fd18ac",
     "engine/scripts/beat-check.py": "29124968c111d0197a89a05de83c81e9bf63fd55b7f895dd97e3fab3d7d07d6c",
     "engine/scripts/broll-conform.py": "3178bead3fe559acd9c4f7a2031034f49881523d0ca5f3e6dd527d26514d46e4",
-    "engine/scripts/captions.py": "6056d0881f8473c3b1797ee00711a5e8c992d5fa0597a4138746e2f29d2a1b1f",
+    "engine/scripts/captions.py": "09af2f0e9940e1d6cd62faba8360601f20fe0d975a18d60732ccd15e6c30f90a",
     "engine/scripts/clean-temp.py": "2527c414e5fb5c4bb88cbbffa82fd9e6ff5c772c6bab7e9d5551fa8783f4bfaf",
     "engine/scripts/compose.py": "e29292880ecde61891f197302c1645a36d04b92e0748908661105dd5eeb280ac",
-    "engine/scripts/config.py": "258f04197150da2cde670cbdb66bee40d2ac41c96ba14aa2126d1a2419fa7438",
+    "engine/scripts/config.py": "7bdd693efaddb2bb7b703d67f292028020983a527d8d1bc2247f2ef2cb842782",
     "engine/scripts/download.py": "1773dd8333f66bab1816af50ef7643cacbd8819ab2fbfc6114e0f678218890c6",
     "engine/scripts/edge-audit.py": "5254dc3098909ad020fe1a7c86f5c6963e80438404e751b6d56f5d273ff79378",
     "engine/scripts/editplan.py": "7a662045d9600c27514f91f6e1316b6005dac079800d828df527a06333e31d98",
     "engine/scripts/find-cut-candidates.mjs": "5931924b0bfdec6c63e5544266848f4666772b6dbb27ea2c3bc8c9ad66d20784",
-    "engine/scripts/fingerprint.py": "582cd810241cf07bf4e3f7887efd76002934d7a4b4df65655cb1e9daf736d27e",
+    "engine/scripts/fingerprint.py": "fa0c430ca81157d767bcd033dfb635103f559d27f26f3933fcec458561ed78bc",
     "engine/scripts/fix-words.py": "eb3af6d2d008903fb44da2d24013f416a9aeba04f241733608c266a50f6fac52",
     "engine/scripts/frames.py": "9465deba62c70cbafdb2e015124b6a900f52f3b819663df69f3a4af990802a60",
     "engine/scripts/gap-scan.py": "822733b1724b22f3273732bd749253b247998b407e4f6f5fdced2e1c7f65f60f",
     "engine/scripts/generate.py": "d783bf28fa4b61d6110abf385f198339badc1a970ded41dc2d29d86cf8370a35",
     "engine/scripts/grade.py": "e725116b799929877ceeaa0959bfa10d2483a300d5f9e5d34cc89bc468b23834",
-    "engine/scripts/heygen-sound.py": "3b89c77242aace8e95040ae8f36ee284bfbc73292eedbef1f8b0b2fac52a837a",
+    "engine/scripts/heygen-sound.py": "052ae5232820dd77e1f13cac8e88b2ed8b004d2e45c550d7c1d2c398d2cb76c2",
     "engine/scripts/hinglish.py": "27955419105bebd512cda6095259550192e87589c3ad24e1f94954be1ed42269",
     "engine/scripts/ingest.py": "f18813479394944dba6bc3ddba03cd79117bac4f7e31fc9f6cde6d5acdfba618",
     "engine/scripts/install-compositions.mjs": "cd9110a30dc8846278507cde3b7602e81dc3b1792e3da0fc8ff3aa3ab79fb390",
@@ -128,25 +131,26 @@
     "engine/scripts/memo.py": "69f60727f85306bdea9b5c4935a6e548f6452090ecced7abdf5d1e855c5caa63",
     "engine/scripts/pacing.py": "dad95ddfd5a2a5a38230cc2558b78b4e63d8f6317d1f83fbbb5b0ab43de3aea8",
     "engine/scripts/paper-cut.py": "8f3d822481616e1a215e4e7eefd4eabb292e212b73f8623ec6cd5b3e8f900888",
-    "engine/scripts/parallel_pipeline.py": "dd5be1e13dafece7cb5eb5a19aac8fda7b1451328e77a45bfe08eaec3c1d6233",
+    "engine/scripts/parallel_pipeline.py": "884910aac0c68d4f1a2a7cfd389e6681ea79bde410bd6d724becd4540beb1bcf",
     "engine/scripts/patch-cut.py": "f1538d31a9ac22fa606c2a0ef42b654a015476a60a4c4a64d73ff24a2a8f6656",
+    "engine/scripts/pipeline_synthesis.py": "e332bece5a9b5fefd6117e5be01484203f436d878661d7734d0d8e32323f0655",
     "engine/scripts/probe.py": "806d88a35efea9abcb67bad222412c5a213d8829ce612cba92c38724c1657b52",
     "engine/scripts/reframe.py": "7f6ef59f030361821a6a21625173304ef0695a57624d16d55019b595573b7284",
-    "engine/scripts/render.py": "c895e7eef8b414f1ad32006dae2b2a8c81da662372c4d3bf95b966a69d1ec1c0",
+    "engine/scripts/render.py": "705f99c516a2bdef9b8426718ca78eafea006e8ee4cc426c36846d1bdd59307b",
     "engine/scripts/resolve-anchors.py": "32edccfa37b0fb753a48731a288bbb133e3c142ed43c14377a3d94971612c3f5",
-    "engine/scripts/runtime.py": "4c4097c0be5ff4f7b2502bac407ed71281418253ea0957fba94aee1b8df9e530",
-    "engine/scripts/setup.py": "1ff47e028aaf18ec4b9b68b8821ee8341361caf4bb3eb940198ad873d435adf9",
+    "engine/scripts/runtime.py": "47c6c08f5ac911a4fb2f26802178d557c09414dedd95323d47826e0538a36ff7",
+    "engine/scripts/setup.py": "cff2e4fde46dbf10fbd21f8132b9e1ff0e5c552f3ebd99dd4d46c4f081e71b23",
     "engine/scripts/sfx-prep.py": "3ec7e130aa2ce2bf93466820569acb897272ab460aabeb9a2d1e24d52e9f75c9",
     "engine/scripts/shots.py": "9b8d6950a030e47c872b71aa81b300fd820774eac17573a47e7757534e64014c",
-    "engine/scripts/spec-resolver.py": "8ac890c60b7e77970563db1b024483b111b4980490e19fc80bc4664c98bf3501",
+    "engine/scripts/spec-resolver.py": "24f4037d5e6ba527d4aa2d44f4a804f5dffb704ae5fa5440fc6b8c11da3b21cc",
     "engine/scripts/speech.py": "b9c37d28e06b38d24fafe1ec951fb1251971e5ac70434bc238d583708c64e5ea",
-    "engine/scripts/stage.py": "cdcf7c2229f7f8f1029b8bd9f54d9c774252b6b79b49fd974f6a8f203e895413",
-    "engine/scripts/storyboard.py": "d715115e255b4b812bbc470ca03090e2f97f87e1b801c35c9d3e0e26a3e7ec9f",
+    "engine/scripts/stage.py": "9a596b9cc264fc4e897cf4a8ed52221474b981c3cb3999f99a911531cba2b0df",
+    "engine/scripts/storyboard.py": "ddbc229484f1d679ad7d1d4c00efc7e12bdcdf13fa1122d661ed1d6d9a210e47",
     "engine/scripts/stutter-scan.py": "999851f53b775a0d545d4f4f9a3a57fe8bf6905dd31b67608aa7dbaae43e7735",
     "engine/scripts/sync-tracks.py": "08bf8bf010c921afe9841a2f1a7605a1e59ffd8a02acc9f6c405d16edfac2562",
-    "engine/scripts/transcribe.py": "bd87dfb4e0c630d05c8c01ac6a9fd32e0ae4d9c591bbd626c3df491a0285d1b7",
-    "engine/scripts/transcribe_cpp.py": "fc0d6bb51e5c41d0a83b4a798572d6c1018ebca19996812766879c677f6749e7",
-    "engine/scripts/treatments.py": "7e332f4fd3fb397e53ecc5bd9919e01580abd2e77523735915ca9f811aa71055",
+    "engine/scripts/transcribe.py": "b6d3392c342c1dbf598569f2f3be7ee4e006aa3f2519fa5423d9053f8a5a2957",
+    "engine/scripts/transcribe_cpp.py": "d8ea627d3b255fffe4f095781004363b0c10a88033312c835b35019b0fae9cc0",
+    "engine/scripts/treatments.py": "47a43ca9d36341ac600c17266c8a3bc2a6a89ada584b7905d674f1b19d2d47a3",
     "engine/scripts/verify-render.py": "b551e65b5ca05bf02cdf0305a2fb58e426176a64eadd41b06010e99e7e950ef5",
     "engine/scripts/watch.py": "ec77e038d9b252606fc9b90ade296f3860d7c86c5ba7627528eba54a04c9d597",
     "engine/scripts/window-patch.py": "3eb3ba17c6ca72ef5d0162be69ba09ffe1182ca4868f5c3462560bbee7f03ead",
@@ -169,34 +173,34 @@
     "engine/tests/test_patch_cut.py": "3633d489e1cc354c847bae90bcab65714b5282ac9a2116573d16260fa75feedb",
     "engine/tests/test_spec_resolver.py": "a392bed9abbf30781ea3dc51f9427bb1dd90ed71e9e703a9527d5022a4397c52",
     "engine/tests/test_transcribe_audio.py": "fedb6e64aee02be30863c21ba0e2e5e799a458e6ebd9bf9014b0322f4800fdd2",
-    "references/engine-scripts.md": "0f56944cdf25e6789c0e6685071354577cb24be37a191bd36a473e3ab309de6d",
-    "references/pipeline-architecture.md": "b71103e296e3521d2aa8b4111df12c0119ed4c0e9a77aa309e40a5113310547f",
-    "references/project-file.md": "f0a2dc0b1ec30575fee698da147121655e4022e8704b307dc5319798ce48f660",
-    "references/setup-check.md": "1cebfd7e01cce22fcde2587b0d49960e4a7758e39d6185c0347d981dfde7abde"
+    "references/engine-scripts.md": "1cadccd09b1aa38cfb497cd0550fba01261fee919f7e6f26520350df2ecd3e0a",
+    "references/pipeline-architecture.md": "a0f9d1d95784ec301e88d6755d3c681d7ea733a4d0e63449222a138059036dd1",
+    "references/project-file.md": "46cf7b4662a22910f3f8480ab1ee10104d39f7000216bfd43d38f2ffa6207a0b",
+    "references/setup-check.md": "5b4c839c768f32100462accf00a512651a3774d9bccd61a13daf8449d24bc39d"
    }
   },
   "video-plan-storyboard": {
-   "version": "1.1.0",
-   "tree": "aac4714289c9e05cb396d07cc8f9e88bb3bbfd71ee49250c2ed6652cb67e34cc",
+   "version": "1.1.1",
+   "tree": "1929b0963b3b498360edd7f095158c75eea4a1665fb7be48f543a9e849fc81a1",
    "files": {
     ".video-skills": "3830f5731e3a76df5150309a9f27126f116cff92cd995f16af5553c30db75e12",
-    "SKILL.md": "c1cfa69fb35628ac42aec18c9fce79b6c1aaa64d68b68425ecc4e4b32d236de7",
-    "references/duration-delivery.md": "c6d474d00338df81007c601ec7709d27da1bf7d2b255077f583716c2ea122cb0",
-    "references/plan-template.md": "0f6470dcc6323036ea19ace6c9c742596e8ad2e2c7a6494ebb66fa8cc4b05868",
-    "references/program-types.md": "46026e1ba221452bf9b439781098bb549aa51725c6f99cb542fb61f4fd645861",
+    "SKILL.md": "5084ccb61b8eaa475f27499da12d3a13337bd92a6a3ae37410c79f97055fa424",
+    "references/duration-delivery.md": "4964b6c09687fd39c3e9d189570d34136f2bb9fe71995f44d52024f9d3fa64fe",
+    "references/plan-template.md": "73e33f37dddaa9e2a3c211c9691727819809e906614826b62802be24f98040e8",
+    "references/program-types.md": "a8eb3553fce4f67b74d4f4da8d8f5ab73b14b6ed357656a915897baa6e7d240e",
     "references/style-catalog.md": "b5c94e7bb425491255fe534e7f88fbe3272d16457583ed5c2b977502f3ffe950",
     "references/styles-commercial-platform.md": "679fb80adbd4245d5515fc38704817623009b7994739f81308bb9a10bf03bcb5",
     "references/styles-storytelling.md": "90188a742e63636ff1157a1c2dfce1fd403416cd489866dc6eaad583eea1f0f2",
-    "references/treatments.md": "a822abdaa342a7c43d4bb9e6808cb3b74ee560599e9ba0ca8d363be117904982",
-    "scripts/storyboard-md.py": "a084cc3e6afa13a97fffb76e75d655c6ba7517a401dd40a90939ac280b1613b3"
+    "references/treatments.md": "c2010e4136df3103bc2119dceb92c36760d1f5dbe9c3bffbcfb58fa244a41d4d",
+    "scripts/storyboard-md.py": "44089bd89420cfe438efee3a37c8647ce6d14d63428278eb4b8575b9d1c30e2e"
    }
   },
   "video-reference-match": {
-   "version": "1.1.0",
-   "tree": "b11b6c553aba1e595d9b9024f54b4207ecded8d61e55f86bbbebfc050df7058a",
+   "version": "1.1.1",
+   "tree": "aa3ade6735186860a6e79ff241a77a230e48ba28e539470a445bbdadb8c63422",
    "files": {
     ".video-skills": "3830f5731e3a76df5150309a9f27126f116cff92cd995f16af5553c30db75e12",
-    "SKILL.md": "0858476f895fa6445a07be97f0a5e0a3e5da6ec8cd6a240241eaf38f95bab908",
+    "SKILL.md": "2f6a780fc6ce50f8735a28d3d7256a20a07d2498669994ca07f65c834fd729e5",
     "references/INDEX.md": "e9f3b0dcf396603ff491959b8755f58bcb21272b87ba92d08c256f8ead113e9b",
     "references/PROMPTS.md": "53cac293b64f99ba254d4cd64f48aa24a6c97e6dc2e594e43fde219481bfba8b",
     "references/blueprint-schema.md": "4cee7ac0868196be930e1cc6555f122e1cd63503a39d4813604c3e66735736fc",
@@ -256,24 +260,24 @@
     "scripts/caption_probe.py": "760c48ab638c6a653b48c8670e28cc337e6fec27522fdb1b8f0a1feabb7a6d6d",
     "scripts/check_blueprints.py": "a8fd22fe4deb7741e6632d1ca02c0773636bfd20e3d45c88398db2e5ccbbe67e",
     "scripts/fit_font.py": "896c8df2975e2cbfbf904c3b6a709ed132a27b793393e3a6e73884ce25e4c02f",
-    "scripts/match.py": "69821374a5d787c6d16954a69d6fb61165f89aa886394654bde24dd4e793589f",
+    "scripts/match.py": "0d344b1fbb0e2cd72ecb588685b87aea0d2968f6d487149a983aa6b2a18cb55b",
     "scripts/measure_blueprint.py": "964ebebee6d395b4457d75157e9400172f6c7e7f3fc2bfe852116624f2b67d44"
    }
   },
   "video-render": {
-   "version": "1.0.0",
-   "tree": "5c8a90b6448efffb19931d284d26fc26485f68cee7d696ebe4ec483cfb2f7077",
+   "version": "1.1.1",
+   "tree": "3c03e246f8c233c1693d4ea06321c8806dc9730e15daaa4af986c6c02a08511b",
    "files": {
     ".video-skills": "3830f5731e3a76df5150309a9f27126f116cff92cd995f16af5553c30db75e12",
-    "SKILL.md": "16192038e8dc95709d98b948ec6345c8a74ef535e8d00ef0c2d62ff3ac72d342"
+    "SKILL.md": "6bcddec4e1ce6f20bd314281fea94f108225ef257275162ea0156e5217d2f931"
    }
   },
   "video-researcher": {
-   "version": "1.1.0",
-   "tree": "f7d92b4b9bed8a422477cdc7efdc59a1004ad737ed00d2ff617588b6f029702d",
+   "version": "1.1.1",
+   "tree": "3d9d9e94dbfae60e6bfd1b2fb119b683384e079ecbd5d8504535315612375251",
    "files": {
     ".video-skills": "3830f5731e3a76df5150309a9f27126f116cff92cd995f16af5553c30db75e12",
-    "SKILL.md": "4aa0a591b58b94bd4cbd76165463c8ea63f1b15e522d501894542120087b4a65",
+    "SKILL.md": "838ffc648ce32e7526024d34746538580a7b7624de780d8dd522bc14bcab1f0d",
     "references/category-benchmarks.md": "269001f7f4124eaf16e0dbd619f8dca841464956150f7878cb15879a2360028e",
     "references/logo-sourcing-and-generation.md": "e146d0add3b44937e3d75f33d718fc8019596f6b50653117f932480e161d1cff",
     "references/research-schema.md": "339109f40a325bfee09e2eb77d28cc48c6b7a1fe5f85cfedf900131aef49f45d",
@@ -281,12 +285,12 @@
    }
   },
   "video-review-gate": {
-   "version": "1.1.0",
-   "tree": "a975fea2578e2a9eb2b48807d730b287ac1e4943bc5d71f6ab6dd87a4f1eaa8f",
+   "version": "1.1.1",
+   "tree": "1273b413ef0aab38d44aaf25986d492b17b17ca63657d86077289618294bf5cd",
    "files": {
     ".video-skills": "3830f5731e3a76df5150309a9f27126f116cff92cd995f16af5553c30db75e12",
-    "SKILL.md": "f2d909fcb098b3f9bea834df5739259e7c0aab6543af71fce1997d91f61dbe52",
-    "scripts/review.py": "e49f95a36cf0fd6f8ef38ed5ffd6aecabd157b38fc589c13806f703e2e70c312"
+    "SKILL.md": "3ceee5ca6843d3a76aa995003a580550754d1401f0160b63a71f52527289da60",
+    "scripts/review.py": "fb3d9c26fc7a073024766a6e08fcbd8c66f053b97b0663753c9134c6a5b4ee2d"
    }
   },
   "video-short-form": {
@@ -299,21 +303,21 @@
    }
   },
   "video-sound-design": {
-   "version": "1.1.0",
-   "tree": "34112a3ba72e097ebd81c5a6b33ee9bf1223f8065fa896891f99c2532c4432dc",
+   "version": "1.1.1",
+   "tree": "9688e672cd7f78b1b61ae2c7eaa2c46e54180a6425d60c4bfe8482f68afe11bc",
    "files": {
     ".video-skills": "3830f5731e3a76df5150309a9f27126f116cff92cd995f16af5553c30db75e12",
-    "SKILL.md": "f57f9454aa7cf4767a6ce1a684e3477780f38fc80ac779764679ce96c7553761",
+    "SKILL.md": "aa31413cd6a74021839276458c2357c47dc788917d47a9e6ecd6143377846373",
     "references/styles-audio-led.md": "d2bccbc7f7448f4377c95a84c64bfd3ddbfb0dbae085972541e417a6eb5881b1",
     "scripts/audiocraft-gen.py": "c194bccf58de5929f400645011b38a210483cadd2cad1c0945e15a05fe35a328"
    }
   },
   "video-style": {
-   "version": "1.1.0",
-   "tree": "925db28b708fcb7cf12ac05468dc249ebd33644ee8f359e6c0f4df60da6b5b1a",
+   "version": "1.1.1",
+   "tree": "02ac31b96c949a3b9fbd096ba6764574ab1c4fd622bc3fba5f55ad60f0188aaf",
    "files": {
     ".video-skills": "3830f5731e3a76df5150309a9f27126f116cff92cd995f16af5553c30db75e12",
-    "SKILL.md": "9fa991f0d22e979029f3450a9d9966441f0bacc1dc14065c3a124139cb71511a",
+    "SKILL.md": "8f4a3e3604c3f0a9d7ebabf00c737d74f25e26b766aed531346d570c8b5603ef",
     "references/business-reels-accounts.md": "6e831fa479ea77f4c89777e74c3255be6d4ab51afea3b79953c8a64af25c9d39",
     "references/business-reels-audit.md": "60ff31ff5674c2dec1bf4dd38b2cac70e14f0bf35dcfad4e9dd83e9f0b0ba6c2",
     "references/business-reels-guide.md": "817199e879fc3eaf413b3b12d855c910df819cf99cee1b0ae581b146ce10ffa8",
@@ -327,34 +331,34 @@
    }
   },
   "video-take-geometry": {
-   "version": "1.1.0",
-   "tree": "5b11166d18f10b46ef9027c78ff1dd564180b8159190a46420c803d607474b94",
+   "version": "1.1.1",
+   "tree": "b7abb315bf1c067275adaefbc91c3d075ab7e0bcc96d777a2017d61d3462d572",
    "files": {
     ".video-skills": "3830f5731e3a76df5150309a9f27126f116cff92cd995f16af5553c30db75e12",
-    "SKILL.md": "8cf5968461897bc091dcab2c56ad93f2d2268c4183285f619747dbbce437257c",
+    "SKILL.md": "a297016a850bc8acbf6bec94932977b623025a3a691f1d9da56a2d87d1a88cc4",
     "references/canvas-safe-zones.md": "f578e3a907a54e5f1d5ffc38014cec136c8764f3b58c0bb342bd45b131a607a2",
     "references/styles-camera-footage.md": "cdac0d4ace0475f8994564389bedb8524c5051ce061f6c127ec97abde49fd7f4"
    }
   },
   "video-transcribe": {
-   "version": "1.1.0",
-   "tree": "87a18018011461443ca1d0aa85c44a993fcf9a7dba5fad1277c14a7aa66384ad",
+   "version": "1.1.1",
+   "tree": "ea4316915c46905feb50c83810de4e5bb29f69244244a8b109e6b7d28928f4d1",
    "files": {
     ".video-skills": "3830f5731e3a76df5150309a9f27126f116cff92cd995f16af5553c30db75e12",
-    "SKILL.md": "53c1204ffbb3ba5845c7b84a8e1e458534dc8e239ddf0f3f368e098b5e466bf1",
-    "references/whisper-setup.md": "95a3067e7edeb2e0ba5248c35ed537b40ead90cc5dcc5d3409f211a8597c7bc7",
+    "SKILL.md": "4767186a74cd41c761784824d371bdbfb05e89c3f3bfd7341b283e97f91e5621",
+    "references/whisper-setup.md": "273d6bd9824ccb0bcf1d2f5630c09861d2c80487d0ade6f784191fa60076383f",
     "scripts/phrase-times.py": "593aefeb59b1e44367a58939c0136ec8c2e16909cbdb0e188998b781c33f773a",
     "scripts/verify-words.py": "25dc89ac34f53b9b815c4b296e30f9c06518aa145384210a1b13c27ce774ee85"
    }
   },
   "video-watch": {
-   "version": "1.1.0",
-   "tree": "4461a14cda66f7af9862d5d1dfb5fa07eca24d560a3fd55ed8d430acb32b6612",
+   "version": "1.1.1",
+   "tree": "f6cf08b586148c906a2dd642c030937706226accfdc3b6cbe4a526103f9c6e3b",
    "files": {
     ".video-skills": "3830f5731e3a76df5150309a9f27126f116cff92cd995f16af5553c30db75e12",
     "SKILL.md": "8a93ec6b08c51599dedf41742335e4b5fae4fbb7750d1756c5a72b3f3ef8bb6a",
     "references/fingerprint.md": "7bee7c96aba123aef561a5815a7f040e663ff9bebf51ef3f5bde9ae0bbbce7f3",
-    "references/hyperframes-mapping.md": "804b94659c4932f70d0891f9d9f41ed1126dd0685cde87358c1bc9fc4fcf700c",
+    "references/hyperframes-mapping.md": "48dba0264e64066c2617b1ea39dfe0d6d0010d7201c9a213948bcc0d87ff173f",
     "references/storyboard-schema.md": "e1bf75ef7393278b1431ee677183cce98dcd9de27f34054e313c90a5f3bbd89b",
     "scripts/screen-activity.py": "5c160fb030927d516fc433a551a4acaee865ebaefef27603bdf22aaf32a2ebfa",
     "scripts/teardown.py": "3381a1f09c3aa496633de67ef3a8e27e2260f618ea0713cb5edda49dd61065ff"
