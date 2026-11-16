@@ -1,33 +1,53 @@
 ---
 name: video-style
-description: Applies the user's selected visual direction and brand rules to the pipeline style file.
+description: Sets the look of an edit - picks one of the default styles (or one matched to the user's references), applies the user's own brand files, fixes and grades the raw footage, and sets the delivery format (aspect, reframe, resolution). Writes style.json. Use after video-pipeline analyze and when the user asks about colour, grade, look, format or aspect.
 ---
 
-# Video style
+# Style, grade and format
 
-Set visual treatment from the approved direction, inspected footage, supplied references and brand guide. This skill styles the edit; it does not invent the story, add beats or decide what the footage means.
+Same variables as `video-pipeline`. Styles live in `$SK/video-style/styles/`:
 
-```bash
-ROOT="<user-selected-video-folder>"
-W="$ROOT/.video-pipeline"
-ENG="${VIDEO_ENGINE:-$HOME/.agents/skills/video-pipeline/engine}"
-PY="$ENG/.venv/bin/python3"
-```
+| style | for |
+|---|---|
+| `clean-creator` (default) | talking-head reels and explainers: measured colour correction, white captions, yellow keyword pop |
+| `business-explainer` | money, markets, startups (Hinglish): gold/green, charts, counters, headlines, maps |
+| `tech-minimal` | tech, product, tutorials: true colour, cyan, UI/code blocks, calm motion |
+| `cinematic-story` | stories, vlogs, founders: warm grade, serif titles, few graphics, slow motion |
 
-## Inputs and precedence
+Each style sets colours, fonts, caption look, card look, motion timing, `color_grade`, `audio_tone`, the HyperFrames
+catalog tags to prefer/avoid, and a small sound palette.
 
-Read `resolved-spec.json`, `style-template.json`, the current source contact sheet and the approved `storyboard.json`. Read every brand file listed by `context/brand-inputs.json`; for PDFs, review both extracted text and the page contact sheet. Inspect the user-selected reference material and any chosen local HyperFrames treatment.
+## 1. Pick the style
 
-Apply explicit brand requirements first, then the user's selected direction and reference, then source-measured correction. Keep brand facts, reference observations and source observations distinct. Do not infer brand colors from footage, fabricate brand tokens, or copy claims and logos from a reference video.
+- User references in `references/` lead: run `video-watch` on them, then pick the closest default style and adjust
+  only what the references clearly show (accent colour, caption weight/case, motion pace, how often graphics appear).
+  Measure colours with `"$PY" "$SK/video-style/scripts/palette.py"` on reference frames; never guess hex values.
+- No references: offer the 2-3 styles that fit the brief and footage, with a one-line reason each; the user picks.
+- Brand files (`$ROOT/brand/`, else the workspace `brand/`; snapshot list in `$W/context/brand-inputs.json`) override
+  the style where they say something. With no brand files, the style is the whole look. Never invent brand values; never read `MEMO.md`/`STYLE-GUIDE.md`.
 
-## Style decisions
+Write `$W/style.json` = the chosen style file, with brand/reference overrides applied. Keep its keys (the renderer
+reads them). Fonts must be files that exist (`@engine/assets/fonts/...` or the user's own files).
 
-- Preserve the existing simple phrase-caption treatment for a simple edit unless the user or brand guide selects a change.
-- Use only fonts and assets available in the configured engine or supplied by the user. Record the actual font files and selected colors in `style.json`.
-- Use `grade.py`'s measured preview as a neutral correction starting point. Apply a stronger look only when the approved reference or brand direction supports it; inspect skin, product color and highlights in the preview.
-- Set layout, graphic tone and motion only for treatments already present in the approved storyboard. Do not add cards, accent colors, a CTA, a new type hierarchy or motion effects just to make the file feel styled.
-- Keep current audio choices in `resolved-spec.json` → `audio`; strong dereverb is already selected by the pipeline.
+## 2. Fix and grade the footage
 
-Create `style.json` from the stage-ready `style-template.json` and the decisions already saved by the pipeline. Keep the file compatible with `stage.py`; do not add fields that its renderer does not support. Ask only an unanswered question from `QUESTIONNAIRE.md`, and do not repeat a decision already in the brief or brand guide.
+`analyze` already converted the source to constant frame rate SDR (HDR is tone-mapped) and measured a neutral
+correction: compare frames in `$W/preview/grade-preview.jpg`.
 
-Present a concise style summary with the brand rules applied, caption treatment, framing and any selected HyperFrames block. Keep previews and working files in `$W/`; final renders belong in `$ROOT/Exports/`. Rendering still requires the pipeline approval gate.
+- `color_grade` in `style.json`: `dynamic` (measured: fixes white balance, exposure, contrast; the safe default),
+  `enhanced-natural`, `vibrant-enhanced`, `neutral-true`. Choose by looking at skin tones and whites in the preview.
+- To compare every preset on one real frame:
+  `"$PY" "$ENG/scripts/grade.py" preview --input "$W/raw/source-video.mp4" --at <seconds> --out "$W/preview/grade-compare.jpg"`.
+- The grade is applied once, at assemble, together with the cut.
+
+## 3. Format
+
+- Aspect: `storyboard.json` → `canvas` (`[1080,1920]` 9:16, `[1080,1080]` 1:1, `[1920,1080]` 16:9).
+- If the canvas aspect differs from the footage, add `"reframe": {"aspect": "9:16", "mode": "static"}` (face-aware crop
+  per shot; `follow` tracks the face; `center` = plain centre crop). Check the result in the render sheet: no
+  cropped faces, hands, products or on-screen text.
+- Resolution: 1080-wide by default; `"resolution": "4k"` in the storyboard for UHD.
+- Audio delivery: `resolved-spec.json` → `audio.preset` (`shorts`/`youtube` −14 LUFS, `longform` −16, `broadcast` −23)
+  and `audio.tone` (`neutral`, `clear`, `warm`; the style's `audio_tone` is a good default).
+
+Summarise for the user: style chosen and why, brand rules applied, grade, aspect/reframe, caption look.

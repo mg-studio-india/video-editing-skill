@@ -14,9 +14,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 import config  # noqa: E402
 import hinglish  # noqa: E402
 from runtime import ensure_project_venv, run  # noqa: E402
-from transcribe_cpp import collapse_loops, transcribe, words_to_segments  # noqa: E402
-
-FILLER_PROMPT = "Um, uh, you know, I mean, like."
+from transcribe_cpp import collapse_loops, refine_words, transcribe, words_to_segments  # noqa: E402
 
 
 def media_duration(media: str) -> float:
@@ -65,9 +63,11 @@ def main() -> None:
     ap.add_argument("media")
     ap.add_argument("--out", required=True, help="transcript.json to write")
     ap.add_argument("--window", type=float, default=0.0, help="window length in seconds (0 = one pass)")
-    ap.add_argument("--lang", choices=["en"], default="en", help="pipeline transcription is fixed to English decoding for Roman-script output")
-    ap.add_argument("--prompt", help="initial prompt: names, jargon (fillers prompt is added unless --no-fillers)")
-    ap.add_argument("--no-fillers", action="store_true", help="do not ask whisper to keep um/uh")
+    ap.add_argument("--lang", choices=["auto", "en", "hi"], default="auto",
+                    help="decoder language (auto: Hinglish model -> en token, stock model -> hi then romanised)")
+    ap.add_argument("--prompt", help="names and jargon only (e.g. \"Zerodha, HyperFrames\"); never a topic sentence")
+    ap.add_argument("--no-fillers", action="store_true", help="accepted for compatibility; no filler prompt is added")
+    ap.add_argument("--no-refine", action="store_true", help="keep raw ASR times (default: snap words to speech energy)")
     ap.add_argument("--fix", help="corrections.json to apply (default: corrections.json next to --out, when present)")
     ap.add_argument("--force", action="store_true", help="force re-transcription even if transcript already exists")
     a = ap.parse_args()
@@ -91,17 +91,11 @@ def main() -> None:
     FW = importlib.util.module_from_spec(_spec); _spec.loader.exec_module(FW)
     fix_path = a.fix or os.path.join(os.path.dirname(os.path.abspath(a.out)), "corrections.json")
     corrections = FW.load_corrections(fix_path)
-    if a.lang:
-        cfg["WATCH_WHISPER_LANG"] = a.lang
-    raw_lang = (cfg.get("WATCH_WHISPER_LANG") or "").strip().lower()
-    is_hi = False
-    cfg["WATCH_WHISPER_LANG"] = "en"
+    cfg["WATCH_WHISPER_LANG"] = a.lang
     prompt = a.prompt or cfg.get("WATCH_WHISPER_PROMPT") or ""
     names = [v for v in dict.fromkeys(corrections.values()) if v.lower() not in prompt.lower()][:20]
     if names:                                  # the correct spellings as hints, so whisper gets them right more often
         prompt = (prompt + " " + ", ".join(names) + ".").strip()
-    if not a.no_fillers and FILLER_PROMPT.lower() not in prompt.lower():
-        prompt = (FILLER_PROMPT + " " + prompt).strip()
     cfg["WATCH_WHISPER_PROMPT"] = prompt
 
     dur = media_duration(a.media)
@@ -112,19 +106,23 @@ def main() -> None:
         if len(wins) > 1:
             print(f"window {i + 1}/{len(wins)}  {s:.2f}-{e:.2f}", file=sys.stderr)
         parts.append(transcribe(a.media, work, s if len(wins) > 1 else None, e if len(wins) > 1 else None, cfg))
-    words, cues, lang = merge(parts)
-    if is_hi or lang == "hi":
-        lang = "hi-Latn"
+    words, cues, _ = merge(parts)
     words, removed = collapse_loops(words)
+    dropped = []
+    if not a.no_refine and words:
+        import speechmask
+        words, dropped = refine_words(words, speechmask.build(a.media))
     shaped, changes = FW.apply(to_engine_shape(words), corrections) if corrections else (to_engine_shape(words), [])
-    out = {"engine": "whisper.cpp", "model": parts[0].get("model"), "language": lang, "duration": round(dur, 3),
-           "words": shaped, "corrections_applied": len(changes), "segments": words_to_segments(words), "sound_cues": cues,
+    out = {"engine": "whisper.cpp", "model": parts[0].get("model"), "language": "hi-Latn", "script": "hinglish",
+           "timing": parts[0].get("timing"), "duration": round(dur, 3),
+           "words": shaped, "corrections_applied": len(changes), "segments": words_to_segments(shaped), "sound_cues": cues,
            "loops_collapsed": removed + sum(p.get("loops_collapsed", 0) for p in parts),
-           "windows": [list(w) for w in wins]}
+           "dropped_no_speech": dropped, "windows": [list(w) for w in wins]}
     out = hinglish.clean_transcript(out)
     Path(a.out).parent.mkdir(parents=True, exist_ok=True)
     Path(a.out).write_text(json.dumps(out, indent=1))
-    print(f"{a.out}: {len(shaped)} words, language={lang}, windows={len(wins)}, loops_collapsed={out['loops_collapsed']}"
+    print(f"{a.out}: {len(shaped)} words (Hinglish), timing={out['timing']}, windows={len(wins)}, "
+          f"loops_collapsed={out['loops_collapsed']}, dropped_no_speech={len(dropped)}"
           + (f", {len(changes)} corrections from {os.path.basename(fix_path)}" if corrections else ""))
     for w in shaped[:8]:
         print(f"  {w['start']:8.2f}  {w['w']}")

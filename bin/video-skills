@@ -338,6 +338,33 @@ def apply(version, skills_dir, names=None, force=False):
                 d = write_conflict(name, version, dst, new)
                 report.append((name, "CONFLICT", "an edited copy from the old installer: kept; diff %s; "
                                "`video-skills update %s --force` replaces it after a backup" % (d, name)))
+    if names is None:
+        report += retire(version, skills_dir, new_p)
+    return report
+
+
+def retire(version, skills_dir, new_p):
+    """Skills an earlier release linked that `version` no longer ships: unlink them, so their old rules stop loading.
+    An edited one is backed up first. Agent-folder links left dangling by this are removed too."""
+    report = []
+    if not skills_dir.is_dir():
+        return report
+    for dst in sorted(skills_dir.iterdir()):
+        name = dst.name
+        if name in new_p or not is_link(dst):
+            continue
+        cur_v = version_of(os.path.realpath(dst))
+        if cur_v is None or name not in pristine(cur_v):
+            continue                                              # not a skill this package manages
+        detail = "not in %s" % version
+        if os.path.exists(dst) and file_hashes(os.path.realpath(dst)) != pristine(cur_v).get(name):
+            detail += "; your edits backed up to %s" % backup(os.path.realpath(dst), name)
+        unlink_any(dst)
+        for agent in AGENT_DIRS:
+            a = agent / name
+            if os.path.islink(a) and not os.path.exists(a):
+                a.unlink()
+        report.append((name, "retired", detail))
     return report
 
 
@@ -416,6 +443,8 @@ def record(st, version, rep, full):
     for name, what, _ in rep:
         if what in ("installed", "repaired", "updated", "relinked", "replaced", "migrated to managed link", "up to date"):
             st["skills"][name] = {"version": version}
+        elif what == "retired":
+            st["skills"].pop(name, None)
     if full:
         if st.get("package_version") and st["package_version"] != version:
             st["history"].append({"at": time.strftime("%Y-%m-%dT%H:%M:%S"), "from": st["package_version"], "to": version})

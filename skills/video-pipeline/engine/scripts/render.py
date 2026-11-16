@@ -1,6 +1,14 @@
 #!/usr/bin/env python3
-"""render.py: one command from a checked composition to a deliverable file, with no step skipped."""
-import argparse, json, os, subprocess, sys
+"""render.py: one command from a staged composition to a verified deliverable.
+
+  1. HyperFrames renders the picture. The base video is muted in the composition, so the render's own audio holds
+     only sound effects (and anything a catalog block plays).
+  2. audio-chain.py master (pass 2) polishes the lossless voice, mixes the effects and optional music, masters once
+     and fades out over the tail.
+  3. One mux: picture stream-copied, mix encoded to AAC once, BT.709 tags, exact composition length.
+  4. verify-render.py checks resolution, colour tags, duration, A/V length, black frames and writes a frame sheet.
+"""
+import argparse, json, os, re, subprocess, sys
 from pathlib import Path
 
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -11,23 +19,10 @@ runtime.ensure_project_venv()
 PRESETS = {
     "portrait": (1080, 1920, "25M"),
     "portrait-4k": (2160, 3840, "45M"),
-    "portrait-uhd": (2160, 3840, "45M"),
     "landscape": (1920, 1080, "25M"),
     "landscape-4k": (3840, 2160, "45M"),
-    "landscape-uhd": (3840, 2160, "45M"),
     "square": (1080, 1080, "20M"),
     "square-4k": (2160, 2160, "35M"),
-    "square-uhd": (2160, 2160, "35M"),
-    "uhd": (2160, 3840, "45M"),
-    "4k": (2160, 3840, "45M"),
-}
-
-ALIAS_TO_HF = {
-    "uhd": "portrait-4k",
-    "4k": "portrait-4k",
-    "portrait-uhd": "portrait-4k",
-    "landscape-uhd": "landscape-4k",
-    "square-uhd": "square-4k",
 }
 
 
@@ -35,129 +30,102 @@ def step(name, cmd):
     print("== %s" % name)
     r = subprocess.run(cmd)
     if r.returncode != 0:
-        sys.exit("%s failed (exit %d): %s" % (name, r.returncode, " ".join(cmd)))
+        sys.exit("%s failed (exit %d): %s" % (name, r.returncode, " ".join(str(c) for c in cmd)))
 
 
 def find_hyperframes_cmd() -> list[str]:
     bin_name = "hyperframes.cmd" if os.name == "nt" else "hyperframes"
-    cands = [
-        runtime.find_engine_dir() / "node_modules" / ".bin" / bin_name,
-        Path.cwd() / ".engine" / "node_modules" / ".bin" / bin_name,
-        Path.cwd() / "node_modules" / ".bin" / bin_name,
-    ]
-    for c in cands:
+    for c in (runtime.find_engine_dir() / "node_modules" / ".bin" / bin_name,
+              Path.cwd() / ".engine" / "node_modules" / ".bin" / bin_name):
         if c.is_file():
             return [str(c)]
-    raise RuntimeError("Local HyperFrames CLI not found. Install it in the configured video engine with the pipeline setup; refusing to fetch or run an unpinned package.")
+    raise RuntimeError("Local HyperFrames CLI not found. Run `video-skills setup`; refusing to fetch an unpinned package.")
+
+
+def composition_duration(index: str) -> float | None:
+    try:
+        html = open(index, encoding="utf-8").read()
+    except OSError:
+        return None
+    root = re.search(r'<div[^>]*data-composition-id="[^"]+"[^>]*>', html)
+    m = root and re.search(r'data-duration="([\d.]+)"', root.group(0))
+    return float(m.group(1)) if m else None
+
+
+def has_audio(media: str) -> bool:
+    p = subprocess.run(["ffprobe", "-v", "error", "-select_streams", "a:0", "-show_entries", "stream=index",
+                        "-of", "csv=p=0", media], capture_output=True, text=True)
+    return bool(p.stdout.strip())
 
 
 def main():
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
-    ap.add_argument("--public", help="path to composition directory (e.g. W/hyperframes)")
-    ap.add_argument("--hyperframes", dest="public", help="alias for --public (e.g. W/hyperframes)")
+    ap.add_argument("--public", "--hyperframes", dest="public", required=True, help="composition folder (W/hyperframes)")
     ap.add_argument("--out", required=True)
-    ap.add_argument("--resolution", default="portrait-4k", choices=sorted(PRESETS),
-                    help="render resolution preset (default: portrait-4k / UHD)")
+    ap.add_argument("--voice", required=True, help="lossless flat-cut voice WAV from apply-cut.py (pass-1 cleaned)")
+    ap.add_argument("--resolution", default="portrait", choices=sorted(PRESETS))
     ap.add_argument("--audio-preset", default="shorts", choices=["youtube", "shorts", "longform", "broadcast"])
-    ap.add_argument("--denoise", default="auto", choices=["auto", "off", "light", "medium", "strong", "neural"],
-                    help="denoising level for audio master (default: auto)")
-    ap.add_argument("--dereverb", default="strong", choices=["off", "light", "medium", "strong"],
-                    help="late-reflection suppression strength for the audio master")
-    ap.add_argument("--music")
-    ap.add_argument("--raw", help="an existing render to finish (skips the HyperFrames render)")
+    ap.add_argument("--tone", default="neutral", choices=["neutral", "clear", "warm"])
+    ap.add_argument("--music", help="music bed inside the project folder (ducked under the voice)")
+    ap.add_argument("--music-db", type=float, default=-20.0)
+    ap.add_argument("--fade-out", type=float, default=1.0, help="audio fade over the last N seconds (match the picture fade)")
+    ap.add_argument("--raw", help="an existing HyperFrames render to finish (skips the render)")
     ap.add_argument("--gpu", action="store_true")
     ap.add_argument("--workers", default="auto")
-    ap.add_argument("--scratch-dir", help="parent folder for disposable render and verification intermediates")
+    ap.add_argument("--scratch-dir", help="folder for disposable render intermediates")
     ap.add_argument("--bitrate", help="override the preset's video bitrate, e.g. 16M")
-    ap.add_argument("--sdr", action="store_true", default=True,
-                    help="force SDR output (default: True, matches BT.709 mastering)")
-    ap.add_argument("--hdr", dest="sdr", action="store_false",
-                    help="allow HDR output when source is HDR")
     a = ap.parse_args()
-    if not a.public:
-        ap.error("--public or --hyperframes is required")
+
     w, h, br = PRESETS[a.resolution]
     br = a.bitrate or br
-    hf_res = ALIAS_TO_HF.get(a.resolution, a.resolution)
     os.makedirs(os.path.dirname(os.path.abspath(a.out)), exist_ok=True)
     scratch = Path(a.scratch_dir).expanduser().resolve() if a.scratch_dir else Path(os.path.dirname(os.path.abspath(a.out)))
     scratch.mkdir(parents=True, exist_ok=True)
     stem = str(scratch / Path(a.out).stem)
-    raw, tagged = a.raw or stem + "-raw.mp4", stem + "-tagged.mp4"
+    raw = a.raw or stem + "-raw.mp4"
+    index = os.path.join(a.public, "index.html")
     if not a.raw:
-        hf_bin = find_hyperframes_cmd()
-        cmd = [*hf_bin, "render", a.public, "--resolution", hf_res, "--video-bitrate", br,
-               "--workers", str(a.workers), "-o", raw]
-        if a.sdr:
-            cmd.append("--sdr")
+        cmd = [*find_hyperframes_cmd(), "render", a.public, "--resolution", a.resolution, "--video-bitrate", br,
+               "--workers", str(a.workers), "--sdr", "-o", raw]
         if a.gpu:
             cmd.append("--gpu")
-        step("render (%s, %s)" % (hf_res, br), cmd)
-    step("BT.709 tags", ["ffmpeg", "-y", "-v", "error", "-i", raw, "-c", "copy", "-color_primaries", "bt709",
-                         "-color_trc", "bt709", "-colorspace", "bt709", "-color_range", "tv",
-                         "-movflags", "+write_colr+faststart", tagged])
-    # Keep both mastering passes lossless. Pass one runs the existing audio chain
-    # on the rendered mix; pass two consumes that cleaned WAV and runs the same
-    # chain again. Optional music is mixed only once, during pass one.
-    audio_source = Path(stem + "-audio-source.wav")
-    pass1_audio = Path(stem + "-audio-pass-1.wav")
-    pass2_audio = Path(stem + "-audio-pass-2.wav")
-    pass1_report = Path(stem + "-audio-pass-1.json")
-    pass2_report = Path(stem + "-audio-pass-2.json")
-    report_path = Path(stem + "-audio.json")
-    step("extract lossless audio for two-pass master", [
-        "ffmpeg", "-y", "-hide_banner", "-loglevel", "error", "-i", tagged,
-        "-map", "0:a:0", "-vn", "-ar", "48000", "-c:a", "pcm_s24le", str(audio_source),
-    ])
+        step("render picture (%s, %s)" % (a.resolution, br), cmd)
 
-    def audio_master(media, out, report, pass_scratch, include_music=False):
-        cmd = [runtime.get_project_venv_python(), os.path.join(HERE, "audio-chain.py"), "master",
-               str(media), "--out", str(out), "--preset", a.audio_preset,
-               "--report", str(report), "--scratch-dir", str(pass_scratch)]
-        if a.denoise:
-            cmd += ["--denoise", a.denoise]
-        cmd += ["--dereverb", a.dereverb]
-        if include_music and a.music:
-            cmd += ["--music", a.music]
-        return cmd
+    duration = composition_duration(index)
+    if duration is None:
+        p = subprocess.run(["ffprobe", "-v", "error", "-select_streams", "v:0", "-show_entries", "stream=duration",
+                            "-of", "csv=p=0", raw], capture_output=True, text=True)
+        duration = float(p.stdout.strip() or 0)
 
-    step("audio master pass 1/2 (%s, denoise=%s)" % (a.audio_preset, a.denoise),
-         audio_master(audio_source, pass1_audio, pass1_report, scratch / "audio-chain" / "pass-1",
-                      include_music=True))
-    step("audio master pass 2/2 from pass 1 cleaned audio (%s, denoise=%s)" %
-         (a.audio_preset, a.denoise),
-         audio_master(pass1_audio, pass2_audio, pass2_report, scratch / "audio-chain" / "pass-2"))
+    sfx = None
+    if has_audio(raw):
+        sfx = stem + "-sfx.wav"
+        step("extract effects track", ["ffmpeg", "-y", "-hide_banner", "-loglevel", "error", "-i", raw, "-map", "0:a:0",
+                                       "-vn", "-ar", "48000", "-c:a", "pcm_f32le", sfx])
 
-    step("attach pass-2 audio to rendered picture", [
-        "ffmpeg", "-y", "-hide_banner", "-loglevel", "error", "-i", tagged, "-i", str(pass2_audio),
-        "-map", "0:v:0", "-map", "1:a:0", "-c:v", "copy", "-c:a", "aac", "-b:a", "320k",
-        "-ar", "48000", "-shortest", "-movflags", "+faststart", a.out,
-    ])
+    mix = stem + "-mix.wav"
+    report = stem + "-audio.json"
+    cmd = [runtime.get_project_venv_python(), os.path.join(HERE, "audio-chain.py"), "master", "--voice", a.voice,
+           "--out", mix, "--duration", "%.6f" % duration, "--fade-out", str(a.fade_out), "--preset", a.audio_preset,
+           "--tone", a.tone, "--report", report, "--scratch-dir", str(scratch), "--music-db", str(a.music_db)]
+    if sfx:
+        cmd += ["--sfx", sfx]
+    if a.music:
+        cmd += ["--music", a.music]
+    step("audio pass 2: voice polish + effects + music, one master", cmd)
 
-    # Preserve the existing summary report path while retaining each pass's
-    # detailed measurements for review.
-    pass1_data = json.loads(pass1_report.read_text(encoding="utf-8"))
-    pass2_data = json.loads(pass2_report.read_text(encoding="utf-8"))
-    report_path.write_text(json.dumps({
-        "mode": "two-pass-master",
-        "preset": a.audio_preset,
-        "denoise": a.denoise,
-        "dereverb": a.dereverb,
-        "music_mixed_on_pass": 1 if a.music else None,
-        "passes": [
-            {"pass": 1, "input": str(audio_source), "output": str(pass1_audio), "report": pass1_data},
-            {"pass": 2, "input": str(pass1_audio), "output": str(pass2_audio), "report": pass2_data},
-        ],
-        "deliverable": a.out,
-    }, indent=2), encoding="utf-8")
-    os.remove(tagged)
-    vcmd = [runtime.get_project_venv_python(), os.path.join(HERE, "verify-render.py"), "--render", a.out, "--res", "%dx%d" % (w, h),
-            "--out", stem + "-VERIFY.md"]
-    idx = os.path.join(a.public, "index.html")
-    if os.path.isfile(idx):
-        vcmd += ["--index", idx]
+    step("mux picture + master (one AAC encode, BT.709 tags)", [
+        "ffmpeg", "-y", "-hide_banner", "-loglevel", "error", "-i", raw, "-i", mix,
+        "-map", "0:v:0", "-map", "1:a:0", "-c:v", "copy", "-c:a", "aac", "-b:a", "320k", "-ar", "48000",
+        "-t", "%.6f" % duration, "-color_primaries", "bt709", "-color_trc", "bt709", "-colorspace", "bt709",
+        "-color_range", "tv", "-movflags", "+write_colr+faststart", a.out])
+
+    vcmd = [runtime.get_project_venv_python(), os.path.join(HERE, "verify-render.py"), "--render", a.out,
+            "--res", "%dx%d" % (w, h), "--out", stem + "-VERIFY.md", "--fade-out", str(a.fade_out)]
+    if os.path.isfile(index):
+        vcmd += ["--index", index]
     r = subprocess.run(vcmd)
-    print("deliverable: %s\nverify: %s-VERIFY.md (%s)" % (a.out, stem, "PASS" if r.returncode == 0 else "FAIL: do not deliver"))
+    print("deliverable: %s\nverify: %s-VERIFY.md (%s)\naudio report: %s" % (a.out, stem, "PASS" if r.returncode == 0 else "FAIL: do not deliver", report))
     sys.exit(r.returncode)
 
 

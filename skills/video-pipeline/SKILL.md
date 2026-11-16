@@ -1,86 +1,116 @@
 ---
 name: video-pipeline
-description: Runs a project-scoped, source-grounded video editing pipeline with reference and brand review, explicit user direction, HyperFrames assembly, and organized exports.
+description: Edits a talking or product video end to end - studio-clean audio, Hinglish transcript, tight word-safe cut, research-backed HyperFrames graphics, keyword captions, fade-out ending - with one approval before render. The entry point for every edit; start here for "edit this video", "make a reel/short/YouTube video from this footage".
 ---
 
 # Video pipeline
 
-The user-selected folder is the project boundary. Keep original inputs and guides in place, put all pipeline working files in its hidden `.video-pipeline/` directory, and write only final exports to `Exports/`.
+One project folder, one flow, one approval. `$ROOT` is the video's own folder (e.g. `videos/my-reel`, footage in
+`raw/`, optional `references/`). Brand files come from `$ROOT/brand/` or, if absent, the workspace `brand/`.
+Originals stay untouched; working files go to `$ROOT/.video-pipeline/` (`$W`); results go to
+`$ROOT/Exports/<project>-vN.mp4`.
 
 ```bash
-ROOT="<user-selected-video-folder>"
-ENG="${VIDEO_ENGINE:-$HOME/.agents/skills/video-pipeline/engine}"
-ENGINE_ROOT="${VIDEO_ENGINE_DIR:-$HOME/.video-skills/engine}"
-[ -d "$ENGINE_ROOT" ] || ENGINE_ROOT="$HOME/.config/video-skills/engine"
-PY="${VIDEO_ENGINE_PYTHON:-}"
-if [ -z "$PY" ]; then
-  for candidate in "$ENGINE_ROOT/.venv/bin/python3" "$ENGINE_ROOT/.venv/bin/python" "$ENGINE_ROOT/.venv/Scripts/python.exe"; do
-    if [ -x "$candidate" ]; then PY="$candidate"; break; fi
-  done
-fi
+ROOT="<project folder>"; W="$ROOT/.video-pipeline"
+SK="${VIDEO_SKILLS:-$HOME/.agents/skills}"; ENG="$SK/video-pipeline/engine"
+for PY in "$VIDEO_ENGINE_PYTHON" "$HOME/.video-skills/engine/.venv/bin/python3" \
+          "$HOME/.config/video-skills/engine/.venv/bin/python3" "$HOME/.video-skills/engine/.venv/Scripts/python.exe"; do
+  [ -n "$PY" ] && [ -x "$PY" ] && break; done
+P="$ENG/scripts/parallel_pipeline.py"
 ```
 
-## 1. Analyze inside the selected project
+## Rules that keep the output good
 
-Before running, confirm the configured engine environment has `Pillow`, `opencv-python-headless`, `pypdf`, and `pypdfium2` from `engine/requirements.txt`. Use the project `.venv`/engine interpreter; do not install into system Python.
+- **Nothing is assumed.** Brand rules come only from files the user put in a `brand/` folder. If there are none, the
+  look is the default style the user picks (`video-style`). There is no memo or style-guide template; old
+  `MEMO.md` / `STYLE-GUIDE.md` files are ignored. Do not invent colours, handles, CTAs, logos or claims.
+- **Every on-screen word is sourced:** the speaker's own words (transcript) or a researched fact with a URL.
+- **HyperFrames catalog first.** Every graphic, title, lower third, chart, transition or caption treatment is
+  searched in the local catalog (`catalog.py search`) before anything custom is built.
+- **Audio is cleaned once.** Pass 1 (dereverb + DeepFilterNet) runs in `analyze`; pass 2 (polish + loudness) runs in
+  `assemble`. Never add another denoise/dereverb step; to change strength, re-run `analyze` with `--denoise`/`--dereverb`.
+- **Transcript is Hinglish in Roman script**, always: Hindi and English as spoken, English letters.
+- **Cuts are tight but never inside a word**, and every video ends with a held frame that fades to black.
 
-Run analysis with the user's selected folder. If it contains one supported video, `--input` may be that folder; if it contains more than one source video, ask which clip(s) to edit rather than picking one silently. Project references are read only from `$ROOT/references/` or explicit `--reference` paths; video, image and PDF references are supported. Brand text, PDF guides and visual assets are read from `$ROOT/brand/` plus recognized root-level brand-guide files.
+## 0. Check the environment (first edit of a session)
 
 ```bash
-"$PY" "$ENG/scripts/parallel_pipeline.py" analyze \
-  --input "$ROOT/<source-video-or-folder>" \
-  --project "$ROOT" \
-  --prompt "<the user's creative brief>" \
-  [--reference "$ROOT/references/<reference-file>"]
+bash "${VIDEO_ENGINE_DIR:-$HOME/.video-skills/engine}/test-package-manager.sh" --quick      # ~10 s
 ```
 
-Repeat `--reference` for multiple explicit references. The analyzer also finds supported media in the project's `references/` folder. It analyzes reference videos separately from the source, reads image references, extracts searchable text from PDF references and brand guides into the hidden review packet, snapshots brand assets, and uses the bundled `video-reference-match/references/index.json` when ranking styles. A missing or malformed index is reported and can recover from the bundled blueprint files; never silently skip the index.
+It verifies the skills, engine, FFmpeg filters, whisper flags, the Hinglish model, DeepFilterNet, HyperFrames and the
+catalog index. On FAIL, run it with `--fix` (re-runs setup) and do not start the edit until it says READY. After an
+install or update, run it once without `--quick`: it renders a sample edit end to end and checks the result.
 
-Analysis creates timestamped source frames/contact sheets, shot ranges, transcript evidence, a non-active cut proposal, a simple caption template, and a review questionnaire in `.video-pipeline/`. Shot detection marks visual changes; it does not interpret events. No story beats, product claims, split layouts, CTA cards, or sound effects are generated automatically. The active cut preserves the entire source timeline.
-
-## 2. Read source, references and brand rules
-
-Apply `video-plan-storyboard` to inspect `source-evidence.json`, the actual source contact sheet and relevant focused frames, the transcript, every supplied reference, and every listed brand input. Keep source facts, reference style observations, and brand requirements distinct.
-
-The selected creative direction must explain what the footage itself supports. Each proposed beat needs valid source evidence IDs. Use only verified transcript wording for on-screen claims. If a graphic does not clarify an actual source moment, omit it. Product and silent footage remain intact unless the user approves specific removals.
-
-No-reference projects still use the style index to offer a few relevant choices. A match is a suggestion, not automatic direction. A supplied reference is analyzed independently and leads only after the user chooses it; brand requirements still apply.
-
-Ask one compact batch of only the unanswered questions from `QUESTIONNAIRE.md`: footage to keep/cut, platform/aspect, reference or original direction, framing for the actual shots, caption choice, and audio denoise/music/SFX. Default simple phrase captions use bold Google Sans at roughly 60–80 px on a 1080-wide canvas, with a subtle padded backing and no shadows. Apply the supplied brand guide or selected caption treatment when it calls for a different look. Strong dereverb is already selected. Save answers in `resolved-spec.json` → `user_answers` using keys `keep_cut`, `platform_aspect`, `direction`, `framing`, `captions`, and `sound`; carry the answers into `storyboard.plan.json`, `storyboard.json`, and `style.json`. Record concrete audio choices in `resolved-spec.json` → `audio`. Copy the current evidence file's SHA-256 into `storyboard.json` as `source_evidence_sha256`.
-
-## 3. Present and approve the plan
-
-Before assembly, show a concise review of the source evidence, relevant reference frames, brand constraints, selected footage and cuts, framing/aspect, captions, and requested sound. Keep the working documents and analysis files in the hidden folder so the project root stays uncluttered.
-
-Do not assemble or render until the user approves. After explicit approval, record the gate:
+## 1. Analyze
 
 ```bash
-"$PY" "$ENG/scripts/parallel_pipeline.py" approve \
-  --project "$ROOT" --user-approved --note "<approval summary>"
+"$PY" "$P" analyze --input "$ROOT/<video or folder>" --project "$ROOT" --prompt "<the user's brief>" \
+  [--names "Zerodha, Nifty"] [--reference "$ROOT/references/<file>"]
 ```
 
-The gate rejects missing direction answers, unsupported beat references, out-of-range beat times, and invalid kept ranges. Use an empty `beats` array when no extra graphic treatment is appropriate.
+In one run: constant-frame-rate copy (so picture, sound and words never drift), audio pass 1, Hinglish transcript
+snapped to the measured speech, the **tight cut, active by default** (retakes, restarts, isolated fillers out; pauses
+≤ 0.28 s; every edge in silence), the flat cut `hyperframes/input-video.mp4` with a 1.5 s fade-out tail, the
+flat-time transcript, contact sheet, grade preview, references, brand files and `$W/REVIEW.md`. If the folder holds
+several videos, ask which one.
 
-## 4. Assemble and render
+## 2. Review the material
+
+Read `$W/REVIEW.md`, look at `preview/source-contact-sheet.jpg` and `preview/grade-preview.jpg`, read `CUT.md`.
+- `video-watch` for every reference video/image in `references/` (what to borrow: pacing, layout, type, motion).
+- `video-transcribe` to fix misheard names (corrections persist; never retype times).
+- `video-style` to pick one default style (or match the references) and set the grade and aspect.
+- Tell the user to listen to `preview/audio-before-after.wav`.
+
+## 3. Research
+
+`video-researcher`: research the topic and the speaker's claims on the web, then plan the motion graphics, sounds and
+b-roll that make the video clearer. Output: `$W/research/research.json` (facts with URLs → graphics, sounds, b-roll).
+
+## 4. Storyboard
+
+`video-plan-storyboard`: write `$W/storyboard.json` on the cut's timeline — catalog blocks for the researched
+graphics and b-roll, caption keywords (`video-captions`), sound cues, reframe if the aspect changes.
+
+## 5. Ask once, then approve
+
+Ask only what is still open, in one message: platform/aspect, style, is the cut OK (anything to keep or drop?),
+caption keywords look, music (a file in the project, or none). Record answers in `$W/resolved-spec.json`:
+
+```json
+{"user_answers": {"platform_aspect": "9:16 Instagram Reel", "style": "business-explainer", "cut": "tight cut approved",
+                  "captions": "keywords", "sound": "palette SFX, no music"},
+ "audio": {"preset": "shorts", "tone": "neutral", "music_path": null, "music_db": -20}}
+```
+
+Cut changes: `"$PY" "$P" recut --project "$ROOT" --drop 41.2-47.9 --restore 12.0-15.5 [--max-pause 0.35] [--tail 2]`
+(source seconds from `transcript.source.json`/`CUT.md`), then re-time beats against `hyperframes/transcript.json`.
+
+Present one review: the cut summary, the style, each beat (time, catalog block, text, source), sounds, music. After the
+user approves:
 
 ```bash
-"$PY" "$ENG/scripts/parallel_pipeline.py" assemble \
-  --project "$ROOT" --dereverb strong
+"$PY" "$P" approve --project "$ROOT" --user-approved --note "<what was approved>"
 ```
 
-The assembly uses the approved cut, transcribes the conformed edit for caption sync, validates every selected HyperFrames block against the shared catalog and its internal composition ID, then stages only the selected blocks inside the project. HyperFrames requires bundled assets to remain inside its project root, so the shared catalog itself stays in the engine while the small set used by this edit is copied into `.video-pipeline/hyperframes/compositions`. Missing local HyperFrames/GSAP assets fail with a setup error; the pipeline must not fall back to `npx`, CDN assets, Swift Package Manager, or another unrequested framework.
+The gate checks the answers, canvas vs footage aspect (reframe needed?), timeline length, every beat/SFX reference
+(speech-/visual- ids or `research-NNN` facts with a URL), catalog blocks (file, composition id, variables) and files.
 
-The render applies strong late-reflection reduction and the selected denoising/master chain. Dereverberation can reduce room tails but cannot guarantee removal of every echo; the generated audio report records the processing result. Do not claim full echo cancellation.
+## 6. Assemble and check
 
-When `storyboard.json` omits `camera`, HyperFrames adds a centered, gentle push/pull between 1.000× and 1.022×. An authored camera plan takes precedence; use `"camera": []` to keep the frame still. No subject tracking or inferred focal points are added.
+```bash
+"$PY" "$P" assemble --project "$ROOT"
+```
 
-Each successful render is published as the next `$ROOT/Exports/<project>-vN.mp4`; the final file is moved there only after render verification completes. Transcripts, audio, review sheets, HyperFrames sources, and render intermediates stay under `$ROOT/.video-pipeline/`.
+Grade → optional face-aware reframe → stage (captions, catalog blocks, SFX, fade to black) → HyperFrames render →
+audio pass 2 (voice polish, effects, music ducked, −14 LUFS / −1 dBTP, fade) → verify → `Exports/<project>-vN.mp4`.
+Open `$W/review/<name>-VERIFY.md` and `<name>-render-sheet.png`; watch the export with sound before calling it done.
+Any change after approval (storyboard, style, cut, research, spec) needs a new approval.
 
-## Execution boundaries
+## Boundaries
 
-- Keep work within this video-editing pipeline and the selected project folder.
-- Reuse the user's shared engine, FFmpeg on `PATH`, Whisper binary/model cache, and HyperFrames catalog across projects. Never install or copy those shared tools into each video folder. Keep analysis and project-specific render assets in that project's `.video-pipeline/`; keep originals in place and final videos in `Exports/`.
-- Python invokes FFmpeg, ffprobe, Whisper, HyperFrames, and pipeline stages with argument arrays through `subprocess`; this keeps media tools composable and file paths safe. Use shell only to launch the pipeline commands shown above.
-- Use local, configured pipeline dependencies. Do not improvise package managers, frameworks, or network installs during an edit.
-- Keep user inputs untouched. Do not delete intermediates without an explicit cleanup request.
-- Do not run assembly when the recorded approval gate is missing or stale.
+- Use only the local engine, FFmpeg, whisper.cpp, DeepFilterNet and the installed HyperFrames CLI/catalog. No `npx`,
+  CDN assets or ad-hoc installs during an edit.
+- Keep user files untouched; never delete intermediates unless asked.
+- You cannot hear audio: report the measured numbers, and ask the user to listen to the before/after and the export.

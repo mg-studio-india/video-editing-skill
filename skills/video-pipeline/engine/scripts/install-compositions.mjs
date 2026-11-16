@@ -41,14 +41,9 @@ for (const b of candidateBins) {
   }
 }
 
-// Locate catalog items from cache or via CLI
+// The catalog listing is kept next to the compositions (catalog.py build turns it into the searchable index)
 let catalogItems = [];
-const cachePath = "/tmp/hyperframes-catalog.json";
-if (fs.existsSync(cachePath)) {
-  try {
-    catalogItems = JSON.parse(fs.readFileSync(cachePath, "utf8"));
-  } catch (e) {}
-}
+const cachePath = path.join(compositionsDir, "catalog-raw.json");
 
 async function getCatalog() {
   if (catalogItems.length > 0) return catalogItems;
@@ -58,7 +53,9 @@ async function getCatalog() {
       if (!err && stdout) {
         try {
           const data = JSON.parse(stdout);
-          resolve(data.results || data);
+          const items = data.results || data;
+          try { fs.writeFileSync(cachePath, JSON.stringify(items, null, 1)); } catch (e) {}
+          resolve(items);
           return;
         } catch (e) {}
       }
@@ -70,6 +67,11 @@ async function getCatalog() {
 async function main() {
   console.log(`[HyperFrames Compositions Installer] Target library: ${compositionsDir}`);
   const items = await getCatalog();
+  if (!items || items.length === 0) {
+    if (fs.existsSync(cachePath)) {
+      try { items.push(...JSON.parse(fs.readFileSync(cachePath, "utf8"))); } catch (e) {}
+    }
+  }
   if (!items || items.length === 0) {
     console.error("[HyperFrames Compositions Installer] Error: Unable to load catalog items.");
     process.exit(1);

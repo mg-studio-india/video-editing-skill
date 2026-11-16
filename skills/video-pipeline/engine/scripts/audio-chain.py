@@ -1,25 +1,29 @@
 #!/usr/bin/env python3
-"""audio-chain.py: voice processing in the right order, with ffmpeg only, measured before and after."""
+"""audio-chain.py: audio pass 2 of 2. Polish the cleaned voice, mix sound effects and music, master once.
+
+  voice.wav (already dereverbed + denoised by pass 1) -> high-pass, gentle EQ, de-ess, gentle compression
+  + sound effects (the HyperFrames render's own audio, untouched) + music (ducked under the voice)
+  -> loudness to the delivery target -> true-peak limiter -> fade out over the tail -> mix.wav (48 kHz, 24-bit)
+
+Nothing here denoises, gates or dereverbs: pass 1 did that once. Running those again is what made voices robotic.
+Modes: `measure MEDIA` prints loudness and noise numbers; `master` writes the final mix.
+"""
 from __future__ import annotations
 
 import argparse
-import glob
 import json
-import os
 import re
 import shutil
 import subprocess
 import sys
 import tempfile
 from pathlib import Path
-import soundfile as sf
-from scipy.signal import stft, istft
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from runtime import ToolError, ensure_project_venv, ff_filter_path, run  # noqa: E402
+from runtime import ToolError, ensure_project_venv, run  # noqa: E402
 ensure_project_venv()
 
-import numpy as np
+import numpy as np  # noqa: E402
 
 PRESETS = {
     # integrated LUFS, true-peak ceiling dBTP
@@ -28,30 +32,17 @@ PRESETS = {
     "longform":  {"lufs": -16.0, "tp": -1.5},   # podcast-style long talks
     "broadcast": {"lufs": -23.0, "tp": -1.0},   # EBU R128
 }
+# Voice polish. Broad, small moves only: cut low-mid mud, a little presence for clarity, a touch of air.
 TONES = {
-    # tonal EQ after compression: cut mud, add presence, a little air (or warmth)
-    "neutral": "equalizer=f=250:t=q:w=1.2:g=-1.5,equalizer=f=3200:t=q:w=1.0:g=1.5",
-    "clear":   "equalizer=f=250:t=q:w=1.2:g=-2.5,equalizer=f=3200:t=q:w=1.0:g=2.5,highshelf=f=10000:g=2",
-    "warm":    "lowshelf=f=150:g=1.5,equalizer=f=350:t=q:w=1.2:g=-1,equalizer=f=3000:t=q:w=1.0:g=1,highshelf=f=9000:g=-1",
+    "neutral": ["equalizer=f=250:t=q:w=1.0:g=-2", "equalizer=f=3500:t=q:w=0.9:g=1.5", "highshelf=f=10000:g=1"],
+    "clear":   ["equalizer=f=250:t=q:w=1.0:g=-2.5", "equalizer=f=3500:t=q:w=0.9:g=2.5", "highshelf=f=10000:g=2"],
+    "warm":    ["lowshelf=f=150:g=1.5", "equalizer=f=350:t=q:w=1.2:g=-1", "equalizer=f=3000:t=q:w=1.0:g=1",
+                "highshelf=f=9000:g=-0.5"],
 }
-# makeup is a LINEAR factor in ffmpeg (2 = +6 dB, which lifted the hiss with everything else); loudness is set later
-COMPRESSOR = "acompressor=threshold=-20dB:ratio=3:attack=12:release=180:knee=4:makeup=1"
-DEESSER = "deesser=i=0.35:m=0.5:f=0.5"
 HIGHPASS = "highpass=f=80:poles=2"
-
-
-def compressor(threshold_db: float = -20.0, ratio: float = 3.0, release_ms: float = 180.0) -> str:
-    return f"acompressor=threshold={threshold_db}dB:ratio={ratio}:attack=12:release={release_ms}:knee=4:makeup=1"
-
-
-def deesser(intensity: float = 0.35) -> str:
-    return f"deesser=i={intensity}:m=0.5:f=0.5"
-
-
-def highpass(hz: float = 80.0) -> str:
-    return f"highpass=f={hz}:poles=2"
-DENOISE_NR = {"light": 6, "medium": 10, "strong": 14}
-PEAK_TARGET = -6.0   # gain staging: leave headroom before compression
+DEESSER = "deesser=i=0.3:m=0.5:f=0.5"
+# Smooth levelling: low ratio, soft knee, slow enough release that sentence ends do not pump.
+COMPRESSOR = "acompressor=threshold=-22dB:ratio=2.5:attack=15:release=160:knee=6:makeup=1"
 
 
 # ---------------------------------------------------------------- measuring
@@ -68,12 +59,6 @@ def loudness(media: str) -> dict:
     grab = lambda pat: (float(m.group(1)) if (m := re.search(pat, s)) else None)
     return {"integrated_lufs": grab(r"\bI:\s+(-?[\d.]+) LUFS"), "range_lu": grab(r"LRA:\s+(-?[\d.]+) LU"),
             "true_peak_dbtp": grab(r"Peak:\s+(-?[\d.]+) dBFS")}
-
-
-def sample_peak(media: str) -> float:
-    p = run(["ffmpeg", "-hide_banner", "-nostats", "-i", str(media), "-vn", "-af", "volumedetect", "-f", "null", "-"])
-    m = re.search(r"max_volume:\s+(-?[\d.]+) dB", p.stderr)
-    return float(m.group(1)) if m else 0.0
 
 
 def decode_pcm(media: str) -> np.ndarray:
@@ -93,319 +78,127 @@ def frame_db(pcm: np.ndarray, rate: int = 16000) -> np.ndarray:
     return 20 * np.log10(np.maximum(np.sqrt((x ** 2).mean(axis=1)), 1e-6))
 
 
-def floor_from_pcm(pcm: np.ndarray, rate: int = 16000) -> float:
-    return round(float(np.percentile(frame_db(pcm, rate), 10)), 1)
-
-
-def speech_from_pcm(pcm: np.ndarray, rate: int = 16000) -> float:
-    return round(float(np.percentile(frame_db(pcm, rate), 90)), 1)
-
-
-def snr_from_pcm(pcm: np.ndarray, rate: int = 16000) -> float:
-    d = frame_db(pcm, rate)
-    return round(float(np.percentile(d, 90) - np.percentile(d, 10)), 1)
-
-
 def measure(media: str) -> dict:
-    pcm = decode_pcm(media)
-    return {**loudness(media), "sample_peak_dbfs": sample_peak(media), "noise_floor_dbfs": floor_from_pcm(pcm),
-            "speech_dbfs": speech_from_pcm(pcm), "snr_db": snr_from_pcm(pcm)}
-
-
-# ---------------------------------------------------------------- decisions (pure, tested)
-def denoise_level(floor_db: float) -> str:
-    if floor_db < -62:
-        return "off"
-    if floor_db < -50:
-        return "light"
-    if floor_db < -40:
-        return "medium"
-    return "strong"
-
-
-NF_OFFSET = 12.0      # afftdn's nf sits this far above the broadband floor (it works per band)
-NF_SPEECH_GAP = 15.0  # and never closer than this to the speech level, so quiet words are not treated as noise
-
-
-def afftdn_floor(floor_db: float, speech_db: float) -> float:
-    return round(min(-20.0, max(-80.0, min(floor_db + NF_OFFSET, speech_db - NF_SPEECH_GAP))), 1)
-
-
-def denoise_filters(level: str, rnn_model: str | None, floor_db: float, speech_db: float) -> list[str]:
-    if level in ("off", "none"):
-        return []
-    out = []
-    if level in ("strong", "neural") and rnn_model:
-        out.append(f"arnndn=m='{ff_filter_path(rnn_model)}':mix=0.85")
-    nf = afftdn_floor(floor_db, speech_db)
-    nr = DENOISE_NR.get(level, 14)
-    out.append(f"afftdn=nr={nr}:nf={nf}")
-    return out
-
-
-def find_deep_filter() -> str | None:
-    for c in (
-        os.environ.get("VIDEO_DEEPFILTER"),
-        os.path.expanduser("~/.config/video-skills/bin/deep-filter"),
-        os.path.expanduser("~/.config/video-skills/bin/deep-filter.exe"),
-        os.path.expanduser("~/.local/bin/deep-filter"),
-    ):
-        if c and os.path.isfile(c) and os.access(c, os.X_OK):
-            return c
-    return None
-
-
-def make_scratch_dir(args, prefix: str) -> Path:
-    parent = getattr(args, "scratch_dir", None)
-    if parent:
-        Path(parent).mkdir(parents=True, exist_ok=True)
-        return Path(tempfile.mkdtemp(prefix=prefix, dir=str(parent)))
-    return Path(tempfile.mkdtemp(prefix=prefix))
-
-
-def apply_deep_filter(src_media: str, tmp_dir: Path, atten_db: float = 32.0) -> str:
-    df = find_deep_filter()
-    if not df:
-        raise ToolError("deep-filter binary not found in ~/.config/video-skills/bin/deep-filter or $VIDEO_DEEPFILTER")
-    raw_wav = tmp_dir / "df_in.wav"
-    out_dir = tmp_dir / "df_out"
-    out_dir.mkdir(parents=True, exist_ok=True)
-    run(["ffmpeg", "-y", "-hide_banner", "-loglevel", "error", "-i", str(src_media), "-vn", "-ar", "48000",
-         "-c:a", "pcm_s16le", str(raw_wav)])
-    cmd = [df, "-D", "-a", str(atten_db), "-o", str(out_dir), str(raw_wav)]
-    res = subprocess.run(cmd, capture_output=True, text=True)
-    if res.returncode != 0:
-        raise ToolError(f"deep-filter failed: {res.stderr}")
-    return str(out_dir / "df_in.wav")
-
-
-def find_rnn_model(explicit: str | None) -> str | None:
-    if explicit:
-        return explicit if (os.path.isfile(explicit) and os.path.getsize(explicit) > 1024) else None
-    for cand in ("sh.rnnn", "cb.rnnn", "mp.rnnn", "bd.rnnn"):
-        p = os.path.expanduser(f"~/.config/video-skills/rnnoise/{cand}")
-        if os.path.isfile(p) and os.path.getsize(p) > 1024:
-            return p
-    found = [f for f in sorted(glob.glob(os.path.expanduser("~/.config/video-skills/rnnoise/*.rnnn")))
-             if os.path.getsize(f) > 1024]
-    return found[0] if found else None
-
-
-def apply_dereverb(src_media: str, tmp_dir: Path, strength: str = "medium") -> str:
-    """Reduce late room reflections with a smoothed spectral tail estimate."""
-    amounts = {"light": 0.45, "medium": 0.7, "strong": 0.9}
-    tmp_dir.mkdir(parents=True, exist_ok=True)
-    decoded = tmp_dir / "dereverb-input.wav"
-    run(["ffmpeg", "-y", "-hide_banner", "-loglevel", "error", "-i", str(src_media), "-vn",
-         "-ar", "48000", "-c:a", "pcm_s24le", str(decoded)])
-    x, rate = sf.read(decoded, dtype="float64", always_2d=True)
-    n, hop = 2048, 512
-    channels = []
-    for channel in x.T:
-        _, _, X = stft(channel, rate, nperseg=n, noverlap=n-hop, boundary="zeros")
-        power = np.abs(X) ** 2
-        smooth = np.empty_like(power)
-        smooth[:, 0] = power[:, 0]
-        for k in range(1, power.shape[1]):
-            smooth[:, k] = 0.6 * smooth[:, k-1] + 0.4 * power[:, k]
-        delay = max(1, int(round(0.06 * rate / hop)))
-        late = np.zeros_like(smooth)
-        late[:, delay:] = 0.72 * smooth[:, :-delay]
-        gain = np.maximum(1.0 - amounts[strength] * late / np.maximum(smooth, 1e-12), 10 ** (-12 / 20))
-        for k in range(1, gain.shape[1]):
-            gain[:, k] = 0.55 * gain[:, k] + 0.45 * gain[:, k-1]
-        _, y = istft(X * gain, rate, nperseg=n, noverlap=n-hop, boundary=True)
-        channels.append(y[:len(channel)])
-    result = np.column_stack(channels)
-    before_rms = float(np.sqrt(np.mean(x*x)))
-    after_rms = float(np.sqrt(np.mean(result*result)))
-    if after_rms > 1e-9:
-        result *= before_rms / after_rms
-    out = tmp_dir / "dereverb.wav"
-    sf.write(out, result, rate, subtype="PCM_24")
-    return str(out)
-
-
-def expander(floor_db: float, speech_db: float) -> str:
-    thr_db = min(floor_db + 14.0, speech_db - 12.0)
-    return f"agate=threshold={10 ** (thr_db / 20):.5f}:ratio=2:range={10 ** (-10 / 20):.3f}:attack=5:release=150"
+    d = frame_db(decode_pcm(media))
+    floor, speech = float(np.percentile(d, 10)), float(np.percentile(d, 90))
+    return {**loudness(media), "noise_floor_dbfs": round(floor, 1), "speech_dbfs": round(speech, 1),
+            "snr_db": round(speech - floor, 1)}
 
 
 def gain_to(target: float, current: float) -> float:
     return round(target - current, 2)
 
 
-# ---------------------------------------------------------------- rendering
-def render(media: str, out: str, chain: list[str], music: str | None = None, duck_db: float = 18.0,
-           music_db: float = -18.0) -> None:
-    video = has_stream(media, "v") and Path(out).suffix.lower() in (".mp4", ".mov", ".mkv", ".m4v")
-    cmd = ["ffmpeg", "-y", "-hide_banner", "-loglevel", "error", "-i", str(media)]
-    if music:
-        cmd += ["-stream_loop", "-1", "-i", str(music)]
-        voice = ",".join(chain) if chain else "anull"
-        thr = 10 ** (-duck_db / 20)
-        fc = (f"[0:a]{voice},asplit=2[v][sc];[1:a]volume={music_db}dB,afade=t=in:d=1[bed];"
-              f"[bed][sc]sidechaincompress=threshold={thr:.4f}:ratio=10:attack=15:release=350[duck];"
-              f"[v][duck]amix=inputs=2:duration=first:normalize=0[a]")
-        cmd += ["-filter_complex", fc, "-map", "[a]"]
-    else:
-        cmd += ["-map", "0:a:0", "-af", ",".join(chain) if chain else "anull"]
-    if video:
-        cmd += ["-map", "0:v:0", "-c:v", "copy", "-c:a", "aac", "-b:a", "320k", "-ar", "48000",
-                "-movflags", "+faststart"]
-    else:
-        cmd += ["-ar", "48000"]
-        if Path(out).suffix.lower() == ".wav":
-            cmd += ["-c:a", "pcm_s24le"]
-    if music:
-        cmd += ["-shortest"]
-    cmd.append(str(out))
+# ---------------------------------------------------------------- mastering
+def ffmpeg_audio(inputs: list[list[str]], graph: str, out: str) -> None:
+    cmd = ["ffmpeg", "-y", "-hide_banner", "-loglevel", "error"]
+    for spec in inputs:
+        cmd += spec
+    cmd += ["-filter_complex", graph, "-map", "[a]", "-ar", "48000", "-c:a", "pcm_s24le", str(out)]
     run(cmd)
 
 
-def clean(media: str, out: str, args) -> dict:
-    # Caching check: Never re-clean if output already exists and is newer than source, unless --force
-    if not getattr(args, "force", False) and os.path.isfile(out) and os.path.getsize(out) > 1024:
-        if not os.path.exists(media) or os.path.getmtime(media) <= os.path.getmtime(out):
-            print(f"✓ Reusing existing clean audio: {out} (use --force to re-clean)")
-            m = measure(out)
-            level = args.denoise if (args.denoise and args.denoise != "auto") else denoise_level(m["noise_floor_dbfs"])
-            return {"mode": "clean", "denoise": level, "chain": ["cached"], "before": m, "after": m}
-
-    before = measure(media)
-    level = args.denoise if (args.denoise and args.denoise != "auto") else denoise_level(before["noise_floor_dbfs"])
-    src = media
-    scratch_dirs = []
-    try:
-        if args.dereverb != "off":
-            tmp_clean = make_scratch_dir(args, "audio-clean-drv-")
-            scratch_dirs.append(tmp_clean)
-            src = apply_dereverb(src, tmp_clean, args.dereverb)
-        if level == "neural" and find_deep_filter():
-            df_dir = make_scratch_dir(args, "audio-clean-df-")
-            scratch_dirs.append(df_dir)
-            src = apply_deep_filter(src, df_dir)
-            active_level = "off"
-        else:
-            active_level = "strong" if level == "neural" else level
-        g = gain_to(PEAK_TARGET, before["sample_peak_dbfs"])
-        chain = [f"volume={g}dB", highpass(args.highpass),
-                 *denoise_filters(active_level, find_rnn_model(args.rnn_model), before["noise_floor_dbfs"] + g,
-                                  before["speech_dbfs"] + g)]
-        render(src, out, chain)
-        return {"mode": "clean", "denoise": level, "dereverb": args.dereverb,
-                "chain": chain, "before": before, "after": measure(out)}
-    finally:
-        for scratch in scratch_dirs:
-            shutil.rmtree(scratch, ignore_errors=True)
-
-
-def master(media: str, out: str, args) -> dict:
+def master(args) -> dict:
     p = PRESETS[args.preset]
-    before = measure(media)
-    if args.denoise and args.denoise != "auto":
-        level = args.denoise
-    elif args.denoise == "auto" or before["noise_floor_dbfs"] >= -50.0:
-        level = denoise_level(before["noise_floor_dbfs"])
-    else:
-        level = "off"
-    tmp = make_scratch_dir(args, "audio-chain-")
-    src = media
-    if args.dereverb != "off":
-        src = apply_dereverb(src, tmp, args.dereverb)
-    if level == "neural" and find_deep_filter():
-        src = apply_deep_filter(src, tmp)
-        active_level = "off"
-    else:
-        active_level = "strong" if level == "neural" else level
-    g = gain_to(PEAK_TARGET, before["sample_peak_dbfs"])
-    pre = [f"volume={g}dB", highpass(args.highpass),
-           *denoise_filters(active_level, find_rnn_model(args.rnn_model), before["noise_floor_dbfs"] + g,
-                             before["speech_dbfs"] + g),
-           expander(before["noise_floor_dbfs"] + g, before["speech_dbfs"] + g), deesser(args.deess),
-           compressor(args.comp_threshold, args.comp_ratio, args.comp_release), TONES[args.tone]]
-    stage = str(tmp / "stage.wav")
-    render(src, stage, pre, music=args.music, duck_db=args.duck_db, music_db=args.music_db)
-    # loudness: linear gain to target, then a limiter under the ceiling; verify the true peak, tighten once if over
-    lufs = loudness(stage)["integrated_lufs"]
-    ceiling = p["tp"] - 0.5
-    for _ in range(3):
-        gain = gain_to(p["lufs"], lufs)
-        tail = [f"volume={gain}dB", f"alimiter=limit={10 ** (ceiling / 20):.4f}:attack=5:release=60:level=disabled"]
-        final = str(tmp / "final.wav")
-        render(stage, final, tail)
-        got = loudness(final)
-        if got["true_peak_dbtp"] is None or got["true_peak_dbtp"] <= p["tp"]:
-            break
-        ceiling -= 0.5
-    # the limiter can shave a little loudness; one corrective nudge if we are more than 0.5 LU under
-    if got["integrated_lufs"] is not None and p["lufs"] - got["integrated_lufs"] > 0.5:
-        lufs -= (p["lufs"] - got["integrated_lufs"])
-        gain = gain_to(p["lufs"], lufs)
-        tail = [f"volume={gain}dB", f"alimiter=limit={10 ** (ceiling / 20):.4f}:attack=5:release=60:level=disabled"]
-        render(stage, final, tail)
-    # put it back on the picture (or write the audio file)
-    if has_stream(media, "v") and Path(out).suffix.lower() in (".mp4", ".mov", ".mkv", ".m4v"):
-        run(["ffmpeg", "-y", "-hide_banner", "-loglevel", "error", "-i", str(media), "-i", final,
-             "-map", "0:v:0", "-map", "1:a:0", "-c:v", "copy", "-c:a", "aac", "-b:a", "320k", "-ar", "48000",
-             "-shortest", "-movflags", "+faststart", str(out)])
-    else:
-        render(final, out, [])
-    after = measure(out)
-    ok = (after["integrated_lufs"] is not None and abs(after["integrated_lufs"] - p["lufs"]) <= 1.0
-          and after["true_peak_dbtp"] is not None and after["true_peak_dbtp"] <= p["tp"] + 0.1)
-    rep = {"mode": "master", "preset": args.preset, "target": p, "tone": args.tone, "denoise": level,
-           "dereverb": args.dereverb,
-           "music": args.music, "chain": pre + tail, "before": before, "after": after, "pass": ok}
-    if tmp and tmp.exists():
+    voice = args.voice
+    duration = float(args.duration) if args.duration else float(
+        run(["ffprobe", "-v", "error", "-show_entries", "format=duration", "-of", "csv=p=0", voice]).stdout.strip())
+    before = measure(voice)
+    tmp = Path(tempfile.mkdtemp(prefix="audio-master-", dir=args.scratch_dir or None))
+    try:
+        voice_chain = [HIGHPASS, *TONES[args.tone], DEESSER, COMPRESSOR]
+        inputs = [["-i", str(voice)]]
+        split = ",asplit=2[v][sc]" if args.music else "[v]"
+        graph = ["[0:a]aresample=48000,aformat=channel_layouts=mono,%s,aformat=channel_layouts=stereo%s"
+                 % (",".join(voice_chain), split)]
+        mix = ["[v]"]
+        if args.sfx and Path(args.sfx).is_file():
+            inputs.append(["-i", str(args.sfx)])
+            graph.append("[%d:a]aresample=48000,aformat=channel_layouts=stereo[fx]" % (len(inputs) - 1))
+            mix.append("[fx]")
+        if args.music:
+            inputs.append(["-stream_loop", "-1", "-i", str(args.music)])
+            k = len(inputs) - 1
+            thr = 10 ** (-args.duck_db / 20)
+            graph.append("[%d:a]aresample=48000,aformat=channel_layouts=stereo,volume=%sdB,afade=t=in:d=1.5[bed]"
+                         % (k, args.music_db))
+            graph.append("[bed][sc]sidechaincompress=threshold=%.4f:ratio=8:attack=20:release=400[duck]" % thr)
+            mix.append("[duck]")
+        graph.append("%samix=inputs=%d:duration=first:normalize=0,apad,atrim=end=%.6f[a]"
+                     % ("".join(mix), len(mix), duration))
+        stage = tmp / "stage.wav"
+        ffmpeg_audio(inputs, ";".join(graph), str(stage))
+
+        # loudness: linear gain to the target, then a true-peak limiter under the ceiling; tighten once if over
+        lufs = loudness(str(stage))["integrated_lufs"]
+        silent = lufs is None or lufs < -60.0           # no speech (a silent montage): never pump up the noise floor
+        if silent:
+            lufs = p["lufs"]
+        ceiling = p["tp"] - 0.5
+        fade = max(0.0, min(float(args.fade_out or 0.0), duration))
+        fade_f = ",afade=t=out:st=%.6f:d=%.6f" % (duration - fade, fade) if fade > 0 else ""
+        final = tmp / "final.wav"
+        got, tail = {}, []
+        for _ in range(3):
+            gain = gain_to(p["lufs"], lufs)
+            tail = [f"volume={gain}dB", f"alimiter=limit={10 ** (ceiling / 20):.4f}:attack=5:release=60:level=disabled"]
+            ffmpeg_audio([["-i", str(stage)]], "[0:a]%s%s[a]" % (",".join(tail), fade_f), str(final))
+            got = loudness(str(final))
+            if got["true_peak_dbtp"] is None or got["true_peak_dbtp"] <= p["tp"]:
+                break
+            ceiling -= 0.5
+        if not silent and got.get("integrated_lufs") is not None and p["lufs"] - got["integrated_lufs"] > 0.5 and not fade:
+            lufs -= (p["lufs"] - got["integrated_lufs"])
+            gain = gain_to(p["lufs"], lufs)
+            tail = [f"volume={gain}dB", f"alimiter=limit={10 ** (ceiling / 20):.4f}:attack=5:release=60:level=disabled"]
+            ffmpeg_audio([["-i", str(stage)]], "[0:a]%s[a]" % ",".join(tail), str(final))
+        Path(args.out).parent.mkdir(parents=True, exist_ok=True)
+        shutil.copyfile(final, args.out)
+        after = measure(args.out)
+        ok = silent or (after["integrated_lufs"] is not None and abs(after["integrated_lufs"] - p["lufs"]) <= 1.0
+                        and after["true_peak_dbtp"] is not None and after["true_peak_dbtp"] <= p["tp"] + 0.1)
+        return {"mode": "master", "pass": 2, "preset": args.preset, "target": p, "tone": args.tone,
+                "voice_chain": voice_chain, "sfx": args.sfx or None, "music": args.music or None,
+                "mastering": tail + ([fade_f.lstrip(",")] if fade_f else []), "duration": round(duration, 3),
+                "before_voice": before, "after": after, "silent": silent, "ok": ok}
+    finally:
         shutil.rmtree(tmp, ignore_errors=True)
-    return rep
-
-
-def show(rep: dict) -> None:
-    if rep.get("mode") is None:
-        print(json.dumps(rep, indent=1)); return
-    b, a = rep["before"], rep["after"]
-    print(f"{rep['mode']}: denoise={rep['denoise']}" + (f"  preset={rep['preset']} target={rep['target']}" if rep['mode'] == 'master' else ""))
-    if rep.get("dereverb"):
-        print(f"  dereverb={rep['dereverb']}")
-    for k in ("integrated_lufs", "true_peak_dbtp", "range_lu", "sample_peak_dbfs", "noise_floor_dbfs", "speech_dbfs", "snr_db"):
-        print(f"  {k:18} {b.get(k)!s:>8} -> {a.get(k)!s:>8}")
-    if "pass" in rep:
-        print("PASS" if rep["pass"] else "FAIL: loudness or true peak off target (see numbers above)")
 
 
 def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
-    ap.add_argument("mode", choices=["measure", "clean", "master"])
-    ap.add_argument("media")
-    ap.add_argument("--out")
-    ap.add_argument("--preset", choices=sorted(PRESETS), default="youtube")
+    ap.add_argument("mode", choices=["measure", "master"])
+    ap.add_argument("media", nargs="?", help="media to measure (measure mode)")
+    ap.add_argument("--voice", help="cleaned flat-cut voice WAV (master)")
+    ap.add_argument("--sfx", help="sound-effects track from the HyperFrames render (master, optional)")
+    ap.add_argument("--music", help="music bed, ducked under the voice (master, optional)")
+    ap.add_argument("--out", help="mix WAV to write (master)")
+    ap.add_argument("--duration", type=float, help="exact output length in seconds (default: the voice length)")
+    ap.add_argument("--fade-out", type=float, default=0.0, help="fade the whole mix to silence over the last N s")
+    ap.add_argument("--preset", choices=sorted(PRESETS), default="shorts")
     ap.add_argument("--tone", choices=sorted(TONES), default="neutral")
-    ap.add_argument("--denoise", choices=["auto", "off", "light", "medium", "strong", "neural"])
-    ap.add_argument("--dereverb", choices=["off", "light", "medium", "strong"], default="strong",
-                    help="spectral late-reflection suppression")
-    ap.add_argument("--rnn-model", help="RNNoise .rnnn model for strong denoising")
-    ap.add_argument("--music", help="music bed to duck under the voice (master only)")
-    ap.add_argument("--duck-db", type=float, default=18.0, help="how far the bed drops under speech")
-    ap.add_argument("--music-db", type=float, default=-18.0, help="bed level before ducking")
-    ap.add_argument("--highpass", type=float, default=80.0, help="high-pass corner in Hz (100-120 for boomy rooms)")
-    ap.add_argument("--deess", type=float, default=0.35, help="de-esser intensity 0-1")
-    ap.add_argument("--comp-threshold", type=float, default=-20.0, help="compressor threshold dB")
-    ap.add_argument("--comp-ratio", type=float, default=3.0, help="compressor ratio")
-    ap.add_argument("--comp-release", type=float, default=180.0, help="compressor release ms (longer = less pumping)")
+    ap.add_argument("--music-db", type=float, default=-20.0, help="music bed level before ducking")
+    ap.add_argument("--duck-db", type=float, default=30.0, help="sidechain threshold depth (higher = ducks sooner)")
     ap.add_argument("--report", help="write the numbers as JSON here")
-    ap.add_argument("--force", action="store_true", help="force re-processing even if output already exists")
-    ap.add_argument("--scratch-dir", help="parent folder for disposable audio intermediates")
+    ap.add_argument("--scratch-dir", help="parent folder for disposable intermediates")
     a = ap.parse_args()
-    if a.mode != "measure" and not a.out:
-        ap.error("--out is required for clean and master")
-    rep = measure(a.media) if a.mode == "measure" else clean(a.media, a.out, a) if a.mode == "clean" \
-        else master(a.media, a.out, a)
-    show(rep)
+    if a.mode == "measure":
+        if not a.media:
+            ap.error("measure needs MEDIA")
+        rep = measure(a.media)
+        print(json.dumps(rep, indent=1))
+    else:
+        if not (a.voice and a.out):
+            ap.error("master needs --voice and --out")
+        rep = master(a)
+        b, f = rep["before_voice"], rep["after"]
+        print("pass 2 master (%s, tone=%s): voice %s LUFS -> mix %s LUFS, true peak %s dBTP%s%s -> %s"
+              % (a.preset, a.tone, b.get("integrated_lufs"), f.get("integrated_lufs"), f.get("true_peak_dbtp"),
+                 ", sfx" if rep["sfx"] else "", ", music" if rep["music"] else "", a.out))
+        print("PASS" if rep["ok"] else "FAIL: loudness or true peak off target (see numbers above)")
     if a.report:
         Path(a.report).write_text(json.dumps(rep, indent=1))
-    if rep.get("pass") is False:
+    if rep.get("ok") is False:
         sys.exit(1)
 
 

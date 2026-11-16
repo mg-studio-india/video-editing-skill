@@ -10,6 +10,7 @@ ap.add_argument("--min-mbps", type=float, default=40.0, help="video bitrate floo
 ap.add_argument("--words", help="word-level transcript of the RENDER's audio")
 ap.add_argument("--kept", help="word-level transcript of the flat cut (transcript.json)")
 ap.add_argument("--out", help="default: VERIFY.md next to the render")
+ap.add_argument("--fade-out", type=float, default=0.0, help="seconds of intended fade to black at the end (not a fault)")
 args = ap.parse_args()
 R = args.render
 if not os.path.exists(R):
@@ -96,6 +97,12 @@ r = subprocess.run(["ffmpeg", "-hide_banner", "-nostats", "-i", R, "-map", "0:v:
                     "scale=320:-2,blackdetect=d=0:pix_th=0.08", "-an", "-f", "null", "-"], capture_output=True, text=True)
 blacks = [(float(x), float(y), float(z)) for x, y, z in
           re.findall(r"black_start:\s*([\d.]+)\s+black_end:\s*([\d.]+)\s+black_duration:\s*([\d.]+)", r.stderr)]
+fade_start = vdur - max(0.0, args.fade_out) - 1.0 / max(fps, 1.0)
+ending = [b for b in blacks if args.fade_out > 0 and b[0] >= fade_start]      # the intended fade to black
+blacks = [b for b in blacks if b not in ending]
+if args.fade_out > 0:
+    check("Ends on black", bool(ending), "%s" % ("yes, from %.2f s" % ending[0][0] if ending else "no black at the end"),
+          "fade to black over the last %.2f s" % args.fade_out)
 check("Black frames", r.returncode == 0 and not blacks,
       "%d interval(s), %d flash(es)" % (sum(1 for b in blacks if b[2] >= 0.1 - 1e-6), sum(1 for b in blacks if b[2] < 0.1 - 1e-6))
       if r.returncode == 0 else "blackdetect failed", "none (pix_th 0.08; d 0.1 plus shorter flashes)")

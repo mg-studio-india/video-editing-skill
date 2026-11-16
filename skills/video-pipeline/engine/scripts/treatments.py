@@ -12,14 +12,14 @@ DEFAULT_STYLE = {
                "canvas_bg": "radial-gradient(circle at 50% 20%, rgba(56, 189, 248, 0.16) 0%, transparent 55%), radial-gradient(ellipse 90% 65% at 50% 25%, #1e2c48 0%, #0d1526 60%, #040710 100%)"},
     "fonts": {
         "display": {"family": "Poppins", "files": {}},
-        "captions": {"family": "Google Sans", "files": {
-            "700": "@engine/assets/fonts/google-sans/GoogleSans-700-latin.woff2"}},
+        "captions": {"family": "Inter", "files": {
+            "100 900": "@engine/assets/fonts/inter/Inter-Variable.ttf"}},
     },
     "motion": {"in": 0.35, "out": 0.25, "ease_in": "power3.out", "ease_out": "power2.in"},
     "cards": {"bg": "rgba(12,12,16,.78)", "text": "#ffffff", "radius": 22, "border": "rgba(255,255,255,.14)"},
-    "captions": {"family": "Google Sans", "mode": "phrase", "case": "upper", "weight": 700,
-                 "shadow": "none", "plate_color": "rgba(8,10,14,.38)",
-                 "plate_border": "rgba(255,255,255,.09)"},
+    # simple captions: semi-bold, sentence case, white; only keywords light up (accent colour + small pop)
+    "captions": {"family": "Inter", "mode": "keywords", "highlight": "color", "case": "keep", "weight": 600,
+                 "max_emphasis": 1, "shadow": "0 2px 10px rgba(0,0,0,.55)", "plate_color": ""},
 }
 
 

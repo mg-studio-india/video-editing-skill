@@ -71,15 +71,27 @@ def group(words: list[dict], cuts: list[float] | None = None, max_words: int | N
             pause = dyn_pause
 
     cuts = sorted(cuts or [])
-    emph = {e.lower() for e in (emphasis or [])}
+    # keywords may be single words or short phrases ("net worth"); match them on normalised tokens
+    phrases = []
+    for e in (emphasis or []):
+        toks = tuple(t for t in (re.sub(r"[^\w₹$%']", "", x.lower()) for x in str(e).split()) if t)
+        if toks:
+            phrases.append(toks)
     # a removed filler was still sound: measure pauses against the previous ORIGINAL word, not the previous kept one
     usable, last_end = [], None
     for w in words:
         if re.sub(r"[^\w']", "", w["text"].lower()) in FILLERS:
             last_end = w["end"]
             continue
-        usable.append({**w, "_prev_end": last_end})
+        usable.append({**w, "_prev_end": last_end, "_em": False})
         last_end = w["end"]
+    keys = [re.sub(r"[^\w₹$%']", "", w["text"].lower()) for w in usable]
+    for toks in phrases:
+        n = len(toks)
+        for i in range(len(usable) - n + 1):
+            if tuple(keys[i:i + n]) == toks:
+                for k in range(i, i + n):
+                    usable[k]["_em"] = True
     groups, cur = [], []
 
     def crosses_cut(a: float, b: float) -> bool:
@@ -138,8 +150,7 @@ def group(words: list[dict], cuts: list[float] | None = None, max_words: int | N
         ws = []
         for w in g:
             txt = clean(w["text"], keep_punct)
-            key = re.sub(r"[^\w₹$%']", "", txt.lower())
-            em = key in emph or (auto_emphasis and bool(NUMERIC.search(txt)))
+            em = w.get("_em", False) or (auto_emphasis and bool(NUMERIC.search(txt)))
             ws.append({"text": txt, "start": round(w["start"], 3), "end": round(w["end"], 3), "em": em})
         g_end = round(end, 3)
         start_t = round(g[0]["start"], 3)
@@ -263,13 +274,25 @@ def probe_video(video_path: str) -> dict:
 
 
 # ---------------------------------------------------------------- builtin layer (used by treatments.py)
+def _rgba(color: str, alpha: float) -> str:
+    c = str(color).strip()
+    m = re.fullmatch(r"#([0-9a-fA-F]{6})", c)
+    if not m:
+        return c
+    r, g, b = (int(m.group(1)[i:i + 2], 16) for i in (0, 2, 4))
+    return "rgba(%d,%d,%d,%.2f)" % (r, g, b, alpha)
+
+
 def builtin_layer(groups: list[dict], ctx: dict, cfg: dict) -> tuple[str, str, list[str]]:
+    """Caption layer. Default mode `keywords`: short phrases in semi-bold sentence case, plain white; only the
+    keywords light up in the accent colour with a small pop as they are spoken (`highlight: "marker"` adds a marker
+    sweep behind them instead). Legacy modes: `phrase` (every word lights up as spoken), `pop`."""
     W, H = ctx["W"], ctx["H"]
     orientation = "portrait" if H > W else ("landscape" if W > H else "square")
     cfg = {**{k: v for k, v in cfg.items() if k not in ("portrait", "landscape", "square")},
            **(cfg.get(orientation) or {})}      # orientation-specific values win
-    mode = cfg.get("mode", "phrase")
-    cap_em = cfg.get("max_emphasis")
+    mode = cfg.get("mode", "keywords")
+    cap_em = cfg.get("max_emphasis", 1 if mode == "keywords" else None)
     if cap_em is not None:
         for g in groups:
             seen = 0
@@ -279,82 +302,86 @@ def builtin_layer(groups: list[dict], ctx: dict, cfg: dict) -> tuple[str, str, l
                     if seen > int(cap_em):
                         w["em"] = False
 
-    # Scale the premium phrase-caption default to about 69 px on a 1080 px-wide canvas.
     if "size" in cfg:
         raw_size = float(cfg["size"])
         size = int(raw_size if raw_size > 1.0 else raw_size * W)
     else:
-        size = int((0.064 if H >= W else 0.036) * W)
+        size = int((0.062 if H >= W else 0.034) * W)
 
-    # Dynamic vertical position: calculated from speaker face/chin in raw video frames or safe visual zones
+    # vertical position: below the speaker's chin when measured, else the lower safe zone
     if "y" in cfg:
         y = float(cfg["y"])
     else:
-        chin_y = ctx.get("chin_y") or (ctx.get("face_box", [0, 0, 0, 0])[1] + ctx.get("face_box", [0, 0, 0, 0])[3] if ctx.get("face_box") else None)
-        if chin_y is not None:
-            y = min(0.88, max(0.40, float(chin_y) + 0.10))
-        else:
-            y = 0.68 if H > W else 0.86
+        chin_y = ctx.get("chin_y")
+        y = min(0.86, max(0.62, float(chin_y) + 0.10)) if chin_y is not None else (0.72 if H > W else 0.86)
 
-    fam = cfg.get("family", ctx.get("font_family", "Google Sans"))
-    weight = cfg.get("weight", 700)
+    fam = cfg.get("family", ctx.get("font_family", "Inter"))
+    weight = cfg.get("weight", 600)
     color = cfg.get("color", "#ffffff")
-    inactive_color = cfg.get("inactive_color", "#ffffff")
-    active = cfg.get("active_color", ctx.get("accent", "#ffe600"))
-    em_color = cfg.get("emphasis_color", active)
-    pill = cfg.get("pill_color", "")
-    upper = cfg.get("case", "upper") == "upper"
+    accent = cfg.get("emphasis_color") or cfg.get("active_color") or ctx.get("accent") or "#ffd400"
+    highlight = cfg.get("highlight", "color")
+    upper = cfg.get("case", "keep") == "upper"
     stroke = cfg.get("stroke", 0)
-    shadow = cfg.get("shadow", "none")
-    plate = cfg.get("plate_color", "rgba(8,10,14,.38)")
-    plate_border = cfg.get("plate_border", "rgba(255,255,255,.09)")
-    padding_x = float(cfg.get("padding_x", 0.30))
-    padding_y = float(cfg.get("padding_y", 0.12))
+    shadow = cfg.get("shadow", "0 2px 10px rgba(0,0,0,.55)")
+    plate = cfg.get("plate_color") or "transparent"
+    plate_border = cfg.get("plate_border") or "transparent"
+    padding_x = float(cfg.get("padding_x", 0.30 if plate != "transparent" else 0.0))
+    padding_y = float(cfg.get("padding_y", 0.12 if plate != "transparent" else 0.0))
     radius = float(cfg.get("plate_radius", 0.24))
-    maxw = int(W * float(cfg.get("max_width", 0.90)))
+    maxw = int(W * float(cfg.get("max_width", 0.88)))
     top = int(H * y - size * 0.6)
+    base_color = cfg.get("inactive_color", color) if mode == "phrase" else color
     css = (".cap-rail{position:absolute;left:0;right:0;top:%dpx;display:flex;justify-content:center;z-index:60;pointer-events:none}"
-           ".cap-g{position:absolute;left:0;right:0;width:max-content;max-width:%dpx;box-sizing:border-box;display:flex;flex-wrap:nowrap;white-space:nowrap;justify-content:center;align-items:baseline;"
-           "gap:0 %dpx;padding:%.2fem %.2fem;margin:0 auto;background:%s;border:1px solid %s;border-radius:%.2fem;box-shadow:none;opacity:0;visibility:hidden}"
-           ".cap-w{display:inline-block;font-family:'%s',sans-serif;font-weight:%s;font-size:%dpx;line-height:1.12;color:%s;"
-           "text-shadow:%s;%s%s padding:%s;border-radius:%dpx;transform-origin:center center}"
-           ".cap-w.em{color:%s;%s}"
-           % (top, maxw, int(size * 0.22), padding_y, padding_x, plate, plate_border, radius,
-              fam, weight, size,
-              inactive_color if mode in ("phrase", "flow", "karaoke") else color, shadow,
+           ".cap-g{position:absolute;left:0;right:0;width:max-content;max-width:%dpx;box-sizing:border-box;display:flex;flex-wrap:wrap;"
+           "justify-content:center;align-items:baseline;gap:0 %dpx;padding:%.2fem %.2fem;margin:0 auto;background:%s;"
+           "border:1px solid %s;border-radius:%.2fem;opacity:0;visibility:hidden}"
+           ".cap-w{position:relative;display:inline-block;font-family:'%s',sans-serif;font-weight:%s;font-size:%dpx;"
+           "line-height:1.14;letter-spacing:-0.01em;color:%s;text-shadow:%s;%s%stransform-origin:center 70%%}"
+           ".cap-w.em{isolation:isolate}"
+           ".cap-hl{position:absolute;left:-0.10em;right:-0.10em;bottom:0.04em;height:0.48em;border-radius:0.14em;"
+           "background:%s;transform:scaleX(0);transform-origin:left center;z-index:-1}"
+           % (top, maxw, int(size * 0.24), padding_y, padding_x, plate, plate_border, radius,
+              fam, weight, size, base_color, shadow,
               "-webkit-text-stroke:%dpx rgba(0,0,0,.85);paint-order:stroke fill;" % stroke if stroke else "",
-              "text-transform:uppercase;" if upper else "", "0.04em 0.18em" if pill else "0", int(size * 0.22), em_color,
-              ("background:%s;padding:0.02em 0.16em;border-radius:%dpx;-webkit-text-stroke:0;text-shadow:none" % (cfg["emphasis_bg"], int(size * 0.14)))
-              if cfg.get("emphasis_bg") else ""))
+              "text-transform:uppercase;" if upper else "", _rgba(accent, 0.85)))
     html = ['<div class="cap-rail" id="cap-rail">']
     js = []
     for gi, g in enumerate(groups):
-        spans = "".join('<span class="cap-w%s" id="cw-%d-%d">%s</span>' % (" em" if w["em"] else "", gi, wi,
-                        w["text"].replace("&", "&amp;").replace("<", "&lt;")) for wi, w in enumerate(g["words"]))
+        spans = []
+        for wi, w in enumerate(g["words"]):
+            text = w["text"].replace("&", "&amp;").replace("<", "&lt;")
+            inner = ('<span class="cap-hl" id="hl-%d-%d"></span>%s' % (gi, wi, text)
+                     if (w["em"] and mode == "keywords" and highlight == "marker") else text)
+            spans.append('<span class="cap-w%s" id="cw-%d-%d">%s</span>' % (" em" if w["em"] else "", gi, wi, inner))
         gy = ' style="top:%dpx"' % int(H * (float(g["y"]) - y)) if g.get("y") is not None else ""
-        html.append('<div class="cap-g" id="cg-%d"%s>%s</div>' % (gi, gy, spans))
+        html.append('<div class="cap-g" id="cg-%d"%s>%s</div>' % (gi, gy, "".join(spans)))
         if gi > 0:
             js.append("tl.set('#cg-%d', { opacity: 0, visibility: 'hidden' }, %.3f);" % (gi - 1, g["start"] - 0.02))
         js.append("tl.set('#cg-%d', { visibility: 'visible' }, %.3f);" % (gi, g["start"] - 0.02))
-        if mode in ("phrase", "flow", "block"):
-            js.append("tl.fromTo('#cg-%d', { opacity: 0, y: 8 }, { opacity: 1, y: 0, duration: 0.18, ease: 'power2.out' }, %.3f);"
-                      % (gi, g["start"] - 0.02))
-        else:
-            js.append("tl.set('#cg-%d', { opacity: 1 }, %.3f);" % (gi, g["start"] - 0.02))
+        js.append("tl.fromTo('#cg-%d', { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.16, ease: 'power2.out' }, %.3f);"
+                  % (gi, g["start"] - 0.02))
         for wi, w in enumerate(g["words"]):
             sel = "#cw-%d-%d" % (gi, wi)
-            if mode == "pop":
+            if mode == "keywords":
+                if not w["em"]:
+                    continue
+                if highlight == "marker":
+                    js.append("tl.fromTo('#hl-%d-%d', { scaleX: 0 }, { scaleX: 1, duration: 0.22, ease: 'power2.out' }, %.3f);"
+                              % (gi, wi, w["start"]))
+                    js.append("tl.to('%s', { color: '#111111', textShadow: 'none', duration: 0.10 }, %.3f);" % (sel, w["start"] + 0.04))
+                else:
+                    js.append("tl.to('%s', { color: '%s', duration: 0.08 }, %.3f);" % (sel, accent, w["start"]))
+                js.append("tl.fromTo('%s', { scale: 1 }, { scale: 1.12, duration: 0.12, ease: 'power2.out' }, %.3f);" % (sel, w["start"]))
+                js.append("tl.to('%s', { scale: 1, duration: 0.20, ease: 'back.out(2)' }, %.3f);" % (sel, w["start"] + 0.12))
+            elif mode == "pop":
                 js.append("tl.fromTo('%s', { opacity: 0, scale: 0.90, y: 6 }, { opacity: 1, scale: 1, y: 0, duration: 0.14, "
                           "ease: 'power2.out' }, %.3f);" % (sel, w["start"] - 0.02))
-            if mode in ("phrase", "flow", "karaoke", "pop") and not w["em"]:
-                if pill:
-                    js.append("tl.to('%s', { backgroundColor: '%s', color: '%s', duration: 0.08 }, %.3f);" % (sel, pill, color, w["start"]))
-                    js.append("tl.to('%s', { backgroundColor: 'rgba(0,0,0,0)', color: '%s', duration: 0.08 }, %.3f);" % (sel, inactive_color, w["end"]))
-                else:
-                    js.append("tl.to('%s', { color: '%s', duration: 0.08 }, %.3f);" % (sel, active, w["start"]))
-                    js.append("tl.to('%s', { color: '%s', duration: 0.10 }, %.3f);" % (sel, color if mode not in ("phrase", "flow") else inactive_color, w["end"]))
-            elif w["em"]:
-                js.append("tl.fromTo('%s', { scale: 0.94 }, { scale: 1.06, duration: 0.14, ease: 'back.out(1.4)' }, %.3f);" % (sel, w["start"]))
+                if w["em"]:
+                    js.append("tl.to('%s', { color: '%s', duration: 0.08 }, %.3f);" % (sel, accent, w["start"]))
+            else:                                   # phrase: every word lights up while it is spoken
+                js.append("tl.to('%s', { color: '%s', duration: 0.08 }, %.3f);" % (sel, accent, w["start"]))
+                if not w["em"]:
+                    js.append("tl.to('%s', { color: '%s', duration: 0.10 }, %.3f);" % (sel, base_color, w["end"]))
         dur_out = min(0.10, max(0.04, (g["end"] - g["start"]) * 0.25))
         t_out = max(g["start"] + 0.05, g["end"] - dur_out)
         js.append("tl.to('#cg-%d', { opacity: 0, y: -4, duration: %.3f, ease: 'power2.in' }, %.3f);" % (gi, dur_out, t_out))

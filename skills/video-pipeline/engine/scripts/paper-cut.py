@@ -29,7 +29,10 @@ words = raw["words"] if isinstance(raw, dict) and "words" in raw else raw
 words = [{"text": w.get("text") or w.get("w", ""), "start": float(w["start"]), "end": float(w["end"])} for w in words]
 
 STOP = set("the a an is are it it's to of in on and so if be at as for with my me i i'm i'll you you're your we that um uh".split())
-FILLERS = ("so", "okay", "ok", "and", "yeah", "um", "uh", "alright")
+# Hinglish function words repeat constantly in normal speech; a repeat of one is not a restart
+STOP |= set("hai hain ki ke ka ko se mein me mai main toh to aur ye yeh wo woh bhi na ek jo ho tha thi the kya nahi "
+            "nahin par pe hum aap ap tum is us iss uss yaar matlab haan ab abhi phir fir jab tab kuch sab bahut".split())
+FILLERS = ("so", "okay", "ok", "and", "yeah", "um", "uh", "alright", "toh", "matlab", "haan", "acha", "achha")
 
 def norm(t): return re.sub(r"[^a-z0-9' ]+", " ", t.lower()).split()
 def content(tokens): return [t for t in tokens if t not in STOP]
@@ -197,7 +200,9 @@ kept_total = sum(s["end"] - s["start"] for s in segments)
 removed.sort(key=lambda r: r["start"])
 
 os.makedirs(args.out_dir, exist_ok=True)
-json.dump({"source_duration": args.duration, "kept_seconds": round(kept_total, 2), "kept": segments, "removed": removed},
+kept_word_indices = sorted(i for s in S if not s["remove"] for i in s["idx"])
+json.dump({"source_duration": args.duration, "kept_seconds": round(kept_total, 2), "kept": segments, "removed": removed,
+           "kept_word_indices": kept_word_indices},
           open(os.path.join(args.out_dir, "cut-list.json"), "w"), indent=1)
 
 lines = ["# Paper cut", "", "Raw %.1fs -> kept %.1fs (%d segments). Struck-through = removed, reason in brackets." %
