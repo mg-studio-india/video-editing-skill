@@ -440,12 +440,16 @@ def install_cli(version):
 
 
 def record(st, version, rep, full):
+    new_p = pristine(version)
     for name, what, _ in rep:
         if what in ("installed", "repaired", "updated", "relinked", "replaced", "migrated to managed link", "up to date"):
             st["skills"][name] = {"version": version}
         elif what == "retired":
             st["skills"].pop(name, None)
     if full:
+        for name in list(st.get("skills", {})):
+            if name not in new_p:
+                st["skills"].pop(name, None)
         if st.get("package_version") and st["package_version"] != version:
             st["history"].append({"at": time.strftime("%Y-%m-%dT%H:%M:%S"), "from": st["package_version"], "to": version})
         st["package_version"] = version
@@ -630,6 +634,13 @@ def cmd_prune(a):
 
 def cmd_doctor(a):
     st = load_state()
+    cur_p = pristine(st.get("package_version", ""))
+    if cur_p:
+        stale = [n for n in list(st.get("skills", {})) if n not in cur_p]
+        if stale:
+            for n in stale:
+                st["skills"].pop(n, None)
+            save_state(st)
     bad = 0
     def chk(ok, msg):
         nonlocal bad
@@ -649,6 +660,10 @@ def cmd_doctor(a):
     for agent in AGENT_DIRS:
         if not agent.is_dir() or os.path.realpath(agent) == real_sd:
             continue
+        if cur_p:
+            for p in list(agent.iterdir()):
+                if is_link(p) and (not p.exists() or p.name not in cur_p):
+                    unlink_any(p)
         miss = [n for n in sorted(st.get("skills", {}))
                 if not ((agent / n).exists() and os.path.realpath(agent / n) == os.path.realpath(sd / n))]
         chk(not miss, "agent folder %s sees all %d skills%s" % (agent, len(st.get("skills", {})),

@@ -250,7 +250,7 @@ elif [ "$OS" = "Darwin" ]; then
     die "Homebrew is not installed. Install it from https://brew.sh, open a new terminal, and run: $RERUN"
   fi
   for f in node ffmpeg whisper-cpp sox; do
-    if brew list --formula "$f" >/dev/null 2>&1; then
+    if brew list --formula "$f" >/dev/null 2>&1 || { [ "$f" = "ffmpeg" ] && brew list --formula ffmpeg-full >/dev/null 2>&1; }; then
       ok "$f already installed"
     else
       brew install "$f"
@@ -590,6 +590,7 @@ ok "Creative workspace verified: ONLY brand/, references/, sound-palette/, video
 
 # --------------------------------------------------------------------------------------------- 5. HyperFrames CLI
 step "5/8 HyperFrames CLI ($HF_VERSION) & GSAP in sandbox"
+echo "  installing hyperframes@$HF_VERSION and gsap@$GSAP_VERSION into sandbox..."
 (
   cd "$ENGINE_DIR"
   [ -f package.json ] || npm init -y >/dev/null
@@ -607,6 +608,7 @@ fi
 if [ "$NO_BROWSER" = 1 ]; then
   ok "browser skipped (--no-browser)"
 else
+  echo "  verifying Chrome browser for HyperFrames rendering..."
   if "$HF_CLI" browser ensure; then
     # ensure can settle on a system Chromium that does not start (snap stubs, Linux on ARM): ask doctor whether it runs
     if "$HF_CLI" doctor 2>&1 | grep -qE "✗ +Chrome"; then
@@ -627,17 +629,22 @@ HF_SKILLS=(
   hyperframes-studio media-use embedded-captions faceless-explainer
   motion-graphics product-launch-video talking-head-recut
 )
+echo "  updating HyperFrames skills suite (${#HF_SKILLS[@]} skills)..."
+hf_count=0
 for s in "${HF_SKILLS[@]}"; do
+  hf_count=$((hf_count + 1))
+  printf '    [%d/%d] updating %s...\n' "$hf_count" "${#HF_SKILLS[@]}" "$s"
   "$HF_CLI" skills update "$s" >/dev/null 2>&1 || true
 done
 ok "HyperFrames skills suite updated"
 
 # Install all compositions from HyperFrames into engine sandbox
-echo "  installing all compositions from HyperFrames into sandbox"
+echo "  installing all compositions from HyperFrames into sandbox..."
 if [ -f "$ENG/scripts/install-compositions.mjs" ]; then
   node "$ENG/scripts/install-compositions.mjs" --target "$ENGINE_DIR" --concurrency 12 || warn "Some compositions could not be downloaded; local catalog cached"
   ok "all HyperFrames compositions installed in $(tilde "$ENGINE_DIR/compositions")"
 fi
+echo "  building HyperFrames catalog index..."
 if VIDEO_ENGINE_DIR="$ENGINE_DIR" VIDEO_COMPOSITIONS="$ENGINE_DIR/compositions" "$VENV_PY" "$ENG/scripts/catalog.py" build; then
   ok "HyperFrames catalog indexed (search: catalog.py search <words>)"
 else

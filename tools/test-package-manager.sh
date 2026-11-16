@@ -225,7 +225,7 @@ run_checks() {
   if [ -n "$PY" ]; then pass "engine Python $("$PY" --version 2>&1) ($PY)"; else setup_fail "engine virtual environment not found (expected $ENGINE_DIR/.venv)"; fi
   if [ -n "$PY" ]; then
     missing="$("$PY" - <<'EOF' 2>&1
-import importlib
+import importlib.util
 need = ["numpy", "scipy", "soundfile", "nara_wpe", "cv2", "PIL", "pypdf", "pypdfium2"]
 print(" ".join(m for m in need if importlib.util.find_spec(m) is None))
 EOF
@@ -250,7 +250,7 @@ EOF
       && pass "HDR tone mapping available (zscale + tonemap)" \
       || warn "FFmpeg has no zscale/tonemap: HDR phone footage is converted without tone mapping (flatter colours)"
     printf '%s\n' "$filters" | grep -qE "^ [A-Z.|]+ drawtext " || warn "FFmpeg has no drawtext: render sheets have no time labels"
-    ffmpeg -hide_banner -h full 2>/dev/null | grep -q -- "-fps_mode" && pass "FFmpeg supports -fps_mode (constant frame rate ingest)" \
+    (set +o pipefail; ffmpeg -hide_banner -h full 2>/dev/null | grep -q -- "-fps_mode") && pass "FFmpeg supports -fps_mode (constant frame rate ingest)" \
       || fail "FFmpeg is too old for -fps_mode (needs 5.1+): upgrade FFmpeg"
   fi
 
