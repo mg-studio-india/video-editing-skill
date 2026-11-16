@@ -7,7 +7,7 @@
 #     package.json, LICENSES, .env (API keys), and agent-env.sh.
 #   - User Creative Workspace ($PROJECT, default: current directory):
 #     Houses ONLY clean user creative folders:
-#       brand/          (persistent memory brand/MEMO.md, STYLE-GUIDE.md, brand-style-guide.pdf, and vector logos)
+#       brand/          (optional: the user's own logo, colours, fonts, brand guide; nothing is scaffolded here)
 #       references/     (benchmark reels, viral hooks, layout screenshots)
 #       sound-palette/  (19 curated offline tactile SFX)
 #       videos/         (production projects with raw/ and processed/)
@@ -25,14 +25,13 @@
 #   --project DIR       Creative workspace root (default: current directory)
 #   --engine-dir DIR    Engine sandbox directory (default: ~/.video-skills/engine or ~/.config/video-skills/engine)
 #   --local-engine      Install engine sandbox inside project under .engine/ (isolated, non-polluting)
-#   --clean-workspace   Purge legacy engine plumbing files from project workspace (package.json, .venv, etc.)
+#   --clean-workspace   Opt-in: remove old engine plumbing (package.json, node_modules, .venv) from the workspace
 #   --yes               No interactive prompts: accept defaults and keep existing keys
-#   --model NAME        Whisper model: large-v3 (default) | large-v3-turbo | none
+#   --model NAME        Whisper model: hinglish (default; Roman Hinglish output) | large-v3 | large-v3-turbo | none
 #   --hf-version V      HyperFrames CLI version to pin (default: 0.8.160)
 #   --no-system         Skip system package manager checks (Homebrew / apt / dnf)
 #   --no-browser        Skip HyperFrames Chrome download
 #   --skip-pip          Reuse existing Python environment as is
-#   --skip-tests        Do not run test suites at the end
 #   --skills-dir DIR    Skills installation directory (default: ~/.agents/skills)
 #   --link DIR          Link skills into additional agent directories (e.g. ~/.claude/skills, ~/.gemini/antigravity-cli/skills)
 #   --no-claude-link    Do not link into ~/.claude/skills
@@ -50,19 +49,18 @@ ROOT_DIR="$(pwd -P)"
 PROJECT_ARG=""
 ENGINE_DIR_ARG=""
 LOCAL_ENGINE=0
-CLEAN_WORKSPACE=1
+CLEAN_WORKSPACE=0
 SKILLS_DIR="$HOME/.agents/skills"
 LINKS=()
 CLAUDE_LINK=auto
 UPDATE_SKILLS=0
 SKILLS_MANAGED=0
 YES=0
-MODEL="large-v3"
+MODEL="hinglish"
 HF_VERSION="$HF_VERSION_DEFAULT"
 NO_SYSTEM=0
 NO_BROWSER=0
 SKIP_PIP=0
-SKIP_TESTS=0
 
 while [ $# -gt 0 ]; do
   case "$1" in
@@ -76,7 +74,7 @@ while [ $# -gt 0 ]; do
     --no-system) NO_SYSTEM=1 ;;
     --no-browser) NO_BROWSER=1 ;;
     --skip-pip) SKIP_PIP=1 ;;
-    --skip-tests) SKIP_TESTS=1 ;;
+    --skip-tests) ;;   # accepted for older scripts; there are no install-time tests
     --update-skills) UPDATE_SKILLS=1 ;;
     --skills-managed) SKILLS_MANAGED=1 ;;
     --skills-dir) SKILLS_DIR="${2%/}"; shift ;;
@@ -317,18 +315,28 @@ fi
 # --------------------------------------------------------------------------------------------- 2. Models and neural nets
 step "2/8 Models & neural nets (Whisper, RNNoise, YuNet, DeepFilterNet)"
 MODEL_DIR="$HOME/.cache/whisper.cpp"
+MFILE=""
 if [ "$MODEL" = "none" ]; then
   ok "Whisper model skipped (--model none)"
 else
   mkdir -p "$MODEL_DIR"
-  MFILE="$MODEL_DIR/ggml-$MODEL.bin"
+  if [ "$MODEL" = "hinglish" ]; then
+    # Oriserve Whisper-Hindi2Hinglish-Apex (Apache-2.0), GGML Q8_0 build for whisper.cpp: Hindi/English speech -> Roman Hinglish
+    MFILE="$MODEL_DIR/ggml-apex-hinglish-q8_0.bin"
+    MURL="https://huggingface.co/gouravg8/gtm-hi2hing-ggml/resolve/main/ggml-apex-hinglish-q8_0.bin?download=true"
+    MSIZE="~850 MB"
+  else
+    MFILE="$MODEL_DIR/ggml-$MODEL.bin"
+    MURL="https://huggingface.co/ggerganov/whisper.cpp/resolve/main/ggml-$MODEL.bin"
+    MSIZE="~1.6-3 GB"
+  fi
   if [ -s "$MFILE" ] && [ "$(wc -c < "$MFILE")" -gt 100000000 ]; then
     ok "Whisper model ready: $MFILE"
   else
-    echo "  downloading ggml-$MODEL.bin (~3 GB for large-v3)"
-    curl -L --fail --progress-bar -o "$MFILE.part" "https://huggingface.co/ggerganov/whisper.cpp/resolve/main/ggml-$MODEL.bin" \
+    echo "  downloading $(basename "$MFILE") ($MSIZE)"
+    curl -L --fail --progress-bar -o "$MFILE.part" "$MURL" \
       && mv "$MFILE.part" "$MFILE" && ok "saved $MFILE" \
-      || { rm -f "$MFILE.part"; warn "model download failed; re-run later or download ggml-$MODEL.bin into $MODEL_DIR"; }
+      || { rm -f "$MFILE.part"; warn "model download failed; re-run later or download $(basename "$MFILE") into $MODEL_DIR"; MFILE=""; }
   fi
 fi
 
@@ -412,7 +420,7 @@ if [ "$SKIP_PIP" = 1 ]; then
   ok "pip install skipped (--skip-pip)"
 else
   "$VENV_PY" -m pip install --quiet --upgrade pip
-  "$VENV_PY" -m pip install --quiet -r "$ROOT_DIR/skills/video-pipeline/engine/requirements.txt"
+  "$VENV_PY" -m pip install --quiet -r "$PKG/skills/video-pipeline/engine/requirements.txt"
   ok "numpy, Pillow, OpenCV, PDF reader/rendering, auto-editor, google-genai, scipy, soundfile, nara_wpe installed in sandbox"
 fi
 "$VENV_PY" -c "import numpy, PIL, cv2, pypdf, pypdfium2" 2>/dev/null || die "sandbox virtualenv is missing a required video or PDF dependency; re-run without --skip-pip"
@@ -455,6 +463,17 @@ else
   ok "skills in $(tilde "$SKILLS_DIR"): $NEW installed, $KEPT kept, $UPDATED updated"
 fi
 [ -d "$SKILLS_DIR/business-reels-style" ] && rm -rf "$SKILLS_DIR/business-reels-style"
+# Skills merged away in 2.0: remove ours (marker file present) so their old, conflicting rules stop loading
+RETIRED=(video-cut-audit video-motion-graphics video-sound-design video-format video-take-geometry video-reference-match
+         video-render video-review-gate video-omni-restyle video-short-form)
+RETIRED_N=0
+for r in "${RETIRED[@]}"; do
+  for A in "$SKILLS_DIR" ${ABS_LINKS[@]+"${ABS_LINKS[@]}"}; do
+    if [ -L "$A/$r" ]; then rm -f "$A/$r"; RETIRED_N=$((RETIRED_N + 1))
+    elif [ -d "$A/$r" ] && [ -f "$A/$r/.video-skills" ]; then rm -rf "$A/$r"; RETIRED_N=$((RETIRED_N + 1)); fi
+  done
+done
+[ "$RETIRED_N" -gt 0 ] && ok "removed $RETIRED_N retired skill folder(s)/link(s) from 1.x"
 
 # Link skills to other agents (e.g. Claude Code, Antigravity)
 realdir() { (cd "$1" 2>/dev/null && pwd -P); }
@@ -505,22 +524,14 @@ if [ -d "$PKG/sound-palette" ]; then
   ok "Sound Palette integrated into $(tilde "$PROJECT")/sound-palette"
 fi
 
-# Brand style guide scaffold (brand/STYLE-GUIDE.md: fill the "Yours" column; the agent writes it into style.json)
-if [ ! -f "$PROJECT/brand/STYLE-GUIDE.md" ] && [ -f "$PKG/brand/STYLE-GUIDE.md" ]; then
-  cp "$PKG/brand/STYLE-GUIDE.md" "$PROJECT/brand/STYLE-GUIDE.md"
-  ok "brand style guide scaffolded at $(tilde "$PROJECT")/brand/STYLE-GUIDE.md"
-fi
+# No brand templates: brand/ holds only what the user puts there. Template files from 1.x are ignored by the pipeline.
+for legacy in MEMO.md STYLE-GUIDE.md; do
+  [ -f "$PROJECT/brand/$legacy" ] && warn "brand/$legacy is a 1.x template and is now ignored; delete it, or put your real brand guide in brand/"
+done
 
-# Brand Memory scaffold (brand/MEMO.md)
-if [ ! -f "$PROJECT/brand/MEMO.md" ]; then
-  if [ -f "$PKG/brand/MEMO.md" ]; then
-    cp "$PKG/brand/MEMO.md" "$PROJECT/brand/MEMO.md"
-  else
-    "$VENV_PY" "$ENG/scripts/memo.py" init --path "$PROJECT/brand/MEMO.md"
-  fi
-  ok "brand memory scaffolded at $(tilde "$PROJECT")/brand/MEMO.md"
-else
-  ok "brand memory exists at $(tilde "$PROJECT")/brand/MEMO.md (preserved)"
+# The environment check, where agents can run it before every edit: $VIDEO_ENGINE_DIR/test-package-manager.sh
+if [ -f "$PKG/tools/test-package-manager.sh" ]; then
+  cp "$PKG/tools/test-package-manager.sh" "$ENGINE_DIR/test-package-manager.sh" && chmod +x "$ENGINE_DIR/test-package-manager.sh"
 fi
 
 # Copy LICENSES to ENGINE_DIR (never polluting user workspace)
@@ -554,10 +565,7 @@ if [ "$CLEAN_WORKSPACE" = 1 ]; then
     "node_modules"
     ".venv"
     "LICENSES"
-    ".claude"
     "agent-env.sh"
-    "AGENTS.md"
-    ".vscode"
   )
   CLEANED_COUNT=0
   for lf in "${LEGACY_FILES[@]}"; do
@@ -573,7 +581,7 @@ fi
 
 # Minimal clean .gitignore for video rendering cache
 if [ -f "$PROJECT/.gitignore" ]; then
-  for line in "videos/*/output/" "videos/*/hyperframes/" ".DS_Store"; do
+  for line in "**/.video-pipeline/" ".DS_Store"; do
     grep -qxF "$line" "$PROJECT/.gitignore" || echo "$line" >> "$PROJECT/.gitignore"
   done
 fi
@@ -629,6 +637,11 @@ echo "  installing all compositions from HyperFrames into sandbox"
 if [ -f "$ENG/scripts/install-compositions.mjs" ]; then
   node "$ENG/scripts/install-compositions.mjs" --target "$ENGINE_DIR" --concurrency 12 || warn "Some compositions could not be downloaded; local catalog cached"
   ok "all HyperFrames compositions installed in $(tilde "$ENGINE_DIR/compositions")"
+fi
+if VIDEO_ENGINE_DIR="$ENGINE_DIR" VIDEO_COMPOSITIONS="$ENGINE_DIR/compositions" "$VENV_PY" "$ENG/scripts/catalog.py" build; then
+  ok "HyperFrames catalog indexed (search: catalog.py search <words>)"
+else
+  warn "HyperFrames catalog index could not be built; run: $VENV_PY $ENG/scripts/catalog.py build"
 fi
 
 # --------------------------------------------------------------------------------------------- 6. Accounts and API keys
@@ -692,11 +705,12 @@ O_CUR="$(getenv OPENROUTER_API_KEY)"; O_CUR="${O_CUR:-${OPENROUTER_API_KEY:-}}"
 ask_secret "OPENROUTER_API_KEY (Enter to skip)" "$O_CUR"; REPLY="$(api_key "$REPLY" OPENROUTER_API_KEY)"; setenv OPENROUTER_API_KEY "$REPLY"
 [ -n "$REPLY" ] && ok "OPENROUTER_API_KEY saved" || ok "OpenRouter key skipped"
 
-setenv WATCH_WHISPER_LANG "en"; ok "WATCH_WHISPER_LANG=en (Roman-script pipeline transcription)"
+setenv WATCH_WHISPER_LANG "auto"; ok "WATCH_WHISPER_LANG=auto (Hinglish model: Roman Hinglish; stock model: Hindi, romanised)"
+setenv WATCH_WHISPER_DTW "auto"
 
-[ "$MODEL" != "none" ] && setenv WATCH_WHISPER_MODEL "$(nativepath "$MODEL_DIR/ggml-$MODEL.bin")"
+[ -n "$MFILE" ] && setenv WATCH_WHISPER_MODEL "$(nativepath "$MFILE")"
 [ -n "$WHISPER_BIN" ] && setenv WATCH_WHISPER_CPP_BIN "$(nativepath "$WHISPER_BIN")"
-[ "$IS_WIN" = 1 ] && [ -x "$DF_FILE" ] && setenv VIDEO_DEEPFILTER "$(nativepath "$DF_FILE")"
+[ -x "$DF_FILE" ] && setenv VIDEO_DEEPFILTER "$(nativepath "$DF_FILE")"
 setenv VIDEO_SKILLS "$(nativepath "$SKILLS_DIR")"
 setenv VIDEO_ENGINE "$(nativepath "$ENG")"
 setenv VIDEO_ENGINE_DIR "$(nativepath "$ENGINE_DIR")"
@@ -759,15 +773,17 @@ if [ -f "$PROJECT/sound-palette/sound-palette.json" ]; then
   ok "Sound Palette verified in $(tilde "$PROJECT")/sound-palette"
 fi
 
-if [ "$SKIP_TESTS" = 1 ]; then
-  ok "tests skipped (--skip-tests)"
+if [ -x "$DF_FILE" ]; then
+  ok "DeepFilterNet verified (audio pass 1)"
 else
-  echo "  running relevant engine test cases..."
-  if (cd "$ENG" && "$VENV_PY" -m unittest tests.test_spec_resolver tests.test_memo tests.test_hinglish_and_venv >/dev/null 2>&1); then
-    ok "all relevant engine unit tests passed (spec-resolver, brand memo, hinglish, sandbox discovery)"
-  else
-    warn "unit test check reported an issue; see logs"
-  fi
+  warn "DeepFilterNet is missing: audio pass 1 needs it (re-run setup, or set VIDEO_DEEPFILTER)"
+fi
+if [ -f "$PKG/tools/test-package-manager.sh" ]; then
+  echo "  environment check (quick; run it without --quick for a full sample edit):"
+  bash "$PKG/tools/test-package-manager.sh" --quick --workspace "$PROJECT" 2>&1 | sed 's/^/  /' \
+    || warn "environment check found problems (see above); fix them, then: bash $ENGINE_DIR/test-package-manager.sh"
+else
+  "$VENV_PY" "$S/setup.py" 2>&1 | sed 's/^/  /' || true
 fi
 
 # --------------------------------------------------------------------------------------------- Done
@@ -780,10 +796,10 @@ fi
 cat <<EOF
 
 📂 Creative Workspace (${PROJECT}):
-  ├── brand/            <- Creator identity, brand-style-guide.pdf, social handles & brand/MEMO.md
-  ├── references/       <- Benchmark reels, viral hooks, layout screenshots
-  ├── sound-palette/    <- 19 offline tactile audio assets (-3 dBFS)
-  └── videos/           <- Production projects (raw/ -> processed/)
+  ├── brand/            <- Optional: your own logo, colours, fonts, brand guide (nothing is assumed)
+  ├── references/       <- Optional: reels or images whose look you want
+  ├── sound-palette/    <- 19 offline sound effects (-3 dBFS)
+  └── videos/<name>/    <- One folder per video; work goes to .video-pipeline/, results to Exports/
 
 ⚙️ Engine Sandbox (${ENGINE_DIR}):
   ├── .venv/            <- Python 3.9+ runtime & dependencies
@@ -793,12 +809,9 @@ cat <<EOF
 🚀 How to start editing:
   1. Open your creative workspace folder in your agent (Antigravity, Claude Code, Cursor):
      cd ${PROJECT}
-  2. Drop your raw creator clip into a project folder:
+  2. Put your clip in a project folder:
      mkdir -p videos/my-video/raw/
      cp path/to/clip.mp4 videos/my-video/raw/
   3. Prompt the agent:
-     - Basic: "Edit videos/my-video/raw/clip.mp4 into a 9:16 vertical reel."
-     - Detailed: "Edit videos/my-video/raw/clip.mp4 into a high-retention financial teardown.
-       Use split-screen layout, Kodak Portra warm tone grade, tactile SFX, Poppins punch words,
-       and suppress background noise with neural speech isolation."
+     - "Edit videos/my-video into a 9:16 Instagram Reel. Research the topic and add graphics that explain it."
 EOF

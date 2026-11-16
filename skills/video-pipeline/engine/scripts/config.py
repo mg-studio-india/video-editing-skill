@@ -10,11 +10,11 @@ CONFIG_FILE = Path.home() / ".config" / "watch" / ".env"
 DEFAULTS = {
     # whisper.cpp
     "WATCH_WHISPER_CPP_BIN": "",          # path to whisper-cli (auto-detected if empty)
-    "WATCH_WHISPER_MODEL": "",            # path to ggml-large-v3.bin (auto-detected if empty)
-    "WATCH_WHISPER_LANG": "en",           # pipeline uses English decoding to keep Roman-script output
+    "WATCH_WHISPER_MODEL": "",            # path to a ggml model (auto-detected; the Hinglish model is preferred)
+    "WATCH_WHISPER_LANG": "auto",         # auto: Hinglish model -> en token (Roman output); stock model -> hi, then romanised
     "WATCH_WHISPER_THREADS": "",          # default: min(8, cpu count)
-    "WATCH_WHISPER_DTW": "",              # optional --dtw preset, e.g. large.v3 (see references/macos-setup.md)
-    "WATCH_WHISPER_PROMPT": "",           # optional initial prompt: names, jargon
+    "WATCH_WHISPER_DTW": "auto",          # auto: DTW word timing preset from the model name; "off" disables it
+    "WATCH_WHISPER_PROMPT": "",           # optional initial prompt: names and jargon only, never a topic sentence
     # analysis
     "WATCH_SCENE_THRESHOLD": "0.20",      # ffmpeg scene score that counts as a cut
     "WATCH_CACHE_DIR": "~/.cache/watch",
@@ -26,7 +26,10 @@ BIN_CANDIDATES = [
     "/usr/local/bin/whisper-cli",
     "~/whisper.cpp/build/bin/whisper-cli",
 ]
-MODEL_NAMES = ["ggml-large-v3.bin", "ggml-large-v3-turbo.bin", "ggml-large-v2.bin"]
+# Hinglish first: a Whisper fine-tune that writes Hindi/English speech in Roman script, so the transcript says what
+# was spoken (stock Whisper forced to English translates Hindi instead of transcribing it).
+HINGLISH_MODEL = "ggml-apex-hinglish-q8_0.bin"
+MODEL_NAMES = [HINGLISH_MODEL, "ggml-large-v3.bin", "ggml-large-v3-turbo.bin", "ggml-large-v2.bin"]
 MODEL_DIRS = [
     "~/.cache/whisper.cpp",
     "~/whisper.cpp/models",
@@ -93,9 +96,40 @@ def find_whisper_model(cfg: dict[str, str] | None = None) -> Path | None:
     if explicit:
         p = Path(explicit).expanduser()
         return p if p.is_file() else None
-    for name in MODEL_NAMES:  # large-v3 first
+    for name in MODEL_NAMES:  # Hinglish model first, then large-v3
         for d in MODEL_DIRS:
             p = Path(d).expanduser() / name
             if p.is_file():
                 return p
+    return None
+
+
+def is_hinglish_model(model: Path | str | None) -> bool:
+    name = Path(str(model or "")).name.lower()
+    return "hinglish" in name or "hi2hing" in name
+
+
+def whisper_lang(cfg: dict[str, str], model: Path | str | None) -> str:
+    """Decoder language. The Hinglish fine-tune emits Roman Hinglish under the `en` token (its documented usage).
+    A stock model must decode Hindi as `hi` (faithful Devanagari, romanised afterwards): `en` would translate."""
+    lang = (cfg.get("WATCH_WHISPER_LANG") or "auto").strip().lower()
+    if lang in ("", "auto", "hinglish", "hi-latn"):
+        return "en" if is_hinglish_model(model) else "hi"
+    return lang
+
+
+def dtw_preset(cfg: dict[str, str], model: Path | str | None) -> str | None:
+    """whisper.cpp --dtw alignment-head preset for word timing; None when disabled or unknown."""
+    value = (cfg.get("WATCH_WHISPER_DTW") or "auto").strip().lower()
+    if value in ("off", "none", "0", "false"):
+        return None
+    if value != "auto":
+        return value
+    name = Path(str(model or "")).name.lower()
+    if is_hinglish_model(name) or "turbo" in name:
+        return "large.v3.turbo"      # the Hinglish Apex model is a large-v3-turbo fine-tune
+    if "large-v3" in name:
+        return "large.v3"
+    if "large-v2" in name:
+        return "large.v2"
     return None

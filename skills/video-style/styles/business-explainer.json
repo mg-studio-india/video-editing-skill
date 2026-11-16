@@ -1,0 +1,83 @@
+{
+  "name": "business-explainer",
+  "summary": "Business, money and economy explainers (Hinglish). Gold keywords, green for growth, headline, chart, number and map blocks from research.",
+  "colors": {
+    "text": "#FFFFFF",
+    "accent": "#FFC83D",
+    "accent2": "#22E07A",
+    "money": "#22E07A",
+    "dark": "#0B0B0F",
+    "paper": "#F4ECD8",
+    "paper_ink": "#1D1A16"
+  },
+  "fonts": {
+    "display": {
+      "family": "Poppins",
+      "files": {
+        "700": "@engine/assets/fonts/poppins/Poppins-Bold.ttf",
+        "800": "@engine/assets/fonts/poppins/Poppins-ExtraBold.ttf"
+      }
+    },
+    "body": {
+      "family": "Inter",
+      "files": {
+        "100 900": "@engine/assets/fonts/inter/Inter-Variable.ttf"
+      }
+    },
+    "captions": {
+      "family": "Inter",
+      "files": {
+        "100 900": "@engine/assets/fonts/inter/Inter-Variable.ttf"
+      }
+    }
+  },
+  "captions": {
+    "family": "Inter",
+    "mode": "keywords",
+    "highlight": "color",
+    "case": "keep",
+    "weight": 600,
+    "max_emphasis": 1,
+    "shadow": "0 2px 10px rgba(0,0,0,.55)",
+    "plate_color": ""
+  },
+  "cards": {
+    "bg": "rgba(10,14,22,.84)",
+    "text": "#FFFFFF",
+    "radius": 18,
+    "border": "rgba(255,255,255,.12)"
+  },
+  "motion": {
+    "in": 0.3,
+    "out": 0.22,
+    "ease_in": "power3.out",
+    "ease_out": "power2.in"
+  },
+  "color_grade": "vibrant-enhanced",
+  "audio_tone": "clear",
+  "catalog": {
+    "prefer_tags": [
+      "data",
+      "chart",
+      "counter",
+      "headline",
+      "news",
+      "map",
+      "logo",
+      "lower-third"
+    ],
+    "avoid_tags": [
+      "glitch"
+    ]
+  },
+  "sound": {
+    "palette": [
+      "ping-metric",
+      "chime-reveal",
+      "paper-slide",
+      "whoosh-fast",
+      "pop"
+    ],
+    "rule": "a ping when a number lands; a paper slide for headlines"
+  }
+}

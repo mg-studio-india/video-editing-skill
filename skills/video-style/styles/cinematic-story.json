@@ -1,0 +1,78 @@
+{
+  "name": "cinematic-story",
+  "summary": "Stories, vlogs and founder journeys. Warm natural grade, soft captions with a warm keyword colour, slow motion, few graphics.",
+  "colors": {
+    "text": "#FFFFFF",
+    "accent": "#FFB86B",
+    "accent2": "#FFE3B3",
+    "money": "#22E07A",
+    "dark": "#0B0B0F",
+    "paper": "#F4ECD8",
+    "paper_ink": "#1D1A16"
+  },
+  "fonts": {
+    "display": {
+      "family": "Playfair Display",
+      "files": {
+        "400 900": "@engine/assets/fonts/playfair/PlayfairDisplay-Variable.ttf"
+      }
+    },
+    "body": {
+      "family": "Inter",
+      "files": {
+        "100 900": "@engine/assets/fonts/inter/Inter-Variable.ttf"
+      }
+    },
+    "captions": {
+      "family": "Inter",
+      "files": {
+        "100 900": "@engine/assets/fonts/inter/Inter-Variable.ttf"
+      }
+    }
+  },
+  "captions": {
+    "family": "Inter",
+    "mode": "keywords",
+    "highlight": "color",
+    "case": "keep",
+    "weight": 600,
+    "max_emphasis": 1,
+    "shadow": "0 2px 12px rgba(0,0,0,.6)",
+    "plate_color": ""
+  },
+  "cards": {
+    "bg": "rgba(20,14,10,.70)",
+    "text": "#FFF6EC",
+    "radius": 24,
+    "border": "rgba(255,255,255,.10)"
+  },
+  "motion": {
+    "in": 0.5,
+    "out": 0.4,
+    "ease_in": "power2.out",
+    "ease_out": "power2.inOut"
+  },
+  "color_grade": "enhanced-natural",
+  "audio_tone": "warm",
+  "catalog": {
+    "prefer_tags": [
+      "title",
+      "quote",
+      "lower-third",
+      "captions"
+    ],
+    "avoid_tags": [
+      "counter",
+      "glitch",
+      "terminal"
+    ]
+  },
+  "sound": {
+    "palette": [
+      "shimmer-accent",
+      "whoosh-cinematic",
+      "impact-sub-drop"
+    ],
+    "rule": "sound only at section turns"
+  }
+}

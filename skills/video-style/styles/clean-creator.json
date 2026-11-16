@@ -1,0 +1,80 @@
+{
+  "name": "clean-creator",
+  "summary": "Default. Measured natural colour correction, white semi-bold captions with a yellow keyword pop, few clean graphics. Talking-head reels and explainers.",
+  "colors": {
+    "text": "#FFFFFF",
+    "accent": "#FFD400",
+    "accent2": "#00C3FF",
+    "money": "#22E07A",
+    "dark": "#0B0B0F",
+    "paper": "#F4ECD8",
+    "paper_ink": "#1D1A16"
+  },
+  "fonts": {
+    "display": {
+      "family": "Poppins",
+      "files": {
+        "700": "@engine/assets/fonts/poppins/Poppins-Bold.ttf",
+        "800": "@engine/assets/fonts/poppins/Poppins-ExtraBold.ttf"
+      }
+    },
+    "body": {
+      "family": "Inter",
+      "files": {
+        "100 900": "@engine/assets/fonts/inter/Inter-Variable.ttf"
+      }
+    },
+    "captions": {
+      "family": "Inter",
+      "files": {
+        "100 900": "@engine/assets/fonts/inter/Inter-Variable.ttf"
+      }
+    }
+  },
+  "captions": {
+    "family": "Inter",
+    "mode": "keywords",
+    "highlight": "color",
+    "case": "keep",
+    "weight": 600,
+    "max_emphasis": 1,
+    "shadow": "0 2px 10px rgba(0,0,0,.55)",
+    "plate_color": ""
+  },
+  "cards": {
+    "bg": "rgba(12,12,16,.78)",
+    "text": "#FFFFFF",
+    "radius": 22,
+    "border": "rgba(255,255,255,.14)"
+  },
+  "motion": {
+    "in": 0.35,
+    "out": 0.25,
+    "ease_in": "power3.out",
+    "ease_out": "power2.in"
+  },
+  "color_grade": "dynamic",
+  "audio_tone": "neutral",
+  "catalog": {
+    "prefer_tags": [
+      "captions",
+      "lower-third",
+      "title",
+      "callout",
+      "highlight"
+    ],
+    "avoid_tags": [
+      "glitch",
+      "3d"
+    ]
+  },
+  "sound": {
+    "palette": [
+      "whoosh-fast",
+      "pop",
+      "click-soft",
+      "ping-metric"
+    ],
+    "rule": "at most one cue per graphic; none under speech peaks"
+  }
+}

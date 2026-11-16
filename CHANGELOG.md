@@ -2,6 +2,27 @@
 
 Every release of video-editing-skill. Update with `video-skills update`.
 
+## [2.0.0] - 2026-11-16
+
+- Simpler: 19 skills -> 9 (pipeline, watch, style, audio, transcribe, captions, researcher, plan-storyboard, generate); one approval gate; retired skills are removed on update
+- Audio: two passes, each run once - WPE + DeepFilterNet (strength from measured noise, delay-compensated, alignment-checked) before transcription; voice-only polish + one master at render. No more triple dereverb / double denoise on the full mix (robotic, echoey voice)
+- Sound effects and music are mixed after the voice is processed; one AAC encode; before/after preview at review
+- Hinglish transcripts: Hinglish Whisper model by default (Roman script); stock models decode Hindi instead of being forced to English (which translated); no injected topic prompt; DTW word timing; words snapped to speech energy; silent hallucinations dropped
+- Sync: constant-frame-rate ingest, source audio aligned to the first frame, transcript mapped through the exact cut map (no second transcription), A/V checks within one frame
+- Cuts: tight by default and active at analysis; every edge placed in measured silence and snapped outward to frames, so words are never clipped; recut command for drops/restores
+- Every video ends with a held frame and a fade to black (picture and audio)
+- HyperFrames catalog first: install-time catalog index + catalog.py search/show; catalog blocks validated at approval
+- Research feeds the edit: research.json facts with sources drive graphics, sounds and b-roll; beats may cite research-NNN
+- Captions: Inter SemiBold, sentence case, white; only keywords highlight with a kinetic pop
+- Four default styles; brand rules only from the user's own files; brand/MEMO.md and STYLE-GUIDE.md templates removed and ignored
+- Installer: requirements installed from the package (not the workspace); workspace cleanup is opt-in and no longer touches .claude/AGENTS.md/.vscode; engine unit tests removed
+- video-skills: a release that drops skills now retires their links (edited ones backed up first), cleans dangling agent-folder links and forgets them in its state, so the 10 merged 1.x skills stop loading and doctor stays clean; rollback restores them
+- tools/test-package-manager.sh: (A) the sandboxed package-manager test (release, install, update/conflict, force, rollback, partial update, migration, prune, doctor, uninstall) now also covers a release that drops a skill; (B) environment verification before editing - skills, engine, FFmpeg filters, whisper DTW flags, Hinglish model, DeepFilterNet, HyperFrames + catalog index - with --fix to run the setup; (C) a full sample edit checked end to end. Installed as $VIDEO_ENGINE_DIR/test-package-manager.sh (B + C) and run with --quick at the end of setup
+
+Skills changed: video-audio 1.1.1 -> 2.0.0, video-captions 1.1.1 -> 2.0.0, video-generate 1.1.1 -> 2.0.0, video-pipeline 1.1.1 -> 2.0.0, video-plan-storyboard 1.1.1 -> 2.0.0, video-researcher 1.1.1 -> 2.0.0, video-style 1.1.1 -> 2.0.0, video-transcribe 1.1.1 -> 2.0.0, video-watch 1.1.1 -> 2.0.0
+
+Skills removed: video-cut-audit, video-format, video-motion-graphics, video-omni-restyle, video-reference-match, video-render, video-review-gate, video-short-form, video-sound-design, video-take-geometry
+
 ## [1.1.1] - 2026-11-08
 
 - Fix audio processing and HyperFrames assembly

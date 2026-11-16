@@ -1,137 +1,79 @@
 # Setup
 
-About 30 to 45 minutes, most of it downloads. You need a Mac and a coding agent that can run shell commands, read and
-edit files, and look at images: Claude Code by default (the desktop app or `claude` in a terminal), or another agent
-(see "Using other agents"). Editing full videos uses a lot of usage; set up on the latest model, edit on whichever suits.
+About 20-40 minutes, mostly downloads. You need macOS, Linux (or WSL 2) or Windows with Git Bash, and a coding agent
+that can run shell commands, edit files and look at images (Claude Code by default).
 
 ## 1. Install
 
-Make the folder you will open in Claude Code, and run the one-line installer from inside it:
+From the folder you will edit in:
 
 ```bash
 mkdir -p ~/VideoEditing && cd ~/VideoEditing
 curl -fsSL https://raw.githubusercontent.com/mg-studio-india/video-editing-skill/main/get.sh | bash
 ```
 
-Later: `video-skills check` (also run automatically at every project start), `video-skills update`,
-`video-skills rollback`; see the README's "Updates & package management". Without the package manager you can still run
-`bash /path/to/video-editing-skill/install.sh` from a downloaded copy (skills are copied and do not auto-update).
-
-Run it from your project folder, not from inside the package (it refuses if you do). If Homebrew is missing, it stops
-and points you to https://brew.sh: install that, open a new terminal, and run it again.
-
-### What the installer does
+Without the package manager: `bash /path/to/video-editing-skill/install.sh` from your workspace folder.
 
 | Step | Result |
 |---|---|
-| 1. System tools | `node` (22+), `ffmpeg`, `whisper-cpp` via Homebrew |
-| 2. Whisper model | `ggml-large-v3.bin` (~3 GB) in `~/.cache/whisper.cpp`, shared by all projects |
-| 3. Python | `./.venv` with numpy, Pillow, OpenCV 4, pypdf/PDFium, auto-editor, google-genai |
-| 4. Skills and folders | the 19 skills (`video-*`, with business-reels-style integrated into `video-style`) in `~/.agents/skills/`, shared by every project and agent, linked into `~/.claude/skills/` when Claude Code is installed and into any `--link` folders; `./videos/`, `./videos/_shared/`, `./references/`, `./LICENSES/` |
-| 5. HyperFrames | the CLI pinned in `./package.json`, its Chrome, all skills (full suite of 21 core and workflow skills: `hyperframes`, `hyperframes-core`, `hyperframes-animation`, `hyperframes-audio`, `hyperframes-cli`, `hyperframes-creative`, `hyperframes-keyframes`, `hyperframes-registry`, `hyperframes-studio`, `media-use`, `embedded-captions`, `faceless-explainer`, `figma`, `general-video`, `motion-graphics`, `music-to-video`, `pr-to-video`, `product-launch-video`, `remotion-to-hyperframes`, `slideshow`, `talking-head-recut`), a local GSAP copy for offline renders |
-| 6. Accounts and keys | HeyGen sign-in, `GEMINI_API_KEY`, `OPENROUTER_API_KEY`, your main spoken language, all in `./.env` |
-| 7. Agent wiring | `./agent-env.sh` (source it before starting any agent), a marked block in `./AGENTS.md`, and for Claude Code `./.claude/settings.local.json` (every session gets the `.venv`, HyperFrames, keys and paths) |
-| 8. Checks | transcription, HeyGen, Gemini model names, and the 128 engine tests |
+| 1. System tools | Node 22, FFmpeg, whisper.cpp, SoX (Homebrew / your package manager; missing ones are listed with the command) |
+| 2. Models | Hinglish Whisper model `ggml-apex-hinglish-q8_0.bin` (~850 MB, Apache-2.0, writes Hindi/English speech in Roman script), DeepFilterNet 3 (voice denoise), YuNet (face-aware reframe), all shared in `~/.cache` / `~/.config/video-skills` |
+| 3. Python | the engine venv in `~/.video-skills/engine/.venv` (numpy, scipy, soundfile, nara_wpe, OpenCV, Pillow, PDF readers) |
+| 4. Skills | 9 skills in `~/.agents/skills/` (linked into `~/.claude/skills/`); 1.x skills that were merged are removed |
+| 5. HyperFrames | pinned CLI + Chrome + GSAP in the engine, the full composition catalog in `~/.video-skills/engine/compositions`, indexed for search (`catalog.json`) |
+| 6. Keys | optional `GEMINI_API_KEY` / `OPENROUTER_API_KEY` (generated b-roll), HeyGen sign-in (sound library), stored in `~/.config/video-skills/.env` |
+| 7. Wiring | `~/.config/video-skills/agent-env.sh` for agents that need paths and keys in their shell |
+| 8. Check | preflight: FFmpeg, whisper-cli, model, DeepFilterNet, catalog index |
 
-Anything unfinished is listed at the end under "To finish later". The installer is safe to run again: finished steps are
-skipped, your keys are kept, and installed skills are never overwritten.
+Re-running is safe: finished steps are skipped, keys kept.
 
 ### Options
 
 | Option | Use |
 |---|---|
-| `--skills-dir DIR` | where the skills go (default `~/.agents/skills`, shared; a relative path such as `.claude/skills` installs for this project only) |
-| `--no-claude-link` | don't link the skills into `~/.claude/skills` (done automatically when Claude Code is installed) |
-| `--link DIR` | also expose the skills in DIR as links to the one copy (repeatable), so several agents share them |
-| `--no-claude-settings` | skip `.claude/settings.local.json` (it is written automatically when `.claude` is a target) |
-| `--model large-v3-turbo` | a faster, slightly less accurate whisper model (`none` skips the download) |
-| `--update-skills` | replace installed skills with this package's versions; the old ones are backed up first |
-| `--yes` | no questions: keeps existing keys, skips the ones not already set |
-| `--no-system` | you installed node, ffmpeg and whisper-cpp yourself |
-| `--no-browser` | skip HyperFrames' Chrome download |
-| `--skip-pip`, `--skip-tests` | reuse the existing `.venv`; skip the tests |
-| `--hf-version V` | pin a different HyperFrames version (the default is the one the skills were tested with) |
+| `--model large-v3` | stock Whisper instead of the Hinglish model (Hindi is then decoded as Hindi and romanised) |
+| `--skills-dir DIR`, `--link DIR`, `--no-claude-link` | where the skills go and which agent folders link to them |
+| `--update-skills` | replace installed skills with this package's versions (old ones backed up) |
+| `--clean-workspace` | opt-in: remove old engine plumbing (package.json, node_modules, .venv) from the workspace |
+| `--yes`, `--no-system`, `--no-browser`, `--skip-pip`, `--hf-version V` | non-interactive; skip system tools / Chrome / pip; pin HyperFrames |
 
-## 2. Accounts and keys
+## 2. First run
 
-| What | Needed for | How |
-|---|---|---|
-| HeyGen | all sound effects and music (HeyGen's sound library) | the installer offers a browser sign-in; later, source `agent-env.sh` and run `"$VIDEO_ENGINE_DIR/node_modules/.bin/hyperframes" auth login` |
-| Google Gemini key | generated shots: Veo video, Gemini Flash Image stills | https://aistudio.google.com/apikey |
-| OpenRouter key | fallback for generated images | https://openrouter.ai/keys |
+1. Open your agent in the workspace folder and start a new conversation.
+2. Ask: **"Run the video-pipeline setup check."** It runs `setup.py` and lists anything missing.
+3. Put a 30-60 s clip in `videos/test/raw/` and use a prompt from `PROMPTS.md`.
 
-Without HeyGen there is no music, and sound effects only come from HyperFrames' 21 built-in sounds (Claude asks first).
-Without the Gemini key, everything works except generated shots.
-
-Keys live in `~/VideoEditing/.env`, readable only by you. To change one, edit `.env` (or delete the line) and run the
-installer again with `--skip-pip --skip-tests`, so Claude Code's settings pick up the change. Never share or commit
-`.env` or `.claude/settings.local.json`; the installer adds both to `.gitignore`.
-
-## 3. First run in Claude Code
-
-1. Open Claude Code in `~/VideoEditing`: Local, this folder, the latest model, permissions on Auto.
-2. Type: **"Run the video-pipeline setup check and fix anything it finds."**
-3. Start a **new thread** (skills load when a thread starts).
-4. Put a 30 to 60 second clip in `videos/test-01/raw/` and use the first prompt in `PROMPTS.md`.
-
-## Using other agents
-
-The skills are plain Agent Skills folders and find their engine through `VIDEO_ENGINE` and `VIDEO_SKILLS`, so any agent
-that can run shell commands, edit files and view images can use them.
-
-1. Find the folder your agent loads skills from (its documentation), then install there, linking Claude Code too if you
-   use more than one: `bash ~/Downloads/video-editing-skill/install.sh --link <that folder>` (the skills stay in
-   `~/.agents/skills`; Claude Code's `~/.claude/skills` is linked automatically).
-   With links, a rule saved through one agent applies to all of them.
-2. In the terminal you start that agent from, run `source agent-env.sh` first. Claude Code does not need this; its
-   settings file does it.
-3. Agents that read project instructions but not skills get pointed to `video-pipeline/SKILL.md` by the block the
-   installer adds to `AGENTS.md`.
-
-The workflow (gates, evidence rules, "save this to the skill") was tested with Claude; other models may follow it less
-closely, so watch the first edit's gates.
-
-## 4. Check it yourself
-
-From `~/VideoEditing`, after `source agent-env.sh` (which also loads your keys and paths):
+## Verify before editing
 
 ```bash
-E="$VIDEO_ENGINE/scripts"
-python $E/watch.py check              # ffmpeg, whisper-cli and the model all OK
-python $E/heygen-sound.py --check     # media-use found, HeyGen signed in
-python $E/generate.py models          # the Veo and Gemini image models exist on your key
-"$VIDEO_ENGINE_DIR/node_modules/.bin/hyperframes" doctor  # HyperFrames' own checks
+bash tools/test-package-manager.sh                 # from the package; or: bash ~/.video-skills/engine/test-package-manager.sh
+bash tools/test-package-manager.sh --quick         # tools, models, flags and skills only (~10 s)
+bash tools/test-package-manager.sh --fix           # run the setup if something required is missing, then verify again
+bash tools/test-package-manager.sh --package-only  # maintainers: the sandboxed package-manager test before a release
 ```
+
+From the package folder the full run first tests the package manager in a throwaway sandbox (release, install,
+update with a local edit, rollback, a release that drops a skill, doctor, uninstall; needs git and rsync). It then
+renders a short sample edit through the real pipeline (spoken clip with echo and noise → analyze →
+approve → assemble) and checks: audio cleaned once and aligned, Hinglish words with timing, the pause tightened, no cut
+inside a word, a silent composition picture (no doubled voice), a catalog block staged, −14 LUFS, the render check
+passing and the last frame black. `READY` (exit 0) means edits will work; fix every `FAIL` first. Add `--keep` to keep
+the sample project for inspection.
 
 ## Troubleshooting
 
 | Symptom | Fix |
 |---|---|
-| The agent doesn't use the skills | start it in the project folder, from a new session; for non-Claude agents install into the folder it scans (`--skills-dir`) and `source agent-env.sh` first |
-| "engine not found" / `VIDEO_ENGINE` empty | `source agent-env.sh` in the agent's terminal, or re-run the installer |
-| `whisper-cli` missing | `brew install whisper-cpp` |
-| Whisper model missing | run the installer again (or `--model large-v3-turbo` for a smaller download) |
-| Transcript in the wrong language or script | Pipeline Whisper is fixed to English decoding for Roman-script captions; remove any stale `WATCH_WHISPER_LANG` setting and rerun transcription |
-| `generate.py models` says NOT FOUND | Google renamed a model: add `VEO_MODEL="<a listed name>"` (or `GEMINI_IMAGE_MODEL`) to `.env`, re-run the installer |
-| HeyGen not signed in | source `agent-env.sh`, run `"$VIDEO_ENGINE_DIR/node_modules/.bin/hyperframes" auth login`, then `heygen-sound.py --check` |
-| "no Haar face detector" when making a Short | OpenCV 5 got installed: `.venv/bin/python -m pip install "opencv-python-headless>=4.9,<5"` |
-| HyperFrames cannot render or snapshot | source `agent-env.sh`, then run `"$VIDEO_ENGINE_DIR/node_modules/.bin/hyperframes" browser ensure` and `doctor` |
-| Keys missing inside the agent | Claude Code: re-run the installer with `--skip-pip --skip-tests`; other agents: `source agent-env.sh` before starting them |
-| Tests fail at the end | open `/tmp/video-skills-tests.log` and paste it into Claude Code |
-| A render is very slow | that is normal on CPU for 4K; use `--resolution portrait` for Shorts, and see the render skill for long videos |
+| Anything below | run `bash tools/test-package-manager.sh --fix` first; it names the exact problem |
+| Transcript is English instead of Hinglish, or in Devanagari | the Hinglish model is missing: re-run setup (or set `WATCH_WHISPER_MODEL`); remove any old `WATCH_WHISPER_LANG=en` from `~/.config/video-skills/.env` |
+| Words in captions are a little early/late | your whisper-cli lacks DTW: `brew upgrade whisper-cpp` (words are still snapped to the speech energy) |
+| "DeepFilterNet is not installed" | re-run setup; or set `VIDEO_DEEPFILTER=/path/to/deep-filter` |
+| "catalog index missing" | `"$VIDEO_ENGINE_PYTHON" "$VIDEO_ENGINE/scripts/catalog.py" build` |
+| HyperFrames cannot render | `"$VIDEO_ENGINE_DIR/node_modules/.bin/hyperframes" browser ensure`, then `doctor` |
+| Old `brand/MEMO.md` / `STYLE-GUIDE.md` | 1.x templates, now ignored: delete them; put your real brand files in `brand/` |
+| The agent ignores the skills | start a new conversation in the workspace folder; other agents: `source agent-env.sh` first |
 
-## Updating
+## Updating and removing
 
-- **A new version of this package:** unzip it and run its `install.sh --update-skills` from your project folder. Your
-  old skills are backed up to `~/.agents/skills-backup-<date>`; ask your agent to merge any rules you had saved
-  back in. Installs from before the `video-` names are moved to `*-legacy-backup-<date>` automatically.
-- **HyperFrames:** the engine keeps a pinned local CLI. To change its version, rerun the installer with `--hf-version V`,
-  then run `"$VIDEO_ENGINE_DIR/node_modules/.bin/hyperframes" check` after sourcing `agent-env.sh`.
-
-## Removing it
-
-- **One project:** delete its folder (`agent-env.sh`, keys, footage and project state are inside it). The shared skills
-  stay for your other projects.
-- **Everything:** also delete the shared pieces: our skills in `~/.agents/skills/` (`video-*`) and their links in `~/.claude/skills/`; HyperFrames' skills in both folders (`hyperframes*`,
-  `media-use`, `embedded-captions`, `talking-head-recut`, `motion-graphics`) if nothing else uses them; the whisper model
-  in `~/.cache/whisper.cpp`; and the Homebrew tools.
+`video-skills update` / `rollback` / `doctor` manage versions. To remove everything: `video-skills uninstall --purge`,
+then delete the Whisper model in `~/.cache/whisper.cpp` if nothing else uses it.

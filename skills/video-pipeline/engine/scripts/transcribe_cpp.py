@@ -1,4 +1,11 @@
-"""Local transcription with whisper.cpp (`whisper-cli`). Nothing leaves the machine."""
+"""Local Hinglish transcription with whisper.cpp (`whisper-cli`). Nothing leaves the machine.
+
+Output is always Roman-script Hinglish (Hindi and English speech, English letters):
+  * the default model is a Whisper fine-tune that writes Hinglish directly (decoder token `en`);
+  * a stock model decodes Hindi as `hi` (never `en`, which translates instead of transcribing) and is romanised here.
+No topic prompt is injected: a prompt leaks its words into the transcript. Word starts use DTW alignment when the
+build supports it, and `refine_words` snaps every word to the measured speech energy so text, audio and picture agree.
+"""
 from __future__ import annotations
 
 import json
@@ -15,17 +22,13 @@ ensure_project_venv()
 
 NON_SPEECH_RE = re.compile(r"^[\[\(\*♪].*[\]\)\*♪]$")
 IGNORED_CUES = {"blank_audio", "silence", "no speech", "inaudible"}
-OPTIONAL_FLAGS = {"-np": 0, "--dtw": 1, "-t": 1, "--prompt": 1, "--carry-initial-prompt": 0}  # flag -> number of values
-
-DEFAULT_HINGLISH_PROMPT = (
-    "Namaste dosto. Aaj ke is video mein hum business, startup, clients, testimonials, previous work, "
-    "college projects, deadlines, milestones, trust, connections aur net worth ke baare mein baat karenge."
-)
+# flag -> number of values; dropped one at a time when a whisper-cli build does not know them
+OPTIONAL_FLAGS = {"-np": 0, "--dtw": 1, "-nfa": 0, "-t": 1, "--prompt": 1}
 
 
 # ---------------------------------------------------------------- audio extraction
-def extract_wav(video: str, out_wav: Path, start: float | None = None,
-                end: float | None = None) -> Path:
+def extract_wav(media: str, out_wav: Path, start: float | None = None, end: float | None = None) -> Path:
+    """16 kHz mono PCM for whisper. No loudness normalisation: it changes nothing whisper needs and can lift noise."""
     cmd = ["ffmpeg", "-hide_banner", "-loglevel", "error", "-y"]
     if start:
         cmd += ["-ss", f"{start:.3f}"]
@@ -33,41 +36,23 @@ def extract_wav(video: str, out_wav: Path, start: float | None = None,
         cmd += ["-t", f"{max(0.0, end - start):.3f}"]
     elif end is not None:
         cmd += ["-t", f"{end:.3f}"]
-    cmd += ["-i", str(Path(video).resolve()), "-vn",
-            "-af", "highpass=f=80,loudnorm=I=-16:TP=-1.5:LRA=11",
-            "-ac", "1", "-ar", "16000",
-            "-c:a", "pcm_s16le", str(out_wav)]
+    cmd += ["-i", str(Path(media).resolve()), "-vn", "-ac", "1", "-ar", "16000", "-c:a", "pcm_s16le", str(out_wav)]
     run(cmd)
     return out_wav
 
 
 # ---------------------------------------------------------------- running whisper-cli
-def build_command(binary: Path, model: Path, wav: Path, out_prefix: Path,
-                  cfg: dict[str, str]) -> list[str]:
-    raw_lang = (cfg.get("WATCH_WHISPER_LANG") or "en").strip().lower()
-    # When transcribing Hindi/Hinglish speech, configuring Whisper to decode with the English token space ('-l', 'en')
-    # and a conversational Hinglish prompt natively instructs Whisper to output spoken Hindi directly
-    # in Latin alphabet (Hinglish). This eliminates Devanagari output directly at the Whisper decoder level.
-    # Pipeline transcripts are always decoded with English tokens; language auto-detection
-    # can emit Devanagari even when the desired deliverable is Roman Hinglish.
-    is_hinglish = True
-    whisper_lang = "en"
-
+def build_command(binary: Path, model: Path, wav: Path, out_prefix: Path, cfg: dict[str, str]) -> list[str]:
+    lang = config.whisper_lang(cfg, model)
     cmd = [str(binary), "-m", str(model), "-f", str(wav), "-of", str(out_prefix),
-           "-oj", "-ml", "1", "-sow", "-l", whisper_lang, "-np"]
+           "-ojf", "-ml", "1", "-sow", "-l", lang, "-np"]
     threads = cfg.get("WATCH_WHISPER_THREADS") or str(min(8, os.cpu_count() or 4))
     cmd += ["-t", threads]
-    if cfg.get("WATCH_WHISPER_DTW"):
-        cmd += ["--dtw", cfg["WATCH_WHISPER_DTW"]]
-
-    prompt = cfg.get("WATCH_WHISPER_PROMPT") or ""
-    if is_hinglish:
-        cmd += ["--carry-initial-prompt"]
-        if not prompt:
-            prompt = DEFAULT_HINGLISH_PROMPT
-        elif "namaste" not in prompt.lower() and "baat karenge" not in prompt.lower():
-            prompt = (DEFAULT_HINGLISH_PROMPT + " " + prompt).strip()
-
+    preset = config.dtw_preset(cfg, model)
+    if preset:
+        # DTW needs the attention matrix, which the flash-attention path does not expose
+        cmd += ["--dtw", preset, "-nfa"]
+    prompt = (cfg.get("WATCH_WHISPER_PROMPT") or "").strip()
     if prompt:
         cmd += ["--prompt", prompt]
     return cmd
@@ -85,26 +70,54 @@ def _drop_flag(cmd: list[str], flag: str) -> list[str]:
 
 
 def run_whisper(cmd: list[str]) -> None:
-    for _ in range(len(OPTIONAL_FLAGS) + 1):
+    for _ in range(len(OPTIONAL_FLAGS) + 2):
         proc = run(cmd, check=False)
         if proc.returncode == 0:
             return
         blob = (proc.stderr or "") + (proc.stdout or "")
         m = re.search(r"unknown argument:\s*(\S+)", blob)
+        if m and m.group(1) == "-ojf" and "-ojf" in cmd:
+            log("whisper-cli has no full JSON output; word starts fall back to segment offsets")
+            cmd = [("-oj" if c == "-ojf" else c) for c in cmd]
+            continue
         if m and m.group(1) in OPTIONAL_FLAGS and m.group(1) in cmd:
             log(f"whisper-cli does not support {m.group(1)}; retrying without it")
             cmd = _drop_flag(cmd, m.group(1))
+            if m.group(1) == "--dtw":
+                cmd = _drop_flag(cmd, "-nfa")
+            continue
+        if "--dtw" in cmd:
+            # e.g. a build that lacks this DTW preset: keep going on segment timing (words are still energy-snapped)
+            log("whisper-cli failed with DTW word timing; retrying without it: " + tail(blob, 300))
+            cmd = _drop_flag(_drop_flag(cmd, "--dtw"), "-nfa")
             continue
         raise ToolError(f"whisper-cli failed (exit {proc.returncode}): {tail(blob)}")
     raise ToolError("whisper-cli kept rejecting flags; run setup.py to inspect your build.")
 
 
 # ---------------------------------------------------------------- parsing
+def _dtw_start(entry: dict) -> float | None:
+    times = []
+    for tok in entry.get("tokens") or []:
+        text = str(tok.get("text", ""))
+        t_dtw = tok.get("t_dtw")
+        if text.startswith("[_") or t_dtw is None:
+            continue
+        try:
+            t_dtw = float(t_dtw)
+        except (TypeError, ValueError):
+            continue
+        if t_dtw >= 0:
+            times.append(t_dtw / 100.0)          # whisper.cpp keeps token times in 10 ms units
+    return min(times) if times else None
+
+
 def parse_whisper_json(data: dict, offset: float = 0.0) -> dict:
     language = (data.get("result") or {}).get("language")
     words: list[dict] = []
     cues: list[dict] = []
     cur: dict | None = None
+    dtw_hits = 0
     for entry in data.get("transcription", []):
         raw = entry.get("text", "")
         text = raw.strip()
@@ -113,6 +126,11 @@ def parse_whisper_json(data: dict, offset: float = 0.0) -> dict:
             continue
         start = off["from"] / 1000.0 + offset
         end = (off.get("to", off["from"])) / 1000.0 + offset
+        dtw = _dtw_start(entry)
+        if dtw is not None:
+            dtw_hits += 1
+            start = dtw + offset
+            end = max(end, start + 0.02)
         if text.startswith("[_"):      # special tokens like [_BEG_]
             continue
         if NON_SPEECH_RE.match(text):
@@ -121,8 +139,7 @@ def parse_whisper_json(data: dict, offset: float = 0.0) -> dict:
                 cur = None
             label = text.strip("[]()*♪ ").strip()
             if label.lower() not in IGNORED_CUES and label:
-                label_cleaned = hinglish.to_hinglish(label)
-                cues.append({"text": label_cleaned, "start": round(start, 3), "end": round(end, 3)})
+                cues.append({"text": hinglish.to_hinglish(label), "start": round(start, 3), "end": round(end, 3)})
             continue
         text_clean = hinglish.to_hinglish(text)
         if raw.startswith(" ") or cur is None:
@@ -135,7 +152,9 @@ def parse_whisper_json(data: dict, offset: float = 0.0) -> dict:
     if cur:
         words.append(cur)
 
-    # Timing hygiene: positive duration, no overlaps.
+    # Timing hygiene, keeping the spoken order: starts never go backwards, positive duration, no overlaps.
+    for i in range(1, len(words)):
+        words[i]["start"] = max(words[i]["start"], words[i - 1]["start"])
     for i, w in enumerate(words):
         w["end"] = max(w["end"], w["start"] + 0.02)
         if i + 1 < len(words) and w["end"] > words[i + 1]["start"]:
@@ -143,9 +162,8 @@ def parse_whisper_json(data: dict, offset: float = 0.0) -> dict:
     for w in words:
         w["start"], w["end"] = round(w["start"], 3), round(w["end"], 3)
     words = hinglish.clean_transcript_words(words)
-    if language == "hi":
-        language = "hi-Latn"
-    return {"language": language, "words": words, "sound_cues": cues}
+    return {"language": "hi-Latn", "decoder_language": language, "words": words, "sound_cues": cues,
+            "timing": "dtw" if dtw_hits else "segment-offsets"}
 
 
 def collapse_loops(words: list[dict]) -> tuple[list[dict], int]:
@@ -174,23 +192,56 @@ def collapse_loops(words: list[dict]) -> tuple[list[dict], int]:
     return [w for w, k in zip(words, keep) if k], removed
 
 
+def refine_words(words: list[dict], mask) -> tuple[list[dict], list[dict]]:
+    """Snap word edges to measured speech and drop words spoken over silence (ASR hallucinations).
+
+    Starts move to the onset of the voiced region they belong to; ends move to the last voiced frame before the next
+    word. A word with no voiced frame anywhere near its span was never said and is returned in `dropped`.
+    """
+    out, dropped = [], []
+    for i, w in enumerate(words):
+        s, e = float(w["start"]), float(w["end"])
+        nxt = float(words[i + 1]["start"]) if i + 1 < len(words) else e + 0.6
+        prev_start = out[-1]["start"] if out else 0.0
+        if mask.voiced_fraction(s - 0.08, max(e, s + 0.1) + 0.08) == 0.0:
+            dropped.append({**w, "reason": "no speech energy under this word"})
+            continue
+        if mask.is_quiet(s):
+            onset = mask.first_voiced(s, min(s + 0.25, max(nxt, s + 0.05)))
+            if onset is not None:
+                s = onset
+        else:
+            k = s
+            lo = max(prev_start + 0.05, s - 0.12)
+            while k - 0.01 >= lo and not mask.is_quiet(k - 0.01):
+                k -= 0.01
+            s = k
+        end_bound = max(nxt, s + 0.05)
+        last = mask.last_voiced_end(s, end_bound)
+        e = last if last is not None else s + 0.08
+        e = min(max(e, s + 0.04), end_bound)
+        out.append({**w, "start": round(s, 3), "end": round(e, 3)})
+    for a, b in zip(out, out[1:]):
+        if a["end"] > b["start"]:
+            a["end"] = round(max(a["start"] + 0.02, b["start"]), 3)
+    return out, dropped
+
+
 def words_to_segments(words: list[dict], gap: float = 0.8, max_words: int = 28) -> list[dict]:
     segments: list[dict] = []
     cur: list[dict] = []
 
     def flush() -> None:
         if cur:
-            segments.append({
-                "start": cur[0]["start"], "end": cur[-1]["end"],
-                "text": " ".join(w["w"] for w in cur),
-            })
+            segments.append({"start": cur[0]["start"], "end": cur[-1]["end"],
+                             "text": " ".join(w.get("w") or w.get("text", "") for w in cur)})
             cur.clear()
 
     for w in words:
         if cur and (w["start"] - cur[-1]["end"] > gap or len(cur) >= max_words):
             flush()
         cur.append(w)
-        if re.search(r"[.!?…][\"')\]]*$", w["w"]):
+        if re.search(r"[.!?…][\"')\]]*$", w.get("w") or w.get("text", "")):
             flush()
     flush()
     return segments
@@ -199,11 +250,13 @@ def words_to_segments(words: list[dict], gap: float = 0.8, max_words: int = 28) 
 def build_transcript(parsed: dict, model_name: str, rng: tuple[float | None, float | None]) -> dict:
     words, removed = collapse_loops(parsed["words"])
     words = hinglish.clean_transcript_words(words)
+    words = [{**w, "text": w["w"]} for w in words]
     return {
         "engine": "whisper.cpp",
         "model": model_name,
-        "language": parsed.get("language"),
+        "language": "hi-Latn",
         "script": "hinglish",
+        "timing": parsed.get("timing"),
         "range": [rng[0], rng[1]] if rng != (None, None) else None,
         "words": words,
         "segments": words_to_segments(words),
@@ -225,20 +278,22 @@ def filter_range(transcript: dict, start: float | None, end: float | None) -> di
 
 
 # ---------------------------------------------------------------- public entry point
-def transcribe(video: str, work_dir: Path, start: float | None = None,
+def transcribe(media: str, work_dir: Path, start: float | None = None,
                end: float | None = None, cfg: dict[str, str] | None = None) -> dict:
     cfg = cfg or config.load()
     binary = config.find_whisper_bin(cfg)
     model = config.find_whisper_model(cfg)
     if binary is None:
-        raise ToolError("whisper-cli not found. On macOS: `brew install whisper-cpp` "
-                        "(see references/macos-setup.md), or set WATCH_WHISPER_CPP_BIN.")
+        raise ToolError("whisper-cli not found. On macOS: `brew install whisper-cpp`, or set WATCH_WHISPER_CPP_BIN.")
     if model is None:
-        raise ToolError("whisper.cpp model not found. Download ggml-large-v3.bin and set "
-                        "WATCH_WHISPER_MODEL (see references/macos-setup.md).")
+        raise ToolError("whisper.cpp model not found. Re-run the video-skills setup (it downloads the Hinglish model "
+                        f"{config.HINGLISH_MODEL}) or set WATCH_WHISPER_MODEL.")
+    if not config.is_hinglish_model(model):
+        log(f"note: {model.name} is a stock Whisper model; Hindi is decoded as Hindi and romanised. "
+            f"Install {config.HINGLISH_MODEL} for natural Hinglish spelling.")
     work_dir.mkdir(parents=True, exist_ok=True)
     with tempfile.TemporaryDirectory(prefix="watch-asr-", dir=str(work_dir)) as tmp:
-        wav = extract_wav(video, Path(tmp) / "audio.wav", start, end)
+        wav = extract_wav(media, Path(tmp) / "audio.wav", start, end)
         prefix = Path(tmp) / "out"
         log(f"transcribing with whisper.cpp ({model.name}); large models can take several minutes…")
         run_whisper(build_command(binary, model, wav, prefix, cfg))
@@ -247,9 +302,6 @@ def transcribe(video: str, work_dir: Path, start: float | None = None,
             raise ToolError("whisper-cli finished but wrote no JSON; check the build supports -oj.")
         data = json.loads(out_json.read_text(encoding="utf-8", errors="replace"))
     parsed = parse_whisper_json(data, offset=start or 0.0)
-    raw_lang = (cfg.get("WATCH_WHISPER_LANG") or "en").strip().lower()
-    if raw_lang in ("hi", "hindi", "hinglish", "hi-latn") or parsed.get("language") == "hi":
-        parsed["language"] = "hi-Latn"
     return build_transcript(parsed, model.name, (start, end))
 
 
@@ -262,7 +314,7 @@ if __name__ == "__main__":
     ap.add_argument("--end")
     a = ap.parse_args()
     t = transcribe(a.media, Path(tempfile.mkdtemp(prefix="watch-")), parse_time(a.start), parse_time(a.end))
-    print(f"language={t['language']}  words={len(t['words'])}  segments={len(t['segments'])}  "
-          f"sound_cues={len(t['sound_cues'])}  loops_collapsed={t['loops_collapsed']}")
+    print(f"language={t['language']}  timing={t['timing']}  words={len(t['words'])}  segments={len(t['segments'])}  "
+          f"loops_collapsed={t['loops_collapsed']}")
     for w in t["words"][:15]:
         print(f"  {fmt_time(w['start'], 2):>8}  {w['w']}")

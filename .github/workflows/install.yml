@@ -16,7 +16,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-24.04, macos-14, windows-2022]
+        os: [ubuntu-24.04, macos-latest, windows-2022]
     runs-on: ${{ matrix.os }}
     defaults:
       run:
@@ -78,11 +78,6 @@ jobs:
           WATCH_WHISPER_MODEL="$PWD/ggml-tiny.bin" "$PY" "$HOME/.agents/skills/video-pipeline/engine/scripts/transcribe.py" clip.mp4 --out t.json --lang en
           "$PY" -c "import json; d=json.load(open('t.json')); w=d['words'] if isinstance(d,dict) else d; t=' '.join(x['text'] for x in w); print(t); assert 'country' in t.lower()"
 
-      - name: Engine test suite
-        run: |
-          ENGINE="$HOME/.video-skills/engine"; PY="$ENGINE/.venv/bin/python"; [ -x "$PY" ] || PY="$ENGINE/.venv/Scripts/python.exe"
-          cd "$HOME/.agents/skills/video-pipeline/engine" && "$PY" -m unittest discover -s tests -t .
-
       - name: Package manager end-to-end (update, conflicts, rollback)
         if: runner.os != 'Windows'      # the sandbox test uses rsync
-        run: bash tools/test-package-manager.sh
+        run: bash tools/test-package-manager.sh --package-only

@@ -1,919 +1,796 @@
 #!/usr/bin/env python3
-"""Project-scoped video pipeline with evidence collection, approval gates and HyperFrames assembly."""
+"""The video pipeline: analyze -> (recut) -> approve -> assemble.
+
+analyze   ingest (constant frame rate), audio pass 1 (dereverb + DeepFilterNet, once), Hinglish transcript snapped to
+          the speech energy, the tight word-safe cut (active), the flat cut with a fade-out tail, flat-time transcript,
+          frames/contact sheet/grade preview, references, brand files and REVIEW.md.
+recut     change the cut (drop/restore ranges, pause length, tail) and rebuild the flat cut and its transcript.
+approve   record the user's approval after checking the storyboard, cut, style, research and catalog blocks.
+assemble  grade, optional reframe, stage the composition (captions, catalog blocks, SFX, fade), render, audio
+          pass 2, verify, publish Exports/<project>-vN.mp4.
+"""
 from __future__ import annotations
 
 import argparse
 import concurrent.futures
 import hashlib
-from html.parser import HTMLParser
 import json
+import math
 import os
 import re
 import shutil
 import subprocess
 import sys
 import time
+from html.parser import HTMLParser
 from pathlib import Path
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
-import runtime
+import runtime  # noqa: E402
 runtime.ensure_project_venv()
-import grade
-import transcribe_cpp
+import grade  # noqa: E402
+import pipeline_synthesis as synth  # noqa: E402
+
+SKILLS = Path(HERE).parents[2]
+VOICE_CLEAN = SKILLS / "video-audio" / "tools" / "voice-clean.py"
+VIDEO_EXT = {".mp4", ".mov", ".m4v", ".mkv", ".webm", ".avi", ".mxf"}
+STANDARD_FPS = (24, 25, 30, 50, 60)
+DEFAULT_TAIL = 1.5
+DEFAULT_FADE = 1.0
 
 
-def probe_video(video_path: str) -> dict:
-    cmd = [
-        "ffprobe", "-v", "error",
-        "-show_entries", "stream=codec_type,width,height,r_frame_rate,duration,codec_name,pix_fmt:format=duration,size,bit_rate",
-        "-of", "json", video_path
-    ]
-    res = subprocess.run(cmd, capture_output=True, text=True, check=True)
-    data = json.loads(res.stdout)
-    v_stream = next((s for s in data.get("streams", []) if s.get("codec_type") == "video"), {})
-    fmt = data.get("format", {})
-    
-    fps_raw = v_stream.get("r_frame_rate", "30/1")
+def sh(cmd: list[str], **kw) -> subprocess.CompletedProcess:
+    return subprocess.run([str(c) for c in cmd], check=True, **kw)
+
+
+def py(script: str, *args) -> None:
+    sh([sys.executable, os.path.join(HERE, script), *args])
+
+
+def read_json(path: Path, default=None):
     try:
-        num, den = map(int, fps_raw.split("/"))
-        fps = round(num / den, 2) if den else 30.0
-    except Exception:
-        fps = 30.0
-
-    dur = float(fmt.get("duration") or v_stream.get("duration") or 0.0)
-    w = int(v_stream.get("width") or 1080)
-    h = int(v_stream.get("height") or 1920)
-    
-    return {
-        "width": w,
-        "height": h,
-        "fps": fps,
-        "duration": dur,
-        "pix_fmt": v_stream.get("pix_fmt", "yuv420p"),
-        "bitrate": int(fmt.get("bit_rate") or 0)
-    }
-
-
-def standardize_video(input_video: str, project_dir: str) -> str:
-    p_dir = Path(project_dir)
-    raw_dir = p_dir / "raw"
-    raw_dir.mkdir(parents=True, exist_ok=True)
-    standard_out = raw_dir / "standard-input.mp4"
-    source = Path(input_video).resolve()
-    source_stat = source.stat()
-    signature = {"path": str(source), "size": source_stat.st_size, "mtime_ns": source_stat.st_mtime_ns}
-    signature_path = raw_dir / "standard-input.source.json"
-    try:
-        cached_signature = json.loads(signature_path.read_text(encoding="utf-8"))
+        return json.loads(Path(path).read_text(encoding="utf-8"))
     except (OSError, ValueError):
-        cached_signature = None
-    if standard_out.exists() and standard_out.stat().st_size > 100000 and cached_signature == signature:
-        print(f"  [Standard Ingest] Reusing existing standardized SDR H.265 video: {standard_out}")
-        return str(standard_out)
+        return default
 
-    probe_cmd = [
-        "ffprobe", "-v", "error", "-select_streams", "v:0",
-        "-show_entries", "stream=codec_name,color_transfer,color_primaries,pix_fmt",
-        "-of", "json", input_video
-    ]
+
+def write_json(path: Path, data) -> None:
+    Path(path).parent.mkdir(parents=True, exist_ok=True)
+    Path(path).write_text(json.dumps(data, indent=2, ensure_ascii=False), encoding="utf-8")
+
+
+def workspace(project: str) -> tuple[Path, Path]:
+    p = Path(project).expanduser().resolve()
+    if p.name == ".video-pipeline":
+        return p.parent, p
+    return p, p / ".video-pipeline"
+
+
+# ---------------------------------------------------------------- ingest
+def probe(path: str) -> dict:
+    data = json.loads(subprocess.run(["ffprobe", "-v", "error", "-show_entries",
+                                      "stream=codec_type,codec_name,width,height,r_frame_rate,avg_frame_rate,start_time,"
+                                      "pix_fmt,color_transfer,color_primaries:format=duration,start_time",
+                                      "-of", "json", path], capture_output=True, text=True, check=True).stdout)
+    v = next((s for s in data.get("streams", []) if s.get("codec_type") == "video"), None)
+    a = next((s for s in data.get("streams", []) if s.get("codec_type") == "audio"), None)
+    if v is None:
+        raise RuntimeError(f"No video stream in {path}")
+
+    def rate(text):
+        try:
+            n, d = map(float, str(text).split("/"))
+            return n / d if d else 0.0
+        except ValueError:
+            return 0.0
+    return {"video": v, "audio": a, "duration": float(data.get("format", {}).get("duration") or 0.0),
+            "r_rate": rate(v.get("r_frame_rate")), "avg_rate": rate(v.get("avg_frame_rate")),
+            "width": int(v.get("width") or 0), "height": int(v.get("height") or 0)}
+
+
+def rotation_of(path: str) -> int:
+    """Display rotation of the first video stream (phones store landscape frames + a rotation matrix)."""
+    p = subprocess.run(["ffprobe", "-v", "error", "-select_streams", "v:0", "-show_entries",
+                        "stream_side_data=rotation:stream_tags=rotate", "-of", "json", path], capture_output=True, text=True)
     try:
-        r = subprocess.run(probe_cmd, capture_output=True, text=True, check=True)
-        data = json.loads(r.stdout)
-        s = data.get("streams", [{}])[0]
-        codec = s.get("codec_name", "").lower()
-        trc = s.get("color_transfer", "").lower()
-        pri = s.get("color_primaries", "").lower()
-        pix_fmt = s.get("pix_fmt", "").lower()
-    except Exception:
-        codec, trc, pri, pix_fmt = "", "", "", ""
-
-    is_hdr = "arib-std-b67" in trc or "bt2020" in pri or "smpte2084" in trc or "10le" in pix_fmt
-    is_h265 = codec in ("hevc", "h265")
-
-    if not is_hdr and is_h265 and pix_fmt == "yuv420p" and "bt709" in pri:
-        print(f"  [Standard Ingest] Input video is already standard SDR BT.709 and H.265.")
-        if Path(input_video).resolve() != standard_out.resolve():
-            shutil.copyfile(input_video, standard_out)
-        signature_path.write_text(json.dumps(signature, indent=2), encoding="utf-8")
-        return str(standard_out)
-
-    print(f"  [Standard Ingest] Converting raw footage to standard SDR BT.709 and H.265 (HEVC)...")
-    t0 = time.time()
-    vf = "colorspace=all=bt709:iprimaries=bt2020:ispace=bt2020nc:itrc=bt2020-10:format=yuv420p" if is_hdr else "format=yuv420p"
-    conv_cmd = [
-        "ffmpeg", "-y", "-i", input_video,
-        "-vf", vf,
-        "-c:v", "libx265", "-crf", "18", "-preset", "fast", "-tag:v", "hvc1",
-        "-color_primaries", "bt709", "-color_trc", "bt709", "-colorspace", "bt709", "-color_range", "tv",
-        "-c:a", "aac", "-b:a", "256k",
-        str(standard_out)
-    ]
-    subprocess.run(conv_cmd, check=True)
-    signature_path.write_text(json.dumps(signature, indent=2), encoding="utf-8")
-    dur = time.time() - t0
-    print(f"  [Standard Ingest] Standard SDR H.265 video ready in {dur:.2f}s -> {standard_out}")
-    return str(standard_out)
+        st = (json.loads(p.stdout or "{}").get("streams") or [{}])[0]
+    except ValueError:
+        return 0
+    for sd in st.get("side_data_list") or []:
+        if sd.get("rotation") not in (None, ""):
+            try:
+                return int(float(sd["rotation"])) % 360
+            except (TypeError, ValueError):
+                pass
+    try:
+        return int(float((st.get("tags") or {}).get("rotate", 0))) % 360
+    except (TypeError, ValueError):
+        return 0
 
 
-# -----------------------------------------------------------------------------
-# Worker A: Audio Track (strong dereverb, denoise, level, acoustic silence, Whisper ASR)
-# -----------------------------------------------------------------------------
-def process_audio_worker(raw_video: str, project_dir: str) -> dict:
-    t0 = time.time()
-    out_dir = Path(project_dir)
-    audio_dir = out_dir / "audio_processing"
-    audio_dir.mkdir(parents=True, exist_ok=True)
-    
-    norm_wav = audio_dir / "audio-norm-16k.wav"
-    clean_wav = out_dir / "audio-clean.wav"
-    transcript_json = out_dir / "transcript.json"
+def target_fps(info: dict) -> int:
+    fps = info["avg_rate"] or info["r_rate"] or 30.0
+    return min(STANDARD_FPS, key=lambda s: abs(s - fps)) if abs(min(STANDARD_FPS, key=lambda s: abs(s - fps)) - fps) <= 1.5 \
+        else int(round(fps))
 
-    audio_probe = subprocess.run(["ffprobe", "-v", "error", "-select_streams", "a:0",
-                                  "-show_entries", "stream=index", "-of", "json", raw_video],
-                                 capture_output=True, text=True, check=True)
-    has_audio = bool(json.loads(audio_probe.stdout).get("streams"))
-    if has_audio:
-        # WPE uses the source's stereo channels before the stronger mono late-reverb pass.
-        # This cleaned picture copy becomes the edit source, so the same voice reaches ASR and render.
-        print("  [Audio Worker] Applying WPE and strong late-reverb reduction before transcription...")
-        clean_video = audio_dir / "audio-cleaned.mp4"
-        voice_clean = Path(HERE).parents[2] / "video-audio" / "tools" / "voice-clean.py"
-        if not voice_clean.is_file():
-            raise RuntimeError(f"WPE voice-clean stage is missing: {voice_clean}")
-        subprocess.run([sys.executable, str(voice_clean), raw_video, "--video", raw_video,
-                        "--out", str(clean_video), "--keep", str(out_dir / "scratch" / "voice-clean"),
-                        "--no-deep-filter"], check=True)
-        extract_clean = ["ffmpeg", "-y", "-v", "error", "-i", str(clean_video), "-vn",
-                         "-c:a", "pcm_s24le", str(clean_wav)]
-        subprocess.run(extract_clean, check=True)
-        normalize_cmd = ["ffmpeg", "-y", "-v", "error", "-i", str(clean_wav),
-                         "-af", "loudnorm=I=-16:TP=-1.5:LRA=11", "-ac", "1", "-ar", "16000",
-                         "-c:a", "pcm_s16le", str(norm_wav)]
-        subprocess.run(normalize_cmd, check=True)
+
+def ingest(source: str, work: Path) -> dict:
+    """Constant-frame-rate, SDR, video-only copy + 48 kHz source audio whose sample 0 is the first video frame."""
+    raw = work / "raw"
+    raw.mkdir(parents=True, exist_ok=True)
+    video_out, wav_out, sig_path = raw / "source-video.mp4", work / "audio" / "source.wav", raw / "source.json"
+    st = Path(source).stat()
+    sig = {"path": str(Path(source).resolve()), "size": st.st_size, "mtime_ns": st.st_mtime_ns, "version": 2}
+    info = probe(source)
+    fps = target_fps(info)
+    if read_json(sig_path) == sig and video_out.is_file() and wav_out.is_file():
+        print("  [ingest] reusing the constant-frame-rate copy")
     else:
-        print("  [Audio Worker] Source has no audio stream; preserving video and skipping ASR.")
-        silent_cmd = ["ffmpeg", "-y", "-v", "error", "-f", "lavfi", "-i", "anullsrc=r=16000:cl=mono",
-                      "-t", str(meta_duration := probe_video(raw_video)["duration"]),
-                      "-c:a", "pcm_s16le", str(norm_wav)]
-        subprocess.run(silent_cmd, check=True)
-        shutil.copyfile(norm_wav, clean_wav)
-
-    # 2. Acoustic Waveform Silence Detection (-30dB threshold)
-    print("  [Audio Worker] Scanning acoustic waveform for real silences...")
-    silence_cmd = [
-        "ffmpeg", "-i", str(norm_wav),
-        "-af", "silencedetect=noise=-30dB:d=0.35",
-        "-f", "null", "-"
-    ]
-    s_res = subprocess.run(silence_cmd, capture_output=True, text=True, check=True)
-    silences = []
-    current_silence_start = None
-    for line in s_res.stderr.splitlines():
-        if "silence_start:" in line:
-            m = re.search(r"silence_start:\s*([\d\.]+)", line)
-            if m:
-                current_silence_start = float(m.group(1))
-        elif "silence_end:" in line and current_silence_start is not None:
-            m = re.search(r"silence_end:\s*([\d\.]+)\s*\|\s*silence_duration:\s*([\d\.]+)", line)
-            if m:
-                silences.append({
-                    "start": current_silence_start,
-                    "end": float(m.group(1)),
-                    "duration": float(m.group(2))
-                })
-                current_silence_start = None
-
-    # 3. Whisper transcription (Roman-script English decode only)
-    model = None
-    if has_audio:
-        print("  [Audio Worker] Transcribing processed audio with whisper.cpp...")
-        import config
-        cfg = config.load()
-        whisper_bin = config.find_whisper_bin(cfg)
-        model = config.find_whisper_model(cfg)
-        if not whisper_bin or not model:
-            raise RuntimeError("whisper.cpp binary or model not found. Run setup.py.")
-        out_prefix = audio_dir / "whisper_raw"
-        cmd = transcribe_cpp.build_command(whisper_bin, model, norm_wav, out_prefix, cfg)
-        transcribe_cpp.run_whisper(cmd)
-        raw_json = Path(str(out_prefix) + ".json")
-        if not raw_json.exists():
-            raise RuntimeError(f"Whisper output {raw_json} not generated.")
-        whisper_raw_data = json.loads(raw_json.read_text(encoding="utf-8"))
-        parsed = transcribe_cpp.parse_whisper_json(whisper_raw_data)
-        words = parsed.get("words", [])
-    else:
-        parsed = {"language": "en", "words": []}
-        words = []
-    
-    # Save standard transcript
-    transcript_data = {
-        "engine": "whisper.cpp" if model else "none; source has no audio stream",
-        "model": model.name if model else None,
-        "language": parsed.get("language", "en"),
-        "words": words
-    }
-    with open(transcript_json, "w", encoding="utf-8") as f:
-        json.dump(transcript_data, f, indent=2, ensure_ascii=False)
-
-    dur = time.time() - t0
-    print(f"  [Audio Worker] Finished in {dur:.2f}s ({len(words)} words, {len(silences)} acoustic pauses).")
-    return {
-        "words_count": len(words),
-        "silences": silences,
-        "transcript_path": str(transcript_json),
-        "clean_audio_path": str(clean_wav),
-        "clean_video_path": str(clean_video) if has_audio else None,
-        "elapsed": dur
-    }
+        v = info["video"]
+        hdr = "arib-std-b67" in str(v.get("color_transfer")) or "smpte2084" in str(v.get("color_transfer")) \
+            or "bt2020" in str(v.get("color_primaries"))
+        cfr = info["r_rate"] > 0 and abs(info["r_rate"] - info["avg_rate"]) / info["r_rate"] < 0.001 and \
+            abs(info["r_rate"] - fps) < 0.01
+        rotated = rotation_of(source) != 0          # re-encoding applies the rotation; a stream copy would not
+        copyable = cfr and not hdr and not rotated and v.get("codec_name") in ("h264", "hevc") and v.get("pix_fmt") == "yuv420p"
+        if copyable:
+            print(f"  [ingest] source is already {fps} fps constant frame rate SDR; copying the picture")
+            sh(["ffmpeg", "-y", "-v", "error", "-i", source, "-map", "0:v:0", "-c:v", "copy", "-an",
+                "-movflags", "+faststart", video_out])
+        else:
+            why = "HDR -> SDR, " if hdr else ""
+            print(f"  [ingest] {why}converting to {fps} fps constant frame rate (variable-rate phone video drifts)")
+            vf = ("zscale=t=linear:npl=100,format=gbrpf32le,zscale=p=bt709,tonemap=hable:desat=0,zscale=t=bt709:m=bt709:r=tv,"
+                  "format=yuv420p" if hdr else "format=yuv420p")
+            if hdr and "zscale" not in subprocess.run(["ffmpeg", "-hide_banner", "-filters"], capture_output=True, text=True).stdout:
+                vf = "colorspace=all=bt709:iprimaries=bt2020:ispace=bt2020nc:itrc=bt2020-10:format=yuv420p"
+            sh(["ffmpeg", "-y", "-v", "error", "-i", source, "-map", "0:v:0", "-vf", vf, "-fps_mode", "cfr", "-r", str(fps),
+                "-c:v", "libx264", "-crf", "14", "-preset", "medium", "-g", str(fps), "-pix_fmt", "yuv420p",
+                "-color_primaries", "bt709", "-color_trc", "bt709", "-colorspace", "bt709", "-color_range", "tv",
+                "-an", "-movflags", "+faststart+write_colr", video_out])
+        wav_out.parent.mkdir(parents=True, exist_ok=True)
+        if info["audio"] is not None:
+            # sample 0 of the WAV = the first video frame: shift by the audio/video start offset
+            offset = float(info["audio"].get("start_time") or 0) - float(info["video"].get("start_time") or 0)
+            af = "adelay=%d:all=1" % round(offset * 1000) if offset > 0.0005 else (
+                "atrim=start=%.6f,asetpts=PTS-STARTPTS" % -offset if offset < -0.0005 else "anull")
+            sh(["ffmpeg", "-y", "-v", "error", "-i", source, "-map", "0:a:0", "-af", af + ",aresample=48000",
+                "-t", "%.6f" % info["duration"], "-c:a", "pcm_f32le", wav_out])
+        else:
+            sh(["ffmpeg", "-y", "-v", "error", "-f", "lavfi", "-i", "anullsrc=r=48000:cl=mono", "-t", "%.6f" % info["duration"],
+                "-c:a", "pcm_f32le", wav_out])
+        write_json(sig_path, sig)
+    out = probe(str(video_out))
+    return {"video": str(video_out), "wav": str(wav_out), "has_audio": info["audio"] is not None,
+            "width": out["width"], "height": out["height"], "fps": fps, "duration": out["duration"] or info["duration"],
+            "source_video": str(Path(source).resolve())}
 
 
-# -----------------------------------------------------------------------------
-# Worker B: Visual Track (Keyframes, Frame Color Correction, Chin Framing)
-# -----------------------------------------------------------------------------
-def process_visual_worker(raw_video: str, project_dir: str, meta: dict) -> dict:
+# ---------------------------------------------------------------- audio pass 1 + transcript
+def audio_track(meta: dict, work: Path, args) -> dict:
     t0 = time.time()
-    out_dir = Path(project_dir)
-    preview_dir = out_dir / "preview"
-    preview_dir.mkdir(parents=True, exist_ok=True)
-    duration = meta["duration"]
-    print("  [Visual Worker] Detecting shot boundaries and building a source contact sheet...")
-    scene_cmd = [
-        "ffmpeg", "-hide_banner", "-i", raw_video, "-vf",
-        "select='gt(scene,0.28)',showinfo", "-an", "-f", "null", "-"
-    ]
-    scene_run = subprocess.run(scene_cmd, capture_output=True, text=True)
-    if scene_run.returncode:
-        raise RuntimeError(f"FFmpeg scene analysis failed: {scene_run.stderr[-1200:]}")
-    cut_times = sorted({float(x) for x in re.findall(r"pts_time:([0-9]+(?:\.[0-9]+)?)", scene_run.stderr)
-                        if 0.15 < float(x) < duration - 0.15})
+    voice = work / "audio" / "voice-clean.wav"
+    report_path = work / "audio" / "voice-clean.json"
+    if meta["has_audio"]:
+        print("  [audio] pass 1: dereverb + DeepFilterNet (once, lossless)")
+        sh([sys.executable, VOICE_CLEAN, meta["wav"], "--out", voice, "--report", report_path,
+            "--dereverb", args.dereverb, "--denoise", args.denoise])
+    else:
+        shutil.copyfile(meta["wav"], voice)
+        write_json(report_path, {"pass": 1, "denoise": "off", "note": "source has no audio"})
+    report = read_json(report_path, {})
+    ab = ab_preview(meta["wav"], str(voice), work / "preview" / "audio-before-after.wav") if meta["has_audio"] else None
+
+    transcript_path = work / "transcript.source.json"
+    if meta["has_audio"]:
+        print("  [audio] Hinglish transcript (whisper.cpp), snapped to the speech energy")
+        args_t = [sys.executable, os.path.join(HERE, "transcribe.py"), str(voice), "--out", str(transcript_path), "--force"]
+        if (work / "corrections.json").is_file():
+            args_t += ["--fix", str(work / "corrections.json")]
+        if args.names:
+            args_t += ["--prompt", args.names]
+        sh(args_t)
+    else:
+        write_json(transcript_path, {"language": "hi-Latn", "script": "hinglish", "words": [], "note": "no audio"})
+    print(f"  [audio] done in {time.time() - t0:.1f}s")
+    return {"voice": str(voice), "report": report, "transcript": str(transcript_path), "ab": ab}
+
+
+def ab_preview(raw_wav: str, clean_wav: str, out: Path) -> str | None:
+    """10 s of the original, a short gap, then the same 10 s cleaned, from the busiest stretch of speech."""
+    import numpy as np
+    import soundfile as sf
+    try:
+        x, rate = sf.read(clean_wav, dtype="float64")
+        if x.ndim > 1:
+            x = x.mean(axis=1)
+        win = int(10 * rate)
+        if len(x) <= win:
+            start = 0
+        else:
+            env = np.convolve(np.abs(x[::480]), np.ones(1000) / 1000, mode="valid")
+            start = int(np.argmax(env)) * 480 if len(env) else 0
+            start = max(0, min(len(x) - win, start))
+        t0 = start / rate
+        out.parent.mkdir(parents=True, exist_ok=True)
+        sh(["ffmpeg", "-y", "-v", "error", "-ss", "%.3f" % t0, "-t", "10", "-i", raw_wav, "-ss", "%.3f" % t0, "-t", "10",
+            "-i", clean_wav, "-f", "lavfi", "-t", "0.7", "-i", "anullsrc=r=48000:cl=mono", "-filter_complex",
+            "[0:a]aresample=48000,aformat=channel_layouts=mono,loudnorm=I=-18:TP=-2,aresample=48000[r];"
+            "[1:a]aresample=48000,aformat=channel_layouts=mono,loudnorm=I=-18:TP=-2,aresample=48000[c];"
+            "[r][2:a][c]concat=n=3:v=0:a=1[a]", "-map", "[a]", "-c:a", "pcm_s16le", out])
+        return str(out)
+    except Exception as exc:  # noqa: BLE001 - a missing preview never blocks the edit
+        print(f"  [audio] before/after preview skipped: {exc}")
+        return None
+
+
+# ---------------------------------------------------------------- visual analysis
+def visual_track(meta: dict, work: Path) -> dict:
+    t0 = time.time()
+    video, duration = meta["video"], meta["duration"]
+    preview = work / "preview"
+    preview.mkdir(parents=True, exist_ok=True)
+    run = subprocess.run(["ffmpeg", "-hide_banner", "-i", video, "-vf", "select='gt(scene,0.28)',showinfo", "-an",
+                          "-f", "null", "-"], capture_output=True, text=True)
+    cuts = sorted({float(x) for x in re.findall(r"pts_time:([0-9.]+)", run.stderr) if 0.15 < float(x) < duration - 0.15})
     bounds = [0.0]
-    for cut in cut_times:
-        if cut - bounds[-1] >= 0.45:
-            bounds.append(cut)
-    if duration - bounds[-1] < 0.15 and len(bounds) > 1:
-        bounds.pop()
-    bounds.append(float(duration))
-    shots = [{"start": round(a, 3), "end": round(b, 3)}
-             for a, b in zip(bounds, bounds[1:]) if b - a >= 0.15]
-    if not shots:
-        shots = [{"start": 0.0, "end": round(float(duration), 3)}]
-
-    # Keep the evidence sheet readable on long, high-cut footage. Selected samples remain
-    # tied to real shot intervals; the full detected cut list is still recorded below.
-    max_samples = 48
-    if len(shots) <= max_samples:
-        selected = list(enumerate(shots))
-    else:
-        indexes = sorted({round(i * (len(shots) - 1) / (max_samples - 1)) for i in range(max_samples)})
-        selected = [(i, shots[i]) for i in indexes]
-    evidence_frames = []
-    grade_timestamps = [round(duration * p, 2) for p in (0.15, 0.38, 0.62, 0.85) if duration * p < duration]
-    for idx, shot in selected:
+    for c in cuts:
+        if c - bounds[-1] >= 0.45:
+            bounds.append(c)
+    bounds.append(duration)
+    shots = [{"start": round(a, 3), "end": round(b, 3)} for a, b in zip(bounds, bounds[1:]) if b - a >= 0.15] \
+        or [{"start": 0.0, "end": round(duration, 3)}]
+    picks = list(enumerate(shots)) if len(shots) <= 48 else \
+        [(i, shots[i]) for i in sorted({round(k * (len(shots) - 1) / 47) for k in range(48)})]
+    frames = []
+    for idx, shot in picks:
         ts = round((shot["start"] + shot["end"]) / 2, 3)
-        frame_file = preview_dir / f"source-{idx + 1:03d}.jpg"
-        grade.extract_frame(raw_video, ts, str(frame_file))
-        evidence_frames.append({"id": f"visual-{idx + 1:03d}", "timestamp": ts,
-                               "shot_start": shot["start"], "shot_end": shot["end"],
-                               "frame": str(frame_file)})
-
-    # PIL is a declared engine dependency. If image decoding fails, individual frames
-    # remain available and the failure is reported in the evidence packet.
-    contact_sheet = preview_dir / "source-contact-sheet.jpg"
+        f = preview / f"source-{idx + 1:03d}.jpg"
+        grade.extract_frame(video, ts, str(f))
+        frames.append({"id": f"visual-{idx + 1:03d}", "timestamp": ts, "shot_start": shot["start"],
+                       "shot_end": shot["end"], "frame": str(f)})
+    sheet = preview / "source-contact-sheet.jpg"
     try:
-        from PIL import Image, ImageDraw, ImageFont
-        cell_w, cell_h, label_h, columns = 320, 220, 30, 4
-        rows = (len(evidence_frames) + columns - 1) // columns
-        sheet = Image.new("RGB", (columns * cell_w, rows * (cell_h + label_h)), "#202124")
-        draw = ImageDraw.Draw(sheet)
-        for i, item in enumerate(evidence_frames):
-            frame = Image.open(item["frame"]).convert("RGB")
-            frame.thumbnail((cell_w, cell_h))
-            x, y = (i % columns) * cell_w, (i // columns) * (cell_h + label_h)
-            sheet.paste(frame, (x + (cell_w - frame.width) // 2, y + (cell_h - frame.height) // 2))
-            draw.text((x + 8, y + cell_h + 5),
-                      f"{item['id']} · {item['timestamp']:.2f}s · shot {item['shot_start']:.2f}-{item['shot_end']:.2f}s",
-                      fill="white")
-        sheet.save(contact_sheet, quality=88)
-    except Exception as exc:
-        contact_sheet = None
-        print(f"  [Visual Worker] Contact sheet unavailable; individual frames retained: {exc}")
-
-    # Dynamic Frame-Accurate Color Correction Calculation
-    print("  [Visual Worker] Dynamically calculating color correction from frame distributions...")
-    dyn_color = grade.calculate_dynamic_color_correction(raw_video, timestamps=grade_timestamps)
-    dyn_grade_path = preview_dir / "dynamic-grade.json"
-    with open(dyn_grade_path, "w", encoding="utf-8") as f:
-        json.dump(dyn_color, f, indent=2)
-
-    # Generate Frame-by-Frame Color Correction & Enhancement Sheet on actual chosen frames
-    print("  [Visual Worker] Generating frame-by-frame color correction comparison sheet...")
-    grade_preview_path = preview_dir / "grade-preview.jpg"
-    grade.generate_frame_correction_sheet(raw_video, str(grade_preview_path), timestamps=grade_timestamps, preset="dynamic")
-
-    # Chin & Face Detection for Caption Safe Placement
-    print("  [Visual Worker] Measuring speaker framing and chin position...")
-    chin_y = 0.58
+        from PIL import Image, ImageDraw
+        cw, ch, lh, cols = 320, 220, 30, 4
+        rows = (len(frames) + cols - 1) // cols
+        img = Image.new("RGB", (cols * cw, rows * (ch + lh)), "#202124")
+        draw = ImageDraw.Draw(img)
+        for i, it in enumerate(frames):
+            fr = Image.open(it["frame"]).convert("RGB")
+            fr.thumbnail((cw, ch))
+            x, y = (i % cols) * cw, (i // cols) * (ch + lh)
+            img.paste(fr, (x + (cw - fr.width) // 2, y + (ch - fr.height) // 2))
+            draw.text((x + 8, y + ch + 5), f"{it['id']} · {it['timestamp']:.2f}s", fill="white")
+        img.save(sheet, quality=88)
+    except Exception as exc:  # noqa: BLE001
+        print(f"  [visual] contact sheet unavailable: {exc}")
+        sheet = None
+    stamps = [round(duration * p, 2) for p in (0.15, 0.38, 0.62, 0.85)]
+    dyn = grade.calculate_dynamic_color_correction(video, timestamps=stamps)
+    write_json(preview / "dynamic-grade.json", dyn)
+    grade_sheet = preview / "grade-preview.jpg"
+    grade.generate_frame_correction_sheet(video, str(grade_sheet), timestamps=stamps, preset="dynamic")
+    chin_y = None
     try:
         import cv2
-        sample_img = cv2.imread(evidence_frames[len(evidence_frames) // 2]["frame"])
-        if sample_img is not None:
-            gray = cv2.cvtColor(sample_img, cv2.COLOR_BGR2GRAY)
-            face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
-            faces = face_cascade.detectMultiScale(gray, 1.2, 5)
-            if len(faces) > 0:
+        img = cv2.imread(frames[len(frames) // 2]["frame"])
+        if img is not None:
+            gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+            faces = cv2.CascadeClassifier(cv2.data.haarcascades + "haarcascade_frontalface_default.xml").detectMultiScale(gray, 1.2, 5)
+            if len(faces):
                 fx, fy, fw, fh = max(faces, key=lambda f: f[2] * f[3])
-                chin_y = round((fy + fh * 1.15) / sample_img.shape[0], 3)
-    except Exception:
+                chin_y = round((fy + fh * 1.15) / img.shape[0], 3)
+    except Exception:  # noqa: BLE001
         pass
-
-    caption_y = min(0.86, max(0.65, chin_y + 0.12))
-
-    dur = time.time() - t0
-    print(f"  [Visual Worker] Finished in {dur:.2f}s ({len(shots)} detected shots, "
-          f"{len(evidence_frames)} visual samples, caption safe y={caption_y}).")
-    return {
-        "evidence_frames": evidence_frames,
-        "contact_sheet_path": str(contact_sheet) if contact_sheet else None,
-        "shot_boundaries": bounds,
-        "detected_shots": shots,
-        "grade_preview_path": str(grade_preview_path),
-        "dyn_color": dyn_color,
-        "dynamic_grade_path": str(dyn_grade_path),
-        "caption_y": caption_y,
-        "elapsed": dur
-    }
+    print(f"  [visual] {len(shots)} shots, {len(frames)} frames, chin y={chin_y} in {time.time() - t0:.1f}s")
+    return {"evidence_frames": frames, "detected_shots": shots, "contact_sheet_path": str(sheet) if sheet else None,
+            "grade_preview_path": str(grade_sheet), "dyn_color": dyn, "chin_y": chin_y}
 
 
+# ---------------------------------------------------------------- cut
+def map_words(words: list[dict], cut_map: dict) -> list[dict]:
+    """Source-time words -> flat timeline through the exact cut-map (cuts sit in silence, so words never straddle)."""
+    out = []
+    segs = cut_map.get("segments", [])
+    for w in words:
+        s, e = float(w["start"]), float(w["end"])
+        mid = (s + e) / 2
+        seg = next((g for g in segs if g["src_start"] - 1e-6 <= mid <= g["src_end"] + 1e-6), None)
+        if seg is None:
+            continue
+        shift = seg["flat_start"] - seg["src_start"]
+        fs = max(seg["flat_start"], s + shift)
+        fe = min(seg["flat_end"], e + shift)
+        if fe - fs < 0.02:
+            continue
+        out.append({**w, "start": round(fs, 3), "end": round(fe, 3), "src_start": round(s, 3)})
+    return out
 
-# -----------------------------------------------------------------------------
-# Synthesis: source evidence, cut proposal, references and review artifacts
-# -----------------------------------------------------------------------------
-from pipeline_synthesis import synthesize_storyboard_and_cuts
+
+def build_cut(work: Path, meta: dict, voice: str, args) -> tuple[dict, dict, list[dict]]:
+    cmd = ["--transcript", str(work / "transcript.source.json"), "--audio", voice, "--duration", "%.3f" % meta["duration"],
+           "--out-dir", str(work), "--max-pause", str(args.max_pause)]
+    for r in args.drop or []:
+        cmd += ["--drop", r]
+    for r in args.restore or []:
+        cmd += ["--restore", r]
+    if args.keep_retakes:
+        cmd.append("--keep-retakes")
+    if args.keep_fillers:
+        cmd.append("--keep-fillers")
+    py("cut.py", *cmd)
+    hyper = work / "hyperframes"
+    hyper.mkdir(parents=True, exist_ok=True)
+    py("apply-cut.py", "--input", meta["video"], "--audio", voice, "--cut-list", str(work / "cut-list.json"),
+       "--out", str(hyper / "input-video.mp4"), "--voice-out", str(hyper / "voice.wav"), "--tail", str(args.tail),
+       "--preset", "fast")
+    cut = read_json(work / "cut-list.json")
+    cut_map = read_json(work / "cut-map.json")
+    src = read_json(work / "transcript.source.json", {})
+    flat_words = map_words(src.get("words", []), cut_map)
+    flat = {**{k: v for k, v in src.items() if k not in ("words", "segments", "dropped_no_speech")},
+            "timeline": "flat", "duration": cut_map["flat_duration"], "words": flat_words}
+    write_json(hyper / "transcript.json", flat)
+    write_json(work / "transcript.json", flat)
+    return cut, cut_map, flat_words
 
 
-# -----------------------------------------------------------------------------
-# Main Commands
-# -----------------------------------------------------------------------------
-def cmd_analyze(args):
-    start_total = time.time()
-    print("=" * 70)
-    print("  PARALLEL VIDEO EDITING PIPELINE: INGEST & ANALYSIS")
-    print("=" * 70)
+def scaffold_storyboard(work: Path, project: str, meta: dict, cut_map: dict, visual: dict, keep_existing: bool) -> None:
+    path = work / "storyboard.json"
+    sb = read_json(path, {}) if keep_existing else {}
+    w, h = meta["width"], meta["height"]
+    sb.setdefault("id", re.sub(r"[^A-Za-z0-9_-]+", "-", project).strip("-") or "edit")
+    sb.setdefault("canvas", [1080, 1920] if h > w else ([1920, 1080] if w > h else [1080, 1080]))
+    sb["fps"] = int(round(eval_fraction(cut_map.get("fps", "30/1"))))
+    sb["duration"] = cut_map["flat_duration"]
+    sb.setdefault("video", "input-video.mp4")
+    sb.setdefault("captions", {"source": "transcript.json", "keywords": []})
+    end = dict(sb.get("end") or {})
+    end["fade"] = round(min(float(end.get("fade", DEFAULT_FADE)), cut_map["tail"]), 3) if cut_map["tail"] > 0 else 0.0
+    sb["end"] = end
+    if visual.get("chin_y") is not None:
+        sb.setdefault("chin_y", visual["chin_y"])
+    sb.setdefault("beats", [])
+    sb.setdefault("sfx", [])
+    sb["source_evidence_sha256"] = synth.hash_file(work / "source-evidence.json")
+    write_json(path, sb)
 
+
+def eval_fraction(text: str) -> float:
     try:
-        import PIL  # noqa: F401
-        import cv2  # noqa: F401
-    except ImportError as exc:
-        raise RuntimeError("Pillow and OpenCV are required in the configured engine environment; run the video-skills setup to install engine/requirements.txt.") from exc
+        n, d = str(text).split("/")
+        return float(n) / float(d)
+    except ValueError:
+        return float(text)
 
+
+# ---------------------------------------------------------------- commands
+def cmd_analyze(args):
+    t_start = time.time()
     project_root = Path(args.project).expanduser().resolve()
     project_root.mkdir(parents=True, exist_ok=True)
-    input_path = Path(args.input).expanduser().resolve()
-    if input_path.is_dir():
-        search_root = input_path / "raw" if (input_path / "raw").is_dir() else input_path
-        excluded = {".video-pipeline", "Exports", "references", "brand", ".git"}
-        candidates = sorted(p for p in search_root.rglob("*")
-                           if p.is_file() and p.suffix.lower() in {".mp4", ".mov", ".m4v", ".mkv", ".webm", ".avi", ".mxf"}
-                           and not (excluded & set(p.relative_to(search_root).parts))
-                           and not any(part.startswith(".") for part in p.relative_to(search_root).parts))
-        if len(candidates) != 1:
-            names = "\n".join(f"  - {p.relative_to(input_path)}" for p in candidates[:30]) or "  (no supported videos found)"
-            raise RuntimeError(f"Choose one source video from {input_path}; found {len(candidates)} candidates:\n{names}")
-        input_path = candidates[0]
-    if not input_path.is_file() or input_path.suffix.lower() not in {".mp4", ".mov", ".m4v", ".mkv", ".webm", ".avi", ".mxf"}:
-        raise RuntimeError(f"Input must be a supported video file or a folder containing exactly one: {input_path}")
-    raw_video = str(input_path)
-    project_dir = project_root / ".video-pipeline"
-    project_dir.mkdir(parents=True, exist_ok=True)
+    work = project_root / ".video-pipeline"
+    work.mkdir(parents=True, exist_ok=True)
+    src = Path(args.input).expanduser().resolve()
+    if src.is_dir():
+        root = src / "raw" if (src / "raw").is_dir() else src
+        skip = {".video-pipeline", "Exports", "references", "brand"}
+        found = sorted(p for p in root.rglob("*") if p.is_file() and p.suffix.lower() in VIDEO_EXT
+                       and not (skip & set(p.relative_to(root).parts))
+                       and not any(part.startswith(".") for part in p.relative_to(root).parts))
+        if len(found) != 1:
+            names = "\n".join(f"  - {p}" for p in found[:30]) or "  (none)"
+            raise RuntimeError(f"Choose one source video; found {len(found)}:\n{names}")
+        src = found[0]
+    if not src.is_file() or src.suffix.lower() not in VIDEO_EXT:
+        raise RuntimeError(f"Input must be a video file or a folder with exactly one: {src}")
 
-    print(f"\n[Step 1/4] Standardizing footage to SDR Rec.709 and H.265 (HEVC)...")
-    standard_video = standardize_video(raw_video, project_dir)
+    print("[1/5] ingest")
+    meta = ingest(str(src), work)
+    print(f"  {meta['width']}x{meta['height']} · {meta['fps']} fps CFR · {meta['duration']:.2f}s")
 
-    print(f"\n[Step 2/4] Probing standardized video: {standard_video}")
-    meta = probe_video(standard_video)
-    meta["source_video"] = raw_video
-    print(f"  Resolution: {meta['width']}x{meta['height']}, FPS: {meta['fps']}, Duration: {meta['duration']:.2f}s")
+    print("[2/5] audio pass 1 + Hinglish transcript  ||  frames, shots, grade preview")
+    with concurrent.futures.ThreadPoolExecutor(max_workers=2) as pool:
+        fa = pool.submit(audio_track, meta, work, args)
+        fv = pool.submit(visual_track, meta, work)
+        audio, visual = fa.result(), fv.result()
 
-    print("\n[Step 3/4] Launching Parallel Audio & Visual Analysis Workers...")
-    with concurrent.futures.ThreadPoolExecutor(max_workers=2) as executor:
-        fut_audio = executor.submit(process_audio_worker, standard_video, project_dir)
-        fut_visual = executor.submit(process_visual_worker, standard_video, project_dir, meta)
+    print("[3/5] tight word-safe cut (active) + flat cut with %.1fs fade-out tail" % args.tail)
+    cut, cut_map, flat_words = build_cut(work, meta, audio["voice"], args)
 
-        audio_res = fut_audio.result()
-        visual_res = fut_visual.result()
+    print("[4/5] references, brand files, evidence")
+    refs = synth.collect_references(project_root, args.reference, meta["source_video"], work)
+    brand = synth.collect_brand(project_root, work)
+    synth.write_evidence(work, meta, flat_words, visual, cut_map)
+    catalog = synth.catalog_status(runtime.find_engine_dir())
 
-    print("\n[Step 4/4] Building source evidence and review packet...")
-    edit_video = audio_res.get("clean_video_path") or standard_video
-    meta["raw_video"] = edit_video
-    ref_input = getattr(args, "reference", None)
-    syn_res = synthesize_storyboard_and_cuts(edit_video, project_dir, meta, audio_res, visual_res,
-                                             ref_inputs=ref_input, prompt=getattr(args, "prompt", ""))
-
-    total_time = time.time() - start_total
-    print("\n" + "=" * 70)
-    print(f"  ANALYSIS COMPLETE in {total_time:.2f}s!")
-    print(f"  - Visual Storyboard: {syn_res['storyboard_md']}")
-    print(f"  - Color Correction Sheet: {visual_res['grade_preview_path']}")
-    print(f"  - Active Cut: full source preserved pending review ({meta['duration']:.2f}s)")
-    print(f"  - Private work files: {project_dir}")
+    print("[5/5] review packet")
+    scaffold_storyboard(work, project_root.name, meta, cut_map, visual, keep_existing=False)
+    style_template = {"color_grade": "dynamic", "dynamic_color_params": visual["dyn_color"].get("params", {}),
+                      "note": "copy a default style from video-style/styles into style.json, then apply brand files"}
+    write_json(work / "style-template.json", style_template)
+    write_json(work / "meta.json", {**meta, "project_root": str(project_root)})
+    write_json(work / "gates.json", {"plan": {"status": "waiting", "reason": "new analysis"}})
+    write_json(work / "project.json", {
+        "schema": "video-pipeline-project/2", "project": project_root.name, "brief": args.prompt,
+        "source": meta["source_video"], "workspace": ".video-pipeline", "exports": "Exports/",
+        "steps": {"analysis": "done", "research": "todo", "storyboard": "todo", "approval": "waiting", "assembly": "todo"}})
+    review = synth.write_review(work, project_root, meta, args.prompt, audio["report"],
+                                read_json(audio["transcript"], {}), cut, cut_map, visual, refs, brand, catalog, audio["ab"])
+    print("=" * 70)
+    print(f"ANALYSIS DONE in {time.time() - t_start:.1f}s -> {review}")
+    print(f"  cut: {cut_map['content_duration']:.2f}s kept of {meta['duration']:.2f}s (+{cut_map['tail']:.1f}s tail)")
+    print(f"  audio before/after: {audio['ab']}")
+    print(f"  catalog: {catalog['count']} items" if catalog["ok"] else f"  catalog: MISSING ({catalog.get('fix')})")
     print("=" * 70)
 
 
-def _project_workspace(project: Path) -> tuple[Path, Path]:
-    project = project.expanduser().resolve()
-    if project.name == ".video-pipeline":
-        return project.parent, project
-    return project, project / ".video-pipeline"
+def cmd_recut(args):
+    project_root, work = workspace(args.project)
+    meta = read_json(work / "meta.json")
+    if not meta:
+        raise RuntimeError("Run analyze first.")
+    old = read_json(work / "cut-list.json", {}).get("params", {})
+    for key in ("max_pause",):
+        if getattr(args, key) is None:
+            setattr(args, key, old.get(key, 0.28))
+    if args.tail is None:
+        args.tail = read_json(work / "cut-map.json", {}).get("tail", DEFAULT_TAIL)
+    if not args.reset:
+        args.drop = list(old.get("drop", [])) + list(args.drop or [])
+        args.restore = list(old.get("restore", [])) + list(args.restore or [])
+        args.keep_retakes = args.keep_retakes or bool(old.get("keep_retakes"))
+        args.keep_fillers = args.keep_fillers or bool(old.get("keep_fillers"))
+    voice = str(work / "audio" / "voice-clean.wav")
+    cut, cut_map, flat_words = build_cut(work, meta, voice, args)
+    evidence = read_json(work / "source-evidence.json", {})
+    visual = {"evidence_frames": [{"id": s["id"], "timestamp": s["source_time"], "shot_start": s["shot"][0],
+                                   "shot_end": s["shot"][1], "frame": str(work / s["frame"])}
+                                  for s in evidence.get("visual_samples", [])],
+              "detected_shots": evidence.get("detected_shots", [])}
+    synth.write_evidence(work, meta, flat_words, visual, cut_map)
+    scaffold_storyboard(work, project_root.name, meta, cut_map, {"chin_y": None}, keep_existing=True)
+    write_json(work / "gates.json", {"plan": {"status": "waiting", "reason": "cut changed"}})
+    print(f"recut: {cut_map['content_duration']:.2f}s kept (+{cut_map['tail']:.1f}s tail). Beat and SFX times in "
+          "storyboard.json are on the old timeline: re-check them against hyperframes/transcript.json.")
 
 
-def _approval_fingerprint(work_dir: Path) -> dict:
-    files = ("resolved-spec.json", "storyboard.plan.json", "storyboard.json", "style.json",
-             "cut-list.json", "source-evidence.json", "references/reference-index.json",
-             "context/brand-inputs.json", "reference-match/matches.json")
-    result = {}
-    for name in files:
-        path = work_dir / name
-        if not path.is_file():
-            raise RuntimeError(f"Approval input is missing: {path}")
-        digest = hashlib.sha256(path.read_bytes()).hexdigest()
-        result[name] = digest
-
-    # The review packet records hashes for the original project materials. Verify
-    # those source files too, so replacing a reference or brand guide after review
-    # cannot leave the approval gate looking current.
-    external_inputs = (
-        ("references/reference-index.json", "path"),
-        ("context/brand-inputs.json", "source"),
-    )
-    for index_name, path_key in external_inputs:
-        index_path = work_dir / index_name
-        try:
-            records = json.loads(index_path.read_text(encoding="utf-8"))
-        except (OSError, json.JSONDecodeError) as exc:
-            raise RuntimeError(f"Could not read approval input index {index_path}: {exc}") from exc
-        for record in records:
-            source = Path(record[path_key]).expanduser()
-            if not source.is_file():
-                raise RuntimeError(f"Reviewed project input is missing: {source}")
-            source_hash = hashlib.sha256()
-            with source.open("rb") as handle:
-                for chunk in iter(lambda: handle.read(1024 * 1024), b""):
-                    source_hash.update(chunk)
-            digest = source_hash.hexdigest()
-            if digest != record.get("sha256"):
-                raise RuntimeError(f"Reviewed project input changed since analysis: {source}")
-            result[f"{index_name}:{record.get('id', source.name)}"] = digest
-
-    project_root, _ = _project_workspace(work_dir)
-    storyboard = json.loads((work_dir / "storyboard.json").read_text(encoding="utf-8"))
-    for html_path, relative in _validate_selected_blocks(storyboard):
-        for asset in sorted(path for path in html_path.parent.rglob("*") if path.is_file()):
-            digest = hashlib.sha256(asset.read_bytes()).hexdigest()
-            asset_key = asset.relative_to(html_path.parent).as_posix()
-            result[f"composition:{relative.as_posix()}:{asset_key}"] = digest
-    for cue in storyboard.get("sfx", []):
-        source = _resolve_sfx_source(str(cue.get("src", "")), project_root, work_dir)
-        digest = hashlib.sha256(source.read_bytes()).hexdigest()
-        result[f"sfx:{cue.get('id', source.name)}"] = digest
-    return result
-
-
-def _next_export_path(exports_dir: Path, project_name: str) -> Path:
-    pattern = re.compile(rf"^{re.escape(project_name)}-v(\d+)\.mp4$", re.IGNORECASE)
-    versions = []
-    for path in exports_dir.iterdir():
-        match = pattern.match(path.name)
-        if match:
-            versions.append(int(match.group(1)))
-    return exports_dir / f"{project_name}-v{max(versions, default=0) + 1}.mp4"
-
-
-class _CompositionMetadata(HTMLParser):
+# ---------------------------------------------------------------- catalog blocks
+class _Meta(HTMLParser):
     def __init__(self):
         super().__init__()
-        self.ids = set()
-        self.variables = []
+        self.ids, self.variables = set(), []
 
     def handle_starttag(self, tag, attrs):
         attrs = dict(attrs)
         if attrs.get("data-composition-id"):
             self.ids.add(attrs["data-composition-id"])
-        encoded = attrs.get("data-composition-variables")
-        if encoded:
+        if attrs.get("data-composition-variables"):
             try:
-                value = json.loads(encoded)
-                if isinstance(value, list):
-                    self.variables.extend(x.get("id") for x in value if isinstance(x, dict) and x.get("id"))
+                value = json.loads(attrs["data-composition-variables"])
+                self.variables += [x.get("id") for x in value if isinstance(x, dict) and x.get("id")]
             except ValueError:
                 pass
 
 
-def _composition_catalog_dir() -> Path:
+def catalog_dir() -> Path:
     configured = os.environ.get("VIDEO_COMPOSITIONS", "").strip()
     return (Path(configured).expanduser() if configured else runtime.find_engine_dir() / "compositions").resolve()
 
 
-def _validate_selected_blocks(storyboard: dict) -> list[tuple[Path, Path]]:
-    engine_dir = _composition_catalog_dir()
-    selected = []
+def selected_blocks(storyboard: dict) -> list[tuple[Path, Path]]:
+    base = catalog_dir()
+    out = []
     for beat in storyboard.get("beats", []):
         if beat.get("type") != "block":
             continue
-        src_value = str(beat.get("src", ""))
-        relative = Path(src_value.replace("\\", "/").removeprefix("compositions/"))
-        if not src_value or relative.is_absolute() or ".." in relative.parts:
-            raise RuntimeError(f"Unsafe HyperFrames composition path: {src_value!r}")
-        source_html = engine_dir / relative
-        if not source_html.is_file():
-            raise RuntimeError(f"Selected HyperFrames composition is missing from the configured local registry: {source_html}")
-        parser = _CompositionMetadata()
-        parser.feed(source_html.read_text(encoding="utf-8"))
-        comp_id = str(beat.get("comp_id", ""))
-        if comp_id not in parser.ids:
-            raise RuntimeError(f"Composition {source_html.name} does not declare internal id {comp_id!r}.")
-        variables = beat.get("vars", {})
-        if not isinstance(variables, dict):
-            raise RuntimeError(f"HyperFrames variables for beat {beat.get('id')} must be an object.")
-        unknown = sorted(set(variables) - set(parser.variables))
+        rel = Path(str(beat.get("src", "")).replace("\\", "/").removeprefix("compositions/"))
+        if not str(rel) or rel.is_absolute() or ".." in rel.parts:
+            raise RuntimeError(f"Unsafe catalog path in beat {beat.get('id')}: {beat.get('src')!r}")
+        html = base / rel
+        if not html.is_file():
+            raise RuntimeError(f"Beat {beat.get('id')}: {rel} is not in the local HyperFrames catalog ({base}). "
+                               "Search it with catalog.py search.")
+        meta = _Meta()
+        meta.feed(html.read_text(encoding="utf-8"))
+        if str(beat.get("comp_id", "")) not in meta.ids:
+            raise RuntimeError(f"Beat {beat.get('id')}: {rel.name} declares {sorted(meta.ids)}, not {beat.get('comp_id')!r}")
+        unknown = sorted(set(beat.get("vars") or {}) - set(meta.variables))
         if unknown:
-            raise RuntimeError(f"Composition {source_html.name} does not declare variables: {', '.join(unknown)}")
-        selected.append((source_html, relative))
-    return selected
+            raise RuntimeError(f"Beat {beat.get('id')}: {rel.name} has no variables {', '.join(unknown)}")
+        out.append((html, rel))
+    return out
 
 
-def _stage_selected_compositions(hyper_dir: Path, storyboard: dict) -> None:
-    selected = _validate_selected_blocks(storyboard)
-    if not selected:
-        return
-    target_comp_dir = hyper_dir / "compositions"
-    target_comp_dir.mkdir(parents=True, exist_ok=True)
-    for source_html, relative in selected:
-        destination_dir = target_comp_dir / relative.parent
-        destination_dir.mkdir(parents=True, exist_ok=True)
-        if relative.parent != Path("."):
-            shutil.copytree(source_html.parent, destination_dir, dirs_exist_ok=True)
-        else:
-            shutil.copyfile(source_html, target_comp_dir / relative)
+ASSET_RE = re.compile(r"""(?:src|href)\s*=\s*["']([^"'#?]+)["']|url\(\s*["']?([^"')#?]+)["']?\s*\)""")
 
 
-def _resolve_sfx_source(src_value: str, project_root: Path, work_dir: Path) -> Path:
-    raw = Path(src_value).expanduser()
-    candidates = []
-    if raw.is_absolute():
-        candidates.append(raw.resolve())
-    else:
-        candidates.extend([(work_dir / "hyperframes" / raw).resolve(), (project_root / raw).resolve()])
-        name = raw.name
-        repo_root = Path(HERE).parents[3]
-        engine_dir = runtime.find_engine_dir()
-        candidates.extend([repo_root / "sound-palette" / "audio" / name,
-                           engine_dir / "sound-palette" / "audio" / name])
-    for candidate in candidates:
-        if not candidate.is_file():
-            continue
-        if candidate.is_relative_to(project_root) or candidate.is_relative_to(runtime.find_engine_dir()) or candidate.is_relative_to(Path(HERE).parents[3]):
-            return candidate
-    raise RuntimeError(f"SFX asset is missing or outside the project/local pipeline assets: {src_value}")
+def stage_blocks(hyper: Path, storyboard: dict) -> None:
+    """Copy only the chosen blocks (and the local files they reference) into the project's composition folder."""
+    for html, rel in selected_blocks(storyboard):
+        dest = hyper / "compositions" / rel
+        dest.parent.mkdir(parents=True, exist_ok=True)
+        text = html.read_text(encoding="utf-8")
+        for m in ASSET_RE.finditer(text):
+            ref = (m.group(1) or m.group(2) or "").strip()
+            if not ref or re.match(r"^(https?:|data:|//|/)", ref):
+                continue
+            src = (html.parent / ref).resolve()
+            if src.is_file() and src.is_relative_to(catalog_dir()):
+                target = (dest.parent / ref).resolve()
+                if target.is_relative_to(hyper.resolve()):
+                    target.parent.mkdir(parents=True, exist_ok=True)
+                    shutil.copyfile(src, target)
+        if "caption" in html.name and (hyper / "transcript.json").is_file():
+            import captions
+            words = captions.load_words(str(hyper / "transcript.json"))
+            cut_map = read_json(hyper.parent / "cut-map.json", {})
+            cap = storyboard.get("captions") or {}
+            groups = captions.group(words, cut_map.get("cuts", []), emphasis=list(cap.get("keywords", [])))
+            canvas = storyboard.get("canvas", [1080, 1920])
+            text, _ = captions.inject(text, groups, canvas[0], canvas[1], float(storyboard.get("duration", 0.0)))
+        dest.write_text(text, encoding="utf-8")
 
 
-def _stage_sfx_assets(storyboard: dict, project_root: Path, work_dir: Path, hyper_dir: Path) -> dict:
-    staged = json.loads(json.dumps(storyboard))
-    sfx_dir = hyper_dir / "sfx"
-    for cue in staged.get("sfx", []):
-        source = _resolve_sfx_source(str(cue.get("src", "")), project_root, work_dir)
-        digest = hashlib.sha256(source.read_bytes()).hexdigest()[:12]
-        dest_name = f"{digest}-{source.name}"
-        sfx_dir.mkdir(parents=True, exist_ok=True)
-        destination = sfx_dir / dest_name
-        if source.resolve() != destination.resolve():
-            shutil.copyfile(source, destination)
-        cue["src"] = f"sfx/{dest_name}"
-    return staged
+def sfx_source(src: str, project_root: Path, work: Path) -> Path:
+    raw = Path(src).expanduser()
+    cands = [raw] if raw.is_absolute() else [work / "hyperframes" / raw, project_root / raw,
+                                            SKILLS / "sound-palette" / "audio" / raw.name,
+                                            SKILLS.parent / "sound-palette" / "audio" / raw.name,
+                                            runtime.find_engine_dir() / "sound-palette" / "audio" / raw.name,
+                                            work / "research" / "sounds" / raw.name]
+    for c in cands:
+        if c.is_file():
+            return c.resolve()
+    raise RuntimeError(f"Sound effect not found: {src} (use the sound palette, a project file, or research/sounds/)")
+
+
+# ---------------------------------------------------------------- approval
+def fingerprint(work: Path, project_root: Path) -> dict:
+    names = ["resolved-spec.json", "storyboard.json", "style.json", "cut-list.json", "cut-map.json",
+             "source-evidence.json", "references/reference-index.json", "context/brand-inputs.json"]
+    if (work / "research" / "research.json").is_file():
+        names.append("research/research.json")
+    out = {}
+    for name in names:
+        p = work / name
+        if not p.is_file():
+            raise RuntimeError(f"Approval input is missing: {p}")
+        out[name] = synth.hash_file(p)
+    sb = read_json(work / "storyboard.json", {})
+    for html, rel in selected_blocks(sb):
+        out[f"block:{rel.as_posix()}"] = synth.hash_file(html)
+    for cue in sb.get("sfx", []):
+        out[f"sfx:{cue.get('id')}"] = synth.hash_file(sfx_source(str(cue.get("src", "")), project_root, work))
+    return out
+
+
+def refs_of(item: dict) -> list:
+    return list(item.get("refs") or item.get("source_refs") or [])
 
 
 def cmd_approve(args):
-    project_root, work_dir = _project_workspace(Path(args.project))
+    project_root, work = workspace(args.project)
     if not args.user_approved:
-        raise RuntimeError("Approval was not recorded. Run this command only after the user explicitly approves the plan and cut.")
-    required = [work_dir / "resolved-spec.json", work_dir / "storyboard.plan.json", work_dir / "storyboard.json",
-                work_dir / "style.json", work_dir / "cut-list.json", work_dir / "source-evidence.json",
-                work_dir / "references" / "reference-index.json", work_dir / "context" / "brand-inputs.json",
-                work_dir / "reference-match" / "matches.json"]
-    missing = [str(p) for p in required if not p.is_file()]
+        raise RuntimeError("Run approve only after the user explicitly approved the plan (--user-approved).")
+    spec = read_json(work / "resolved-spec.json")
+    sb = read_json(work / "storyboard.json")
+    style = read_json(work / "style.json")
+    cut_map = read_json(work / "cut-map.json")
+    evidence = read_json(work / "source-evidence.json")
+    for name, value in (("resolved-spec.json", spec), ("storyboard.json", sb), ("style.json", style),
+                        ("cut-map.json", cut_map), ("source-evidence.json", evidence)):
+        if not value:
+            raise RuntimeError(f"{name} is missing or unreadable in {work}")
+    answers = spec.get("user_answers") or {}
+    missing = [k for k in ("platform_aspect", "style", "cut") if not answers.get(k)]
     if missing:
-        raise RuntimeError("Cannot approve; required review files are missing:\n  " + "\n  ".join(missing))
+        raise RuntimeError("resolved-spec.json user_answers must record: " + ", ".join(missing))
+    canvas = sb.get("canvas")
+    if not (isinstance(canvas, list) and len(canvas) == 2 and all(isinstance(x, (int, float)) and x > 0 for x in canvas)):
+        raise RuntimeError("storyboard.json needs canvas [width, height].")
+    m = re.findall(r"(\d+(?:\.\d+)?)\s*[:/]\s*(\d+(?:\.\d+)?)", str(answers.get("platform_aspect")))
+    if len(m) == 1 and abs(float(m[0][0]) / float(m[0][1]) - canvas[0] / canvas[1]) > 0.015:
+        raise RuntimeError("storyboard canvas does not match the chosen aspect ratio.")
+    meta = read_json(work / "meta.json", {})
+    src_ratio = meta.get("width", 1) / max(1, meta.get("height", 1))
+    if abs(src_ratio - canvas[0] / canvas[1]) > 0.02 and not sb.get("reframe"):
+        raise RuntimeError("The canvas aspect differs from the footage: add \"reframe\": {\"aspect\": \"W:H\"} "
+                           "(face-tracked crop) or {\"mode\": \"center\"} to storyboard.json.")
+    D = float(sb.get("duration", -1))
+    if abs(D - float(cut_map["flat_duration"])) > 0.05:
+        raise RuntimeError(f"storyboard duration {D} must equal the cut ({cut_map['flat_duration']}s incl. tail). "
+                           "Run recut or fix the storyboard.")
+    if sb.get("source_evidence_sha256") != synth.hash_file(work / "source-evidence.json"):
+        raise RuntimeError("storyboard.json was built for an older analysis/cut; update source_evidence_sha256 and beat times.")
+    valid = {x["id"] for x in evidence.get("speech_segments", [])} | \
+            {x["id"] for x in evidence.get("visual_samples", []) if x.get("flat_time") is not None}
+    research = read_json(work / "research" / "research.json", {}) or {}
+    for fact in research.get("facts", []):
+        if re.fullmatch(r"research-\d{3}", str(fact.get("id", ""))) and re.match(r"https?://", str(fact.get("source_url", ""))):
+            valid.add(fact["id"])
+    ids = set()
+    for kind, items in (("beat", sb.get("beats", [])), ("sfx", sb.get("sfx", []))):
+        for it in items:
+            iid = str(it.get("id", ""))
+            if not re.fullmatch(r"[A-Za-z0-9_-]+", iid) or iid in ids:
+                raise RuntimeError(f"Every {kind} needs a unique simple id (got {iid!r}).")
+            ids.add(iid)
+            refs = refs_of(it)
+            bad = [r for r in refs if r not in valid]
+            if not refs or bad:
+                raise RuntimeError(f"{kind} {iid}: refs must cite speech-/visual- ids from source-evidence.json or "
+                                   f"research-NNN facts with a source_url (bad: {bad or 'none given'}).")
+            t0 = it.get("in", it.get("at"))
+            t1 = it.get("out", (t0 or 0) + float(it.get("dur", 0.5)))
+            if not isinstance(t0, (int, float)) or not isinstance(t1, (int, float)) or t0 < 0 or t1 <= t0 or t1 > D + 0.05:
+                raise RuntimeError(f"{kind} {iid} has an invalid time range on the flat timeline (0-{D:.2f}s).")
+    selected_blocks(sb)
+    for cue in sb.get("sfx", []):
+        sfx_source(str(cue.get("src", "")), project_root, work)
+    music = (spec.get("audio") or {}).get("music_path")
+    if music:
+        mp = (project_root / music).resolve() if not Path(music).is_absolute() else Path(music).resolve()
+        if not mp.is_file() or not mp.is_relative_to(project_root):
+            raise RuntimeError("Music must be a file inside the project folder.")
+    gate = {"plan": {"status": "approved", "at": time.strftime("%Y-%m-%dT%H:%M:%S%z"), "note": args.note,
+                     "fingerprint": fingerprint(work, project_root)}}
+    write_json(work / "gates.json", gate)
+    state = read_json(work / "project.json", {})
+    state.setdefault("steps", {}).update({"approval": "done", "assembly": "ready"})
+    write_json(work / "project.json", state)
+    print(f"Approved. Assembly is enabled for {project_root}.")
 
-    evidence = json.loads((work_dir / "source-evidence.json").read_text(encoding="utf-8"))
-    spec = json.loads((work_dir / "resolved-spec.json").read_text(encoding="utf-8"))
-    storyboard = json.loads((work_dir / "storyboard.json").read_text(encoding="utf-8"))
-    cut = json.loads((work_dir / "cut-list.json").read_text(encoding="utf-8"))
-    evidence_hash = hashlib.sha256((work_dir / "source-evidence.json").read_bytes()).hexdigest()
-    plan = json.loads((work_dir / "storyboard.plan.json").read_text(encoding="utf-8"))
-    if plan.get("source_evidence_sha256") != evidence_hash:
-        raise RuntimeError("storyboard.plan.json is stale; rebuild the plan from the current source-evidence.json.")
-    if storyboard.get("source_evidence_sha256") != evidence_hash:
-        raise RuntimeError("storyboard.json must cite the current source_evidence_sha256 from source-evidence.json.")
-    _validate_selected_blocks(storyboard)
-    canvas = storyboard.get("canvas")
-    if (not isinstance(canvas, list) or len(canvas) != 2
-            or any(not isinstance(side, (int, float)) or isinstance(side, bool) or side <= 0 for side in canvas)):
-        raise RuntimeError("storyboard.json needs a positive numeric [width, height] canvas matching the approved delivery aspect.")
-    platform_answer = str(spec.get("user_answers", {}).get("platform_aspect", ""))
-    ratio_matches = re.findall(r"(\d+(?:\.\d+)?)\s*[:/]\s*(\d+(?:\.\d+)?)", platform_answer)
-    if len(ratio_matches) == 1:
-        requested_ratio = float(ratio_matches[0][0]) / float(ratio_matches[0][1])
-        canvas_ratio = float(canvas[0]) / float(canvas[1])
-        if abs(requested_ratio - canvas_ratio) > 0.015:
-            raise RuntimeError("storyboard.json canvas does not match the user's selected platform aspect ratio.")
-    duration = float(evidence["source"]["duration"])
-    if not isinstance(spec.get("user_answers"), dict) or not spec["user_answers"]:
-        raise RuntimeError("resolved-spec.json must record the user's answers in a non-empty user_answers object.")
-    required_answers = {"keep_cut", "platform_aspect", "direction", "framing", "captions", "sound"}
-    unanswered = sorted(required_answers - set(spec["user_answers"]))
-    if unanswered:
-        raise RuntimeError("resolved-spec.json must record these decisions, including explicit defaults/delegation: "
-                           + ", ".join(unanswered))
-    audio_spec = spec.get("audio", {})
-    if audio_spec.get("preset") and audio_spec["preset"] not in {"youtube", "shorts", "longform", "broadcast"}:
-        raise RuntimeError("resolved-spec.json audio.preset must be youtube, shorts, longform, or broadcast.")
-    if audio_spec.get("denoise") and audio_spec["denoise"] not in {"auto", "off", "light", "medium", "strong", "neural"}:
-        raise RuntimeError("resolved-spec.json audio.denoise has an unsupported value.")
-    music_path = audio_spec.get("music_path")
-    if music_path:
-        music_file = Path(music_path).expanduser()
-        if not music_file.is_absolute():
-            music_file = project_root / music_file
-        music_file = music_file.resolve()
-        try:
-            music_file.relative_to(project_root)
-        except ValueError:
-            raise RuntimeError("Selected music must be inside the user-selected project folder.")
-        if not music_file.is_file():
-            raise RuntimeError(f"Selected music file does not exist: {music_file}")
-    if not isinstance(storyboard.get("beats"), list):
-        raise RuntimeError("storyboard.json must contain a beats array; use an empty array for a source-only edit.")
-    valid_refs = {x["id"] for x in evidence.get("visual_samples", [])} | {x["id"] for x in evidence.get("speech_segments", [])}
-    evidence_ranges = {}
-    for item in evidence.get("visual_samples", []) + evidence.get("speech_segments", []):
-        timestamp = item.get("timestamp", 0)
-        start = float(item.get("shot_start", item.get("start", timestamp)))
-        end = float(item.get("shot_end", item.get("end", timestamp)))
-        evidence_ranges[item["id"]] = (start, end)
-    for beat in storyboard["beats"]:
-        if not isinstance(beat, dict):
-            raise RuntimeError("Every storyboard beat must be an object.")
-        if not re.fullmatch(r"[A-Za-z0-9_-]+", str(beat.get("id", ""))):
-            raise RuntimeError("Every beat needs a simple id using letters, numbers, underscores or hyphens.")
-        refs = beat.get("source_refs", [])
-        if not refs or any(ref not in valid_refs for ref in refs):
-            raise RuntimeError(f"Beat {beat.get('id', '(unnamed)')} needs valid source_refs from source-evidence.json.")
-        for key in ("in", "out"):
-            if not isinstance(beat.get(key), (int, float)):
-                raise RuntimeError(f"Beat {beat.get('id')} needs numeric {key} time in the approved edit timeline.")
-        if beat["in"] < 0 or beat["out"] <= beat["in"] or beat["out"] > float(storyboard.get("duration", duration)) + 0.05:
-            raise RuntimeError(f"Beat {beat.get('id')} has an invalid time range.")
-    for cue in storyboard.get("sfx", []):
-        if not re.fullmatch(r"[A-Za-z0-9_-]+", str(cue.get("id", ""))):
-            raise RuntimeError("Every SFX cue needs a simple id using letters, numbers, underscores or hyphens.")
-        if not cue.get("source_refs") or any(ref not in valid_refs for ref in cue["source_refs"]):
-            raise RuntimeError(f"SFX cue {cue.get('id')} needs valid source_refs from source-evidence.json.")
-        if not isinstance(cue.get("at"), (int, float)) or not isinstance(cue.get("dur", 1.0), (int, float)):
-            raise RuntimeError(f"SFX cue {cue.get('id')} needs numeric at and dur values.")
-        if cue["at"] < 0 or cue["at"] >= float(storyboard.get("duration", duration)) or cue.get("dur", 1.0) <= 0:
-            raise RuntimeError(f"SFX cue {cue.get('id')} has an invalid time range.")
-        _resolve_sfx_source(str(cue.get("src", "")), project_root, work_dir)
-    kept = cut.get("kept", [])
-    if not kept:
-        raise RuntimeError("The approved cut must keep at least one source range.")
-    if abs(float(cut.get("source_duration", -1)) - duration) > 0.05:
-        raise RuntimeError("cut-list.json source_duration does not match the analyzed source duration.")
-    last_end = -1.0
-    for segment in sorted(kept, key=lambda s: float(s.get("start", -1))):
-        start, end = float(segment.get("start", -1)), float(segment.get("end", -1))
-        if start < 0 or end <= start or end > duration + 0.05 or start < last_end - 0.001:
-            raise RuntimeError("cut-list.json has an invalid, overlapping, or out-of-source kept range.")
-        last_end = end
-    for beat in storyboard["beats"]:
-        for ref in beat.get("source_refs", []):
-            source_start, source_end = evidence_ranges[ref]
-            if not any(max(source_start, float(segment["start"])) <= min(source_end, float(segment["end"]))
-                       for segment in kept):
-                raise RuntimeError(f"Beat {beat.get('id')} cites {ref}, which is outside the approved kept ranges.")
-    for cue in storyboard.get("sfx", []):
-        for ref in cue.get("source_refs", []):
-            source_start, source_end = evidence_ranges[ref]
-            if not any(max(source_start, float(segment["start"])) <= min(source_end, float(segment["end"]))
-                       for segment in kept):
-                raise RuntimeError(f"SFX cue {cue.get('id')} cites {ref}, which is outside the approved kept ranges.")
-    expected_duration = sum(float(segment["end"]) - float(segment["start"]) for segment in kept)
-    if abs(float(cut.get("kept_seconds", -1)) - expected_duration) > 0.05:
-        raise RuntimeError("cut-list.json kept_seconds does not match its kept ranges.")
-    if abs(float(storyboard.get("duration", -1)) - expected_duration) > 0.05:
-        raise RuntimeError("storyboard.json duration must match the total approved kept duration.")
 
-    gate = {"plan": {"status": "approved", "at": time.strftime("%Y-%m-%dT%H:%M:%S%z"),
-                     "approval_note": args.note, "source_evidence": "source-evidence.json",
-                     "fingerprint": _approval_fingerprint(work_dir)}}
-    gate_path = work_dir / "gates.json"
-    gate_path.write_text(json.dumps(gate, indent=2), encoding="utf-8")
-    state_path = work_dir / "project.json"
-    if state_path.is_file():
-        state = json.loads(state_path.read_text(encoding="utf-8"))
-        state.setdefault("gates", {})["plan"] = gate["plan"]
-        state.setdefault("steps", {}).setdefault("direction", {})["status"] = "done"
-        state["steps"]["assembly"] = {"status": "ready"}
-        state_path.write_text(json.dumps(state, indent=2), encoding="utf-8")
-    print(f"Plan and cut approval recorded for {project_root}. Assembly is now enabled.")
+# ---------------------------------------------------------------- assemble
+def next_export(exports: Path, name: str) -> Path:
+    pat = re.compile(rf"^{re.escape(name)}-v(\d+)\.mp4$", re.IGNORECASE)
+    nums = [int(m.group(1)) for p in exports.iterdir() if (m := pat.match(p.name))]
+    return exports / f"{name}-v{max(nums, default=0) + 1}.mp4"
 
 
 def cmd_assemble(args):
-    start_total = time.time()
-    print("=" * 70)
-    print("  PARALLEL VIDEO EDITING PIPELINE: ASSEMBLY & MASTER RENDER")
-    print("=" * 70)
-
-    project_root, project_dir = _project_workspace(Path(args.project))
-    gate_path = project_dir / "gates.json"
-    gate = json.loads(gate_path.read_text(encoding="utf-8")) if gate_path.is_file() else {}
+    t_start = time.time()
+    project_root, work = workspace(args.project)
+    gate = read_json(work / "gates.json", {})
     if gate.get("plan", {}).get("status") != "approved":
-        raise RuntimeError("Assembly is gated. Review the source, brand, references, questions, storyboard and cut; then run the approve command after user approval.")
-    current_fingerprint = _approval_fingerprint(project_dir)
-    if gate.get("plan", {}).get("fingerprint") != current_fingerprint:
-        raise RuntimeError("The approved plan, cut, style, spec, source evidence, brand inputs, or references changed after approval. Review the changes and record a new approval.")
-    cut_list = project_dir / "cut-list.json"
-    raw_video = None
-    if (project_dir / "meta.json").exists():
-        try:
-            m = json.load(open(project_dir / "meta.json"))
-            raw_video = m.get("raw_video")
-        except Exception:
-            pass
-    if not raw_video or not os.path.exists(raw_video):
-        raw_files = list((project_dir / "raw").glob("*.MOV")) + list((project_dir / "raw").glob("*.mp4"))
-        if not raw_files:
-            raise RuntimeError(f"No raw video found in {project_dir}/raw/ or meta.json")
-        raw_video = str(raw_files[0])
+        raise RuntimeError("Not approved. Review the plan with the user, then run approve.")
+    if gate["plan"].get("fingerprint") != fingerprint(work, project_root):
+        raise RuntimeError("Something changed after approval (storyboard, style, cut, research, spec or a chosen file). "
+                           "Show the change to the user and approve again.")
+    meta = read_json(work / "meta.json")
+    sb = read_json(work / "storyboard.json")
+    style = read_json(work / "style.json")
+    spec = read_json(work / "resolved-spec.json")
+    hyper = work / "hyperframes"
+    cut_before = read_json(work / "cut-map.json")
 
-    hyper_dir = project_dir / "hyperframes"
-    hyper_dir.mkdir(parents=True, exist_ok=True)
-    flat_cut_video = hyper_dir / "input-video.mp4"
+    print("[1/4] graded flat cut")
+    preset = args.grade or style.get("color_grade") or "enhanced-natural"
+    py("apply-cut.py", "--input", meta["video"], "--audio", str(work / "audio" / "voice-clean.wav"),
+       "--cut-list", str(work / "cut-list.json"), "--out", str(hyper / "input-video.mp4"),
+       "--voice-out", str(hyper / "voice.wav"), "--tail", str(cut_before["tail"]), "--grade", preset)
+    cut_map = read_json(work / "cut-map.json")
+    if abs(cut_map["flat_duration"] - cut_before["flat_duration"]) > 0.002:
+        raise RuntimeError("The graded cut does not match the approved timeline; stop and re-run analyze.")
 
-    preset = args.preset
-    style_json = project_dir / "style.json"
-    if style_json.exists():
-        st = json.loads(style_json.read_text(encoding="utf-8"))
-        preset = preset or st.get("color_grade", "dynamic")
-    preset = preset or "dynamic"
+    stage = json.loads(json.dumps(sb))
+    stage["fps"] = int(round(eval_fraction(cut_map.get("fps", "30/1"))))
+    # The composition's picture carries no sound at all, so the voice can never be mixed twice (that is an echo).
+    # input-video.mp4 keeps its sound as the review preview; the render masters hyperframes/voice.wav instead.
+    sh(["ffmpeg", "-y", "-v", "error", "-i", hyper / "input-video.mp4", "-map", "0:v:0", "-c", "copy", "-an",
+        "-movflags", "+faststart", hyper / "base.mp4"])
+    stage["video"] = "base.mp4"
+    for beat in stage.get("beats", []):
+        if beat.get("type") == "block":          # blocks are staged under compositions/; the host page loads them there
+            rel = str(beat.get("src", "")).replace("\\", "/").removeprefix("compositions/")
+            beat["src"] = "compositions/" + rel
+    reframe = sb.get("reframe") or {}
+    if reframe.get("aspect") and reframe.get("mode", "static") != "center":
+        print("[1b] face-aware reframe to %s" % reframe["aspect"])
+        out_name = "base-%s.mp4" % reframe["aspect"].replace(":", "x")
+        canvas = sb["canvas"]
+        py("reframe.py", "--video", str(hyper / "base.mp4"), "--aspect", reframe["aspect"],
+           "--cut-map", str(work / "cut-map.json"), "--out", str(work / "review" / "reframe.json"),
+           "--render", str(hyper / out_name), "--size", f"{int(canvas[0])}x{int(canvas[1])}",
+           "--mode", reframe.get("mode", "static"))
+        stage["video"] = out_name
 
-    # 1. Apply Cut & Graded Flat Video
-    print(f"\n[Step 1/4] Applying frame-accurate cut & {preset} color correction...")
-    apply_cut_py = os.path.join(HERE, "apply-cut.py")
-    cmd_cut = [
-        sys.executable, apply_cut_py,
-        "--input", raw_video,
-        "--cut-list", str(cut_list),
-        "--out", str(flat_cut_video),
-        "--grade", preset
-    ]
-    subprocess.run(cmd_cut, check=True)
+    print("[2/4] stage composition (captions, catalog blocks, SFX, fade)")
+    for cue in stage.get("sfx", []):
+        src = sfx_source(str(cue.get("src", "")), project_root, work)
+        dest = hyper / "sfx" / f"{synth.hash_file(src)[:12]}-{src.name}"
+        dest.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copyfile(src, dest)
+        cue["src"] = f"sfx/{dest.name}"
+        cue.setdefault("dur", 1.0)
+    stage_blocks(hyper, stage)
+    write_json(hyper / "storyboard-stage.json", stage)
+    py("stage.py", "--spec", str(hyper / "storyboard-stage.json"), "--style", str(work / "style.json"),
+       "--cut-map", str(work / "cut-map.json"), "--out", str(hyper))
 
-    # 2. Pass 2 Transcribe: Align Exact Word Timestamps to Flat Cut Video
-    print("\n[Step 2/4] Transcribing flat cut audio for frame-exact caption sync...")
-    temp_asr = project_dir / "scratch" / "cut-asr"
-    temp_asr.mkdir(parents=True, exist_ok=True)
-    try:
-        flat_trans = transcribe_cpp.transcribe(str(flat_cut_video), temp_asr)
-        with open(hyper_dir / "transcript.json", "w", encoding="utf-8") as f:
-            json.dump(flat_trans, f, indent=2, ensure_ascii=False)
-        with open(project_dir / "transcript.json", "w", encoding="utf-8") as f:
-            json.dump(flat_trans, f, indent=2, ensure_ascii=False)
-        print(f"  [Pass 2 Transcribe] Mapped {len(flat_trans.get('words', []))} words directly to {flat_cut_video.name}")
-    finally:
-        shutil.rmtree(temp_asr, ignore_errors=True)
-
-    storyboard_json = project_dir / "storyboard.json"
-    cut_map_json = project_dir / "cut-map.json"
-    stage_spec_path = hyper_dir / "storyboard-stage.json"
-    storyboard_data = json.loads(storyboard_json.read_text(encoding="utf-8"))
-    stage_spec = _stage_sfx_assets(storyboard_data, project_root, project_dir, hyper_dir)
-    stage_spec_path.write_text(json.dumps(stage_spec, indent=2, ensure_ascii=False), encoding="utf-8")
-
-    # Stage only SFX explicitly present in the approved storyboard.
-    engine_dir = runtime.find_engine_dir()
-
-    # HyperFrames requires bundled assets to remain inside the project root. Resolve
-    # blocks from the one shared catalog, then stage only the blocks this edit uses.
-    _stage_selected_compositions(hyper_dir, storyboard_data)
-
-    # 3. Stage HyperFrames Composition with Collision-Free Captions
-    print("\n[Step 3/4] Staging approved HyperFrames beats and caption treatment...")
-    stage_py = os.path.join(HERE, "stage.py")
-    cmd_stage = [
-        sys.executable, stage_py,
-        "--spec", str(stage_spec_path),
-        "--style", str(style_json),
-        "--cut-map", str(cut_map_json),
-        "--out", str(hyper_dir)
-    ]
-    subprocess.run(cmd_stage, check=True)
-
-    # 4. Master Render & Automated Verification (with Denoise & Audio Mastering)
-    print("\n[Step 4/4] Rendering the approved edit with BT.709 tags and selected audio processing...")
-    render_py = os.path.join(HERE, "render.py")
-    processed_dir = project_root / "Exports"
-    processed_dir.mkdir(parents=True, exist_ok=True)
-    render_output = project_dir / "scratch" / "publish" / f"master-{time.time_ns()}.mp4"
-    
-    sb = json.loads(storyboard_json.read_text(encoding="utf-8"))
+    print("[3/4] render + audio pass 2 + verify")
     canvas = sb["canvas"]
-    res_mode = "landscape" if canvas[0] > canvas[1] else ("square" if canvas[0] == canvas[1] else "portrait")
+    orient = "landscape" if canvas[0] > canvas[1] else ("square" if canvas[0] == canvas[1] else "portrait")
+    resolution = orient + ("-4k" if str(sb.get("resolution", "")).lower() in ("4k", "uhd") else "")
+    audio = spec.get("audio") or {}
+    preset_audio = audio.get("preset") or style.get("audio_preset") or ("youtube" if orient == "landscape" else "shorts")
+    out = work / "scratch" / "publish" / f"master-{time.time_ns()}.mp4"
+    cmd = [sys.executable, os.path.join(HERE, "render.py"), "--public", str(hyper), "--out", str(out),
+           "--voice", str(hyper / "voice.wav"), "--resolution", resolution, "--audio-preset", preset_audio,
+           "--tone", audio.get("tone", "neutral"), "--fade-out", str((sb.get("end") or {}).get("fade", 0.0)),
+           "--scratch-dir", str(work / "scratch" / "render")]
+    if audio.get("music_path"):
+        mp = Path(audio["music_path"])
+        cmd += ["--music", str(mp if mp.is_absolute() else project_root / mp), "--music-db", str(audio.get("music_db", -20))]
+    if args.gpu:
+        cmd.append("--gpu")
+    sh(cmd)
 
-    cmd_render = [
-        sys.executable, render_py,
-        "--public", str(hyper_dir),
-        "--out", str(render_output),
-        "--scratch-dir", str(project_dir / "scratch" / "render"),
-        "--resolution", res_mode,
-        "--sdr",
-        "--denoise", "auto",
-        "--dereverb", args.dereverb,
-        "--audio-preset", "shorts"
-    ]
-    resolved_spec = json.loads((project_dir / "resolved-spec.json").read_text(encoding="utf-8"))
-    audio_spec = resolved_spec.get("audio", {})
-    cmd_render[cmd_render.index("auto")] = audio_spec.get("denoise", "auto")
-    chosen_preset = audio_spec.get("preset")
-    if not chosen_preset:
-        platform = str(resolved_spec.get("user_answers", {}).get("platform_aspect", "")).lower()
-        chosen_preset = "broadcast" if "broadcast" in platform else (
-            "longform" if "long" in platform or "podcast" in platform else
-            "youtube" if "youtube" in platform and "short" not in platform else "shorts")
-    cmd_render[cmd_render.index("shorts")] = chosen_preset
-    if audio_spec.get("music_path"):
-        music_file = Path(audio_spec["music_path"]).expanduser()
-        if not music_file.is_absolute():
-            music_file = project_root / music_file
-        music_file = music_file.resolve()
-        try:
-            music_file.relative_to(project_root)
-        except ValueError:
-            raise RuntimeError("Selected music must be inside the user-selected project folder.")
-        cmd_render.extend(["--music", str(music_file)])
-    subprocess.run(cmd_render, check=True)
-
-    if not render_output.is_file() or render_output.stat().st_size == 0:
-        raise RuntimeError(f"Render completed without producing a usable master file: {render_output}")
-    master_video = _next_export_path(processed_dir, project_root.name)
-    while master_video.exists():
-        master_video = _next_export_path(processed_dir, project_root.name)
-    os.replace(render_output, master_video)
-
-    state_path = project_dir / "project.json"
-    if state_path.is_file():
-        state = json.loads(state_path.read_text(encoding="utf-8"))
-        state.setdefault("steps", {})["assembly"] = {"status": "done", "output": str(master_video.relative_to(project_root))}
-        state_path.write_text(json.dumps(state, indent=2), encoding="utf-8")
-
-    total_time = time.time() - start_total
-    print("\n" + "=" * 70)
-    print(f"  ASSEMBLY & MASTER RENDER COMPLETE in {total_time:.2f}s!")
-    print(f"  - Master Deliverable: {master_video}")
+    print("[4/4] publish")
+    exports = project_root / "Exports"
+    exports.mkdir(parents=True, exist_ok=True)
+    final = next_export(exports, project_root.name)
+    os.replace(out, final)
+    review = work / "review"
+    review.mkdir(parents=True, exist_ok=True)
+    for f in (work / "scratch" / "render").glob(out.stem + "-*"):
+        if f.suffix in (".md", ".json"):
+            shutil.copyfile(f, review / f.name.replace(out.stem, final.stem))
+    sheet = work / "scratch" / "render" / "render-sheet.png"
+    if sheet.is_file():
+        shutil.copyfile(sheet, review / f"{final.stem}-render-sheet.png")
+    state = read_json(work / "project.json", {})
+    state.setdefault("steps", {})["assembly"] = "done"
+    state["last_export"] = str(final.relative_to(project_root))
+    write_json(work / "project.json", state)
+    print("=" * 70)
+    print(f"DONE in {time.time() - t_start:.1f}s -> {final}")
+    print(f"  checks: {review}/{final.stem}-VERIFY.md · frames: {review}/{final.stem}-render-sheet.png")
     print("=" * 70)
 
 
 def main():
-    ap = argparse.ArgumentParser(description="Parallel Video Editing Pipeline")
-    sub = ap.add_subparsers(dest="subcommand", required=True)
-
-    p_an = sub.add_parser("analyze", help="Ingest, parallel analysis, source evidence, references, and review packet")
-    p_an.add_argument("--input", required=True, help="Source video, or a folder containing exactly one supported video")
-    p_an.add_argument("--project", required=True, help="User project folder; pipeline work is stored in its hidden .video-pipeline folder")
-    p_an.add_argument("--reference", action="append", help="Reference video or image; may be repeated, project/references is also scanned")
-    p_an.add_argument("--prompt", default="", help="User's creative brief; carried into the project review")
-
-    p_ap = sub.add_parser("approve", help="Record approval after the user has approved the storyboard and cut")
-    p_ap.add_argument("--project", required=True, help="User project folder")
-    p_ap.add_argument("--user-approved", action="store_true", help="Required acknowledgement that the user approved the plan")
-    p_ap.add_argument("--note", default="User approved storyboard, brand treatment and cut.", help="Approval record note")
-
-    p_as = sub.add_parser("assemble", help="Execute cut, staging, and master render")
-    p_as.add_argument("--project", required=True, help="Project directory")
-    p_as.add_argument("--preset", default=None, help="Override the grade selected in style.json")
-    p_as.add_argument("--dereverb", choices=["off", "light", "medium", "strong"], default="strong",
-                      help="late-reflection reduction strength for the audio master")
-
+    ap = argparse.ArgumentParser(description="Video pipeline: analyze -> recut -> approve -> assemble")
+    sub = ap.add_subparsers(dest="cmd", required=True)
+    a = sub.add_parser("analyze", help="ingest, clean audio, transcript, tight cut, evidence and REVIEW.md")
+    a.add_argument("--input", required=True, help="source video, or a folder holding exactly one")
+    a.add_argument("--project", required=True, help="the user's project folder (work goes to .video-pipeline/)")
+    a.add_argument("--prompt", default="", help="the user's brief")
+    a.add_argument("--reference", action="append", help="extra reference file (references/ is scanned too)")
+    a.add_argument("--names", default="", help="names/jargon to spell right, e.g. \"Zerodha, Nifty, HyperFrames\"")
+    a.add_argument("--dereverb", choices=["off", "light", "normal", "strong"], default="normal")
+    a.add_argument("--denoise", choices=["auto", "off", "light", "medium", "strong", "maximum"], default="auto")
+    a.add_argument("--max-pause", type=float, default=0.28, help="longest pause kept inside speech")
+    a.add_argument("--tail", type=float, default=DEFAULT_TAIL, help="held end + fade to black, seconds")
+    a.add_argument("--drop", action="append", help="remove source range START-END")
+    a.add_argument("--restore", action="append", help="keep source range START-END")
+    a.add_argument("--keep-retakes", action="store_true")
+    a.add_argument("--keep-fillers", action="store_true")
+    r = sub.add_parser("recut", help="change the cut and rebuild the flat cut + transcript")
+    r.add_argument("--project", required=True)
+    r.add_argument("--drop", action="append", help="remove source range START-END (added to earlier drops)")
+    r.add_argument("--restore", action="append", help="keep source range START-END")
+    r.add_argument("--max-pause", type=float)
+    r.add_argument("--tail", type=float)
+    r.add_argument("--keep-retakes", action="store_true")
+    r.add_argument("--keep-fillers", action="store_true")
+    r.add_argument("--reset", action="store_true", help="forget earlier drop/restore decisions")
+    p = sub.add_parser("approve", help="record the user's approval")
+    p.add_argument("--project", required=True)
+    p.add_argument("--user-approved", action="store_true")
+    p.add_argument("--note", default="User approved the plan.")
+    s = sub.add_parser("assemble", help="grade, stage, render, master, verify, export")
+    s.add_argument("--project", required=True)
+    s.add_argument("--grade", help="override style.json color_grade")
+    s.add_argument("--gpu", action="store_true")
     args = ap.parse_args()
     try:
-        if args.subcommand == "analyze":
-            cmd_analyze(args)
-        elif args.subcommand == "approve":
-            cmd_approve(args)
-        elif args.subcommand == "assemble":
-            cmd_assemble(args)
+        {"analyze": cmd_analyze, "recut": cmd_recut, "approve": cmd_approve, "assemble": cmd_assemble}[args.cmd](args)
     except subprocess.CalledProcessError as exc:
-        print(f"pipeline stage failed with exit code {exc.returncode}: {exc.cmd}", file=sys.stderr)
+        print(f"pipeline stage failed (exit {exc.returncode}): {' '.join(map(str, exc.cmd))}", file=sys.stderr)
         raise SystemExit(exc.returncode or 1)
     except (RuntimeError, OSError, ValueError, KeyError, TypeError) as exc:
         print(f"pipeline error: {exc}", file=sys.stderr)

@@ -1,38 +1,46 @@
 ---
 name: video-audio
-description: Cleans and masters project audio with measured local processing; strong dereverb is the pipeline default.
+description: Makes the voice sound clean and studio-polished in two passes run once each - pass 1 removes room echo and noise (WPE + DeepFilterNet) before transcription, pass 2 polishes, mixes effects/music and masters loudness at render. Use for "voice is echoey/noisy/robotic", "clean the audio", loudness or music questions.
 ---
 
-# Audio cleanup and mastering
+# Audio: two passes, once each
 
-Keep the original media untouched. The project pipeline uses strong dereverb, asks before adding music or sound effects, and keeps audio work under `.video-pipeline/`.
-
-```bash
-ROOT="<user-selected-video-folder>"
-W="$ROOT/.video-pipeline"
-ENG="${VIDEO_ENGINE:-$HOME/.agents/skills/video-pipeline/engine}"
-ENGINE_ROOT="${VIDEO_ENGINE_DIR:-$HOME/.config/video-skills/engine}"
-PY="$ENGINE_ROOT/.venv/bin/python3"
+```
+pass 1 (analyze)   source -> WPE dereverb -> DeepFilterNet3 (strength from measured noise) -> 70 Hz high-pass
+                   -> alignment check -> audio/voice-clean.wav (lossless; the edit, the transcript and the cut use it)
+pass 2 (assemble)  flat-cut voice -> 80 Hz high-pass, gentle EQ, de-ess, 2.5:1 compression
+                   + sound effects (untouched) + music (ducked under the voice)
+                   -> loudness to target -> true-peak limiter -> fade over the tail -> one AAC encode
 ```
 
-## Echo and reverb
+Why it sounds natural: denoise and dereverb happen exactly once, on the voice alone, losslessly. Re-running them,
+spectral "late reverb" subtraction, gates and stacked passes are what made voices robotic and are gone. Sound effects
+never go through voice processing. Same variables as `video-pipeline`.
 
-Before transcription, the project pipeline passes the source audio through multichannel WPE dereverberation and a late-reverb suppression stage. It keeps the processed voice aligned with the source picture and uses that cleaned audio for speech recognition. At final render, the existing audio master runs twice in sequence: pass one processes the rendered mix, then pass two re-processes pass one's cleaned audio. The passes use lossless WAV intermediates; selected music is mixed once on pass one. The final AAC encode happens only after pass two.
+## Pass 1 strength
 
-This can reduce room tails and echoes, but it cannot guarantee their removal. Listen to the source and processed versions, check for metallic or watery artifacts and clipped word endings, and preserve the less-damaged version if processing harms speech. Do not claim complete echo cancellation or speaker isolation.
+`analyze` measures the signal-to-noise ratio and picks DeepFilterNet's strength: quiet room → light (natural tone),
+fan/traffic → strong with post-filter. Check `$W/audio/voice-clean.json` (noise floor and SNR before/after) and ask
+the user to listen to `$W/preview/audio-before-after.wav` (same lines, original then cleaned, loudness-matched).
 
-For a manual diagnostic pass, keep scratch outputs inside the project workspace:
+| User hears | Re-run analyze with |
+|---|---|
+| hiss/fan/traffic still there | `--denoise strong` (or `maximum`) |
+| voice thin, watery, "underwater" | `--denoise light` or `medium` |
+| room echo still there | `--dereverb strong` |
+| voice dull or boxy after cleaning | `--dereverb light` |
+| clean studio recording | `--denoise light --dereverb off` |
 
-```bash
-"$PY" "${VIDEO_SKILLS:-$HOME/.agents/skills}/video-audio/tools/voice-clean.py" \
-  "$W/raw/standard-input.mp4" --video "$W/raw/standard-input.mp4" \
-  --out "$W/scratch/audio-clean-preview.mp4" --keep "$W/scratch/voice-clean" --no-deep-filter
-```
+Re-running `analyze` rebuilds the transcript and cut from the new audio. Severe echo cannot be fully removed; say so.
 
-The optional DeepFilterNet stage is separate from WPE and late-reverb suppression. The pipeline does not silently enable it in the transcription clean pass; denoising is a recorded user choice for the final master.
+## Pass 2 and delivery
 
-## Master and inspect
+`$W/resolved-spec.json` → `audio`: `preset` (`shorts`/`youtube` −14 LUFS, `longform` −16, `broadcast` −23; true peak
+−1 dBTP), `tone` (`neutral`, `clear` = more presence, `warm` = fuller), `music_path` (a file inside the project) and
+`music_db` (default −20, ducked further under speech). The render report `$W/review/<name>-audio.json` has the
+measured result.
 
-`audio-chain.py` measures the source, selects the chosen denoise level, applies strong dereverb by default, masters loudness and true peak for the selected delivery preset, and writes a JSON report. `render.py` runs it twice over the audio in sequence. It stores a combined `$W/` report plus per-pass reports and scratch audio; the final video is published only after render verification.
-
-Use only the configured local tools. Do not add music, SFX or generated sound unless the user selected them. Keep every chosen music file inside `$ROOT/`, record its path in `resolved-spec.json`, and retain its source/license information with the project.
+Measure any file: `"$PY" "$ENG/scripts/audio-chain.py" measure <media>`. Manual pass 1 on a file:
+`"$PY" "$SK/video-audio/tools/voice-clean.py" <media> --out <clean.wav> [--denoise strong] [--dereverb strong]`.
+Troubleshooting by symptom: `references/tuning.md`. You cannot hear the result: report numbers and ask the user to
+listen.

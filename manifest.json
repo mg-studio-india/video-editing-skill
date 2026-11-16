@@ -1,91 +1,41 @@
 {
  "schema": "video-skills-manifest/1",
- "version": "1.1.1",
- "released": "2026-11-08",
+ "version": "2.0.0",
+ "released": "2026-11-16",
  "repo": "mg-studio-india/video-editing-skill",
  "skills": {
   "video-audio": {
-   "version": "1.1.1",
-   "tree": "4e2283829b2b53bdb0e08779ecce154bf00a837e4cdc4f86ba6a19ecfb3a2bd7",
+   "version": "2.0.0",
+   "tree": "fd4f88876c4bb131b5feaa20db202816881b7a63a45ae70de7b6b877d340d112",
    "files": {
     ".video-skills": "3830f5731e3a76df5150309a9f27126f116cff92cd995f16af5553c30db75e12",
-    "SKILL.md": "2c5dc4d6af158644a8c156061032731fff9cfd4d8d4e14a928a25000b528bf29",
-    "references/tuning.md": "e53321e4764a424ae2d40bd12a8ab2e3e2d910de50956d6a1f9ecd160805853e",
-    "scripts/audio-analyze.py": "d43bd3fc37f2cdb15465ab0e21aa1f0e71c49b5c154d2b01f645f05098ff6a35",
-    "tools/late-reverb.py": "b0a541c9f220cafbdbe740237420e37a897df837bd868aebee128742be26e331",
-    "tools/voice-clean.py": "2ebb56043ab761f84edfac2b3f15494c0132b9fbe6ecdf692c2d7146e91f551c"
+    "SKILL.md": "28c3302c40554183bc3f110dd45b206c700a3a24ccd950c020295a9954b57fc5",
+    "references/tuning.md": "60c80de4d852090320340412bb00e9c3b07e18e42a4ec165f0c837ce13c137f4",
+    "tools/voice-clean.py": "4989a5d8ef50080029a4f0dec0fb61232229e866760819dd34f92ad2f2158413"
    }
   },
   "video-captions": {
-   "version": "1.1.1",
-   "tree": "674dbe122b8b35cbccccf4cd154dadbf8422ca864d74994d4553508772271f54",
+   "version": "2.0.0",
+   "tree": "3c20e3dccc2b8cff2a830b9cb47b6a0e2e2b3d659a623615ded5e7f6af0ec621",
    "files": {
     ".video-skills": "3830f5731e3a76df5150309a9f27126f116cff92cd995f16af5553c30db75e12",
-    "SKILL.md": "d83f98846e2e8a67e948c94fceb39e74db84b5e08abd595a138e656f0956c61c",
-    "references/styles-captions-typography.md": "0fafa63f4539e6b14e4cebac9bb381fde7017c49951672fc7345e6149ddb65b0"
-   }
-  },
-  "video-cut-audit": {
-   "version": "1.1.0",
-   "tree": "9c8c0bbab43815a73f00d7e184c34fcea431dcd22a0c4fe60f3e6933759b96f2",
-   "files": {
-    ".video-skills": "3830f5731e3a76df5150309a9f27126f116cff92cd995f16af5553c30db75e12",
-    "SKILL.md": "3779dcc51d1a27afa428feb7e1cf19129608492c2519388602bf0c185bbd6685",
-    "references/recording.md": "085dd23381e19f27881455ef465fbc54be21ef0f8492fd149383c1a8fd98ed53",
-    "references/styles-pace-rhythm.md": "716f63159c167d66ee42b7975984545e87050f97df66bfca402585482f448288",
-    "scripts/build-edl-review.mjs": "d685e2862e5c5e90982d43c0c5a8e9cd98cedb8533c1c35c460453f6b71ef85b",
-    "scripts/cutlist-to-edl.py": "cb92a8d3d471213c2ceb991a1162c98e94a25b4bb3f5f89d5a2d3506d23aa4a9",
-    "scripts/dead-air.py": "07621184482a883b3516a83dfd88e79cf76c45b1817f3d56128f736b832f500c",
-    "scripts/hand-cut.py": "11c7c46b36c6c23db749580100fc6ac6cde664603a74526ed6689ca810ac49ab",
-    "scripts/sliver.py": "4899523a1b396b975b575e3bb025293798fd58e5649d1f19f4a59ac485f5fe6e",
-    "scripts/tighten-cut.py": "60b5c509fb7f40e7dee00f342e6c51e2b091fc927adbc2a0cc81ecfc71dffd75"
-   }
-  },
-  "video-format": {
-   "version": "1.1.1",
-   "tree": "6ad6e6f0a5b154fb96cf45df161d70ef1f19dea62ba5eb9a376adfd11ca2dc2b",
-   "files": {
-    ".video-skills": "3830f5731e3a76df5150309a9f27126f116cff92cd995f16af5553c30db75e12",
-    "SKILL.md": "4fdf918034679b0fe1d1464076bb393ce571c5821349dddcb1ef08f6624e53b8",
-    "references/kit-library.md": "d28ad80e5daf450a7b0a0b6b3cf4303abf94fd8a1096b8110f8a5f2fad2aa12f",
-    "references/styles-cards-lists.md": "0dedcb8248f80f309c36f0ca8d30472dd8d1d6a94664bebac0a40194858e4b28",
-    "references/styles-layout-composition.md": "4c55116f221223ebbf743d1e1947645d69e91abe4901dd3d85ba4220ffa5ef67",
-    "references/treatment-beats.md": "aa6b76825747fa15f0d4ea8d3d881439d841e0f5d685b96ef377a9a4260c708e"
+    "SKILL.md": "a5912064031cf6d352370c35473c46f2a007bc905c45ace00c3b3cd3faf3fb8a"
    }
   },
   "video-generate": {
-   "version": "1.1.1",
-   "tree": "7e1be65f469394916dff6a267b91c28a773815d86073def0a6b46524e4e593dd",
+   "version": "2.0.0",
+   "tree": "62a26825f3ed7bf536e8d56bc222a1cc4048fe6209b2d608170c2371d04d8473",
    "files": {
     ".video-skills": "3830f5731e3a76df5150309a9f27126f116cff92cd995f16af5553c30db75e12",
-    "SKILL.md": "7ed4ac919b95567e435c3a729060d7dad0cb8a454cea46c190ae61dcfdccf678"
-   }
-  },
-  "video-motion-graphics": {
-   "version": "1.1.1",
-   "tree": "3c6e4c41be8840d2c8c24f03af9415310c2c3d136fb39cb19b4cb43d53406ba0",
-   "files": {
-    ".video-skills": "3830f5731e3a76df5150309a9f27126f116cff92cd995f16af5553c30db75e12",
-    "SKILL.md": "cac7f5e7a2717bdbfaf274de51414d1930c1bc3193d4cdcf6fb7ca57a88fa438",
-    "references/kit-motion.md": "e14c7fb6f2bc966c3e257f4636e47d4567fdb3add16f5a68c2c7899bb7f5d4b7",
-    "references/styles-animation-transitions-vfx.md": "0d0f9fc0b02d9213fb9a79efaac44b9789a9873cfc9c13838a6858abc82e33c0",
-    "scripts/snap-beats.py": "9e188a9f36a70d00ffd47ff91d64c7d45017eeffb549f301f4218724b87fd186"
-   }
-  },
-  "video-omni-restyle": {
-   "version": "1.0.0",
-   "tree": "1ab6f463447ed6cc94166a70eb544e312e6b9ee39984f06d1850bd37c38b59e7",
-   "files": {
-    ".video-skills": "3830f5731e3a76df5150309a9f27126f116cff92cd995f16af5553c30db75e12",
-    "SKILL.md": "8e2e77f4d3db95bd25402b30761dec1d235ddca970a8b155269d70d739bd07b0"
+    "SKILL.md": "06e3b9107ffa21b3947fcdff5f855b5ee5c01f3b0a104846817ba0ba74361713"
    }
   },
   "video-pipeline": {
-   "version": "1.1.1",
-   "tree": "b7a36db828af5bdaafbff858a426c1dd740e16e801d5fe36fe583074b0a2a593",
+   "version": "2.0.0",
+   "tree": "799f28119b61723910d6ce6f6d9d7b5b0f92e02c5a5d4b94dee7e16e63145e07",
    "files": {
     ".video-skills": "3830f5731e3a76df5150309a9f27126f116cff92cd995f16af5553c30db75e12",
-    "SKILL.md": "54ea2f59eeaafdcaccc6c50ded69b85c300072ae191be5fe1ddaf8c89017434a",
+    "SKILL.md": "eaa6b2ecc4b17ce13245b726e3a52af2c817e07b848ddab89b87143f79377c52",
     "engine/assets/fonts/DMSans-400.woff2": "06779986c5bee4a71e6494c56999c0ea6633c74ea2369c1cfc3d5c78ad102a4e",
     "engine/assets/fonts/DMSans-500.woff2": "0ddce392fcf3bd2af83f5d1807c6665a54ad7b5fd78d75bc5bf21d97a434d4aa",
     "engine/assets/fonts/DMSans-700.woff2": "6695df0f65e42f6b4e29fa067a9b4d31ddd2658977342a5e05f1e382ca0ddb8d",
@@ -101,262 +51,93 @@
     "engine/assets/fonts/poppins/Poppins-ExtraBold.ttf": "f2ab17c1a63a0ecc12c2461848fc8a469395e3cd2d641803e889c643d9f958e1",
     "engine/assets/fonts/poppins/Poppins-Medium.ttf": "90373e7d838d32468438fc3e152dca0bdb12edcab99ea639f158790b1ba1fd05",
     "engine/assets/fonts/syne/Syne-Variable.ttf": "ce5ac77142a65cab2248a1a2ebb740b1d4d9c20b52488877d3ff664d1356104a",
-    "engine/formats/claude_chat.py": "329072020462f4f98fd3de4bda06df943f3cd26b485ed1e307dea7e90749e2cf",
     "engine/requirements.txt": "6d2d774089b4c1bbc7e34dadc3b016d900f4c0a00de9c6ce2b79a1a886952419",
-    "engine/scripts/apply-cut.py": "bf89710eff6775db6ce67634ed7360339ef9d53b7dfd3eceec8a769896905340",
-    "engine/scripts/assemble.py": "f458028b0bf0b41a54fdcb7db9cb6e98bdad67a66f58f5295e1deb1a6beef8d0",
-    "engine/scripts/audio-chain.py": "529158462984ab66fc5e04404094086eef34e94a18fc4df2721bc28c5a18da2b",
+    "engine/scripts/apply-cut.py": "a82feed03db05a184f877cca929a8533b1e817cca935acb01f4a55abc2b35f96",
+    "engine/scripts/audio-chain.py": "17d3aa83556310919fc243d440d874d3f3afede966d5c1d7b7498b0a171e7e30",
     "engine/scripts/audio.py": "c8f0eebd340b28fb4454229c87bd621d208e4970b86974164ed4d53238fd18ac",
-    "engine/scripts/beat-check.py": "29124968c111d0197a89a05de83c81e9bf63fd55b7f895dd97e3fab3d7d07d6c",
     "engine/scripts/broll-conform.py": "3178bead3fe559acd9c4f7a2031034f49881523d0ca5f3e6dd527d26514d46e4",
-    "engine/scripts/captions.py": "09af2f0e9940e1d6cd62faba8360601f20fe0d975a18d60732ccd15e6c30f90a",
-    "engine/scripts/clean-temp.py": "2527c414e5fb5c4bb88cbbffa82fd9e6ff5c772c6bab7e9d5551fa8783f4bfaf",
-    "engine/scripts/compose.py": "e29292880ecde61891f197302c1645a36d04b92e0748908661105dd5eeb280ac",
-    "engine/scripts/config.py": "7bdd693efaddb2bb7b703d67f292028020983a527d8d1bc2247f2ef2cb842782",
+    "engine/scripts/captions.py": "1ab62fcafbae38fb831c5c3b9b527886a08f1af20a5de3311b4b14648696d807",
+    "engine/scripts/catalog.py": "4fc9be53cc4b1b2006fe482facb825d1905779eca70fb8a387e9e0f3bd66acff",
+    "engine/scripts/config.py": "04ed1f25e5d7720f5fee215fc59c9ca0ad6e1aa602edc56a89d666e4b4012cf7",
+    "engine/scripts/cut.py": "37344fda26e964321e2fec35a6b0cdfb5cf466ccfb3857c1128c5cf451f61f37",
     "engine/scripts/download.py": "1773dd8333f66bab1816af50ef7643cacbd8819ab2fbfc6114e0f678218890c6",
-    "engine/scripts/edge-audit.py": "5254dc3098909ad020fe1a7c86f5c6963e80438404e751b6d56f5d273ff79378",
     "engine/scripts/editplan.py": "7a662045d9600c27514f91f6e1316b6005dac079800d828df527a06333e31d98",
-    "engine/scripts/find-cut-candidates.mjs": "5931924b0bfdec6c63e5544266848f4666772b6dbb27ea2c3bc8c9ad66d20784",
     "engine/scripts/fingerprint.py": "fa0c430ca81157d767bcd033dfb635103f559d27f26f3933fcec458561ed78bc",
     "engine/scripts/fix-words.py": "eb3af6d2d008903fb44da2d24013f416a9aeba04f241733608c266a50f6fac52",
     "engine/scripts/frames.py": "9465deba62c70cbafdb2e015124b6a900f52f3b819663df69f3a4af990802a60",
-    "engine/scripts/gap-scan.py": "822733b1724b22f3273732bd749253b247998b407e4f6f5fdced2e1c7f65f60f",
     "engine/scripts/generate.py": "d783bf28fa4b61d6110abf385f198339badc1a970ded41dc2d29d86cf8370a35",
     "engine/scripts/grade.py": "e725116b799929877ceeaa0959bfa10d2483a300d5f9e5d34cc89bc468b23834",
     "engine/scripts/heygen-sound.py": "052ae5232820dd77e1f13cac8e88b2ed8b004d2e45c550d7c1d2c398d2cb76c2",
     "engine/scripts/hinglish.py": "27955419105bebd512cda6095259550192e87589c3ad24e1f94954be1ed42269",
-    "engine/scripts/ingest.py": "f18813479394944dba6bc3ddba03cd79117bac4f7e31fc9f6cde6d5acdfba618",
-    "engine/scripts/install-compositions.mjs": "cd9110a30dc8846278507cde3b7602e81dc3b1792e3da0fc8ff3aa3ab79fb390",
-    "engine/scripts/jump-frames.py": "1bf2e3cda6579b85d078be705c4d4f659d8468b946d82ac0e5aa39fe59be0464",
-    "engine/scripts/memo.py": "69f60727f85306bdea9b5c4935a6e548f6452090ecced7abdf5d1e855c5caa63",
+    "engine/scripts/install-compositions.mjs": "2234c00d111a195d9c453a7545e3e23fbe601251cc239e5c51abcdbe228a7e01",
     "engine/scripts/pacing.py": "dad95ddfd5a2a5a38230cc2558b78b4e63d8f6317d1f83fbbb5b0ab43de3aea8",
-    "engine/scripts/paper-cut.py": "8f3d822481616e1a215e4e7eefd4eabb292e212b73f8623ec6cd5b3e8f900888",
-    "engine/scripts/parallel_pipeline.py": "884910aac0c68d4f1a2a7cfd389e6681ea79bde410bd6d724becd4540beb1bcf",
-    "engine/scripts/patch-cut.py": "f1538d31a9ac22fa606c2a0ef42b654a015476a60a4c4a64d73ff24a2a8f6656",
-    "engine/scripts/pipeline_synthesis.py": "e332bece5a9b5fefd6117e5be01484203f436d878661d7734d0d8e32323f0655",
+    "engine/scripts/paper-cut.py": "57547a7451a967cb344e673dfcf30774e2678bfb8d4f2d45fea53a458acddcfb",
+    "engine/scripts/parallel_pipeline.py": "7fed224a992f356a60ecaddf4071446b8cccadcf84ba7f06db5392f1347432bc",
+    "engine/scripts/pipeline_synthesis.py": "ec1f3797c728e3b5c8a679d03efe8430cda9604427af0a199f1aa64025a2c106",
     "engine/scripts/probe.py": "806d88a35efea9abcb67bad222412c5a213d8829ce612cba92c38724c1657b52",
     "engine/scripts/reframe.py": "7f6ef59f030361821a6a21625173304ef0695a57624d16d55019b595573b7284",
-    "engine/scripts/render.py": "705f99c516a2bdef9b8426718ca78eafea006e8ee4cc426c36846d1bdd59307b",
-    "engine/scripts/resolve-anchors.py": "32edccfa37b0fb753a48731a288bbb133e3c142ed43c14377a3d94971612c3f5",
+    "engine/scripts/render.py": "17f3528d2a5167645e4be0dcb9ef0602d71c06833d57d8d8a6023dc788462055",
     "engine/scripts/runtime.py": "47c6c08f5ac911a4fb2f26802178d557c09414dedd95323d47826e0538a36ff7",
-    "engine/scripts/setup.py": "cff2e4fde46dbf10fbd21f8132b9e1ff0e5c552f3ebd99dd4d46c4f081e71b23",
+    "engine/scripts/setup.py": "b48ecb40c8a1da153a5dea466c25ab007398bcf50367136f75bda1ac15bd4b5e",
     "engine/scripts/sfx-prep.py": "3ec7e130aa2ce2bf93466820569acb897272ab460aabeb9a2d1e24d52e9f75c9",
     "engine/scripts/shots.py": "9b8d6950a030e47c872b71aa81b300fd820774eac17573a47e7757534e64014c",
-    "engine/scripts/spec-resolver.py": "24f4037d5e6ba527d4aa2d44f4a804f5dffb704ae5fa5440fc6b8c11da3b21cc",
     "engine/scripts/speech.py": "b9c37d28e06b38d24fafe1ec951fb1251971e5ac70434bc238d583708c64e5ea",
-    "engine/scripts/stage.py": "9a596b9cc264fc4e897cf4a8ed52221474b981c3cb3999f99a911531cba2b0df",
+    "engine/scripts/speechmask.py": "1491f42cd1fa0554398c6b0b686b6d537360d14050fbf245efaa1e9ef3cc4194",
+    "engine/scripts/stage.py": "b4f9b71c6a8177e0321fe86db665b53887a965ace49b004887a87cd773d5f9d5",
     "engine/scripts/storyboard.py": "ddbc229484f1d679ad7d1d4c00efc7e12bdcdf13fa1122d661ed1d6d9a210e47",
-    "engine/scripts/stutter-scan.py": "999851f53b775a0d545d4f4f9a3a57fe8bf6905dd31b67608aa7dbaae43e7735",
-    "engine/scripts/sync-tracks.py": "08bf8bf010c921afe9841a2f1a7605a1e59ffd8a02acc9f6c405d16edfac2562",
-    "engine/scripts/transcribe.py": "b6d3392c342c1dbf598569f2f3be7ee4e006aa3f2519fa5423d9053f8a5a2957",
-    "engine/scripts/transcribe_cpp.py": "d8ea627d3b255fffe4f095781004363b0c10a88033312c835b35019b0fae9cc0",
-    "engine/scripts/treatments.py": "47a43ca9d36341ac600c17266c8a3bc2a6a89ada584b7905d674f1b19d2d47a3",
-    "engine/scripts/verify-render.py": "b551e65b5ca05bf02cdf0305a2fb58e426176a64eadd41b06010e99e7e950ef5",
-    "engine/scripts/watch.py": "ec77e038d9b252606fc9b90ade296f3860d7c86c5ba7627528eba54a04c9d597",
-    "engine/scripts/window-patch.py": "3eb3ba17c6ca72ef5d0162be69ba09ffe1182ca4868f5c3462560bbee7f03ead",
-    "engine/tests/__init__.py": "8fc1a0d0762a7bd09a00f1d7a795dfdfd532a63add1bbd62cfc6ace84de33181",
-    "engine/tests/helpers.py": "7d9ae03918f7cf937d14730cbc504e4825ecf2f0cc551473b73dfea62ec5f974",
-    "engine/tests/make_video.py": "add453649a36e9606a25c68c685486b38e03a5fe1cd5f6538e01e60bfb14c65e",
-    "engine/tests/test_batch2.py": "8385da92d40dfdf12118ecc4861e4c18ddee702785b574b416051590c743f541",
-    "engine/tests/test_batch3.py": "511f1eb9e5f0add9c2d0b8d8d8c1cf00ca6a374ab47b3b9a5e15569d03fa1c64",
-    "engine/tests/test_batch4.py": "fae88fbf63275be16c9555f96b92d58b4e8a7263af51ecaf621cfaa753a11c18",
-    "engine/tests/test_batch5.py": "6c389c1ca2b5411a38f3d33062c2bc5057b2e5209b6c63d5018a0c6e5a01a356",
-    "engine/tests/test_beat_check.py": "928ca6b03cd71af5dadbf409ce8cfdc5d7e6d31eb000b6f6bd650adcf9a78fe3",
-    "engine/tests/test_broll_conform.py": "2000947b949af13f143d42371479a3c5882a965e3d618683b39cca908a977cdd",
-    "engine/tests/test_compose_drafts.py": "6d78b8065c05887b5a5ffef22c432a15ee773cb4206809087dbe1d7c7190fea1",
-    "engine/tests/test_gap_scan.py": "ff943587e621e0d2f5f3f60f3ea362daa6145e172251ae24c9a1b0ad0e9cf9ae",
-    "engine/tests/test_hinglish_and_venv.py": "05f1469eb5fd83f2a5fd8f6d9ae68da90a072147c0ca9aec26db0c4e39d62bc2",
-    "engine/tests/test_integration.py": "8aca2a6cda1c490b96d018ddcfa4302e884ea4a2e522fe12dc365465c4729b23",
-    "engine/tests/test_logic.py": "2b39a216ac52450a422b960dc1196712707907a8453ea06fa3c5b7d55e61aa34",
-    "engine/tests/test_media.py": "5090011b79bc0f189cd134dce5054eeffe1099ea0b40e47f7ceec59b797cb947",
-    "engine/tests/test_memo.py": "f6fa1d2a562350d41902e532ce8ee27a531f5dbb86d6a655d8f10e59a5d0add1",
-    "engine/tests/test_patch_cut.py": "3633d489e1cc354c847bae90bcab65714b5282ac9a2116573d16260fa75feedb",
-    "engine/tests/test_spec_resolver.py": "a392bed9abbf30781ea3dc51f9427bb1dd90ed71e9e703a9527d5022a4397c52",
-    "engine/tests/test_transcribe_audio.py": "fedb6e64aee02be30863c21ba0e2e5e799a458e6ebd9bf9014b0322f4800fdd2",
-    "references/engine-scripts.md": "1cadccd09b1aa38cfb497cd0550fba01261fee919f7e6f26520350df2ecd3e0a",
-    "references/pipeline-architecture.md": "a0f9d1d95784ec301e88d6755d3c681d7ea733a4d0e63449222a138059036dd1",
-    "references/project-file.md": "46cf7b4662a22910f3f8480ab1ee10104d39f7000216bfd43d38f2ffa6207a0b",
-    "references/setup-check.md": "5b4c839c768f32100462accf00a512651a3774d9bccd61a13daf8449d24bc39d"
+    "engine/scripts/transcribe.py": "8b70e1a8880c3e8378a2c2b4c299ecb567709b449c7b7272d999532913de807a",
+    "engine/scripts/transcribe_cpp.py": "e30ecc9a16c5f9f2dbffd3ff77fc26cefc5a98e5990e7bd23e0e5396dd7467d9",
+    "engine/scripts/treatments.py": "599bfca1dcca5cf3da50d393beba897bba2864f954daddccadcace538327c78a",
+    "engine/scripts/verify-render.py": "59e63e3db8cacaf06a687fc63de4882bd70634a5165e6c3c0d12cdb165ff2552",
+    "engine/scripts/watch.py": "ec77e038d9b252606fc9b90ade296f3860d7c86c5ba7627528eba54a04c9d597"
    }
   },
   "video-plan-storyboard": {
-   "version": "1.1.1",
-   "tree": "1929b0963b3b498360edd7f095158c75eea4a1665fb7be48f543a9e849fc81a1",
+   "version": "2.0.0",
+   "tree": "d9b0c4560600b46abff69b4cbca462b79f0575027dd3d0dd854118b0885d4e8d",
    "files": {
     ".video-skills": "3830f5731e3a76df5150309a9f27126f116cff92cd995f16af5553c30db75e12",
-    "SKILL.md": "5084ccb61b8eaa475f27499da12d3a13337bd92a6a3ae37410c79f97055fa424",
-    "references/duration-delivery.md": "4964b6c09687fd39c3e9d189570d34136f2bb9fe71995f44d52024f9d3fa64fe",
-    "references/plan-template.md": "73e33f37dddaa9e2a3c211c9691727819809e906614826b62802be24f98040e8",
-    "references/program-types.md": "a8eb3553fce4f67b74d4f4da8d8f5ab73b14b6ed357656a915897baa6e7d240e",
-    "references/style-catalog.md": "b5c94e7bb425491255fe534e7f88fbe3272d16457583ed5c2b977502f3ffe950",
-    "references/styles-commercial-platform.md": "679fb80adbd4245d5515fc38704817623009b7994739f81308bb9a10bf03bcb5",
-    "references/styles-storytelling.md": "90188a742e63636ff1157a1c2dfce1fd403416cd489866dc6eaad583eea1f0f2",
-    "references/treatments.md": "c2010e4136df3103bc2119dceb92c36760d1f5dbe9c3bffbcfb58fa244a41d4d",
-    "scripts/storyboard-md.py": "44089bd89420cfe438efee3a37c8647ce6d14d63428278eb4b8575b9d1c30e2e"
-   }
-  },
-  "video-reference-match": {
-   "version": "1.1.1",
-   "tree": "aa3ade6735186860a6e79ff241a77a230e48ba28e539470a445bbdadb8c63422",
-   "files": {
-    ".video-skills": "3830f5731e3a76df5150309a9f27126f116cff92cd995f16af5553c30db75e12",
-    "SKILL.md": "2f6a780fc6ce50f8735a28d3d7256a20a07d2498669994ca07f65c834fd729e5",
-    "references/INDEX.md": "e9f3b0dcf396603ff491959b8755f58bcb21272b87ba92d08c256f8ead113e9b",
-    "references/PROMPTS.md": "53cac293b64f99ba254d4cd64f48aa24a6c97e6dc2e594e43fde219481bfba8b",
-    "references/blueprint-schema.md": "4cee7ac0868196be930e1cc6555f122e1cd63503a39d4813604c3e66735736fc",
-    "references/blueprints/B01.json": "cf3a1b4bcfa649343c25fa7b71a6c21d9229e0606e30f0f9a115b0f2495d1e40",
-    "references/blueprints/B02.json": "48c76d3265df351f735d36cd80f21d7d09e9e1bd7743faa42f7969a5e611d5ec",
-    "references/blueprints/B03.json": "30a8c385ae52cece5258c97f16927b625b65536f24a6e0780d30ec263efa814b",
-    "references/blueprints/B04.json": "1c21a8550df901298f0129d0a0fe243d2e1b1316609144397b753979b8ebcf89",
-    "references/blueprints/B05.json": "4e0ede686e682dc51c5df2fafe10140d29239e908e3e526ae3aa991446c34cc2",
-    "references/blueprints/B06.json": "8ebd6ccc5bb2fbb70ef56e2257d2cf8df8e771288dc23f119cf8cc6da770620b",
-    "references/blueprints/B07.json": "5c3c162f3ed2010c13fdae5db6fa2b783dc6247edf4fccdb146f91f0b2d6b93c",
-    "references/blueprints/B08.json": "bc9eb29e7c47119732f4d51fd2fec18f906af5fa89224bdd36fcc763c5279a13",
-    "references/blueprints/B09.json": "226250c004f384a75365010b6b4b59818e6597ef0c287cdbfb7077b6ef747371",
-    "references/blueprints/B10.json": "04ca6526e4f0c16293ac194352e1038178b179eaed20039b9bac170170520f11",
-    "references/blueprints/B11.json": "6b0d67bd9a7f2325b22e63a8dd22f4ad4fbc201a08aeeaa9c74303dc069b3f02",
-    "references/blueprints/B12.json": "fdefd42ead20e3ca0ca0b28fcd82d2ec1571263d3156a4c6a2a8da73d1a18823",
-    "references/blueprints/B13.json": "612e31140cbe97668d0ea3940003eadbe32c193a3ca9edc396adc280310c744e",
-    "references/blueprints/B14.json": "7b19a7df75b80497ea3a4ab374aae59f6c995254f3c9756ff8c1453506332e3a",
-    "references/blueprints/B15.json": "1af3dca39e16eff5d1c02d7c4500c2ad82b184256ad2430aa745974032c555e0",
-    "references/blueprints/B16.json": "19544b0c0eff547479eda3e6b67d22746720b902d8ce6d25c0d69729a61a09a0",
-    "references/blueprints/B17.json": "7a5d94e5a85b8c94bff67f711d30ad19508bb9096ca30a18d7636147dffd280b",
-    "references/blueprints/B18.json": "d6cec126e11f906a493f46d8999d56999af4911e6eba17f755a68831f2cd72ee",
-    "references/blueprints/B19.json": "9228a47a2a2260ecd5ab69b623fdbd8493aca32304aff85f0775deaa0e7cb83f",
-    "references/blueprints/B20.json": "7d9796eef7244c5fc7cd689e868e2f259bbd39704039d60b263bec35be77a9c1",
-    "references/blueprints/B21.json": "a10a319a407a56519d500c16721a50f9e9c9e2afece97a2391963740b171d6d7",
-    "references/blueprints/B22.json": "12ad8c3047330556d55fab568f70ed69c066dc07ff88d3e08efd750be1caab84",
-    "references/blueprints/B23.json": "73ec8f1ed93fc3458275a3787a54ce6a339dc5f220b2c2397f3aef61840eb343",
-    "references/blueprints/B24.json": "cf7bc0f57f03301806edb3c7c024347bf881ed7b2ddeee0684c07f8a884186c0",
-    "references/blueprints/B25.json": "10fe366f45abacbbaeea246037d7ec842930f142c215315d0b754136874aa0f7",
-    "references/blueprints/B26.json": "427b2a8f793271e8e39b94864c8743b8b4cfea9d7aa50d7319f91b82c128b808",
-    "references/blueprints/B27.json": "7497abb5e5353748a9a59aa82b7cd14ec1766d390410f84667ba00ee4023c1df",
-    "references/blueprints/B28.json": "5c5c4d44a309ec6b781f1ba853e5eda1718a52aa7b5d9ecf0de8ac2365e9a020",
-    "references/blueprints/B29.json": "4f7a2a57073611813d3625e54c4e73db642dc4ec0c5ddbd76102a35653d08dad",
-    "references/blueprints/B30.json": "51cbf870fb4d07b05b90ebaf1b867685c33aae3151b899be05251979be3f96a5",
-    "references/blueprints/B31.json": "b9550ff81433f0b621871946d6bb0f9838a8a43a3802fd1ae463e2f013270295",
-    "references/blueprints/B32.json": "80f40bb4927ca997e78accdf908c5a4a175380a82205a559d6b73f7d7cc7a8a6",
-    "references/blueprints/B33.json": "51adbd3e193fd24a62a93a184b3a51b40b3cf8c31160e79ce83d93ca836c6af8",
-    "references/blueprints/B34.json": "e9536afff568ae18844cfcc6f6e93285c65eed1028fbd5f0f39703e3f364f679",
-    "references/blueprints/B35.json": "59360c0ddb0daea92f5232b456f1a182469106c60ca065f929c4e2d818703f9c",
-    "references/blueprints/B36.json": "081455367d091cb7629b4cc3f9e4e7591676fca67f68171ed3be1770a22bdfbf",
-    "references/blueprints/B37.json": "8ee775ac827b6f8b8eea2e75b060600b8a652c5ecf86a73e78f3b00abf0c26ad",
-    "references/blueprints/B38.json": "94d90647be32059ca835fbfb0e884fdf7e00a1eb615d2736aceb9e3885fb6e77",
-    "references/blueprints/B39.json": "f89d7da76cf9e32e1540227dabe5dc11b551b582589df88cb600f8d631312f9e",
-    "references/blueprints/B40.json": "0ec844e6c9d1232522b25d3f966cdfc539cc9e465332d91c1c4bee46f57dcc90",
-    "references/blueprints/B41.json": "1cc68dd15d23888375c27cdc315556544d88988b9fea7b5797e1897cb2614cb1",
-    "references/blueprints/B42.json": "7cf414e8c3f818cfef4cf501eddeb4d5ea8c35ab9c5f19abd294325cac860c9b",
-    "references/blueprints/B43.json": "1561074c25652e8c1f754b95cedc64094284d3c5e007f50314e9b47c50b3d311",
-    "references/blueprints/B44.json": "190d2e8707d552820e58ea9f3491a8ee2cb0a67c9272663243ad4f7f7691d3f6",
-    "references/blueprints/B45.json": "099c6574f43d91a5a8bab09edb9a1ee3340c5a98fde1c34aea46f9a64bcf3bfd",
-    "references/blueprints/B46.json": "d7b73cf35734b70ff752a782ab36a5ad0d08ee6b65f69a5705212272807a2365",
-    "references/blueprints/B47.json": "ac86dab7d3a825b3eb1d9d5447a3607692fad4f92123e0e64b74aa387be63e29",
-    "references/blueprints/B48.json": "59c4a8acd0b1a3f5a6738b8ee73e22a88b51fea352975b6cadf4166f788e948e",
-    "references/blueprints/B49.json": "90c1cfe389595a545f1891d6c99787a8c8c749e8f4a26637240d3b9f739def53",
-    "references/blueprints/B50.json": "8456a73197eede15c0b23a998cd30de3f6fb10403d628b405a39244db0dd2214",
-    "references/index.json": "36c6521a3027edbd64d06feaeae3cc6ba51c4b4091cd648c7174aa14e0447c18",
-    "references/weights.json": "1dca49fc6c75403ab445c294cbed1472dc00494db9adc53ef2ef530f49adc7f1",
-    "scripts/build_index.py": "f3b0662bbed359d689baa8d0cb13776fb6299dd4a9b022e6fb4f73d414cde73f",
-    "scripts/caption_probe.py": "760c48ab638c6a653b48c8670e28cc337e6fec27522fdb1b8f0a1feabb7a6d6d",
-    "scripts/check_blueprints.py": "a8fd22fe4deb7741e6632d1ca02c0773636bfd20e3d45c88398db2e5ccbbe67e",
-    "scripts/fit_font.py": "896c8df2975e2cbfbf904c3b6a709ed132a27b793393e3a6e73884ce25e4c02f",
-    "scripts/match.py": "0d344b1fbb0e2cd72ecb588685b87aea0d2968f6d487149a983aa6b2a18cb55b",
-    "scripts/measure_blueprint.py": "964ebebee6d395b4457d75157e9400172f6c7e7f3fc2bfe852116624f2b67d44"
-   }
-  },
-  "video-render": {
-   "version": "1.1.1",
-   "tree": "3c03e246f8c233c1693d4ea06321c8806dc9730e15daaa4af986c6c02a08511b",
-   "files": {
-    ".video-skills": "3830f5731e3a76df5150309a9f27126f116cff92cd995f16af5553c30db75e12",
-    "SKILL.md": "6bcddec4e1ce6f20bd314281fea94f108225ef257275162ea0156e5217d2f931"
+    "SKILL.md": "055b98f5effc5a2fdb95ad59de7a8e53ada1e21e510d4cebdfbe6e9debce59a9"
    }
   },
   "video-researcher": {
-   "version": "1.1.1",
-   "tree": "3d9d9e94dbfae60e6bfd1b2fb119b683384e079ecbd5d8504535315612375251",
+   "version": "2.0.0",
+   "tree": "f7f2400e11e6a79dc9bd6383449b3a249e7f94158832ff31289e9869e10a660f",
    "files": {
     ".video-skills": "3830f5731e3a76df5150309a9f27126f116cff92cd995f16af5553c30db75e12",
-    "SKILL.md": "838ffc648ce32e7526024d34746538580a7b7624de780d8dd522bc14bcab1f0d",
-    "references/category-benchmarks.md": "269001f7f4124eaf16e0dbd619f8dca841464956150f7878cb15879a2360028e",
-    "references/logo-sourcing-and-generation.md": "e146d0add3b44937e3d75f33d718fc8019596f6b50653117f932480e161d1cff",
-    "references/research-schema.md": "339109f40a325bfee09e2eb77d28cc48c6b7a1fe5f85cfedf900131aef49f45d",
-    "scripts/research-scaffold.py": "b3945b9f77bb5641033e4b7310d63054aaa64b8f81d5fcd9adaa87e5d1d624cf"
-   }
-  },
-  "video-review-gate": {
-   "version": "1.1.1",
-   "tree": "1273b413ef0aab38d44aaf25986d492b17b17ca63657d86077289618294bf5cd",
-   "files": {
-    ".video-skills": "3830f5731e3a76df5150309a9f27126f116cff92cd995f16af5553c30db75e12",
-    "SKILL.md": "3ceee5ca6843d3a76aa995003a580550754d1401f0160b63a71f52527289da60",
-    "scripts/review.py": "fb3d9c26fc7a073024766a6e08fcbd8c66f053b97b0663753c9134c6a5b4ee2d"
-   }
-  },
-  "video-short-form": {
-   "version": "1.1.0",
-   "tree": "c75cf24ace0588ffec3cb754317b700c645017d49a11e64af40e17a38812f8e6",
-   "files": {
-    ".video-skills": "3830f5731e3a76df5150309a9f27126f116cff92cd995f16af5553c30db75e12",
-    "SKILL.md": "0ac020ef40298ae0bce65b10bfdf7d6331b5d5f1e6ea60a2d4cba8baed29d345",
-    "scripts/make-short.py": "9f2555e99a15ab3c471b968a89d3e5196806e04896a4394aa53100994dec7e09"
-   }
-  },
-  "video-sound-design": {
-   "version": "1.1.1",
-   "tree": "9688e672cd7f78b1b61ae2c7eaa2c46e54180a6425d60c4bfe8482f68afe11bc",
-   "files": {
-    ".video-skills": "3830f5731e3a76df5150309a9f27126f116cff92cd995f16af5553c30db75e12",
-    "SKILL.md": "aa31413cd6a74021839276458c2357c47dc788917d47a9e6ecd6143377846373",
-    "references/styles-audio-led.md": "d2bccbc7f7448f4377c95a84c64bfd3ddbfb0dbae085972541e417a6eb5881b1",
-    "scripts/audiocraft-gen.py": "c194bccf58de5929f400645011b38a210483cadd2cad1c0945e15a05fe35a328"
+    "SKILL.md": "34d555161bd05072e13a8c58fbf40014d79ed2ac8069837b2acbd5d15ca0748f",
+    "scripts/research.py": "e1a76f05525d078e54c28705e0b1ccc791ef7beccb7e4adfb9a928bd98afdb74"
    }
   },
   "video-style": {
-   "version": "1.1.1",
-   "tree": "02ac31b96c949a3b9fbd096ba6764574ab1c4fd622bc3fba5f55ad60f0188aaf",
+   "version": "2.0.0",
+   "tree": "bb4f61eba97863d673f3dcce1544d108061b769640d9db718c0b5df45ff31538",
    "files": {
     ".video-skills": "3830f5731e3a76df5150309a9f27126f116cff92cd995f16af5553c30db75e12",
-    "SKILL.md": "8f4a3e3604c3f0a9d7ebabf00c737d74f25e26b766aed531346d570c8b5603ef",
-    "references/business-reels-accounts.md": "6e831fa479ea77f4c89777e74c3255be6d4ab51afea3b79953c8a64af25c9d39",
-    "references/business-reels-audit.md": "60ff31ff5674c2dec1bf4dd38b2cac70e14f0bf35dcfad4e9dd83e9f0b0ba6c2",
-    "references/business-reels-guide.md": "817199e879fc3eaf413b3b12d855c910df819cf99cee1b0ae581b146ce10ffa8",
-    "references/business-reels-templates.md": "1212510f38d008cdb476e3486a016b7cce7cfb5572b729ce64b41a203ad413eb",
-    "references/style-from-references.md": "7cc5e973eb6b26639b095acabeaa95ba7893a78ebe04e711b325bea40c8463a0",
-    "references/style-json.md": "26b47c88a8254e02a1a9229738a5629f717ad9d3f15f339136b4dcb12131e1fa",
+    "SKILL.md": "137575b5d0fabc818450276818fa1c8a66b50c77b30ae35a239a2bfac32153f4",
     "scripts/palette.py": "e1f7aac5a65fff15dbf1461e9ea7748b05b0f26d5dccce65e2c599b1c9f0b905",
-    "styles/business-reels.json": "11ba4567e47d0a775672f73240611805fca1733a282fd2dfdaca1bf557836c55",
-    "styles/kit-look.json": "ea1a63dac0c50397d893b310ce666ef8285fef828a1ac2406061e5eb7de1df08",
-    "styles/reels-starter.json": "191d6b755e3cd9015746c77ad80fd57a8f50b57f28bdc4d865e8324ac5ad8a99"
-   }
-  },
-  "video-take-geometry": {
-   "version": "1.1.1",
-   "tree": "b7abb315bf1c067275adaefbc91c3d075ab7e0bcc96d777a2017d61d3462d572",
-   "files": {
-    ".video-skills": "3830f5731e3a76df5150309a9f27126f116cff92cd995f16af5553c30db75e12",
-    "SKILL.md": "a297016a850bc8acbf6bec94932977b623025a3a691f1d9da56a2d87d1a88cc4",
-    "references/canvas-safe-zones.md": "f578e3a907a54e5f1d5ffc38014cec136c8764f3b58c0bb342bd45b131a607a2",
-    "references/styles-camera-footage.md": "cdac0d4ace0475f8994564389bedb8524c5051ce061f6c127ec97abde49fd7f4"
+    "styles/business-explainer.json": "ca86630c4d9fec7fcb737ec83798fc1e86798cdc7602c6dac93be89e48dab09e",
+    "styles/cinematic-story.json": "0da8cb6700fe42e6e1df5cd94d817ca0c12c4f2202439a710f6941b2194e6254",
+    "styles/clean-creator.json": "0037021ae2f4d6403b4ce91306c434d53caa1b4f0fdf155410a2cb91805a67e9",
+    "styles/tech-minimal.json": "967bb4c047ddee25fc164c5599f9a7c0c3fce0f3a607439c49a9a8094c90b6af"
    }
   },
   "video-transcribe": {
-   "version": "1.1.1",
-   "tree": "ea4316915c46905feb50c83810de4e5bb29f69244244a8b109e6b7d28928f4d1",
+   "version": "2.0.0",
+   "tree": "b25b9ffe2badac96730919d9f767c24d56c06b1c876cae29b13d58a83d0f2712",
    "files": {
     ".video-skills": "3830f5731e3a76df5150309a9f27126f116cff92cd995f16af5553c30db75e12",
-    "SKILL.md": "4767186a74cd41c761784824d371bdbfb05e89c3f3bfd7341b283e97f91e5621",
-    "references/whisper-setup.md": "273d6bd9824ccb0bcf1d2f5630c09861d2c80487d0ade6f784191fa60076383f",
+    "SKILL.md": "f10c88220bc2e7ae44edf6d3c360a57e41284dca006356b4374e001ec1aa5aca",
     "scripts/phrase-times.py": "593aefeb59b1e44367a58939c0136ec8c2e16909cbdb0e188998b781c33f773a",
     "scripts/verify-words.py": "25dc89ac34f53b9b815c4b296e30f9c06518aa145384210a1b13c27ce774ee85"
    }
   },
   "video-watch": {
-   "version": "1.1.1",
-   "tree": "f6cf08b586148c906a2dd642c030937706226accfdc3b6cbe4a526103f9c6e3b",
+   "version": "2.0.0",
+   "tree": "d8c2fc0271782d0eeb60f2ef4f0bc4acab0947432eb7edd1348527c875daa046",
    "files": {
     ".video-skills": "3830f5731e3a76df5150309a9f27126f116cff92cd995f16af5553c30db75e12",
-    "SKILL.md": "8a93ec6b08c51599dedf41742335e4b5fae4fbb7750d1756c5a72b3f3ef8bb6a",
+    "SKILL.md": "93bc3461d9b52f89311570b367b3b970514b0167259f623007f63c64112a23ab",
     "references/fingerprint.md": "7bee7c96aba123aef561a5815a7f040e663ff9bebf51ef3f5bde9ae0bbbce7f3",
     "references/hyperframes-mapping.md": "48dba0264e64066c2617b1ea39dfe0d6d0010d7201c9a213948bcc0d87ff173f",
     "references/storyboard-schema.md": "e1bf75ef7393278b1431ee677183cce98dcd9de27f34054e313c90a5f3bbd89b",

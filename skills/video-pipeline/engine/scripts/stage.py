@@ -107,8 +107,9 @@ def build(spec: dict, style: dict, out: str, cuts: list[float]) -> str:
         words = CAP.load_words(os.path.join(out, cap.get("source", "transcript.json")) if not os.path.isabs(cap.get("source", "")) else cap["source"])
         mw = int(cap["max_words"]) if cap.get("max_words") is not None else None
         mc = int(cap["max_chars"]) if cap.get("max_chars") is not None else None
+        keywords = list(cap.get("keywords", [])) + list(cap.get("emphasis", []))
         groups = CAP.group(words, cuts, max_words=mw, max_chars=mc,
-                           emphasis=cap.get("emphasis", []), keep_punct=bool(cap.get("keep_punct", False)))
+                           emphasis=keywords, keep_punct=bool(cap.get("keep_punct", False)))
         groups = [g for g in groups if g["start"] < D - 0.2]
         for g in groups:
             g["end"] = min(g["end"], D - 0.05)
@@ -135,7 +136,7 @@ def build(spec: dict, style: dict, out: str, cuts: list[float]) -> str:
         if b.get("unresolved"):
             raise SystemExit("beat %s is unresolved; fix the plan and resolve again" % b.get("id"))
         if b["type"] not in T.TYPES:
-            raise SystemExit("stage.py does not build %r (16:9 library formats are compose.py's)" % b["type"])
+            raise SystemExit("stage.py does not build %r; use a HyperFrames catalog block (type \"block\")" % b["type"])
         if b["type"] == "behind" and not spec.get("matte"):
             raise SystemExit("beat %s is 'behind' but the storyboard has no \"matte\"" % b["id"])
         h, c, j, where = T.build(b, {**ctx_base, "track": track})
@@ -160,6 +161,17 @@ def build(spec: dict, style: dict, out: str, cuts: list[float]) -> str:
     if spec.get("matte"):
         matte = ('<video id="matte" class="clip" src="%s" muted playsinline data-start="0" data-duration="%.3f" data-track-index="2" '
                  'style="position:absolute;inset:0;width:100%%;height:100%%;object-fit:cover;z-index:6"></video>' % (spec["matte"], D))
+    # fade to black over the tail (the held last frame from apply-cut.py); audio fades in render.py to match
+    fade = float((spec.get("end") or {}).get("fade", 0.0) or 0.0)
+    fade_html, fade_js = "", ""
+    if fade > 0:
+        fade = min(fade, D)
+        fade_html = '<div id="fade-black" style="position:absolute;inset:0;background:#000;opacity:0;z-index:9999;pointer-events:none"></div>'
+    fps = spec.get("fps", 30)
+    if fade > 0:
+        # reach full black two frames before the end, so the final frames are truly black
+        fade_len = max(0.1, fade - 2.0 / float(fps or 30))
+        fade_js = "tl.fromTo('#fade-black', { opacity: 0 }, { opacity: 1, duration: %.3f, ease: 'power1.in' }, %.3f);" % (fade_len, D - fade)
     if not os.path.isfile(GSAP_LOCAL):
         raise SystemExit("Local GSAP asset is missing: %s; run the video pipeline setup." % GSAP_LOCAL)
     gsap = "vendor/gsap.min.js"
@@ -180,10 +192,10 @@ html, body { margin: 0; background: #000; }
 </style>
 </head>
 <body>
-  <div id="%s" data-composition-id="%s" data-start="0" data-duration="%.3f" data-fps="30" data-width="%d" data-height="%d">
+  <div id="%s" data-composition-id="%s" data-start="0" data-duration="%.3f" data-fps="%s" data-width="%d" data-height="%d">
     <div id="cam-wrap">
       <div id="cam" data-layout-allow-overflow>
-        <video id="base" class="clip" src="%s" playsinline data-has-audio="true" data-start="0" data-duration="%.3f" data-track-index="1"></video>
+        <video id="base" class="clip" src="%s" muted playsinline data-start="0" data-duration="%.3f" data-track-index="1"></video>
 %s
         %s
       </div>
@@ -191,6 +203,7 @@ html, body { margin: 0; background: #000; }
 %s
 %s
 %s
+    %s
     <script src="%s"></script>
     <script>
       (function () {
@@ -201,6 +214,8 @@ html, body { margin: 0; background: #000; }
         %s
         // beats
         %s
+        // ending
+        %s
         tl.to({}, { duration: %.3f }, 0);
         window.__timelines["%s"] = tl;
       })();
@@ -210,10 +225,10 @@ html, body { margin: 0; background: #000; }
 </html>
 """
     bg = (style.get("colors") or {}).get("canvas_bg") or T.tok(style, "colors", "canvas_bg") or "radial-gradient(circle at 50% 20%, rgba(56, 189, 248, 0.16) 0%, transparent 55%), radial-gradient(ellipse 90% 65% at 50% 25%, #1e2c48 0%, #0d1526 60%, #040710 100%)"
-    page = page % (T.font_faces(style), cid, bg, W, H, camera_origin, "\n".join(css), cid, cid, D, W, H,
+    page = page % (T.font_faces(style), cid, bg, W, H, camera_origin, "\n".join(css), cid, cid, D, fps, W, H,
        spec.get("video", "input-video.mp4"), D, "".join(behind), matte, "".join(root), "".join(front), "\n    ".join(audio),
-       gsap, "\n        ".join(camera_js(camera_ops)), "\n        ".join(T.layout_js(lay, W, H, style)),
-       "\n        ".join(js), D, cid)
+       fade_html, gsap, "\n        ".join(camera_js(camera_ops)), "\n        ".join(T.layout_js(lay, W, H, style)),
+       "\n        ".join(js), fade_js, D, cid)
     os.makedirs(out, exist_ok=True)
     path = os.path.join(out, "index.html")
     open(path, "w").write(page)
