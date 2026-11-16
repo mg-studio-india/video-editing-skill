@@ -94,10 +94,10 @@ def cmd_build(_a) -> int:
         return 2
     info = {str(x.get("name")): x for x in hyperframes_catalog() if isinstance(x, dict) and x.get("name")}
     items = []
-    for html in sorted(base.rglob("*.html")):
+    html_files = [h for h in sorted(base.rglob("*.html")) if not any(part.startswith(".") for part in h.relative_to(base).parts)]
+    print(f"  parsing and indexing {len(html_files)} HyperFrames composition files...")
+    for html in html_files:
         rel = html.relative_to(base).as_posix()
-        if any(part.startswith(".") for part in html.relative_to(base).parts):
-            continue
         m = Meta()
         try:
             m.feed(html.read_text(encoding="utf-8", errors="replace"))

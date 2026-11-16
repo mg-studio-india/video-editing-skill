@@ -65,7 +65,8 @@ async function getCatalog() {
 }
 
 async function main() {
-  console.log(`[HyperFrames Compositions Installer] Target library: ${compositionsDir}`);
+  console.log(`  [compositions] target library: ${compositionsDir}`);
+  process.stdout.write("  [compositions] fetching catalog metadata from HyperFrames...\n");
   const items = await getCatalog();
   if (!items || items.length === 0) {
     if (fs.existsSync(cachePath)) {
@@ -73,11 +74,11 @@ async function main() {
     }
   }
   if (!items || items.length === 0) {
-    console.error("[HyperFrames Compositions Installer] Error: Unable to load catalog items.");
+    console.error("  [compositions] Error: Unable to load catalog items.");
     process.exit(1);
   }
 
-  console.log(`[HyperFrames Compositions Installer] Discovered ${items.length} compositions & components in catalog.`);
+  console.log(`  [compositions] discovered ${items.length} compositions & components in catalog`);
 
   let installed = 0;
   let skipped = 0;
@@ -118,18 +119,28 @@ async function main() {
     workers.push(worker());
   }
 
+  let lastLog = 0;
   const progressInterval = setInterval(() => {
     const done = installed + skipped + failed;
     const pct = Math.round((done / total) * 100);
-    process.stdout.write(`\r[HyperFrames Compositions Installer] Progress: ${done}/${total} (${pct}%) · ${installed} added, ${skipped} existing, ${failed} failed`);
-  }, 1000);
+    if (process.stdout.isTTY) {
+      process.stdout.write(`\r  [compositions] progress: ${done}/${total} (${pct}%) · ${installed} added, ${skipped} cached, ${failed} failed`);
+    } else {
+      const now = Date.now();
+      if (now - lastLog >= 3000 || done === total) {
+        lastLog = now;
+        console.log(`  [compositions] progress: ${done}/${total} (${pct}%) · ${installed} added, ${skipped} cached, ${failed} failed`);
+      }
+    }
+  }, 500);
 
   await Promise.all(workers);
   clearInterval(progressInterval);
-  process.stdout.write("\n");
+  if (process.stdout.isTTY) {
+    process.stdout.write("\n");
+  }
 
-  console.log(`[HyperFrames Compositions Installer] Complete: ${installed} added, ${skipped} already cached, ${failed} failed.`);
-  console.log(`[HyperFrames Compositions Installer] Library verified at: ${compositionsDir}`);
+  console.log(`  [compositions] finished: ${installed} added, ${skipped} already cached, ${failed} failed`);
 }
 
 main().catch((err) => {

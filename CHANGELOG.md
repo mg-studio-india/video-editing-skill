@@ -2,6 +2,15 @@
 
 Every release of video-editing-skill. Update with `video-skills update`.
 
+## [2.0.1] - 2026-11-16
+
+- Installer: show live progress during step 5 (HyperFrames package install, Chrome check, skills suite update, composition downloads, and catalog indexing)
+- video-skills: auto-purge retired 1.x skills from state and agent directories during update and doctor
+- Environment check: fix importlib.util import and false-positive on FFmpeg -fps_mode
+- macOS: recognize ffmpeg-full formula (supports zscale, tonemap and drawtext)
+
+Skills changed: video-pipeline 2.0.0 -> 2.0.1
+
 ## [2.0.0] - 2026-11-16
 
 - Simpler: 19 skills -> 9 (pipeline, watch, style, audio, transcribe, captions, researcher, plan-storyboard, generate); one approval gate; retired skills are removed on update
