@@ -1,6 +1,6 @@
 {
  "schema": "video-skills-manifest/1",
- "version": "2.0.0",
+ "version": "2.0.1",
  "released": "2026-11-16",
  "repo": "mg-studio-india/video-editing-skill",
  "skills": {
@@ -31,8 +31,8 @@
    }
   },
   "video-pipeline": {
-   "version": "2.0.0",
-   "tree": "799f28119b61723910d6ce6f6d9d7b5b0f92e02c5a5d4b94dee7e16e63145e07",
+   "version": "2.0.1",
+   "tree": "abfac4a972a9df8e52ee8e5c888f0cc490168e16c2c52c6bb371749be740d0dd",
    "files": {
     ".video-skills": "3830f5731e3a76df5150309a9f27126f116cff92cd995f16af5553c30db75e12",
     "SKILL.md": "eaa6b2ecc4b17ce13245b726e3a52af2c817e07b848ddab89b87143f79377c52",
@@ -57,7 +57,7 @@
     "engine/scripts/audio.py": "c8f0eebd340b28fb4454229c87bd621d208e4970b86974164ed4d53238fd18ac",
     "engine/scripts/broll-conform.py": "3178bead3fe559acd9c4f7a2031034f49881523d0ca5f3e6dd527d26514d46e4",
     "engine/scripts/captions.py": "1ab62fcafbae38fb831c5c3b9b527886a08f1af20a5de3311b4b14648696d807",
-    "engine/scripts/catalog.py": "4fc9be53cc4b1b2006fe482facb825d1905779eca70fb8a387e9e0f3bd66acff",
+    "engine/scripts/catalog.py": "a0cd8d12a8171aa584c7e2a2e754799d097eb20b9e4c27714cfdd335932721d4",
     "engine/scripts/config.py": "04ed1f25e5d7720f5fee215fc59c9ca0ad6e1aa602edc56a89d666e4b4012cf7",
     "engine/scripts/cut.py": "37344fda26e964321e2fec35a6b0cdfb5cf466ccfb3857c1128c5cf451f61f37",
     "engine/scripts/download.py": "1773dd8333f66bab1816af50ef7643cacbd8819ab2fbfc6114e0f678218890c6",
@@ -69,7 +69,7 @@
     "engine/scripts/grade.py": "e725116b799929877ceeaa0959bfa10d2483a300d5f9e5d34cc89bc468b23834",
     "engine/scripts/heygen-sound.py": "052ae5232820dd77e1f13cac8e88b2ed8b004d2e45c550d7c1d2c398d2cb76c2",
     "engine/scripts/hinglish.py": "27955419105bebd512cda6095259550192e87589c3ad24e1f94954be1ed42269",
-    "engine/scripts/install-compositions.mjs": "2234c00d111a195d9c453a7545e3e23fbe601251cc239e5c51abcdbe228a7e01",
+    "engine/scripts/install-compositions.mjs": "d4be1598c8f71007ac4c26561459c7f1d5356f79ddaf6335cc1764108c32c09b",
     "engine/scripts/pacing.py": "dad95ddfd5a2a5a38230cc2558b78b4e63d8f6317d1f83fbbb5b0ab43de3aea8",
     "engine/scripts/paper-cut.py": "57547a7451a967cb344e673dfcf30774e2678bfb8d4f2d45fea53a458acddcfb",
     "engine/scripts/parallel_pipeline.py": "7fed224a992f356a60ecaddf4071446b8cccadcf84ba7f06db5392f1347432bc",
